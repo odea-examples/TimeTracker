@@ -321,5 +321,18 @@ Define this if you need any of these integrations-->
                 <enabled>true</enabled>
             </snapshots>
         </repository>
+
+        <repository>
+            <id>visural-common</id>
+            <name>visural-common</name>
+            <url>http://visural-common.googlecode.com/svn/trunk/visural-common/maven/</url>
+        </repository>
+
+        <repository>
+            <id>visural-wicket</id>
+            <name>visural-wicket</name>
+            <url>http://visural-wicket.googlecode.com/svn/trunk/visural-wicket/maven/</url>
+        </repository>
+
     </repositories>
 </project>
