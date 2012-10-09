@@ -1,3 +1,6 @@
+#maven target
+*/target/*
+
 *.pydevproject
 .project
 .metadata
