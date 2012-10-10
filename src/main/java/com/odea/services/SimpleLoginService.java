@@ -1,6 +1,9 @@
 package com.odea.services;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.odea.dao.UsuarioDao;
 
 /**
  * User: pbergonzi
@@ -10,8 +13,11 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class SimpleLoginService implements LoginService{
-    @Override
+    @Autowired
+    UsuarioDao usuarioDao;
+    
+	@Override
     public boolean login(String user, String passwd) {
-        return user.equalsIgnoreCase(passwd);
+        return user.equalsIgnoreCase(usuarioDao.getUsuario(user).getNombre());
     }
 }
