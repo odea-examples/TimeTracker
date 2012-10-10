@@ -21,7 +21,7 @@ public class LoginPage extends WebPage {
 
         String result = "Error";
 
-        if(this.loginService.login("pepe","pepe")){
+        if(this.loginService.login("Pablo","Pablo")){
             result = "OK";
         }
 
