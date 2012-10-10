@@ -13,8 +13,7 @@ import org.springframework.stereotype.Service;
 import com.odea.domain.Usuario;
 
 @Service
-public class UsuarioDao {
-	private JdbcTemplate jdbcTemplate;
+public class UsuarioDao extends AbstractDAO {
 	
 	public Usuario getUsuario(String nombre){
 		Usuario usuario = jdbcTemplate.queryForObject("select * from usuarios where nombre='" + nombre + "'", new RowMapper<Usuario>(){
@@ -25,9 +24,5 @@ public class UsuarioDao {
 			});
 		return usuario;
 	}
-	
-	@Autowired
-	public void setDataSource(DataSource dataSource){
-		this.jdbcTemplate = new JdbcTemplate(dataSource);
-	}
+
 }
