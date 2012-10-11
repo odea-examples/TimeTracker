@@ -1,9 +1,10 @@
 package com.odea.services;
 
+import com.odea.dao.UsuarioDao;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.odea.dao.UsuarioDao;
 
 /**
  * User: pbergonzi
@@ -12,12 +13,14 @@ import com.odea.dao.UsuarioDao;
  */
 
 @Service
-public class SimpleLoginService implements LoginService{
+public class SimpleLoginService implements LoginService {
+    private static final Logger logger = LoggerFactory.getLogger(SimpleLoginService.class);
     @Autowired
     UsuarioDao usuarioDao;
-    
-	@Override
+
+    @Override
     public boolean login(String user, String passwd) {
+        logger.debug("Login attempt user: " + user);
         return user.equalsIgnoreCase(usuarioDao.getUsuario(user).getNombre());
     }
 }
