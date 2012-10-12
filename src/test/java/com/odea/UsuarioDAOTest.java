@@ -4,13 +4,13 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.odea.dao.UsuarioDao;
+import com.odea.dao.UsuarioDAO;
 import com.odea.domain.Usuario;
 
 public class UsuarioDAOTest extends AbstractTestCase {
 
 	@Autowired
-	private UsuarioDao dao;
+	private UsuarioDAO dao;
 	
 	@Test
 	public void agregarUsuarioTest() {
