@@ -53,4 +53,9 @@ public class EntradaDAO extends AbstractDAO {
 		return entradas;
 	}
 
+	
+	public void borrarTodosLosRegistros()
+	{
+		jdbcTemplate.update("DELETE FROM entrada");
+	}
 }

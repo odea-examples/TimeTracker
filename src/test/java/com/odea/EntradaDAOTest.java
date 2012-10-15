@@ -22,6 +22,8 @@ public class EntradaDAOTest extends AbstractTestCase {
 	public void setUp() {
 		super.setUp();
 		
+		dao.borrarTodosLosRegistros();
+		
 		dao.agregarEntrada(new Entrada(1,1,1,1,"No",1,1));
 		dao.agregarEntrada(new Entrada(2,1,1,1,"No",1,1));
 		dao.agregarEntrada(new Entrada(3,3,1,1,"No",1,1));
@@ -49,8 +51,7 @@ public class EntradaDAOTest extends AbstractTestCase {
 		
 		entradas = dao.obtenerTodasLasEntradas();
 		
-		System.out.println(entradas.size());
-		if (entradas.size() != 8) {
+		if (entradas.size() != 4) {
 			Assert.fail("No devolvio la cantidad de entradas esperada");
 		}
 		
@@ -60,9 +61,10 @@ public class EntradaDAOTest extends AbstractTestCase {
 	public void getEntradaPorCriterioTest(){
 		
 		Collection<Entrada> col = new Vector<Entrada>();
+		dao.agregarEntrada(new Entrada(1,1,1,1,"No",1,1));
 		col = dao.buscarEntradas(1, 0, 0, 0, 0);
 		
-		if (col.size() != 3) {
+		if (col.size() != 2) {
 			Assert.fail("La cantidad de entradas encontradas no es la esperada");
 		}
 	}
