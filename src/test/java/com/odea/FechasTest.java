@@ -1,7 +1,5 @@
 package com.odea;
 
-import org.joda.time.DateTimeConstants;
-import org.joda.time.LocalDate;
 import org.junit.Test;
 
 /**
@@ -11,7 +9,7 @@ import org.junit.Test;
  */
 
 public class FechasTest {
-    @Test
+   @Test
     public void testFechasSemana() {
         LocalDate now = new LocalDate();
         System.out.println(now.withDayOfWeek(DateTimeConstants.MONDAY));

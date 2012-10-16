@@ -1,29 +1,27 @@
 package com.odea.domain;
 
 public class Actividad {
-	private int id;
+	private int idActividad;
 	private String nombre;
-
-	public Actividad(){}
 	
-	public Actividad(int idAct){
-		id = idAct;
+	public Actividad(int idActividad, String nombre) {
+		super();
+		this.idActividad = idActividad;
+		this.nombre = nombre;
 	}
 	
-	public int getId() {
-		return id;
+	public int getIdActividad() {
+		return idActividad;
 	}
-
-	public void setId(int id) {
-		this.id = id;
+	public void setIdActividad(int idActividad) {
+		this.idActividad = idActividad;
 	}
-
 	public String getNombre() {
 		return nombre;
 	}
-
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
 
+	
 }

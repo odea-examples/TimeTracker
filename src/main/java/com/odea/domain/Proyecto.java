@@ -1,39 +1,30 @@
 package com.odea.domain;
 
-import java.awt.List;
+import java.util.List;
 
 public class Proyecto {
 	
 	private String nombre;
-	private int id;
-	private List tareasPermitidas;
-
-	public Proyecto(int idProyecto) {
-		id = idProyecto;
+	private int idProyecto;
+	
+	
+	public Proyecto(int idProyecto, String nombre) {
+		super();
+		this.nombre = nombre;
+		this.idProyecto = idProyecto;
 	}
 	
 	public String getNombre() {
 		return nombre;
 	}
-
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-
-	public int getId() {
-		return id;
+	public int getIdProyecto() {
+		return idProyecto;
 	}
-
-	public void setid(int id) {
-		this.id = id;
+	public void setIdProyecto(int idProyecto) {
+		this.idProyecto = idProyecto;
 	}
-
-	public List getTareasPermitidas() {
-		return tareasPermitidas;
-	}
-
-	public void setTareasPermitidas(List tareaspermitidas) {
-		this.tareasPermitidas = tareaspermitidas;
-	}
-
+	
 }

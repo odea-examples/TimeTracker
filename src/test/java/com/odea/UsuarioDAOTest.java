@@ -24,7 +24,7 @@ public class UsuarioDAOTest extends AbstractTestCase {
 		
 		Usuario usuarioBuscado = dao.getUsuario("Sebastian");
 		
-		if (!(usuario.getId() == usuarioBuscado.getId())) {
+		if (!(usuario.getIdUsuario() == usuarioBuscado.getIdUsuario())) {
 			Assert.fail("El usuario no es el mismo");
 		}
 		

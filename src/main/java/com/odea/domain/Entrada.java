@@ -13,9 +13,7 @@ public class Entrada {
     private String sistemaExterno;
     private Usuario usuario;
     private Date fecha;
-
-    public Entrada() {
-    }
+    
 
     public Entrada(long idEntrada, Proyecto proyecto, Actividad actividad, double duracion, String nota, String ticketBugZilla, String ticketExterno, String sistemaExterno, Usuario usuario, Date fecha) {
         this.idEntrada = idEntrada;

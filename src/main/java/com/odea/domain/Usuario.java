@@ -1,31 +1,31 @@
 package com.odea.domain;
 
 public class Usuario {
-	private int id;
+	private int idUsuario;
 	private String nombre;
 	private String apellido;
 	private String password;
 	
 	
-	public Usuario(){}
-	
 	public Usuario(int id, String nombre, String apellido, String password) {
-		this.id = id;
+		this.idUsuario = id;
 		this.nombre = nombre;
 		this.apellido = apellido;
 		this.password = password;
 	}
 	
 	public Usuario(int id){
-		this.id = id;
+		this.idUsuario = id;
 	}
 	
-	public int getId() {
-		return id;
+	public int getIdUsuario() {
+		return idUsuario;
 	}
-	public void setId(int id) {
-		this.id = id;
+
+	public void setIdUsuario(int idUsuario) {
+		this.idUsuario = idUsuario;
 	}
+
 	public String getNombre() {
 		return nombre;
 	}
@@ -38,6 +38,7 @@ public class Usuario {
 	public void setApellido(String apellido) {
 		this.apellido = apellido;
 	}
+
 	public String getPassword() {
 		return password;
 	}
@@ -45,6 +46,7 @@ public class Usuario {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+
 
 	
 }
