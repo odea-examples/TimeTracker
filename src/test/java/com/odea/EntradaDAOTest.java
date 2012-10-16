@@ -10,9 +10,17 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.odea.dao.EntradaDAO;
+import com.odea.domain.Actividad;
 import com.odea.domain.Entrada;
+import com.odea.domain.Proyecto;
+import com.odea.domain.TicketBZ;
+import com.odea.domain.TicketExterno;
+import com.odea.domain.Usuario;
 
 public class EntradaDAOTest extends AbstractTestCase {
+
+	@Autowired
+	private EntradaDAO dao;
 	
 	
 	@Override
@@ -21,26 +29,22 @@ public class EntradaDAOTest extends AbstractTestCase {
 		super.setUp();
 		
 		dao.borrarTodosLosRegistros();
+		Proyecto proyecto = new Proyecto();
+		Actividad actividad = new Actividad();
+		TicketBZ ticketbz = new TicketBZ();
+		TicketExterno ticketext = new TicketExterno();
+		Usuario usuario = new Usuario();
 		
-		dao.agregarEntrada(new Entrada(1,1,1,1,"No",1,1));
-		dao.agregarEntrada(new Entrada(2,1,1,1,"No",1,1));
-		dao.agregarEntrada(new Entrada(3,3,1,1,"No",1,1));
-		dao.agregarEntrada(new Entrada(4,4,1,1,"No",1,1));
-		
+		dao.agregarEntrada(new Entrada(0, proyecto, actividad, 3.30, "esta es la nota", ticketbz, ticketext, usuario,"DATE"));
 	}
 
-	@Autowired
-	private EntradaDAO dao;
-	
 	@Test
 	public void getEntradaTest(){
 		
-		Collection<Entrada> col = new Vector<Entrada>();
+		Collection<Entrada> col;
 		col = dao.buscarEntradas(5, 0, 0, 0, 0);
 
-		if (col.size() != 1) {
-			Assert.fail("La cantidad de entradas encontradas no es la esperada");
-		}
+		Assert.assertTrue("La cantidad de entradas encontradas no es la esperada", col.size() == 1);
 	}
 	
 	@Test
@@ -49,21 +53,22 @@ public class EntradaDAOTest extends AbstractTestCase {
 		
 		entradas = dao.obtenerTodasLasEntradas();
 		
-		if (entradas.size() != 4) {
-			Assert.fail("No devolvio la cantidad de entradas esperada");
-		}
-		
+		Assert.assertTrue("No devolvio la cantidad de entradas esperada", entradas.size() == 4);
 	}
 	
 	@Test
 	public void getEntradaPorCriterioTest(){
 		
-		Collection<Entrada> col = new Vector<Entrada>();
-		dao.agregarEntrada(new Entrada(1,1,1,1,"No",1,1));
+		Proyecto proyecto = new Proyecto();
+		Actividad actividad = new Actividad();
+		TicketBZ ticketbz = new TicketBZ();
+		TicketExterno ticketext = new TicketExterno();
+		Usuario usuario = new Usuario();
+		Collection<Entrada> col;
+		dao.agregarEntrada(new Entrada(0, proyecto, actividad, 3.30, "esta es la nota", ticketbz, ticketext, usuario,"DATE"));
 		col = dao.buscarEntradas(14, 0, 0, 0, 0);
 		
-		if (col.size() != 1) {
-			Assert.fail("La cantidad de entradas encontradas no es la esperada");
-		}
+		Assert.assertTrue("La cantidad de entradas encontradas no es la esperada", col.size() == 1);
+		
 	}
 }

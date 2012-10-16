@@ -15,7 +15,7 @@ public class FiltroUsuario extends FiltroAbstract{
 	
 	@Override
 	protected boolean aprueba(Entrada entrada) {
-		boolean resultado = entrada.getId_usuario() == this.getCondicion();
+		boolean resultado = entrada.getIdusuario() == this.getCondicion();
 		
 		return resultado;
 	}

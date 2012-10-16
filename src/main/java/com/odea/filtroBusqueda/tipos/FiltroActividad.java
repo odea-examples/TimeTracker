@@ -15,7 +15,7 @@ public class FiltroActividad extends FiltroAbstract {
 	
 	@Override
 	protected boolean aprueba(Entrada entrada) {
-		boolean resultado = entrada.getId_actividad() == this.getCondicion();
+		boolean resultado = entrada.getIdactividad() == this.getCondicion();
 		
 		return resultado;
 	}

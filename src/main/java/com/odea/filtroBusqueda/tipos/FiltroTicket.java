@@ -15,7 +15,7 @@ public class FiltroTicket extends FiltroAbstract {
 	
 	@Override
 	protected boolean aprueba(Entrada entrada) {
-		boolean resultado = entrada.getId_ticket() == this.getCondicion();
+		boolean resultado = entrada.getIdticketbz() == this.getCondicion();
 		
 		return resultado;
 	}
