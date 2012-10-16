@@ -31,6 +31,13 @@
         <org.springframework.version>3.1.2.RELEASE</org.springframework.version>
     </properties>
     <dependencies>
+        <!-- JODA TIME -->
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+            <version>2.1</version>
+        </dependency>
+
         <!--  WICKET DEPENDENCIES -->
         <dependency>
             <groupId>org.apache.wicket</groupId>
