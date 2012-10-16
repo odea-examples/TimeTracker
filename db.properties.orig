@@ -1,10 +1,9 @@
 #HSQL Database Engine 1.8.0.10
 <<<<<<< HEAD
-#Tue Oct 16 15:19:50 ART 2012
+#Tue Oct 16 08:42:22 ART 2012
 =======
-#Tue Oct 16 08:42:22 ART 2012
->>>>>>> branch 'master' of git@github.com:odea-examples/TimeTracker.git
-#Tue Oct 16 08:42:22 ART 2012
+#Thu Oct 11 11:13:49 ART 2012
+>>>>>>> 29d1fbd40c3dc58745068255e5311430f12a3d64
 hsqldb.script_format=0
 runtime.gc_interval=0
 sql.enforce_strict_size=false

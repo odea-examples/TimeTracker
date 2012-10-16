@@ -1,49 +1,59 @@
 package com.odea.domain;
 
+import java.sql.Date;
+
+import com.odea.dao.EntradaDAO;
+
 public class Entrada {
-private int id_entrada;
-private int id_proyecto;
-private int id_actividad;
+	
+private int identrada;	
+private int idproyecto;
+private int idactividad;
 private double duracion;
 private String nota;
-private int id_ticket;
-private int id_usuario;
+private int idticketbz;
+private int idticketext;
+private int idusuario;
+private String fecha;
+
 
 public Entrada(){}
 
-public Entrada(int id_entrada, int id_proyecto, int id_actividad,
-		double duracion, String nota, int id_ticket, int id_usuario) {
-	this.id_entrada = id_entrada;
-	this.id_proyecto = id_proyecto;
-	this.id_actividad = id_actividad;
+public Entrada(int identrada, Proyecto proyecto, Actividad actividad,
+		double duracion, String nota, TicketBZ ticketbz,TicketExterno ticketext ,Usuario usuario,String fecha) {
+	this.identrada = identrada;
+	idproyecto = proyecto.getId();
+	idactividad = actividad.getId();
 	this.duracion = duracion;
 	this.nota = nota;
-	this.id_ticket = id_ticket;
-	this.id_usuario = id_usuario;
+	idticketbz = ticketbz.getTicketID();
+	idusuario = usuario.getId();
+	idticketext = ticketext.getTicketid();
+	this.fecha = fecha;
 }
 
-public int getId_entrada() {
-	return id_entrada;
+public int getIdentrada() {
+	return identrada;
 }
 
-public void setId_entrada(int id_entrada) {
-	this.id_entrada = id_entrada;
+public void setIdentrada(int identrada) {
+	this.identrada = identrada;
 }
 
-public int getId_proyecto() {
-	return id_proyecto;
+public int getIdproyecto() {
+	return idproyecto;
 }
 
-public void setId_proyecto(int id_proyecto) {
-	this.id_proyecto = id_proyecto;
+public void setIdproyecto(int idproyecto) {
+	this.idproyecto = idproyecto;
 }
 
-public int getId_actividad() {
-	return id_actividad;
+public int getIdactividad() {
+	return idactividad;
 }
 
-public void setId_actividad(int id_actividad) {
-	this.id_actividad = id_actividad;
+public void setIdactividad(int idactividad) {
+	this.idactividad = idactividad;
 }
 
 public double getDuracion() {
@@ -62,20 +72,36 @@ public void setNota(String nota) {
 	this.nota = nota;
 }
 
-public int getId_ticket() {
-	return id_ticket;
+public int getIdticketbz() {
+	return idticketbz;
 }
 
-public void setId_ticket(int id_ticket) {
-	this.id_ticket = id_ticket;
+public void setIdticketbz(int idticketbz) {
+	this.idticketbz = idticketbz;
 }
 
-public int getId_usuario() {
-	return id_usuario;
+public int getIdticketext() {
+	return idticketext;
 }
 
-public void setId_usuario(int id_usuario) {
-	this.id_usuario = id_usuario;
+public void setIdticketext(int idticketext) {
+	this.idticketext = idticketext;
+}
+
+public int getIdusuario() {
+	return idusuario;
+}
+
+public void setIdusuario(int idusuario) {
+	this.idusuario = idusuario;
+}
+
+public String getFecha() {
+	return fecha;
+}
+
+public void setFecha(String fecha) {
+	this.fecha = fecha;
 }
 
 

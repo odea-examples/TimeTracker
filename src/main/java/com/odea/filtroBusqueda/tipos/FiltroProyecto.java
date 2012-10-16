@@ -15,7 +15,7 @@ public class FiltroProyecto extends FiltroAbstract{
 	
 	@Override
 	protected boolean aprueba(Entrada entrada) {
-		boolean resultado = entrada.getId_proyecto() == this.getCondicion();
+		boolean resultado = entrada.getIdproyecto() == this.getCondicion();
 		
 		return resultado;
 	}
