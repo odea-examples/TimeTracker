@@ -18,61 +18,66 @@ public class EntradaDAOTest extends AbstractTestCase {
 
 	@Autowired
 	private EntradaDAO dao;
-	Date antes;
-	Date despues;
+	private Date antes;
+	private Date despues;
+	private Proyecto proyecto;
+	private Usuario usuario;
+	private Actividad actividad;
+
 	
 	@Override
 	@Before
 	public void setUp() {
 		super.setUp();
 		
-
-		Proyecto proyecto = new Proyecto(1, "Proyecto 1");
-		Actividad actividad = new Actividad(1,"Actividad 1");
-		String ticketBZ = "1";
-		String ticketExt = "1";
-		String sistemaExt = "1";
-		Usuario usuario = new Usuario(1, "Nombre", "Apellido", "mi contraseña");
-		Date fecha = new Date(System.currentTimeMillis());
+		proyecto = new Proyecto(1, "Proyecto 1");
+		usuario = new Usuario(1, "Nombre", "Apellido", "mi contraseña");
+		actividad = new Actividad(1,"Actividad 1");
+		
 		antes = new Date(System.currentTimeMillis() - 1000000000);
 		despues = new Date(System.currentTimeMillis() + 1000000000);
 		
+		String ticketBZ = "1";
+		String ticketExt = "1";
+		String sistemaExt = "1";
 		
-		dao.agregarEntrada(new Entrada(1, proyecto, actividad, 2387, "Nota", ticketBZ, ticketExt, sistemaExt, usuario, null));
+		Date fecha = new Date(System.currentTimeMillis());
+		Proyecto proyecto2 = new Proyecto(2,"otroProyecto");
+		Usuario usuario2 = new Usuario(2, "unNombre", "unApellido", "algunPassword");
+		
+		dao.agregarEntrada(new Entrada(1, proyecto, actividad, 2387, "Nota", ticketBZ, ticketExt, sistemaExt, usuario, fecha));
+		dao.agregarEntrada(new Entrada(2, proyecto, actividad, 2387, "Nota", ticketBZ, ticketExt, sistemaExt, usuario2, fecha));
+		dao.agregarEntrada(new Entrada(3, proyecto2, actividad, 2387, "Nota", ticketBZ, ticketExt, sistemaExt, usuario, fecha));
+		
 	}
 
 	@Test
-	public void getEntradaTest(){
+	public void getEntradasTest(){
+		
+
 		Collection<Entrada> col;
 		col = dao.getEntradas(antes, despues);
-		System.out.println(col.size());
 		
-		Assert.assertTrue("La cantidad de entradas encontradas no es la esperada", col.size() == 1);
-	}
-	
-	/*
-	@Test
-	public void obtenerTodasLasEntradasTest() {
-		Collection<Entrada> entradas = new ArrayList<Entrada>();
-		
-		
-		Assert.assertTrue("No devolvio la cantidad de entradas esperada", entradas.size() == 4);
+		Assert.assertTrue("La cantidad de entradas encontradas no es la esperada", col.size() == 3);
 	}
 	
 	@Test
-	public void getEntradaPorCriterioTest(){
-		
-		Proyecto proyecto = new Proyecto();
-		Actividad actividad = new Actividad();
-		TicketBZ ticketbz = new TicketBZ();
-		TicketExterno ticketext = new TicketExterno();
-		Usuario usuario = new Usuario();
+	public void getEntradasDeProyectoTest(){
 		Collection<Entrada> col;
-		dao.agregarEntrada(new Entrada(0, proyecto, actividad, 3.30, "esta es la nota", ticketbz, ticketext, usuario,"DATE"));
-		col = dao.buscarEntradas(14, 0, 0, 0, 0);
-		
-		Assert.assertTrue("La cantidad de entradas encontradas no es la esperada", col.size() == 1);
-		
+		col = dao.getEntradas(proyecto, antes, despues);
+
+		Assert.assertTrue("La cantidad de entradas encontradas no es la esperada", col.size() == 2);
 	}
-	*/
+	
+	@Test
+	public void getEntradasDeUsuarioTest(){
+		Collection<Entrada> col;
+		col = dao.getEntradas(usuario, antes, despues);
+		
+		Assert.assertTrue("La cantidad de entradas encontradas no es la esperada", col.size() == 2);
+	}
+	
+	
+	
+
 }
