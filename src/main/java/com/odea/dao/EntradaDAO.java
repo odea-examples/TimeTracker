@@ -16,7 +16,7 @@ import com.odea.domain.Usuario;
 @Service
 public class EntradaDAO extends AbstractDAO {
 	
-	private String sqlEntradas = "SELECT e.id_entrada, e.id_proyecto, e.id_actividad, e.duracion, e.nota, e.ticket_bz, e.ticket_ext, e.sistema_ext, e.id_usuario, e.fecha, p.nombre, u.nombre, u.apellido, u.password, a.nombre FROM entrada e, proyecto p, actividad a, usuario u";
+	private String sqlEntradas = "SELECT e.id_entrada, e.id_proyecto, e.id_actividad, e.duracion, e.nota, e.id_ticket_bz, e.ticket_ext, e.sistema_ext, e.id_usuario, e.fecha, p.nombre, u.nombre, u.apellido, u.password, a.nombre FROM entrada e, proyecto p, actividad a, usuarios u";
 
 	public void agregarEntrada(Entrada entrada){
 		jdbcTemplate.update("INSERT INTO entrada (id_proyecto, id_actividad, duracion, nota, id_ticket_bz, ticket_ext, sistema_ext, id_usuario, fecha) VALUES (?,?,?,?,?,?,?,?,?)", 
@@ -26,20 +26,20 @@ public class EntradaDAO extends AbstractDAO {
 	
 	
 	public Collection<Entrada> getEntradas(Usuario usuario, Date desde, Date hasta){
-		Collection<Entrada> entradas = jdbcTemplate.query(sqlEntradas +" WHERE e.id_usuario = " + usuario.getIdUsuario() + ", e.id_proyecto = p.id_proyecto, e.id_actividad = a.id_actividad" , new RowMapperEntradas());
+		Collection<Entrada> entradas = jdbcTemplate.query(sqlEntradas +" WHERE e.id_usuario = " + usuario.getIdUsuario() + " AND e.id_proyecto = p.id_proyecto AND e.id_actividad = a.id_actividad" , new RowMapperEntradas());
 		
 		return entradas;
 	}
 	
 	
 	public Collection<Entrada> getEntradas(Date desde,Date hasta){
-		 Collection<Entrada> entradas = jdbcTemplate.query(sqlEntradas + "WHERE e.id_usuario = u.id_usuario, e.id_proyecto = p.id_proyecto, e.id_actividad = a.id_actividad", new RowMapperEntradas());
+		 Collection<Entrada> entradas = jdbcTemplate.query(sqlEntradas + " WHERE e.id_usuario = u.id_usuario AND e.id_proyecto = p.id_proyecto AND e.id_actividad = a.id_actividad", new RowMapperEntradas());
 		 
 		return entradas;
 	}
 	
 	public Collection<Entrada> getEntradas(Proyecto proyecto, Date desde, Date hasta){
-		Collection<Entrada> entradas = jdbcTemplate.query(sqlEntradas + "WHERE e.id_usuario = u.id_usuario, e.id_proyecto = " + proyecto.getIdProyecto() + ", e.id_actividad = a.id_actividad", new RowMapperEntradas());
+		Collection<Entrada> entradas = jdbcTemplate.query(sqlEntradas + " WHERE e.id_usuario = u.id_usuario AND e.id_proyecto = " + proyecto.getIdProyecto() + " AND e.id_actividad = a.id_actividad", new RowMapperEntradas());
 		
 		return entradas;
 	}
