@@ -2,8 +2,11 @@ package com.odea;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Vector;
 
+import org.joda.time.DateTimeConstants;
+import org.joda.time.LocalDate;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,37 +24,43 @@ public class EntradaDAOTest extends AbstractTestCase {
 
 	@Autowired
 	private EntradaDAO dao;
+	Date antes;
+	Date despues;
 	
-/*	
 	@Override
 	@Before
 	public void setUp() {
 		super.setUp();
 		
-		dao.borrarTodosLosRegistros();
-		Proyecto proyecto = new Proyecto();
-		Actividad actividad = new Actividad();
-		TicketBZ ticketbz = new TicketBZ();
-		TicketExterno ticketext = new TicketExterno();
-		Usuario usuario = new Usuario();
+
+		Proyecto proyecto = new Proyecto(1, "Proyecto 1");
+		Actividad actividad = new Actividad(1,"Actividad 1");
+		String ticketBZ = "1";
+		String ticketExt = "1";
+		String sistemaExt = "1";
+		Usuario usuario = new Usuario(1, "Nombre", "Apellido", "mi contraseña");
+		Date fecha = new Date(System.currentTimeMillis());
+		antes = new Date(System.currentTimeMillis() - 1000000000);
+		despues = new Date(System.currentTimeMillis() + 1000000000);
 		
-		dao.agregarEntrada(new Entrada(0, proyecto, actividad, 3.30, "esta es la nota", ticketbz, ticketext, usuario,"DATE"));
+		
+		dao.agregarEntrada(new Entrada(1, proyecto, actividad, 2387, "Nota", ticketBZ, ticketExt, sistemaExt, usuario, null));
 	}
 
 	@Test
 	public void getEntradaTest(){
-		
 		Collection<Entrada> col;
-		col = dao.buscarEntradas(5, 0, 0, 0, 0);
 
+		col = dao.getEntradas(antes, despues);
+		
 		Assert.assertTrue("La cantidad de entradas encontradas no es la esperada", col.size() == 1);
 	}
 	
+	/*
 	@Test
 	public void obtenerTodasLasEntradasTest() {
 		Collection<Entrada> entradas = new ArrayList<Entrada>();
 		
-		entradas = dao.obtenerTodasLasEntradas();
 		
 		Assert.assertTrue("No devolvio la cantidad de entradas esperada", entradas.size() == 4);
 	}
@@ -70,5 +79,6 @@ public class EntradaDAOTest extends AbstractTestCase {
 		
 		Assert.assertTrue("La cantidad de entradas encontradas no es la esperada", col.size() == 1);
 		
-	}*/
+	}
+	*/
 }

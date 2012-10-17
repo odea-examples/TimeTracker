@@ -2,10 +2,6 @@ package com.odea.domain;
 
 public class TicketBZ {
 	private int ticketID;
-
-	public TicketBZ(){
-		
-	}
 	
 	public TicketBZ(int id){
 		ticketID = id;
