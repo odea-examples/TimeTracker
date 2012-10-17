@@ -1,12 +1,8 @@
 package com.odea;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.Vector;
 
-import org.joda.time.DateTimeConstants;
-import org.joda.time.LocalDate;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,8 +12,6 @@ import com.odea.dao.EntradaDAO;
 import com.odea.domain.Actividad;
 import com.odea.domain.Entrada;
 import com.odea.domain.Proyecto;
-import com.odea.domain.TicketBZ;
-import com.odea.domain.TicketExterno;
 import com.odea.domain.Usuario;
 
 public class EntradaDAOTest extends AbstractTestCase {
@@ -50,8 +44,8 @@ public class EntradaDAOTest extends AbstractTestCase {
 	@Test
 	public void getEntradaTest(){
 		Collection<Entrada> col;
-
 		col = dao.getEntradas(antes, despues);
+		System.out.println(col.size());
 		
 		Assert.assertTrue("La cantidad de entradas encontradas no es la esperada", col.size() == 1);
 	}
