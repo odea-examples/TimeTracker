@@ -39,7 +39,7 @@ public class EntradaDAO extends AbstractDAO {
 	}
 	
 	public Collection<Entrada> getEntradas(Proyecto proyecto, Date desde, Date hasta){
-		Collection<Entrada> entradas = jdbcTemplate.query(sqlEntradas + " WHERE e.id_usuario = u.id_usuario AND e.id_proyecto = " + proyecto.getIdProyecto() + " AND e.id_actividad = a.id_actividad", new RowMapperEntradas());
+		Collection<Entrada> entradas = jdbcTemplate.query(sqlEntradas + " WHERE e.id_usuario = u.id_usuario AND e.id_proyecto = " + proyecto.getIdProyecto() + " AND e.id_actividad = a.id_actividad AND e.id_proyecto = p.id_proyecto", new RowMapperEntradas());
 		
 		return entradas;
 	}

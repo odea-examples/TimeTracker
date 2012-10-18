@@ -66,7 +66,7 @@ public class EntradaDAOTest extends AbstractTestCase {
 		Collection<Entrada> col;
 		col = dao.getEntradas(proyecto, antes, despues);
 
-		Assert.assertTrue("La cantidad de entradas encontradas no es la esperada", col.size() == 2);
+		Assert.assertTrue("La cantidad de entradas encontradas no es la esperada", col.size() == 4);
 	}
 	
 	@Test
