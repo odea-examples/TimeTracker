@@ -31,6 +31,14 @@ public class EntradaDAO extends AbstractDAO {
 		return entradas;
 	}
 	
+	public int totalHorasSemana(Collection<Entrada> entradas){
+		int suma=0;
+		for (Entrada entrada : entradas) {
+			suma+=entrada.getDuracion();
+		}
+		return suma;
+	}
+	
 	
 	public Collection<Entrada> getEntradas(Date desde,Date hasta){
 		 Collection<Entrada> entradas = jdbcTemplate.query(sqlEntradas + " WHERE e.id_usuario = u.id_usuario AND e.id_proyecto = p.id_proyecto AND e.id_actividad = a.id_actividad", new RowMapperEntradas());
