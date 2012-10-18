@@ -66,7 +66,7 @@ public class EntradaDAOTest extends AbstractTestCase {
 		Collection<Entrada> col;
 		col = dao.getEntradas(proyecto, antes, despues);
 
-		Assert.assertTrue("La cantidad de entradas encontradas no es la esperada", col.size() == 2);
+		Assert.assertTrue("La cantidad de entradas encontradas no es la esperada", col.size() == 4);
 	}
 	
 	@Test
@@ -74,7 +74,15 @@ public class EntradaDAOTest extends AbstractTestCase {
 		Collection<Entrada> col;
 		col = dao.getEntradas(usuario, antes, despues);
 		
-		Assert.assertTrue("La cantidad de entradas encontradas no es la esperada", col.size() == 2);
+		Assert.assertTrue("La cantidad de entradas encontradas no es la esperada", col.size() == 6);
+	}
+	
+	@Test
+	public void getTotalHorasTest(){
+		Collection<Entrada> col;
+		col = dao.getEntradas(usuario, antes, despues);
+		int numero = dao.totalHorasSemana(col);
+		Assert.assertTrue("hola este es el mensaje", numero==19096);
 	}
 	
 	
