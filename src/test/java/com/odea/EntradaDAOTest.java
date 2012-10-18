@@ -20,6 +20,7 @@ public class EntradaDAOTest extends AbstractTestCase {
 	private EntradaDAO dao;
 	private Date antes;
 	private Date despues;
+	private Date fechaIntermedia;
 	private Proyecto proyecto;
 	private Usuario usuario;
 	private Actividad actividad;
@@ -36,6 +37,7 @@ public class EntradaDAOTest extends AbstractTestCase {
 		
 		antes = new Date(System.currentTimeMillis() - 1000000000);
 		despues = new Date(System.currentTimeMillis() + 1000000000);
+		fechaIntermedia = new Date(System.currentTimeMillis() + 100000000);
 		
 		String ticketBZ = "1";
 		String ticketExt = "1";
@@ -47,7 +49,7 @@ public class EntradaDAOTest extends AbstractTestCase {
 		
 		dao.agregarEntrada(new Entrada(1, proyecto, actividad, 2387, "Nota", ticketBZ, ticketExt, sistemaExt, usuario, fecha));
 		dao.agregarEntrada(new Entrada(2, proyecto, actividad, 2387, "Nota", ticketBZ, ticketExt, sistemaExt, usuario2, fecha));
-		dao.agregarEntrada(new Entrada(3, proyecto2, actividad, 2387, "Nota", ticketBZ, ticketExt, sistemaExt, usuario, fecha));
+		dao.agregarEntrada(new Entrada(3, proyecto2, actividad, 2387, "Nota", ticketBZ, ticketExt, sistemaExt, usuario, fechaIntermedia));
 		
 	}
 
@@ -73,19 +75,18 @@ public class EntradaDAOTest extends AbstractTestCase {
 	public void getEntradasDeUsuarioTest(){
 		Collection<Entrada> col;
 		col = dao.getEntradas(usuario, antes, despues);
-		
+
 		Assert.assertTrue("La cantidad de entradas encontradas no es la esperada", col.size() == 6);
 	}
+
 	
 	@Test
 	public void getTotalHorasTest(){
 		Collection<Entrada> col;
 		col = dao.getEntradas(usuario, antes, despues);
 		int numero = dao.totalHorasSemana(col);
-		Assert.assertTrue("hola este es el mensaje", numero==19096);
+		Assert.assertTrue("La cantidad de horas es incorrecta", numero==19096);
 	}
-	
-	
-	
+
 
 }
