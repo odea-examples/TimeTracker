@@ -1,0 +1,31 @@
+<wicket:extend>
+
+    <a wicket:id="link" class="nav"><h3><span>Entrada</span></h3></a>
+    <div wicket:id="feedback" class="feedback">feedback</div>
+    <form wicket:id="form">
+        <ul>
+           <li>Proyecto</li>
+            <li>
+                <select wicket:id="proyecto"></select>
+            </li>
+
+            <li>Actividad</li>
+            <select wicket:id="actividad"></li>
+
+			<li>Duración</li>
+            <li <input type="text" wicket:id="duracion"/> </li>
+			
+            <li>Nota</li>
+            <li <textarea wicket:id="nota" rows="6" cols="20">Escribe tu nota</textarea> ></li>
+
+            <li>Ticket Bugzilla</li>
+            <li <input type="text" wicket:id="ticketBZ"/> </li>
+            
+            <li>Ticket Externo</li>
+            <select wicket:id="actividad"></li>
+            
+            <li>ID Ticket Externo</li>
+            <li <input type="text" wicket:id="ticketExt"/> </li>
+
+    </form>
+</wicket:extend>
