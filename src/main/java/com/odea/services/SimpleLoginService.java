@@ -1,9 +1,10 @@
 package com.odea.services;
 
-import com.odea.dao.UsuarioDAO;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -15,12 +16,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class SimpleLoginService implements LoginService {
     private static final Logger logger = LoggerFactory.getLogger(SimpleLoginService.class);
-    @Autowired
-    UsuarioDAO usuarioDao;
 
     @Override
-    public boolean login(String user, String passwd) {
+    public void login(String user, String passwd) {
         logger.debug("Login attempt user: " + user);
-        return user.equalsIgnoreCase(usuarioDao.getUsuario(user).getNombre());
+        UsernamePasswordToken token = new UsernamePasswordToken(user, passwd);
+        Subject currentUser = SecurityUtils.getSubject();
+        currentUser.login(token);
     }
 }

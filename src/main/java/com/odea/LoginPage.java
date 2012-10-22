@@ -1,12 +1,17 @@
 package com.odea;
 
+import com.odea.services.EncodingService;
+import com.odea.services.LoginService;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.WebPage;
-import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.PasswordTextField;
+import org.apache.wicket.markup.html.form.RequiredTextField;
+import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-
-import com.odea.services.LoginService;
-
 
 
 /**
@@ -18,21 +23,58 @@ public class LoginPage extends WebPage {
     private static final long serialVersionUID = 1L;
     @SpringBean
     private LoginService loginService;
-    
+    @SpringBean
+    private EncodingService hashEncoder;
+
+    private String userName;
+    private String passwd;
+
     public LoginPage(final PageParameters parameters) {
         super(parameters);
-
-        String result = "Error";
-
-        if(this.loginService.login("Pablo","Pablo")){
-            result = "OK";
-        }
-
-        add(new Label("login",result));
-
+        LoginForm loginForm = new LoginForm("loginForm");
+        add(loginForm);
     }
 
-    public void setLoginService(LoginService loginService){
+    public void login() {
+        this.loginService.login(this.userName, this.hashEncoder.encode(passwd));
+    }
+
+    class LoginForm extends Form {
+        private IModel<LoginPage> loginModel = new CompoundPropertyModel<LoginPage>(LoginPage.this);
+
+        public LoginForm(String id) {
+            super(id);
+            this.setDefaultModel(this.loginModel);
+            RequiredTextField<String> userName = new RequiredTextField<String>("userName");
+            PasswordTextField passwd = new PasswordTextField("passwd") {
+
+            };
+            AjaxButton submit = new AjaxButton("submit", this) {
+                @Override
+                protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+                    LoginPage.this.login();
+                    System.out.println("OK");
+                }
+
+                @Override
+                protected void onError(AjaxRequestTarget target, Form<?> form) {
+                    System.out.println("UHHH");
+                }
+            };
+
+            add(userName);
+            add(passwd);
+            add(submit);
+            setOutputMarkupId(true);
+        }
+    }
+
+    public void setLoginService(LoginService loginService) {
         this.loginService = loginService;
     }
+
+    public void setHashEncoder(EncodingService hashEncoder) {
+        this.hashEncoder = hashEncoder;
+    }
+
 }
