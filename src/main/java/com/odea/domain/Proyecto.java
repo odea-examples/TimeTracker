@@ -1,6 +1,5 @@
 package com.odea.domain;
 
-import java.util.List;
 
 public class Proyecto {
 	
@@ -26,5 +25,12 @@ public class Proyecto {
 	public void setIdProyecto(int idProyecto) {
 		this.idProyecto = idProyecto;
 	}
+
+	@Override
+	public String toString() {
+		return nombre;
+	}
+	
+	
 	
 }
