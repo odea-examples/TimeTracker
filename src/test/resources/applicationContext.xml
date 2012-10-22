@@ -15,4 +15,18 @@ http://www.springframework.org/schema/context/spring-context-3.0.xsd">
         <property name="password" value=""/>
     </bean>
 
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <property name="securityManager" ref="securityManager"/>
+    </bean>
+
+    <bean id="securityManager" class="org.apache.shiro.mgt.DefaultSecurityManager">
+        <property name="realm" ref="odeaRealm"/>
+        <!-- By default the servlet container sessions will be used.  Uncomment this line
+to use shiro's native sessions (see the JavaDoc for more): -->
+        <!-- <property name="sessionMode" value="native"/> -->
+    </bean>
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+
+    <bean id="odeaRealm" class="com.odea.shiro.OdeaRealm"/>
+
 </beans>
