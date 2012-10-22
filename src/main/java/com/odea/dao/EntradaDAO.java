@@ -39,9 +39,9 @@ public class EntradaDAO extends AbstractDAO {
 	}
 	
 	public int totalHorasSemana(Collection<Entrada> entradas){
-		int suma=0;
+		int suma = 0;
 		for (Entrada entrada : entradas) {
-			suma+=entrada.getDuracion();
+			suma += entrada.getDuracion();
 		}
 		return suma;
 	}
