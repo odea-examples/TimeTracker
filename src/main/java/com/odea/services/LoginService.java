@@ -6,5 +6,5 @@ package com.odea.services;
  * Time: 15:58
  */
 public interface LoginService {
-    boolean login(String user,String passwd);
+    void login(String user, String passwd);
 }
