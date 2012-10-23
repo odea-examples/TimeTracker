@@ -1,17 +1,6 @@
-<html>
+<html xmlns:wicket="http://wicket.apache.org">
 
-	<head>
-    <meta charset="utf-8" />
-    <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.0/themes/base/jquery-ui.css" />
-    <script src="http://code.jquery.com/jquery-1.8.2.js"></script>
-    <script src="http://code.jquery.com/ui/1.9.0/jquery-ui.js"></script>
-    <link rel="stylesheet" href="/resources/demos/style.css" />
-    <script>
-    $(function() {
-        $( "#fecha" ).datepicker({ dateFormat: 'dd/mm/yy' });
-    });
-    </script>
-</head>
+
 <body>
 	
 	    <form wicket:id="form">
@@ -28,7 +17,7 @@
 
 				<br>
 				Duración
-	            <input type="text" wicket:id="duracion"/>  Fecha: <input type="text" id="fecha" wicket:id="fecha"/>
+	            <input type="text" wicket:id="duracion"/>
 				
 				<br>
 		        Nota
@@ -36,7 +25,7 @@
 	        	<textarea wicket:id="nota" rows="6" cols="20"/>
 	
 	            <br>Ticket Bugzilla
-	            <input type="text" wicket:id="ticketBZ"/>
+	            <input type="text" wicket:id="ticketBZ" >
 	            
 	            <br>
 	            Sistema Externo
