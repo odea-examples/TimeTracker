@@ -25,6 +25,5 @@ public class WicketApplication extends WebApplication
         mountPage("formulario", FormPage.class);
         getComponentInstantiationListeners().add(new SpringComponentInjector(this));
         
-
 	}
 }

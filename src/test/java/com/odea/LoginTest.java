@@ -1,11 +1,14 @@
 package com.odea;
 
-import com.odea.services.EncodingService;
-import com.odea.services.LoginService;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+
+import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static org.junit.Assert.*;
+import com.odea.services.EncodingService;
+import com.odea.services.LoginService;
 
 public class LoginTest extends AbstractTestCase {
     @Autowired
@@ -15,7 +18,7 @@ public class LoginTest extends AbstractTestCase {
 
     @Test
     public void loginTest() {
-        assertTrue(loginService.login("Pablo", "bjkbvhjn"));
+    	loginService.login("Pablo", "bjkbvhjn");
     }
 
     @Test
