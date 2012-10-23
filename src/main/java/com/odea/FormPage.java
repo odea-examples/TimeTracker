@@ -54,14 +54,14 @@ public class FormPage extends WebPage {
 		add(form);
 	}
 	
-	abstract class EntradaForm extends Form<Entrada> {
+	public abstract class EntradaForm extends Form<Entrada> {
 		IModel<Entrada> entradaModel = new CompoundPropertyModel<Entrada>(new Entrada());
 		
 		public EntradaForm(String id) {
 			super(id);
 			this.setDefaultModel(this.entradaModel);
 			DropDownChoice<Proyecto> comboProyecto = new DropDownChoice<Proyecto>("proyecto",  proyectoDAO.getProyectos());
-			DropDownChoice<Actividad> comboActividad = new DropDownChoice<Actividad>("actividad");
+			DropDownChoice<Actividad> comboActividad = new DropDownChoice<Actividad>("actividad", actividadDAO.getActividades());
 			DropDownChoice<SistemaExterno> sistemaExt = new DropDownChoice<SistemaExterno>("sistemaExterno");
 			TextArea<String> nota = new TextArea<String>("nota");
 			TextField<Double> duracion = new TextField<Double>("duracion");
