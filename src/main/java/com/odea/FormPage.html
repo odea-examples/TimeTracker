@@ -1,7 +1,11 @@
-<html>
+<html xmlns:wicket="http://wicket.apache.org">
+
+
+<body>
 	
 	    <form wicket:id="form">
 			<ul>
+			
 				<br>
 	        	Proyecto
 	            <select wicket:id="proyecto"/>
@@ -25,7 +29,7 @@
 	        	<textarea wicket:id="nota" rows="6" cols="20"/>
 	
 	            <br>Ticket Bugzilla
-	            <input type="text" wicket:id="ticketBZ"/>
+	            <input type="text" wicket:id="ticketBZ" >
 	            
 	            <br>
 	            Sistema Externo
@@ -38,8 +42,9 @@
 	            
 	      		<br>
 	      		<input wicket:id="submit" value="Confirmar" type="submit">
-	      		
+	      			      		
 	      	</ul>
 		</form>
+</body>
 
 </html>

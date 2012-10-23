@@ -53,6 +53,8 @@ public class LoginPage extends WebPage {
                 @Override
                 protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
                     LoginPage.this.login();
+                    getPageParameters().add("idUsuario", 45);
+                    setResponsePage(FormPage.class);
                     System.out.println("OK");
                 }
 
@@ -62,6 +64,7 @@ public class LoginPage extends WebPage {
                 }
             };
 
+            
             add(userName);
             add(passwd);
             add(submit);

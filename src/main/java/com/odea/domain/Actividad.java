@@ -23,5 +23,11 @@ public class Actividad {
 		this.nombre = nombre;
 	}
 
+	@Override
+	public String toString() {
+		return this.nombre;
+	}
+	
+	
 	
 }
