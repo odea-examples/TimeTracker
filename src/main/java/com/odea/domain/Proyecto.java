@@ -3,7 +3,7 @@ package com.odea.domain;
 import java.io.Serializable;
 
 
-public class Proyecto implements Serializable {
+public class Proyecto {
 	
 	private static final long serialVersionUID = 1L;
 	

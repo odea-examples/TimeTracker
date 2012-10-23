@@ -6,7 +6,6 @@ import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Date;
 
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Service;
 
@@ -22,11 +21,10 @@ public class EntradaDAO extends AbstractDAO {
 	private String sqlEntradas = "SELECT e.id_entrada, e.id_proyecto, e.id_actividad, e.duracion, e.nota, e.id_ticket_bz, e.ticket_ext, e.sistema_ext, e.id_usuario, e.fecha, p.nombre, u.nombre, u.apellido, u.password, a.nombre FROM entrada e, proyecto p, actividad a, usuarios u";
 
 	public void agregarEntrada(Entrada entrada){
-		int pp = jdbcTemplate.update("INSERT INTO entrada (id_proyecto, id_actividad, duracion, nota, id_ticket_bz, ticket_ext, sistema_ext, id_usuario, fecha) VALUES (?,?,?,?,?,?,?,?,?)", 
+		jdbcTemplate.update("INSERT INTO entrada (id_proyecto, id_actividad, duracion, nota, id_ticket_bz, ticket_ext, sistema_ext, id_usuario, fecha) VALUES (?,?,?,?,?,?,?,?,?)", 
 				entrada.getProyecto().getIdProyecto(), entrada.getActividad().getIdActividad(), entrada.getDuracion(), 
 				entrada.getNota(), entrada.getTicketBugZilla(), entrada.getTicketExterno(), entrada.getSistemaExterno(), 1//entrada.getUsuario().getIdUsuario()
 				, "2012-08-23");
-		System.out.println("aver " + pp);
 	}
 	
 	

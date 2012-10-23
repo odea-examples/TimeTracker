@@ -51,34 +51,8 @@ public class FormPage extends WebPage {
 			
 		};
 
-		add(form);
-		
-		/*
-		DropDownChoice<Proyecto> comboProyecto = new DropDownChoice<Proyecto>("proyecto",  proyectoDAO.getProyectos());
-		DropDownChoice<Actividad> comboActividad = new DropDownChoice<Actividad>("actividad", actividadDAO.getActividades());
-		DropDownChoice<SistemaExterno> sistemaExt = new DropDownChoice<SistemaExterno>("sistemaExterno");
-		TextArea<String> nota = new TextArea<String>("nota");
-		TextField<Double> duracion = new TextField<Double>("duracion");
-		TextField<String> ticketBZ = new TextField<String>("ticketBZ");
-		TextField<String> ticketExt = new TextField<String>("ticketExterno");
-		Button submit = new Button("submit");
-		TextField fecha = new TextField("fecha");
-
-		
-		
-		form.add(comboProyecto);
-		form.add(comboActividad);
-		form.add(duracion);
-		form.add(fecha).add(new DateInputBehavior());
-		form.add(nota);
-		form.add(ticketBZ);
-		form.add(sistemaExt);
-		form.add(ticketExt);
-		form.add(submit);
-		
-
-		add(form);
-		*/
+		add(form);	
+	
 	}
 
 	public abstract class EntradaForm extends Form<Entrada> {
