@@ -23,6 +23,20 @@ public class ActividadDAO extends AbstractDAO {
 		return actividades;
 	}
 	
+	// haciendo pruebas
+	
+	public List<Actividad> getActividades()
+	{
+		List<Actividad> actividades = jdbcTemplate.query("SELECT a.id_actividad, a.nombre FROM activdad a", new RowMapper<Actividad>() {
+			@Override
+			public Actividad mapRow(ResultSet rs, int rowNum) throws SQLException {
+				return new Actividad(rs.getInt(1), rs.getString(2));
+			}
+		});
+		actividades.add(new Actividad(4,"string"));
+		return actividades;
+	}
+	
 	
 	
 }
