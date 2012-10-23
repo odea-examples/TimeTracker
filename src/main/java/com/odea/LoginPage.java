@@ -1,7 +1,5 @@
 package com.odea;
 
-import com.odea.services.EncodingService;
-import com.odea.services.LoginService;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.WebPage;
@@ -12,6 +10,9 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+
+import com.odea.services.EncodingService;
+import com.odea.services.LoginService;
 
 
 /**
@@ -53,8 +54,6 @@ public class LoginPage extends WebPage {
                 @Override
                 protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
                     LoginPage.this.login();
-                    getPageParameters().add("idUsuario", 45);
-                    setResponsePage(FormPage.class);
                     System.out.println("OK");
                 }
 

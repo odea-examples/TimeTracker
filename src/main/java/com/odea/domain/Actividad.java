@@ -1,6 +1,11 @@
 package com.odea.domain;
 
-public class Actividad {
+import java.io.Serializable;
+
+public class Actividad implements Serializable {
+	
+
+	
 	private int idActividad;
 	private String nombre;
 	

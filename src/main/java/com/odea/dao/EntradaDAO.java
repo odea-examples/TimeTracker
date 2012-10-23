@@ -25,7 +25,7 @@ public class EntradaDAO extends AbstractDAO {
 		
 		jdbcTemplate.update("INSERT INTO entrada (id_proyecto, id_actividad, duracion, nota, id_ticket_bz, ticket_ext, sistema_ext, id_usuario, fecha) VALUES (?,?,?,?,?,?,?,?,?)", 
 				entrada.getProyecto().getIdProyecto(), entrada.getActividad().getIdActividad(), entrada.getDuracion(), 
-				entrada.getNota(), entrada.getTicketBugZilla(), entrada.getTicketExterno(), entrada.getSistemaExterno(), entrada.getUsuario().getIdUsuario()
+				entrada.getNota(), entrada.getTicketBugZilla(), entrada.getTicketExterno(), entrada.getSistemaExterno(), 1//entrada.getUsuario().getIdUsuario()
 				, "2012-08-23");
 	}
 	

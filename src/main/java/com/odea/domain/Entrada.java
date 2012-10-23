@@ -1,9 +1,12 @@
 package com.odea.domain;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Entrada {
-    private long idEntrada;
+public class Entrada implements Serializable {
+	
+
+	private long idEntrada;
     private Proyecto proyecto;
     private Actividad actividad;
     private double duracion;
