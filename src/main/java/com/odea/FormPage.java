@@ -32,6 +32,7 @@ public class FormPage extends WebPage {
 	private ActividadDAO actividadDAO;
 	@SpringBean
 	private EntradaDAO entradaDAO;
+	
 	private static final long serialVersionUID = 1L;
 	
 
@@ -80,12 +81,6 @@ public class FormPage extends WebPage {
 		*/
 	}
 
-
-	@Override
-	public void renderHead(IHeaderResponse response) {
-            response.render(JavaScriptHeaderItem.forReference(new JQueryResourceReference()));
-	}
-	
 	public abstract class EntradaForm extends Form<Entrada> {
 		IModel<Entrada> entradaModel = new CompoundPropertyModel<Entrada>(new Entrada());
 		
@@ -101,6 +96,9 @@ public class FormPage extends WebPage {
 			TextField<String> ticketExt = new TextField<String>("ticketExterno");
 			
 			AjaxButton submit = new AjaxButton("submit", this) {
+			
+				private static final long serialVersionUID = 1L;
+
 				@Override
 				protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 					EntradaForm.this.onSubmit(target, (EntradaForm)form);
