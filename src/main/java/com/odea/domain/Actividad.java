@@ -2,7 +2,7 @@ package com.odea.domain;
 
 import java.io.Serializable;
 
-public class Actividad {
+public class Actividad implements Serializable {
 	
 
 	

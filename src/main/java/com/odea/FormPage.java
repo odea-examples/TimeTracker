@@ -27,11 +27,11 @@ import com.odea.domain.SistemaExterno;
 public class FormPage extends WebPage {
 	
 	@SpringBean
-	private ProyectoDAO proyectoDAO;
+	private transient ProyectoDAO proyectoDAO;
 	@SpringBean
-	private ActividadDAO actividadDAO;
+	private transient ActividadDAO actividadDAO;
 	@SpringBean
-	private EntradaDAO entradaDAO;
+	private transient EntradaDAO entradaDAO;
 	
 	private static final long serialVersionUID = 1L;
 	
