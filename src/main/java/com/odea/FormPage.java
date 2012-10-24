@@ -1,6 +1,8 @@
 package com.odea;
 
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.form.DropDownChoice;
@@ -14,10 +16,12 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import com.odea.dao.ActividadDAO;
 import com.odea.dao.EntradaDAO;
 import com.odea.dao.ProyectoDAO;
+import com.odea.dao.UsuarioDAO;
 import com.odea.domain.Actividad;
 import com.odea.domain.Entrada;
 import com.odea.domain.Proyecto;
 import com.odea.domain.SistemaExterno;
+import com.odea.domain.Usuario;
 
 
 public class FormPage extends BasePage {
@@ -28,7 +32,10 @@ public class FormPage extends BasePage {
 	private transient ActividadDAO actividadDAO;
 	@SpringBean
 	private transient EntradaDAO entradaDAO;
+	@SpringBean
+	private transient UsuarioDAO usuarioDAO;
 	
+	private Usuario usuario;
 
 	
 	public FormPage() {
@@ -38,7 +45,12 @@ public class FormPage extends BasePage {
 		EntradaForm form = new EntradaForm("form"){
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, EntradaForm form) {
+
+				Subject subject = SecurityUtils.getSubject();
+				usuario = usuarioDAO.getUsuario(subject.getPrincipal().toString());
+				
 				Entrada e = form.getModelObject();
+				e.setUsuario(usuario);
 				FormPage.this.entradaDAO.agregarEntrada(e);
 			}
 			
