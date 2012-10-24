@@ -2,7 +2,6 @@ package com.odea;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
-import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.RequiredTextField;
@@ -20,7 +19,8 @@ import com.odea.services.LoginService;
  * Date: 09/10/12
  * Time: 16:04
  */
-public class LoginPage extends WebPage {
+public class LoginPage extends BasePage {
+	
     private static final long serialVersionUID = 1L;
     @SpringBean
     private LoginService loginService;
