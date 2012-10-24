@@ -24,7 +24,7 @@ import com.odea.domain.Proyecto;
 import com.odea.domain.SistemaExterno;
 
 
-public class FormPage extends WebPage {
+public class FormPage extends BasePage {
 	
 	@SpringBean
 	private transient ProyectoDAO proyectoDAO;

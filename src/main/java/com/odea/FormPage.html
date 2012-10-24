@@ -1,46 +1,40 @@
-<html xmlns:wicket="http://wicket.apache.org">
-
-
-<body>
+<wicket:extend>
 	
 	    <form wicket:id="form">
 			<ul>
 			
-				<br>
-	        	Proyecto
-	            <select wicket:id="proyecto"/>
+<!-- 	para agregar margenes copiar esto desntro del li   style="margin-left:100px" -->
+	        	<li>Proyecto</li>
+	        	<li >
+	            <select wicket:id="proyecto" style="width:300px" />
+				</li>
 				
-				<br>
-	            Actividad
-	            <select wicket:id="actividad"/>
-	
+	            <li>Actividad</li>
+	            <li>
+	            <select wicket:id="actividad" style="width:300px"/>
+				</li>
 
-				<br>
-				Duración
-	            <input type="text" wicket:id="duracion"/>
 				
-				<br>
-		        Nota
-				<br>
-	        	<textarea wicket:id="nota" rows="6" cols="20"/>
+				<li>Duración</li>
+	            <li class="full"> <input type="text" wicket:id="duracion" style="width:300px"/></li>
+				
+				
+		        <li>Nota</li>
+	        	<li class="full"> <textarea wicket:id="nota" rows="10" cols="40" scrolling="yes"  /></li>
 	
-	            <br>Ticket Bugzilla
-	            <input type="text" wicket:id="ticketBZ" >
+	            <li>Ticket Bugzilla</li>
+	            <li class="full"> <input type="text" wicket:id="ticketBZ" style="width:300px" ></li>
 	            
-	            <br>
-	            Sistema Externo
-	            <select wicket:id="sistemaExterno"/>
+	            <li>Sistema Externo</li>
+	            <li class="full"> <select wicket:id="sistemaExterno" style="width:300px"/></li>
 	            
-	            <br>
-	            ID Ticket Externo
-	            <input type="text" wicket:id="ticketExterno"/>
+	            <li>ID Ticket Externo</li>
+	            <li class="full"> <input  type="text" wicket:id="ticketExterno" style="width:300px"/></li>
 	            
 	            
-	      		<br>
-	      		<input wicket:id="submit" value="Confirmar" type="submit">
+	      		
+	      		<li><input wicket:id="submit" value="Confirmar" type="submit"></li>
 	      			      		
 	      	</ul>
 		</form>
-</body>
-
-</html>
+</wicket:extend>
