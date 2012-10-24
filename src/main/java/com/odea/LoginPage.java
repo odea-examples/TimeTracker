@@ -55,7 +55,8 @@ public class LoginPage extends WebPage {
                 protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
                     LoginPage.this.login();
                     System.out.println("OK");
-                }
+                    setResponsePage(FormPage.class);
+                    }
 
                 @Override
                 protected void onError(AjaxRequestTarget target, Form<?> form) {
