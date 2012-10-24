@@ -25,7 +25,7 @@ public class ActividadDAO extends AbstractDAO {
 		return actividades;
 	}
 	
-	// haciendo pruebas
+	
 	
 	public List<Actividad> getActividades()
 	{
@@ -35,7 +35,7 @@ public class ActividadDAO extends AbstractDAO {
 				return new Actividad(rs.getInt(1), rs.getString(2));
 			}
 		});
-		actividades.add(new Actividad(4,"string"));
+		
 		return actividades;
 	}
 	

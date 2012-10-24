@@ -3,9 +3,6 @@ package com.odea;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
-import org.apache.wicket.markup.head.IHeaderResponse;
-import org.apache.wicket.markup.head.JavaScriptHeaderItem;
-import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextArea;
@@ -14,7 +11,6 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.jquery.JQueryResourceReference;
 import com.odea.dao.ActividadDAO;
 import com.odea.dao.EntradaDAO;
 import com.odea.dao.ProyectoDAO;
@@ -33,10 +29,7 @@ public class FormPage extends BasePage {
 	@SpringBean
 	private transient EntradaDAO entradaDAO;
 	
-	private static final long serialVersionUID = 1L;
-	
 
-	
 	
 	public FormPage() {
 		
