@@ -14,10 +14,10 @@ public class ProyectoDAO extends AbstractDAO {
 	
 	public List<Proyecto> getProyectos()
 	{
-		List<Proyecto> proyectos = jdbcTemplate.query("SELECT * FROM proyecto", new RowMapper<Proyecto>() {
+		List<Proyecto> proyectos = jdbcTemplate.query("SELECT * FROM projects", new RowMapper<Proyecto>() {
 			@Override
 			public Proyecto mapRow(ResultSet rs, int rowNum) throws SQLException {
-				return new Proyecto(rs.getInt(1), rs.getString(2));
+				return new Proyecto(rs.getInt(1), rs.getString(3));
 			}
 		});
 		

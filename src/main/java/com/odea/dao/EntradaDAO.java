@@ -6,6 +6,7 @@ import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Date;
 
+import org.joda.time.LocalDate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Service;
 
@@ -18,13 +19,18 @@ import com.odea.domain.Usuario;
 public class EntradaDAO extends AbstractDAO {
 	
 	
-	private String sqlEntradas = "SELECT e.id_entrada, e.id_proyecto, e.id_actividad, e.duracion, e.nota, e.id_ticket_bz, e.ticket_ext, e.sistema_ext, e.id_usuario, e.fecha, p.nombre, u.nombre, u.apellido, u.password, a.nombre FROM entrada e, proyecto p, actividad a, usuarios u";
+	private String sqlEntradas = "SELECT e.al_project_id, e.al_activity_id , e.al_duration, e.al_comment, e.ticket_bz, e.ite_id, e.issue_tracker_externo, e.al_user_id, e.al_date, p.p_name , u.u_name, u.u_password, a.a_name FROM activity_log e, projects p, activities a, users u";
 
 	public void agregarEntrada(Entrada entrada){
-		jdbcTemplate.update("INSERT INTO entrada (id_proyecto, id_actividad, duracion, nota, id_ticket_bz, ticket_ext, sistema_ext, id_usuario, fecha) VALUES (?,?,?,?,?,?,?,?,?)", 
+		LocalDate now = new LocalDate();
+		Timestamp now2 = new Timestamp(now.toDate().getTime());
+		
+		jdbcTemplate.update("INSERT INTO activity_log (al_project_id, al_activity_id, al_duration, al_comment, ticket_bz, issue_tracker_externo, ite_id, al_user_id, al_date) VALUES (?,?,?,?,?,?,?,?,?)", 
 				entrada.getProyecto().getIdProyecto(), entrada.getActividad().getIdActividad(), entrada.getDuracion(), 
-				entrada.getNota(), entrada.getTicketBugZilla(), entrada.getTicketExterno(), entrada.getSistemaExterno(), 1//entrada.getUsuario().getIdUsuario()
-				, "2012-08-23");
+				entrada.getNota(), entrada.getTicketBZ(), 
+				entrada.getTicketExterno(), entrada.getSistemaExterno(), 1//entrada.getUsuario().getIdUsuario()
+				, now2);
+		
 	}
 	
 	
@@ -33,7 +39,7 @@ public class EntradaDAO extends AbstractDAO {
 		Timestamp desdeSQL = new Timestamp(desde.getTime());
 		Timestamp hastaSQL = new Timestamp(hasta.getTime());
 		
-		Collection<Entrada> entradas = jdbcTemplate.query(sqlEntradas +" WHERE e.id_usuario = " + usuario.getIdUsuario() + " AND e.id_proyecto = p.id_proyecto AND e.id_actividad = a.id_actividad AND e.id_usuario = u.id_usuario AND e.fecha BETWEEN '"+ desdeSQL +"' AND '"+ hastaSQL +"'", new RowMapperEntradas());
+		Collection<Entrada> entradas = jdbcTemplate.query(sqlEntradas +" WHERE e.al_user_id = " + usuario.getIdUsuario() + " AND e.al_project_id = p.p_id AND e.al_activity_id = a.a_id AND e.al_user_id = u.u_id AND e.al_date BETWEEN '"+ desdeSQL +"' AND '"+ hastaSQL +"'", new RowMapperEntradas());
 		
 		return entradas;
 	}
@@ -51,7 +57,7 @@ public class EntradaDAO extends AbstractDAO {
 		Timestamp desdeSQL = new Timestamp(desde.getTime());
 		Timestamp hastaSQL = new Timestamp(hasta.getTime());
 		
-		Collection<Entrada> entradas = jdbcTemplate.query(sqlEntradas + " WHERE e.id_usuario = u.id_usuario AND e.id_proyecto = p.id_proyecto AND e.id_actividad = a.id_actividad AND e.fecha BETWEEN '"+ desdeSQL +"' AND '"+ hastaSQL +"'", new RowMapperEntradas());
+		Collection<Entrada> entradas = jdbcTemplate.query(sqlEntradas + " WHERE e.al_user_id = u.u_id AND e.al_project_id = p.p_id AND e.al_activity_id = a.a_id AND e.al_date BETWEEN '"+ desdeSQL +"' AND '"+ hastaSQL +"'", new RowMapperEntradas());
 		 
 		return entradas;
 	}
@@ -60,7 +66,7 @@ public class EntradaDAO extends AbstractDAO {
 		Timestamp desdeSQL = new Timestamp(desde.getTime());
 		Timestamp hastaSQL = new Timestamp(hasta.getTime());
 		
-		Collection<Entrada> entradas = jdbcTemplate.query(sqlEntradas + " WHERE e.id_usuario = u.id_usuario AND e.id_proyecto = " + proyecto.getIdProyecto() + " AND e.id_actividad = a.id_actividad AND e.id_proyecto = p.id_proyecto AND e.fecha BETWEEN '"+ desdeSQL +"' AND '"+ hastaSQL +"'", new RowMapperEntradas());
+		Collection<Entrada> entradas = jdbcTemplate.query(sqlEntradas + " WHERE e.al_user_id = u.u_id AND e.al_project_id = " + proyecto.getIdProyecto() + " AND e.al_activity_id = a.a_id AND e.al_project_id = p.p_id AND e.al_date BETWEEN '"+ desdeSQL +"' AND '"+ hastaSQL +"'", new RowMapperEntradas());
 		
 		return entradas;
 	}
@@ -75,7 +81,7 @@ public class EntradaDAO extends AbstractDAO {
 			Actividad actividad = new Actividad(rs.getInt(2), rs.getString(15));
 			Usuario usuario = new Usuario(rs.getInt(9), rs.getString(12), rs.getString(13), rs.getString(14));
 			
-			return new Entrada(rs.getLong(1), proyecto, actividad, rs.getDouble(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8), usuario, rs.getDate(10));
+			return new Entrada(rs.getLong(1), proyecto, actividad, rs.getDouble(4), rs.getString(5), rs.getInt(6), rs.getString(7), rs.getString(8), usuario, rs.getDate(10));
 		}
 		
 	}

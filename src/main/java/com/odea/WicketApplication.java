@@ -9,9 +9,9 @@ public class WicketApplication extends WebApplication
 	 * @see org.apache.wicket.Application#getHomePage()
 	 */
 	@Override
-	public Class<HomePage> getHomePage()
+	public Class<LoginPage> getHomePage()
 	{
-		return HomePage.class;
+		return LoginPage.class;
 	}
 
 	/**
@@ -23,6 +23,7 @@ public class WicketApplication extends WebApplication
 		super.init();
         mountPage("login",LoginPage.class);
         mountPage("formulario", FormPage.class);
+
         getComponentInstantiationListeners().add(new SpringComponentInjector(this));
         
 	}

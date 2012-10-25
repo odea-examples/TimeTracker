@@ -3,6 +3,7 @@ package com.odea.domain;
 import java.io.Serializable;
 import java.util.Date;
 
+
 public class Entrada implements Serializable {
 	
 
@@ -11,7 +12,7 @@ public class Entrada implements Serializable {
     private Actividad actividad;
     private double duracion;
     private String nota;
-    private String ticketBZ;
+    private int ticketBZ;
     private String ticketExterno;
     private String sistemaExterno;
     private Usuario usuario;
@@ -19,7 +20,7 @@ public class Entrada implements Serializable {
     
     public Entrada(){}
     
-    public Entrada(long idEntrada, Proyecto proyecto, Actividad actividad, double duracion, String nota, String ticketBugZilla, String ticketExterno, String sistemaExterno, Usuario usuario, Date fecha) {
+    public Entrada(long idEntrada, Proyecto proyecto, Actividad actividad, double duracion, String nota, int ticketBugZilla, String ticketExterno, String sistemaExterno, Usuario usuario, Date fecha) {
         this.idEntrada = idEntrada;
         this.proyecto = proyecto;
         this.actividad = actividad;
@@ -72,12 +73,13 @@ public class Entrada implements Serializable {
 		this.nota = nota;
 	}
 
-	public String getTicketBugZilla() {
+
+	public int getTicketBZ() {
 		return ticketBZ;
 	}
 
-	public void setTicketBugZilla(String ticketBugZilla) {
-		this.ticketBZ = ticketBugZilla;
+	public void setTicketBZ(int ticketBZ) {
+		this.ticketBZ = ticketBZ;
 	}
 
 	public String getTicketExterno() {

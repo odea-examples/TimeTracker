@@ -1,12 +1,16 @@
-<html>
-<body>
-<h1>Login</h1>
+<wicket:extend>
 
-<form wicket:id="loginForm">
-    <input type="text" wicket:id="userName"/>
-    <input type="password" wicket:id="passwd"/>
-    <input type="submit" wicket:id="submit">
-</form>
+	<ul>
+		<h1>Login</h1>
+		
+		<form wicket:id="loginForm">
+		    Usuario:<input type="text" wicket:id="userName"/>
+		    <br>
+		    Password:<input type="password" wicket:id="passwd"/>
+		    <br>
+		    <input type="submit" wicket:id="submit" style="width:200px">
+		</form>
+		
+	</ul>
 
-</body>
-</html>
+</wicket:extend>

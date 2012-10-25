@@ -14,7 +14,7 @@ public class LoginTest extends AbstractTestCase {
     LoginService loginService;
     @Autowired
     EncodingService encodingService;
-
+/*
     @Test
     public void loginTest() {
 
@@ -23,7 +23,7 @@ public class LoginTest extends AbstractTestCase {
         //assertTrue(loginService.login("Pablo", "bjkbvhjn"));
 
     }
-
+*/
     @Test
     public void hashTest() {
         String plain1 = "prueba";
