@@ -1,8 +1,8 @@
 package com.odea;
 
 
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.subject.Subject;
+import java.util.ArrayList;
+
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.form.DropDownChoice;
@@ -20,7 +20,6 @@ import com.odea.dao.UsuarioDAO;
 import com.odea.domain.Actividad;
 import com.odea.domain.Entrada;
 import com.odea.domain.Proyecto;
-import com.odea.domain.SistemaExterno;
 import com.odea.domain.Usuario;
 
 
@@ -47,11 +46,11 @@ public class FormPage extends BasePage {
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, EntradaForm form) {
 
-				Subject subject = SecurityUtils.getSubject();
-				usuario = usuarioDAO.getUsuario(subject.getPrincipal().toString());
+				//Subject subject = SecurityUtils.getSubject();
+				//usuario = usuarioDAO.getUsuario(subject.getPrincipal().toString());
 				
 				Entrada e = form.getModelObject();
-				e.setUsuario(usuario);
+				//e.setUsuario(usuario);
 				FormPage.this.entradaDAO.agregarEntrada(e);
 			}
 			
@@ -83,7 +82,11 @@ public class FormPage extends BasePage {
 				
 			};
 			
-			DropDownChoice<SistemaExterno> sistemaExt = new DropDownChoice<SistemaExterno>("sistemaExterno");
+			ArrayList<String> sistExt = new ArrayList<String>();
+			sistExt.add("1");
+			sistExt.add("2");
+			
+			DropDownChoice<String> sistemaExt = new DropDownChoice<String>("sistemaExterno", sistExt);
 			TextArea<String> nota = new TextArea<String>("nota");
 			TextField<Double> duracion = new TextField<Double>("duracion");
 			TextField<String> ticketBZ = new TextField<String>("ticketBZ");

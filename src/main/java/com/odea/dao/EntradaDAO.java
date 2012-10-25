@@ -19,7 +19,7 @@ import com.odea.domain.Usuario;
 public class EntradaDAO extends AbstractDAO {
 	
 	
-	private String sqlEntradas = "SELECT //no tiene(e.id_entrada), e.al_project_id, e.al_activity_id , e.al_duration, e.al_comment, e.ticket_bz, e.ite_id, e.issue_tracker_externo, e.al_user_id, e.al_date, p.p_name , u.u_name , //no tiene(u.apellido), u.u_password, a.a_name FROM activity_log e, projects p, activities a, users u";
+	private String sqlEntradas = "SELECT e.al_project_id, e.al_activity_id , e.al_duration, e.al_comment, e.ticket_bz, e.ite_id, e.issue_tracker_externo, e.al_user_id, e.al_date, p.p_name , u.u_name, u.u_password, a.a_name FROM activity_log e, projects p, activities a, users u";
 
 	public void agregarEntrada(Entrada entrada){
 		LocalDate now = new LocalDate();
@@ -27,8 +27,10 @@ public class EntradaDAO extends AbstractDAO {
 		
 		jdbcTemplate.update("INSERT INTO activity_log (al_project_id, al_activity_id, al_duration, al_comment, ticket_bz, issue_tracker_externo, ite_id, al_user_id, al_date) VALUES (?,?,?,?,?,?,?,?,?)", 
 				entrada.getProyecto().getIdProyecto(), entrada.getActividad().getIdActividad(), entrada.getDuracion(), 
-				entrada.getNota(), entrada.getTicketBugZilla(), entrada.getTicketExterno(), entrada.getSistemaExterno(), 1//entrada.getUsuario().getIdUsuario()
-				, now.toString());//aca se le podria cambiar esto por now2 que es el tipo con el que trabaja la db(no probe si es necesario)
+				entrada.getNota(), entrada.getTicketBZ(), 
+				entrada.getTicketExterno(), entrada.getSistemaExterno(), 1//entrada.getUsuario().getIdUsuario()
+				, now2);
+		
 	}
 	
 	
@@ -79,7 +81,7 @@ public class EntradaDAO extends AbstractDAO {
 			Actividad actividad = new Actividad(rs.getInt(2), rs.getString(15));
 			Usuario usuario = new Usuario(rs.getInt(9), rs.getString(12), rs.getString(13), rs.getString(14));
 			
-			return new Entrada(rs.getLong(1), proyecto, actividad, rs.getDouble(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8), usuario, rs.getDate(10));
+			return new Entrada(rs.getLong(1), proyecto, actividad, rs.getDouble(4), rs.getString(5), rs.getInt(6), rs.getString(7), rs.getString(8), usuario, rs.getDate(10));
 		}
 		
 	}
