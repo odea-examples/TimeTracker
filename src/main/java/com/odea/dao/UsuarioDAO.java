@@ -16,7 +16,7 @@ import com.odea.domain.Usuario;
 public class UsuarioDAO extends AbstractDAO {
 	
 	public Usuario getUsuario(String nombre){
-		Usuario usuario = jdbcTemplate.queryForObject("SELECT * FROM usuarios WHERE nombre='" + nombre + "'", new RowMapper<Usuario>(){
+		Usuario usuario = jdbcTemplate.queryForObject("SELECT * FROM users WHERE u_name='" + nombre + "'", new RowMapper<Usuario>(){
 				@Override
 				public Usuario mapRow(ResultSet rs, int rowNum) throws SQLException {
 					return new Usuario(rs.getInt(1),rs.getString(2),rs.getString(3), rs.getString(4));
@@ -25,7 +25,7 @@ public class UsuarioDAO extends AbstractDAO {
 		return usuario;
 	}
 	
-	
+	// este no se va a usar, el usuario esta solo en el name
 	public Usuario getUsuario(Usuario user){
 		Usuario usuario = jdbcTemplate.queryForObject("SELECT * FROM usuarios WHERE nombre='" + user.getNombre() + "' AND apellido='" + user.getApellido() + "'", new RowMapper<Usuario>(){
 				@Override
@@ -40,11 +40,11 @@ public class UsuarioDAO extends AbstractDAO {
 	
 	public void agregarUsuario(Usuario usuario){
 		
-		jdbcTemplate.update("INSERT INTO usuarios VALUES (?,?,?,?)", usuario.getIdUsuario(), usuario.getNombre(), usuario.getApellido(), usuario.getPassword());
+		jdbcTemplate.update("INSERT INTO users VALUES (?,?,?,?)", usuario.getIdUsuario(), usuario.getNombre(), usuario.getApellido(), usuario.getPassword());
 	}
 	
 	public Collection<Usuario> getUsuarios(Proyecto proyecto){
-		Collection<Usuario> usuarios = jdbcTemplate.query("SELECT u.id_usuario, u.nombre, u.apellido, u.password FROM usuarios u, proyecto_usuario up WHERE u.id_usuario=up.id_usuario AND up.id_proyecto='" + proyecto.getIdProyecto() + "'", new RowMapper<Usuario>() {
+		Collection<Usuario> usuarios = jdbcTemplate.query("SELECT u.u_id, u.u_name, //(no tiene)u.apellido, u.u_password FROM users u, user_bind up WHERE u.u_id=up.ub_id_u AND up.ub_id_p='" + proyecto.getIdProyecto() + "'", new RowMapper<Usuario>() {
 			
 			@Override
 			public Usuario mapRow(ResultSet rs, int rowNum) throws SQLException {
