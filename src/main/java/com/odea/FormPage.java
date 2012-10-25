@@ -2,8 +2,10 @@ package com.odea;
 
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
@@ -13,6 +15,7 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import com.odea.components.datepicker.DatePickerBehavior;
 import com.odea.dao.ActividadDAO;
 import com.odea.dao.EntradaDAO;
 import com.odea.dao.ProyectoDAO;
@@ -35,7 +38,7 @@ public class FormPage extends BasePage {
 	private transient UsuarioDAO usuarioDAO;
 	
 	private Usuario usuario;
-	private DropDownChoice<Actividad> comboActividad;
+	//private DropDownChoice<Actividad> comboActividad;
 
 	
 	public FormPage() {
@@ -62,25 +65,26 @@ public class FormPage extends BasePage {
 
 	public abstract class EntradaForm extends Form<Entrada> {
 		IModel<Entrada> entradaModel = new CompoundPropertyModel<Entrada>(new Entrada());
+		DropDownChoice<Actividad> comboActividad;
+		DropDownChoice<Proyecto> comboProyecto; 	
+		
 		
 		public EntradaForm(String id) {
 			super(id);
 			this.setDefaultModel(this.entradaModel);
 			
-			comboActividad = new DropDownChoice<Actividad>("actividad");
-
-			DropDownChoice<Proyecto> comboProyecto = new DropDownChoice<Proyecto>("proyecto",  proyectoDAO.getProyectos()){
-				
-				protected boolean wantOnSelectionChangedNotifications() {
-                    return true;
-				}
-            
+			 this.comboActividad = new DropDownChoice<Actividad>("actividad");
+			 this.comboActividad.setOutputMarkupId(true);
+			 this.comboProyecto = new DropDownChoice<Proyecto>("proyecto",  proyectoDAO.getProyectos());
+			 this.comboProyecto.setOutputMarkupId(true);	
+			
+			this.comboProyecto.add(new AjaxFormComponentUpdatingBehavior("onchange"){
 				@Override
-            	protected void onSelectionChanged(final Proyecto newSelection) {
-                    comboActividad.setChoices(actividadDAO.getActividades(newSelection));
+				protected void onUpdate(AjaxRequestTarget target) {
+					EntradaForm.this.comboActividad.setChoices(actividadDAO.getActividades(EntradaForm.this.comboProyecto.getModelObject()));
+					target.add(EntradaForm.this.comboActividad);
 				}
-				
-			};
+			});
 			
 			ArrayList<String> sistExt = new ArrayList<String>();
 			sistExt.add("1");
@@ -91,6 +95,9 @@ public class FormPage extends BasePage {
 			TextField<Double> duracion = new TextField<Double>("duracion");
 			TextField<String> ticketBZ = new TextField<String>("ticketBZ");
 			TextField<String> ticketExt = new TextField<String>("ticketExterno");
+			TextField<Date> fecha = new TextField<Date>("fecha");
+			fecha.setOutputMarkupId(true);
+			fecha.add(new DatePickerBehavior(fecha.getMarkupId()));
 			
 			
 			AjaxButton submit = new AjaxButton("submit", this) {
@@ -112,6 +119,7 @@ public class FormPage extends BasePage {
 			add(comboProyecto);
 			add(comboActividad);
 			add(duracion);
+			add(fecha);
 			add(nota);
 			add(ticketBZ);
 			add(sistemaExt);
