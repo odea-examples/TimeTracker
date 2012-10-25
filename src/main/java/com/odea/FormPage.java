@@ -36,6 +36,7 @@ public class FormPage extends BasePage {
 	private transient UsuarioDAO usuarioDAO;
 	
 	private Usuario usuario;
+	private DropDownChoice<Actividad> comboActividad;
 
 	
 	public FormPage() {
@@ -66,13 +67,28 @@ public class FormPage extends BasePage {
 		public EntradaForm(String id) {
 			super(id);
 			this.setDefaultModel(this.entradaModel);
-			DropDownChoice<Proyecto> comboProyecto = new DropDownChoice<Proyecto>("proyecto",  proyectoDAO.getProyectos());
-			DropDownChoice<Actividad> comboActividad = new DropDownChoice<Actividad>("actividad", actividadDAO.getActividades());
+			
+			comboActividad = new DropDownChoice<Actividad>("actividad");
+
+			DropDownChoice<Proyecto> comboProyecto = new DropDownChoice<Proyecto>("proyecto",  proyectoDAO.getProyectos()){
+				
+				protected boolean wantOnSelectionChangedNotifications() {
+                    return true;
+				}
+            
+				@Override
+            	protected void onSelectionChanged(final Proyecto newSelection) {
+                    comboActividad.setChoices(actividadDAO.getActividades(newSelection));
+				}
+				
+			};
+			
 			DropDownChoice<SistemaExterno> sistemaExt = new DropDownChoice<SistemaExterno>("sistemaExterno");
 			TextArea<String> nota = new TextArea<String>("nota");
 			TextField<Double> duracion = new TextField<Double>("duracion");
 			TextField<String> ticketBZ = new TextField<String>("ticketBZ");
 			TextField<String> ticketExt = new TextField<String>("ticketExterno");
+			
 			
 			AjaxButton submit = new AjaxButton("submit", this) {
 			
