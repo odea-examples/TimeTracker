@@ -17,7 +17,7 @@ public class UsuarioDAOTest extends AbstractTestCase {
 	
 	@Test
 	public void getUsuarioTest() {
-		Usuario usuario = new Usuario(356,"Sebastian", "miPassword");
+		Usuario usuario = new Usuario(1,"Sebastian", "miPassword");
 		dao.agregarUsuario(usuario);
 		
 //		try {

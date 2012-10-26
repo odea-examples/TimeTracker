@@ -38,7 +38,7 @@ public class FormPage extends BasePage {
 	private transient UsuarioDAO usuarioDAO;
 	
 	private Usuario usuario;
-	//private DropDownChoice<Actividad> comboActividad;
+
 
 	
 	public FormPage() {
@@ -51,7 +51,6 @@ public class FormPage extends BasePage {
 
 				//Subject subject = SecurityUtils.getSubject();
 				//usuario = usuarioDAO.getUsuario(subject.getPrincipal().toString());
-				
 				Entrada e = form.getModelObject();
 				//e.setUsuario(usuario);
 				FormPage.this.entradaDAO.agregarEntrada(e);
@@ -73,10 +72,10 @@ public class FormPage extends BasePage {
 			super(id);
 			this.setDefaultModel(this.entradaModel);
 			
-			 this.comboActividad = new DropDownChoice<Actividad>("actividad");
-			 this.comboActividad.setOutputMarkupId(true);
-			 this.comboProyecto = new DropDownChoice<Proyecto>("proyecto",  proyectoDAO.getProyectos());
-			 this.comboProyecto.setOutputMarkupId(true);	
+			this.comboActividad = new DropDownChoice<Actividad>("actividad");
+			this.comboActividad.setOutputMarkupId(true);
+			this.comboProyecto = new DropDownChoice<Proyecto>("proyecto",  proyectoDAO.getProyectos());
+			this.comboProyecto.setOutputMarkupId(true);	
 			
 			this.comboProyecto.add(new AjaxFormComponentUpdatingBehavior("onchange"){
 				@Override
@@ -106,6 +105,7 @@ public class FormPage extends BasePage {
 
 				@Override
 				protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+					System.out.println("llegue A");
 					EntradaForm.this.onSubmit(target, (EntradaForm)form);
 				}
 
@@ -126,6 +126,7 @@ public class FormPage extends BasePage {
 			add(ticketExt);
 			add(submit);
 			this.setOutputMarkupId(true);
+
 		}
 
 		protected abstract void onSubmit(AjaxRequestTarget target, EntradaForm form);

@@ -19,14 +19,14 @@ import com.odea.domain.Usuario;
 public class EntradaDAO extends AbstractDAO {
 	
 	
-	private String sqlEntradas = "SELECT e.al_project_id, e.al_activity_id , e.al_duration, e.al_comment, e.ticket_bz, e.ite_id, e.issue_tracker_externo, e.al_user_id, e.al_date, p.p_name , u.u_name, u.u_password, a.a_name FROM activity_log e, projects p, activities a, users u";
+	private String sqlEntradas = "SELECT e.al_project_id, e.al_activity_id, e.al_duration, e.al_comment, e.ticket_bz, e.ite_id, e.issue_tracker_externo, e.al_user_id, e.al_date, p.p_name , u.u_name, u.u_password, a.a_name FROM activity_log e, projects p, activities a, users u";
 
 	public void agregarEntrada(Entrada entrada){
 
 		jdbcTemplate.update("INSERT INTO activity_log (al_project_id, al_activity_id, al_duration, al_comment, ticket_bz, issue_tracker_externo, ite_id, al_user_id, al_date) VALUES (?,?,?,?,?,?,?,?,?)", 
 				entrada.getProyecto().getIdProyecto(), entrada.getActividad().getIdActividad(), entrada.getDuracion(), 
 				entrada.getNota(), entrada.getTicketBZ(), 
-				entrada.getTicketExterno(), entrada.getSistemaExterno(), 356//entrada.getUsuario().getIdUsuario()
+				entrada.getTicketExterno(), entrada.getSistemaExterno(), 1//entrada.getUsuario().getIdUsuario()
 				, entrada.getFecha());
 		
 	}
@@ -45,14 +45,7 @@ public class EntradaDAO extends AbstractDAO {
 	public Time totalHorasSemana(Collection<Entrada> entradas){
 		Time suma = new Time(0);
 		for (Entrada entrada : entradas) {
-			System.out.println(suma);
-			System.out.println(suma);
-			System.out.println(suma);
-			System.out.println(suma);
-			System.out.println(suma);
-			System.out.println(suma);
-			System.out.println(suma);
-			suma=new Time(suma.getTime()+entrada.getDuracion().getTime());
+//			suma=new Time(suma.getTime()+entrada.getDuracion().getTime());
 		}
 		return suma;
 	}
@@ -86,7 +79,7 @@ public class EntradaDAO extends AbstractDAO {
 			Actividad actividad = new Actividad(rs.getInt(2), rs.getString(13));
 			Usuario usuario = new Usuario(rs.getInt(8), rs.getString(11), rs.getString(12));
 			
-			return new Entrada(1, proyecto, actividad, rs.getTime(3), rs.getString(4), rs.getInt(5), rs.getString(6), rs.getString(7), usuario, rs.getDate(9));
+			return new Entrada(1, proyecto, actividad, rs.getTime(3).getTime(), rs.getString(4), rs.getInt(5), rs.getString(6), rs.getString(7), usuario, rs.getDate(9));
 		}
 		
 	}

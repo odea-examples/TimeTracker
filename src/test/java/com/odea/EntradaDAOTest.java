@@ -26,6 +26,7 @@ public class EntradaDAOTest extends AbstractTestCase {
 	private Proyecto proyecto;
 	private Usuario usuario;
 	private Actividad actividad;
+	private Entrada entrada;
 
 	
 	@Override
@@ -49,9 +50,10 @@ public class EntradaDAOTest extends AbstractTestCase {
 		Date fecha2 = new Date(System.currentTimeMillis()+900000000);
 		Proyecto proyecto2 = new Proyecto(2,"otroProyecto");
 		Usuario usuario2 = new Usuario(2, "unNombre", "algunPassword");
-		Time duracion= new Time(3666000);
+		double duracion = 3;
 		
-		dao.agregarEntrada(new Entrada(1, proyecto, actividad, duracion, "Nota", ticketBZ, ticketExt, sistemaExt, usuario, fecha));
+		entrada = new Entrada(1, proyecto, actividad, duracion, "Nota", ticketBZ, ticketExt, sistemaExt, usuario, fecha);
+		
 //		dao.agregarEntrada(new Entrada(2, proyecto, actividad, duracion, "Nota", ticketBZ, ticketExt, sistemaExt, usuario2, fecha2));
 //		dao.agregarEntrada(new Entrada(3, proyecto2, actividad, duracion, "Nota", ticketBZ, ticketExt, sistemaExt, usuario, fechaExterna));
 		
@@ -59,6 +61,7 @@ public class EntradaDAOTest extends AbstractTestCase {
 
 	@Test
 	public void getEntradasTest(){
+		dao.agregarEntrada(entrada);
 		Collection<Entrada> col = dao.getEntradas(antes, despues);
 		Assert.assertNotNull("La cantidad de entradas encontradas no es la esperada", col);
 	}
