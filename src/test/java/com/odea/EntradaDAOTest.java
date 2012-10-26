@@ -1,5 +1,6 @@
 package com.odea;
 
+import java.sql.Time;
 import java.util.Collection;
 import java.util.Date;
 
@@ -32,24 +33,26 @@ public class EntradaDAOTest extends AbstractTestCase {
 		super.setUp();
 		
 		proyecto = new Proyecto(1, "Proyecto 1");
-		usuario = new Usuario(1, "Nombre", "Apellido", "mi contraseña");
+		usuario = new Usuario(356, "Test", "mi contraseña");
 		actividad = new Actividad(1,"Actividad 1");
 		
 		antes = new Date(System.currentTimeMillis() - 1000000000);
 		despues = new Date(System.currentTimeMillis() + 1000000000);
 		fechaExterna = new Date(System.currentTimeMillis() + 2000000000);
 		
-		String ticketBZ = "1";
+		int ticketBZ = 1;
 		String ticketExt = "1";
 		String sistemaExt = "1";
 		
 		Date fecha = new Date(System.currentTimeMillis());
+		Date fecha2 = new Date(System.currentTimeMillis()+900000000);
 		Proyecto proyecto2 = new Proyecto(2,"otroProyecto");
-		Usuario usuario2 = new Usuario(2, "unNombre", "unApellido", "algunPassword");
+		Usuario usuario2 = new Usuario(2, "unNombre", "algunPassword");
+		Time duracion= new Time(3666000);
 		
-		dao.agregarEntrada(new Entrada(1, proyecto, actividad, 2387, "Nota", ticketBZ, ticketExt, sistemaExt, usuario, fecha));
-		dao.agregarEntrada(new Entrada(2, proyecto, actividad, 2387, "Nota", ticketBZ, ticketExt, sistemaExt, usuario2, fecha));
-		dao.agregarEntrada(new Entrada(3, proyecto2, actividad, 2387, "Nota", ticketBZ, ticketExt, sistemaExt, usuario, fechaExterna));
+		dao.agregarEntrada(new Entrada(1, proyecto, actividad, duracion, "Nota", ticketBZ, ticketExt, sistemaExt, usuario, fecha));
+//		dao.agregarEntrada(new Entrada(2, proyecto, actividad, duracion, "Nota", ticketBZ, ticketExt, sistemaExt, usuario2, fecha2));
+//		dao.agregarEntrada(new Entrada(3, proyecto2, actividad, duracion, "Nota", ticketBZ, ticketExt, sistemaExt, usuario, fechaExterna));
 		
 	}
 
@@ -76,8 +79,9 @@ public class EntradaDAOTest extends AbstractTestCase {
 	public void getTotalHorasTest(){
 		Collection<Entrada> col;
 		col = dao.getEntradas(usuario, antes, despues);
-		int numero = dao.totalHorasSemana(col);
-		Assert.assertTrue("La cantidad de horas es incorrecta", numero != 0);
+		Time numero = dao.totalHorasSemana(col);
+		System.out.println("llego hasta aca"+numero.getTime());
+		Assert.assertTrue("La cantidad de horas es incorrecta", numero.getTime()==0);
 	}
 
 

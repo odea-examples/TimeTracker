@@ -2,6 +2,7 @@ package com.odea.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Date;
@@ -41,10 +42,17 @@ public class EntradaDAO extends AbstractDAO {
 		return entradas;
 	}
 	
-	public int totalHorasSemana(Collection<Entrada> entradas){
-		int suma = 0;
+	public Time totalHorasSemana(Collection<Entrada> entradas){
+		Time suma = new Time(0);
 		for (Entrada entrada : entradas) {
-			suma += entrada.getDuracion();
+			System.out.println(suma);
+			System.out.println(suma);
+			System.out.println(suma);
+			System.out.println(suma);
+			System.out.println(suma);
+			System.out.println(suma);
+			System.out.println(suma);
+			suma=new Time(suma.getTime()+entrada.getDuracion().getTime());
 		}
 		return suma;
 	}
@@ -74,11 +82,11 @@ public class EntradaDAO extends AbstractDAO {
 		@Override
 		public Entrada mapRow(ResultSet rs, int rowNum) throws SQLException {
 			
-			Proyecto proyecto = new Proyecto(rs.getInt(1), rs.getString(11));
-			Actividad actividad = new Actividad(rs.getInt(2), rs.getString(15));
-			Usuario usuario = new Usuario(rs.getInt(9), rs.getString(12), rs.getString(13), rs.getString(14));
+			Proyecto proyecto = new Proyecto(rs.getInt(1), rs.getString(10));
+			Actividad actividad = new Actividad(rs.getInt(2), rs.getString(13));
+			Usuario usuario = new Usuario(rs.getInt(8), rs.getString(11), rs.getString(12));
 			
-			return new Entrada(rs.getLong(1), proyecto, actividad, rs.getDouble(4), rs.getString(5), rs.getInt(6), rs.getString(7), rs.getString(8), usuario, rs.getDate(10));
+			return new Entrada(1, proyecto, actividad, rs.getTime(3), rs.getString(4), rs.getInt(5), rs.getString(6), rs.getString(7), usuario, rs.getDate(9));
 		}
 		
 	}

@@ -23,5 +23,8 @@ public class SimpleLoginService implements LoginService {
         UsernamePasswordToken token = new UsernamePasswordToken(user, passwd);
         Subject currentUser = SecurityUtils.getSubject();
         currentUser.login(token);
+//        String user1= (String) currentUser.getPrincipal();
+//        System.out.println(user1);
+// user1=nombre de usuario.
     }
 }
