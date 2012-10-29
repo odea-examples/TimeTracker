@@ -19,7 +19,7 @@ public class UsuarioDAO extends AbstractDAO {
 		Usuario usuario = jdbcTemplate.queryForObject("SELECT * FROM users WHERE u_name='" + nombre + "'", new RowMapper<Usuario>(){
 				@Override
 				public Usuario mapRow(ResultSet rs, int rowNum) throws SQLException {
-					return new Usuario(rs.getInt(1),rs.getString(2),rs.getString(3));
+					return new Usuario(rs.getInt(1),rs.getString(3),rs.getString(4));
 				}
 			});
 		return usuario;
