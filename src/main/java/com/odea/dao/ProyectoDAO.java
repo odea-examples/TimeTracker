@@ -5,11 +5,12 @@ import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import com.odea.domain.Proyecto;
 
-@Service
+@Repository
 public class ProyectoDAO extends AbstractDAO {
 	
 	public List<Proyecto> getProyectos()

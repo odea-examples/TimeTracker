@@ -5,10 +5,7 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.odea.dao.MySqlLoginUtil;
 
 /**
  * User: pbergonzi
@@ -19,8 +16,7 @@ import com.odea.dao.MySqlLoginUtil;
 @Service
 public class SimpleLoginService implements LoginService {
 	
-	@Autowired
-	MySqlLoginUtil loginDAO;
+
 	
     private static final Logger logger = LoggerFactory.getLogger(SimpleLoginService.class);
 

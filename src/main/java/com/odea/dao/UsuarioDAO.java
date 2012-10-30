@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.Collection;
 
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import com.odea.domain.Proyecto;
@@ -12,16 +13,11 @@ import com.odea.domain.Usuario;
 
 
 
-@Service
+@Repository
 public class UsuarioDAO extends AbstractDAO {
 	
 	public Usuario getUsuario(String nombre){
-		Usuario usuario = jdbcTemplate.queryForObject("SELECT * FROM users WHERE u_name='" + nombre + "'", new RowMapper<Usuario>(){
-				@Override
-				public Usuario mapRow(ResultSet rs, int rowNum) throws SQLException {
-					return new Usuario(rs.getInt(1),rs.getString(3),rs.getString(4));
-				}
-			});
+		Usuario usuario = jdbcTemplate.queryForObject("SELECT * FROM users WHERE u_name=?", new RowMapperUsuario(), nombre);
 		return usuario;
 	}
 	
@@ -56,5 +52,24 @@ public class UsuarioDAO extends AbstractDAO {
 		
 	}
 	
+		
+	public Usuario getUsuario(String nombre, String password){
+		System.out.println("aca esta");
+		Usuario usuario = jdbcTemplate.queryForObject("SELECT u_id, u_name, u_password FROM users WHERE u_name=? AND u_password=password(?)", 
+				new RowMapperUsuario(), nombre, password);
+		
+		return usuario;
+	}
+	
+	
+	public class RowMapperUsuario implements RowMapper<Usuario>{
 
+		@Override
+		public Usuario mapRow(ResultSet rs, int rowNum) throws SQLException {
+			return new Usuario(rs.getInt(1),rs.getString(2),rs.getString(3));
+		}
+		
+	}
+	
+	
 }

@@ -1,16 +1,18 @@
 package com.odea;
 
+import org.apache.shiro.authc.AuthenticationException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.RequiredTextField;
+import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.odea.dao.MySqlLoginUtil;
 import com.odea.services.EncodingService;
 import com.odea.services.LoginService;
 
@@ -27,8 +29,7 @@ public class LoginPage extends BasePage {
     private LoginService loginService;
     @SpringBean
     private EncodingService hashEncoder;
-    @SpringBean
-    private MySqlLoginUtil loginDAO;
+
 
     private String userName;
     private String passwd;
@@ -37,6 +38,7 @@ public class LoginPage extends BasePage {
         super(parameters);
         LoginForm loginForm = new LoginForm("loginForm");
         add(loginForm);
+        
     }
 
     public void login() {
@@ -50,29 +52,32 @@ public class LoginPage extends BasePage {
             super(id);
             this.setDefaultModel(this.loginModel);
             RequiredTextField<String> userName = new RequiredTextField<String>("userName");
-            PasswordTextField passwd = new PasswordTextField("passwd") {
-
-            };
+            userName.setLabel(Model.of("Usuario"));
+            userName.add(new FocusOnLoadBehavior());
+            PasswordTextField passwd = new PasswordTextField("passwd");
+            passwd.setLabel(Model.of("Password"));
+            FeedbackPanel feedBackPanel = new FeedbackPanel("feedBackPanel");         
+            
             AjaxButton submit = new AjaxButton("submit", this) {
                 @Override
                 protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-                	if (loginDAO.logear(LoginPage.this.userName, LoginPage.this.passwd)){
-                    LoginPage.this.login();
-                    System.out.println("OK");
-                    setResponsePage(FormPage.class);
-                	}
-                	else {
-                		setResponsePage(LoginPage.class);
-                	}
+                    try{
+                    	LoginPage.this.login();
+                    	setResponsePage(FormPage.class);
+                    }catch(AuthenticationException ex){
+                    	error(ex.getMessage());
                     }
+                    target.add(form);
+                }
 
                 @Override
                 protected void onError(AjaxRequestTarget target, Form<?> form) {
-                    System.out.println("UHHH");
+                	target.add(form);
                 }
             };
 
             
+            add(feedBackPanel);
             add(userName);
             add(passwd);
             add(submit);

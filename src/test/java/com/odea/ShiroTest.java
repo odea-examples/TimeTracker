@@ -19,7 +19,7 @@ public class ShiroTest extends AbstractTestCase {
     @Test
     public void loginTest() {
         SecurityUtils.setSecurityManager(securityManager);
-        UsernamePasswordToken token = new UsernamePasswordToken("usuario", "passwd");
+        UsernamePasswordToken token = new UsernamePasswordToken("invitado", "invitado");
         Subject currentUser = SecurityUtils.getSubject();
         currentUser.login(token);
     }
