@@ -26,7 +26,7 @@ public class EntradaDAO extends AbstractDAO {
 		jdbcTemplate.update("INSERT INTO activity_log (al_project_id, al_activity_id, al_duration, al_comment, ticket_bz, issue_tracker_externo, ite_id, al_user_id, al_date) VALUES (?,?,?,?,?,?,?,?,?)", 
 				entrada.getProyecto().getIdProyecto(), entrada.getActividad().getIdActividad(), entrada.getDuracion(), 
 				entrada.getNota(), entrada.getTicketBZ(), 
-				entrada.getTicketExterno(), entrada.getSistemaExterno(), 1//entrada.getUsuario().getIdUsuario()
+				entrada.getTicketExterno(), entrada.getSistemaExterno(), entrada.getUsuario().getIdUsuario()//1
 				, entrada.getFecha());
 		
 	}

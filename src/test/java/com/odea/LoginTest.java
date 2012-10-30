@@ -6,14 +6,14 @@ import static org.junit.Assert.assertFalse;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.odea.dao.LoginDAO;
+import com.odea.dao.MySqlLoginUtil;
 import com.odea.services.EncodingService;
 import com.odea.services.LoginService;
 
 public class LoginTest extends AbstractTestCase {
 	
 @Autowired
-	LoginDAO loginDAO;
+	MySqlLoginUtil loginDAO;
 //    @Autowired
 //    LoginService loginService;
 //    @Autowired
@@ -38,7 +38,7 @@ public class LoginTest extends AbstractTestCase {
 //    }
     
     @Test public void logintest() {
-    	boolean boolean2=(loginDAO.Logear("invitado","invitado"));
+    	boolean boolean2=(loginDAO.logear("invitado","invitado"));
     	System.out.println(boolean2);
     	
     }

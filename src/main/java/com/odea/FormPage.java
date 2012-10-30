@@ -4,6 +4,8 @@ package com.odea;
 import java.util.ArrayList;
 import java.util.Date;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
@@ -49,10 +51,10 @@ public class FormPage extends BasePage {
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, EntradaForm form) {
 
-				//Subject subject = SecurityUtils.getSubject();
-				//usuario = usuarioDAO.getUsuario(subject.getPrincipal().toString());
+				Subject subject = SecurityUtils.getSubject();
+				usuario = usuarioDAO.getUsuario(subject.getPrincipal().toString());
 				Entrada e = form.getModelObject();
-				//e.setUsuario(usuario);
+				e.setUsuario(usuario);
 				FormPage.this.entradaDAO.agregarEntrada(e);
 			}
 			
@@ -105,7 +107,6 @@ public class FormPage extends BasePage {
 
 				@Override
 				protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-					System.out.println("llegue A");
 					EntradaForm.this.onSubmit(target, (EntradaForm)form);
 				}
 

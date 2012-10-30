@@ -10,8 +10,8 @@ import org.springframework.stereotype.Service;
 import com.odea.domain.Usuario;
 
 @Service
-public class LoginDAO extends AbstractDAO{
-	public Boolean Logear(String login, String psswd){
+public class MySqlLoginUtil extends AbstractDAO{
+	public Boolean logear(String login, String psswd){
 		try {
 			Usuario usuario = jdbcTemplate.queryForObject("SELECT * FROM users WHERE u_login='" + login + "' AND u_password=password('" + psswd + "')	", new RowMapper<Usuario>(){
 					@Override

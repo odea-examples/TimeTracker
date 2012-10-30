@@ -10,6 +10,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import com.odea.dao.MySqlLoginUtil;
 import com.odea.services.EncodingService;
 import com.odea.services.LoginService;
 
@@ -26,6 +27,8 @@ public class LoginPage extends BasePage {
     private LoginService loginService;
     @SpringBean
     private EncodingService hashEncoder;
+    @SpringBean
+    private MySqlLoginUtil loginDAO;
 
     private String userName;
     private String passwd;
@@ -37,7 +40,7 @@ public class LoginPage extends BasePage {
     }
 
     public void login() {
-        this.loginService.login(this.userName, this.hashEncoder.encode(passwd));
+        this.loginService.login(this.userName, passwd);
     }
 
     class LoginForm extends Form {
@@ -53,9 +56,14 @@ public class LoginPage extends BasePage {
             AjaxButton submit = new AjaxButton("submit", this) {
                 @Override
                 protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+                	if (loginDAO.logear(LoginPage.this.userName, LoginPage.this.passwd)){
                     LoginPage.this.login();
                     System.out.println("OK");
                     setResponsePage(FormPage.class);
+                	}
+                	else {
+                		setResponsePage(LoginPage.class);
+                	}
                     }
 
                 @Override

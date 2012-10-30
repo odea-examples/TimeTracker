@@ -5,7 +5,10 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.odea.dao.MySqlLoginUtil;
 
 /**
  * User: pbergonzi
@@ -15,6 +18,10 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class SimpleLoginService implements LoginService {
+	
+	@Autowired
+	MySqlLoginUtil loginDAO;
+	
     private static final Logger logger = LoggerFactory.getLogger(SimpleLoginService.class);
 
     @Override
@@ -23,8 +30,7 @@ public class SimpleLoginService implements LoginService {
         UsernamePasswordToken token = new UsernamePasswordToken(user, passwd);
         Subject currentUser = SecurityUtils.getSubject();
         currentUser.login(token);
-//        String user1= (String) currentUser.getPrincipal();
-//        System.out.println(user1);
-// user1=nombre de usuario.
+        System.out.println("hizo el login");
+    	
     }
 }
