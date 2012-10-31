@@ -79,14 +79,7 @@ public class EntradaDAOTest extends AbstractTestCase {
 	}
 
 	
-	@Test
-	public void getTotalHorasTest(){
-		Collection<Entrada> col;
-		col = dao.getEntradas(usuario, antes, despues);
-		Time numero = dao.totalHorasSemana(col);
-		System.out.println("llego hasta aca"+numero.getTime());
-		Assert.assertTrue("La cantidad de horas es incorrecta", numero.getTime()==0);
-	}
+
 
 
 }

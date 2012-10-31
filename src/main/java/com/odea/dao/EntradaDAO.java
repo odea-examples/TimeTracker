@@ -2,7 +2,6 @@ package com.odea.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Date;
@@ -28,7 +27,7 @@ public class EntradaDAO extends AbstractDAO {
 		jdbcTemplate.update("INSERT INTO activity_log (al_project_id, al_activity_id, al_duration, al_comment, ticket_bz, issue_tracker_externo, ite_id, al_user_id, al_date) VALUES (?,?,?,?,?,?,?,?,?)", 
 				entrada.getProyecto().getIdProyecto(), entrada.getActividad().getIdActividad(), entrada.getDuracion() * 10000, 
 				entrada.getNota(), entrada.getTicketBZ(), 
-				entrada.getTicketExterno(), entrada.getSistemaExterno(), (entrada.getUsuario().getIdUsuario())//1
+				entrada.getTicketExterno(), entrada.getSistemaExterno(), (entrada.getUsuario().getIdUsuario())
 				, entrada.getFecha());
 		
 		
@@ -44,15 +43,6 @@ public class EntradaDAO extends AbstractDAO {
 		
 		return entradas;
 	}
-	
-	public Time totalHorasSemana(Collection<Entrada> entradas){
-		Time suma = new Time(0);
-		for (Entrada entrada : entradas) {
-//			suma=new Time(suma.getTime()+entrada.getDuracion().getTime());
-		}
-		return suma;
-	}
-	
 	
 	public Collection<Entrada> getEntradas(Date desde,Date hasta){
 		Timestamp desdeSQL = new Timestamp(desde.getTime());
@@ -93,7 +83,7 @@ public class EntradaDAO extends AbstractDAO {
 			Proyecto proyecto = new Proyecto(rs.getInt(1), rs.getString(10));
 			Actividad actividad = new Actividad(rs.getInt(2), rs.getString(13));
 			Usuario usuario = new Usuario(rs.getInt(8), rs.getString(11), rs.getString(12));
-			
+			//TODO sacarle el ID a Entrada
 			return new Entrada(1, proyecto, actividad, rs.getTime(3).getTime(), rs.getString(4), rs.getInt(5), rs.getString(6), rs.getString(7), usuario, rs.getDate(9));
 		}
 		
