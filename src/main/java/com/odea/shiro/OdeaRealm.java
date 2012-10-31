@@ -8,6 +8,7 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.realm.AuthenticatingRealm;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.odea.dao.MySqlLoginUtil;
 import com.odea.dao.UsuarioDAO;
 import com.odea.domain.Usuario;
 
@@ -21,6 +22,9 @@ public class OdeaRealm extends AuthenticatingRealm {
 	@Autowired
 	private UsuarioDAO usuarioDAO;
 	
+	@Autowired
+	private MySqlLoginUtil mySQL;
+	
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
     	
@@ -29,15 +33,17 @@ public class OdeaRealm extends AuthenticatingRealm {
     	String userName = userPasswordToken.getUsername();
     	String password = String.valueOf(userPasswordToken.getPassword());
     	
-    	
+    	if (!mySQL.logear(userName)){
+    		throw new AuthenticationException("Usuario incorrecto");
+    	}
     	try {
-    		Usuario usuario = usuarioDAO.getUsuario(userName, password);
+    		usuarioDAO.getUsuario(userName, password);
     		return new SimpleAuthenticationInfo(authenticationToken.getPrincipal(), authenticationToken.getCredentials(), getName());
     		
-		} catch (Exception e) {
-			throw new AuthenticationException("Usuario o password no validos");
 		}
-    
+    	catch (Exception e) {
+			throw new AuthenticationException("Password incorrecta");
+		}
     	
     }
 }

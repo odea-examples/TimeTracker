@@ -14,14 +14,14 @@ import com.odea.domain.Usuario;
 @Service
 public class MySqlLoginUtil extends AbstractDAO{
 	
-	public Boolean logear(String login, String psswd){
+	public Boolean logear(String login){
 		try {
-			jdbcTemplate.queryForObject("SELECT * FROM users WHERE u_login=? AND u_password=password(?)	", new RowMapper<Usuario>(){
+			jdbcTemplate.queryForObject("SELECT * FROM users WHERE u_login=?", new RowMapper<Usuario>(){
 					@Override
 					public Usuario mapRow(ResultSet rs, int rowNum) throws SQLException {
 						return new Usuario(1,"no te interesa","tampoco te interesa");
 					}
-				}, login, psswd);
+				}, login);
 				
 			return true;
 		} catch (DataAccessException e) {
