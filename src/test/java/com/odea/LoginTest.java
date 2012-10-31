@@ -38,7 +38,8 @@ public class LoginTest extends AbstractTestCase {
 //    }
     
     @Test public void logintest() {
-    	boolean boolean2=(loginDAO.logear("invitado","invitado"));
+    	// chequea si existe username invitad
+    	boolean boolean2=(loginDAO.logear("invitado"));
     	System.out.println(boolean2);
     	
     }

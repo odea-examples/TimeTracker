@@ -32,17 +32,13 @@ public class OdeaRealm extends AuthenticatingRealm {
     	
     	String userName = userPasswordToken.getUsername();
     	String password = String.valueOf(userPasswordToken.getPassword());
-    	
-    	if (!mySQL.logear(userName)){
-    		throw new AuthenticationException("Usuario incorrecto");
-    	}
     	try {
     		usuarioDAO.getUsuario(userName, password);
     		return new SimpleAuthenticationInfo(authenticationToken.getPrincipal(), authenticationToken.getCredentials(), getName());
     		
 		}
     	catch (Exception e) {
-			throw new AuthenticationException("Password incorrecta");
+			throw new AuthenticationException("Usuario o password incorrecto");
 		}
     	
     }

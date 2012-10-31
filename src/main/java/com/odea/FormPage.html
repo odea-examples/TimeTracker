@@ -4,37 +4,30 @@
 			<ul>
 			
 <!-- 	para agregar margenes copiar esto desntro del li   style="margin-left:100px" -->
-	        	<li>Proyecto</li>
 	        	<li >
-	            <select wicket:id="proyecto" style="width:300px" />
+	        	Proyecto
+	            <select wicket:id="proyecto" style="width:303px" />
 				</li>
 				
-	            <li>Actividad</li>
 	            <li>
+	            Actividad
 	            <select wicket:id="actividad" style="width:300px"/>
 				</li>
 
+	            <li class="full"> Duración <input type="text" wicket:id="duracion" style="width:295px"/></li>
 				
-				<li>Duración</li>
-	            <li class="full"> <input type="text" wicket:id="duracion" style="width:300px"/></li>
+	            <li class="full"> Fecha <input type="text" wicket:id="fecha" style="width:308px"/></li>
 				
-				<li>Fecha</li>
-	            <li class="full"> <input type="text" wicket:id="fecha" style="width:300px"/></li>
-				
-		        <li>Nota</li>
-	        	<li class="full"> <textarea wicket:id="nota" rows="10" cols="40" scrolling="yes"  /></li>
+				<li> Nota: </li>
+	        	<br class="full"> <textarea wicket:id="nota" rows="10" cols="51" scrolling="yes"  /></br>
 	
-	            <li>Ticket Bugzilla</li>
-	            <li class="full"> <input type="text" wicket:id="ticketBZ" style="width:300px" ></li>
+	            <li class="full"> Ticket Bugzilla <input type="text" wicket:id="ticketBZ" style="width:259px" ></li>
 	            
-	            <li>Sistema Externo</li>
-	            <li class="full"> <select wicket:id="sistemaExterno" style="width:300px"/></li>
+	            <li class="full"> Sistema Externo <select wicket:id="sistemaExterno" style="width:255px"/></li>
 	            
-	            <li>ID Ticket Externo</li>
-	            <li class="full"> <input  type="text" wicket:id="ticketExterno" style="width:300px"/></li>
+	            <li class="full"> ID Ticket Externo <input  type="text" wicket:id="ticketExterno" style="width:244px"/></li>
 	            
 	            
-	      		
 	      		<li><input wicket:id="submit" value="Confirmar" type="submit"></li>
 	      			      		
 	      	</ul>
