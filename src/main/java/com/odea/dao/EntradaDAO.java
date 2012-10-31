@@ -7,9 +7,10 @@ import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Date;
 
+import org.joda.time.DateTimeConstants;
+import org.joda.time.LocalDate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
 
 import com.odea.domain.Actividad;
 import com.odea.domain.Entrada;
@@ -25,7 +26,7 @@ public class EntradaDAO extends AbstractDAO {
 	public void agregarEntrada(Entrada entrada){
 
 		jdbcTemplate.update("INSERT INTO activity_log (al_project_id, al_activity_id, al_duration, al_comment, ticket_bz, issue_tracker_externo, ite_id, al_user_id, al_date) VALUES (?,?,?,?,?,?,?,?,?)", 
-				entrada.getProyecto().getIdProyecto(), entrada.getActividad().getIdActividad(), entrada.getDuracion(), 
+				entrada.getProyecto().getIdProyecto(), entrada.getActividad().getIdActividad(), entrada.getDuracion() * 10000, 
 				entrada.getNota(), entrada.getTicketBZ(), 
 				entrada.getTicketExterno(), entrada.getSistemaExterno(), entrada.getUsuario().getIdUsuario()//1
 				, entrada.getFecha());
@@ -68,6 +69,18 @@ public class EntradaDAO extends AbstractDAO {
 		Collection<Entrada> entradas = jdbcTemplate.query(sqlEntradas + " WHERE e.al_user_id = u.u_id AND e.al_project_id = " + proyecto.getIdProyecto() + " AND e.al_activity_id = a.a_id AND e.al_project_id = p.p_id AND e.al_date BETWEEN '"+ desdeSQL +"' AND '"+ hastaSQL +"'", new RowMapperEntradas());
 		
 		return entradas;
+	}
+	
+	public int getHorasSemanales(Usuario usuario)
+	{
+		LocalDate now = new LocalDate();
+		LocalDate lu = now.withDayOfWeek(DateTimeConstants.MONDAY);
+		LocalDate vie = now.withDayOfWeek(DateTimeConstants.FRIDAY);
+		
+		Date lunes = lu.toDateTimeAtStartOfDay().toDate();
+		Date viernes = vie.toDateTimeAtStartOfDay().toDate();
+	
+		return jdbcTemplate.queryForInt("SELECT SUM(al_duration)/10000 FROM activity_log WHERE al_user_id=? and al_date BETWEEN ? AND ?",usuario.getIdUsuario(),lunes, viernes);
 	}
 	
 	

@@ -49,8 +49,8 @@ public class EntradaDAOTest extends AbstractTestCase {
 		Date fecha = new Date(System.currentTimeMillis());
 		Date fecha2 = new Date(System.currentTimeMillis()+900000000);
 		Proyecto proyecto2 = new Proyecto(2,"otroProyecto");
-		Usuario usuario2 = new Usuario(2, "unNombre", "algunPassword");
-		double duracion = 3;
+		Usuario usuario2 = new Usuario(54, "unNombre", "algunPassword");
+		double duracion = 3 * 10000;
 		
 		entrada = new Entrada(1, proyecto, actividad, duracion, "Nota", ticketBZ, ticketExt, sistemaExt, usuario, fecha);
 		
