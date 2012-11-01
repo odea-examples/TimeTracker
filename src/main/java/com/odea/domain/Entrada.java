@@ -7,7 +7,7 @@ import java.util.Date;
 public class Entrada implements Serializable {
 	
 
-	private long idEntrada;
+
     private Proyecto proyecto;
     private Actividad actividad;
     private double duracion;
@@ -20,8 +20,7 @@ public class Entrada implements Serializable {
     
     public Entrada(){}
     
-    public Entrada(long idEntrada, Proyecto proyecto, Actividad actividad, double duracion, String nota, int ticketBugZilla, String ticketExterno, String sistemaExterno, Usuario usuario, Date fecha) {
-        this.idEntrada = idEntrada;
+    public Entrada(Proyecto proyecto, Actividad actividad, double duracion, String nota, int ticketBugZilla, String ticketExterno, String sistemaExterno, Usuario usuario, Date fecha) {
         this.proyecto = proyecto;
         this.actividad = actividad;
         this.duracion = duracion;
@@ -33,13 +32,7 @@ public class Entrada implements Serializable {
         this.fecha = fecha;
     }
 
-	public long getIdEntrada() {
-		return idEntrada;
-	}
 
-	public void setIdEntrada(long idEntrada) {
-		this.idEntrada = idEntrada;
-	}
 
 	public Proyecto getProyecto() {
 		return proyecto;

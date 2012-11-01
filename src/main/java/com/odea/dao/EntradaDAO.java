@@ -84,7 +84,7 @@ public class EntradaDAO extends AbstractDAO {
 			Actividad actividad = new Actividad(rs.getInt(2), rs.getString(13));
 			Usuario usuario = new Usuario(rs.getInt(8), rs.getString(11), rs.getString(12));
 			//TODO sacarle el ID a Entrada
-			return new Entrada(1, proyecto, actividad, rs.getTime(3).getTime(), rs.getString(4), rs.getInt(5), rs.getString(6), rs.getString(7), usuario, rs.getDate(9));
+			return new Entrada(proyecto, actividad, rs.getTime(3).getTime(), rs.getString(4), rs.getInt(5), rs.getString(6), rs.getString(7), usuario, rs.getDate(9));
 		}
 		
 	}

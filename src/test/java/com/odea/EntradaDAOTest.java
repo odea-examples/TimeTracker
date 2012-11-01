@@ -52,7 +52,7 @@ public class EntradaDAOTest extends AbstractTestCase {
 		Usuario usuario2 = new Usuario(54, "unNombre", "algunPassword");
 		double duracion = 3 * 10000;
 		
-		entrada = new Entrada(1, proyecto, actividad, duracion, "Nota", ticketBZ, ticketExt, sistemaExt, usuario, fecha);
+		entrada = new Entrada(proyecto, actividad, duracion, "Nota", ticketBZ, ticketExt, sistemaExt, usuario, fecha);
 		
 //		dao.agregarEntrada(new Entrada(2, proyecto, actividad, duracion, "Nota", ticketBZ, ticketExt, sistemaExt, usuario2, fecha2));
 //		dao.agregarEntrada(new Entrada(3, proyecto2, actividad, duracion, "Nota", ticketBZ, ticketExt, sistemaExt, usuario, fechaExterna));
