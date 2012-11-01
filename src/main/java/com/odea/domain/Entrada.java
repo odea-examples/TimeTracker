@@ -32,8 +32,7 @@ public class Entrada implements Serializable {
 		this.fecha = fecha;
 	}
 	
-	
-	
+
 
 	public Proyecto getProyecto() {
 		return proyecto;

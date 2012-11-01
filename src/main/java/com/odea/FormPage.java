@@ -34,7 +34,7 @@ public class FormPage extends BasePage {
 	@SpringBean
 	private transient DAOService daoService;
 	private Usuario usuario;
-
+	
 	public FormPage() {
 		super();
 		
@@ -57,6 +57,8 @@ public class FormPage extends BasePage {
 		IModel<Entrada> entradaModel = new CompoundPropertyModel<Entrada>(new Entrada());
 		DropDownChoice<Actividad> comboActividad;
 		DropDownChoice<Proyecto> comboProyecto; 	
+		
+		
 		IModel<Integer> horasSemanalesModel = new LoadableDetachableModel<Integer>() {
 			@Override
 			protected Integer load() {
@@ -80,6 +82,14 @@ public class FormPage extends BasePage {
 			this.comboProyecto.setOutputMarkupId(true);	
 			this.comboProyecto.setRequired(true);
 			this.comboProyecto.setLabel(Model.of("Proyecto"));
+			
+			this.comboProyecto.add(new AjaxFormComponentUpdatingBehavior("onchange"){
+				@Override
+				protected void onUpdate(AjaxRequestTarget target) {
+					EntradaForm.this.comboActividad.setChoices(daoService.getActividades(EntradaForm.this.comboProyecto.getModelObject()));
+					target.add(EntradaForm.this.comboActividad);
+				}
+			});
 			
 			
 			this.comboActividad = new DropDownChoice<Actividad>("actividad");
@@ -119,13 +129,7 @@ public class FormPage extends BasePage {
 			horasAcumuladas.setOutputMarkupId(true);
 
 			
-			this.comboProyecto.add(new AjaxFormComponentUpdatingBehavior("onchange"){
-				@Override
-				protected void onUpdate(AjaxRequestTarget target) {
-					EntradaForm.this.comboActividad.setChoices(daoService.getActividades(EntradaForm.this.comboProyecto.getModelObject()));
-					target.add(EntradaForm.this.comboActividad);
-				}
-			});
+			
 			
 			
 			AjaxButton submit = new AjaxButton("submit", this) {
@@ -142,6 +146,7 @@ public class FormPage extends BasePage {
 				@Override
 				protected void onError(AjaxRequestTarget target, Form<?> form) {
 					target.add(feedBackPanel);
+					
 				}
 				
 			};
@@ -161,6 +166,10 @@ public class FormPage extends BasePage {
 
 		}
 
+		
 		protected abstract void onSubmit(AjaxRequestTarget target, EntradaForm form);
+
 	}	
 }
+
+

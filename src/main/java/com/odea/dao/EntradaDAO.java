@@ -8,6 +8,8 @@ import java.util.Date;
 
 import org.joda.time.DateTimeConstants;
 import org.joda.time.LocalDate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
@@ -19,16 +21,23 @@ import com.odea.domain.Usuario;
 @Repository
 public class EntradaDAO extends AbstractDAO {
 	
+    private static final Logger logger = LoggerFactory.getLogger(EntradaDAO.class);
+
+	
 	
 	private String sqlEntradas = "SELECT e.al_project_id, e.al_activity_id, e.al_duration, e.al_comment, e.ticket_bz, e.ite_id, e.issue_tracker_externo, e.al_user_id, e.al_date, p.p_name , u.u_name, u.u_password, a.a_name FROM activity_log e, projects p, activities a, users u";
 
 	public void agregarEntrada(Entrada entrada){
 
+		logger.debug("Insert attempt entrada");
+		
 		jdbcTemplate.update("INSERT INTO activity_log (al_project_id, al_activity_id, al_duration, al_comment, ticket_bz, issue_tracker_externo, ite_id, al_user_id, al_date) VALUES (?,?,?,?,?,?,?,?,?)", 
 				entrada.getProyecto().getIdProyecto(), entrada.getActividad().getIdActividad(), entrada.getDuracion() * 10000, 
 				entrada.getNota(), entrada.getTicketBZ(), 
 				entrada.getTicketExterno(), entrada.getSistemaExterno(), (entrada.getUsuario().getIdUsuario())
 				, entrada.getFecha());
+		
+		logger.debug("Entrada agregada - " + new Date(System.currentTimeMillis()));
 		
 	}
 	

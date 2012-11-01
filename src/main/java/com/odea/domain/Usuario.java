@@ -45,5 +45,14 @@ public class Usuario implements Serializable {
 	}
 
 
+
+	@Override
+	public String toString() {
+		return "ID:" + this.idUsuario + " - Nombre:"+ this.nombre;
+	}
+	
+	
+
+
 	
 }

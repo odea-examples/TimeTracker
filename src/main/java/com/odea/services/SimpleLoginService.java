@@ -15,9 +15,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class SimpleLoginService implements LoginService {
-	
-
-	
+		
     private static final Logger logger = LoggerFactory.getLogger(SimpleLoginService.class);
 
     @Override
@@ -27,4 +25,5 @@ public class SimpleLoginService implements LoginService {
         Subject currentUser = SecurityUtils.getSubject();
         currentUser.login(token);  	
     }
+    
 }

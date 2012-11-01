@@ -4,7 +4,8 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.shiro.subject.Subject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +29,7 @@ public class DAOService {
 	private transient ActividadDAO actividadDAO;
 	@Autowired
 	private transient ProyectoDAO proyectoDAO;
+		
 	
 	
 	public List<Actividad> getActividades(Proyecto proyecto){
@@ -89,7 +91,6 @@ public class DAOService {
 		entrada.setUsuario(usuario);
 		this.entradaDAO.agregarEntrada(entrada);
 	}
-	
 	
 
 }
