@@ -27,8 +27,6 @@ public class LoginPage extends BasePage {
     private static final long serialVersionUID = 1L;
     @SpringBean
     private LoginService loginService;
-    @SpringBean
-    private EncodingService hashEncoder;
 
 
     private String userName;
@@ -87,10 +85,6 @@ public class LoginPage extends BasePage {
 
     public void setLoginService(LoginService loginService) {
         this.loginService = loginService;
-    }
-
-    public void setHashEncoder(EncodingService hashEncoder) {
-        this.hashEncoder = hashEncoder;
     }
 
 }

@@ -3,36 +3,37 @@ package com.odea.domain;
 import java.io.Serializable;
 import java.util.Date;
 
-
 public class Entrada implements Serializable {
+
+	private Proyecto proyecto;
+	private Actividad actividad;
+	private double duracion;
+	private String nota;
+	private int ticketBZ;
+	private String ticketExterno;
+	private String sistemaExterno;
+	private Usuario usuario;
+	private Date fecha;
+
+	public Entrada() {
+	}
+
+	public Entrada(Proyecto proyecto, Actividad actividad, double duracion,
+			String nota, int ticketBugZilla, String ticketExterno,
+			String sistemaExterno, Usuario usuario, Date fecha) {
+		this.proyecto = proyecto;
+		this.actividad = actividad;
+		this.duracion = duracion;
+		this.nota = nota;
+		this.ticketBZ = ticketBugZilla;
+		this.ticketExterno = ticketExterno;
+		this.sistemaExterno = sistemaExterno;
+		this.usuario = usuario;
+		this.fecha = fecha;
+	}
 	
-
-
-    private Proyecto proyecto;
-    private Actividad actividad;
-    private double duracion;
-    private String nota;
-    private int ticketBZ;
-    private String ticketExterno;
-    private String sistemaExterno;
-    private Usuario usuario;
-    private Date fecha;
-    
-    public Entrada(){}
-    
-    public Entrada(Proyecto proyecto, Actividad actividad, double duracion, String nota, int ticketBugZilla, String ticketExterno, String sistemaExterno, Usuario usuario, Date fecha) {
-        this.proyecto = proyecto;
-        this.actividad = actividad;
-        this.duracion = duracion;
-        this.nota = nota;
-        this.ticketBZ = ticketBugZilla;
-        this.ticketExterno = ticketExterno;
-        this.sistemaExterno = sistemaExterno;
-        this.usuario = usuario;
-        this.fecha = fecha;
-    }
-
-
+	
+	
 
 	public Proyecto getProyecto() {
 		return proyecto;
@@ -65,7 +66,6 @@ public class Entrada implements Serializable {
 	public void setNota(String nota) {
 		this.nota = nota;
 	}
-
 
 	public int getTicketBZ() {
 		return ticketBZ;
@@ -107,5 +107,4 @@ public class Entrada implements Serializable {
 		this.fecha = fecha;
 	}
 
-    
 }

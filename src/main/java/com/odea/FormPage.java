@@ -20,50 +20,33 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.joda.time.LocalDate;
 
 import com.odea.components.datepicker.DatePickerBehavior;
-import com.odea.dao.ActividadDAO;
-import com.odea.dao.EntradaDAO;
-import com.odea.dao.ProyectoDAO;
-import com.odea.dao.UsuarioDAO;
 import com.odea.domain.Actividad;
 import com.odea.domain.Entrada;
 import com.odea.domain.Proyecto;
 import com.odea.domain.Usuario;
+import com.odea.services.DAOService;
 
 
 public class FormPage extends BasePage {
 	
 	@SpringBean
-	private transient ProyectoDAO proyectoDAO;
-	@SpringBean
-	private transient ActividadDAO actividadDAO;
-	@SpringBean
-	private transient EntradaDAO entradaDAO;
-	@SpringBean
-	private transient UsuarioDAO usuarioDAO;
-	
+	private transient DAOService daoService;
 	private Usuario usuario;
 
 	public FormPage() {
-		
 		super();
 		
 		Subject subject = SecurityUtils.getSubject();
-		this.usuario = this.usuarioDAO.getUsuario(subject.getPrincipal().toString());
+		this.usuario = this.daoService.getUsuario(subject.getPrincipal().toString());
 
+		
 		EntradaForm form = new EntradaForm("form"){
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, EntradaForm form) {
-
-				Subject subject = SecurityUtils.getSubject();
-				usuario = usuarioDAO.getUsuario(subject.getPrincipal().toString());
-				Entrada e = form.getModelObject();
-				e.setUsuario(usuario);
-				FormPage.this.entradaDAO.agregarEntrada(e);
+				daoService.agregarEntrada(form.getModelObject(), usuario);
 			}
-			
 		};
 
 		add(form);	
@@ -77,7 +60,7 @@ public class FormPage extends BasePage {
 		IModel<Integer> horasSemanalesModel = new LoadableDetachableModel<Integer>() {
 			@Override
 			protected Integer load() {
-				return entradaDAO.getHorasSemanales(usuario);
+				return daoService.getHorasSemanales(usuario);
 			}
 			
 		}; 
@@ -88,12 +71,12 @@ public class FormPage extends BasePage {
 			
 
 			ArrayList<String> sistExt = new ArrayList<String>();
-			sistExt.add("1");
-			sistExt.add("2");
+			sistExt.add("1"); //sistema de incidencias de YPF
+			sistExt.add("2"); // sistema geminis de YPF
 			
 			
 			
-			this.comboProyecto = new DropDownChoice<Proyecto>("proyecto",  proyectoDAO.getProyectos());
+			this.comboProyecto = new DropDownChoice<Proyecto>("proyecto",  daoService.getProyectos());
 			this.comboProyecto.setOutputMarkupId(true);	
 			this.comboProyecto.setRequired(true);
 			this.comboProyecto.setLabel(Model.of("Proyecto"));
@@ -110,8 +93,6 @@ public class FormPage extends BasePage {
 			sistemaExterno.setLabel(Model.of("Sistema Externo"));
 			
 			TextArea<String> nota = new TextArea<String>("nota");
-			//nota.setRequired(true);
-			//nota.setLabel(Model.of("Nota"));
 			
 			TextField<Double> duracion = new TextField<Double>("duracion");
 			duracion.setRequired(true);
@@ -141,7 +122,7 @@ public class FormPage extends BasePage {
 			this.comboProyecto.add(new AjaxFormComponentUpdatingBehavior("onchange"){
 				@Override
 				protected void onUpdate(AjaxRequestTarget target) {
-					EntradaForm.this.comboActividad.setChoices(actividadDAO.getActividades(EntradaForm.this.comboProyecto.getModelObject()));
+					EntradaForm.this.comboActividad.setChoices(daoService.getActividades(EntradaForm.this.comboProyecto.getModelObject()));
 					target.add(EntradaForm.this.comboActividad);
 				}
 			});
@@ -156,7 +137,6 @@ public class FormPage extends BasePage {
 					EntradaForm.this.onSubmit(target, (EntradaForm)form);								
 					target.add(feedBackPanel);
 					target.add(horasAcumuladas);
-				
 				}
 
 				@Override

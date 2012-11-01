@@ -5,18 +5,15 @@ import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 
 public class WicketApplication extends WebApplication
 {    	
-	/**
-	 * @see org.apache.wicket.Application#getHomePage()
-	 */
+
 	@Override
 	public Class<LoginPage> getHomePage()
 	{
 		return LoginPage.class;
 	}
 
-	/**
-	 * @see org.apache.wicket.Application#init()
-	 */
+
+	
 	@Override
 	public void init()
 	{

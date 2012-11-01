@@ -4,16 +4,16 @@ import java.io.Serializable;
 
 public class Actividad implements Serializable {
 	
-
 	
 	private int idActividad;
 	private String nombre;
 	
 	public Actividad(int idActividad, String nombre) {
-		super();
 		this.idActividad = idActividad;
 		this.nombre = nombre;
 	}
+	
+	
 	
 	public int getIdActividad() {
 		return idActividad;

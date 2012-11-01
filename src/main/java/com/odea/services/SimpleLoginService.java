@@ -25,8 +25,6 @@ public class SimpleLoginService implements LoginService {
         logger.debug("Login attempt user: " + user);
         UsernamePasswordToken token = new UsernamePasswordToken(user, passwd);
         Subject currentUser = SecurityUtils.getSubject();
-        currentUser.login(token);
-        System.out.println("hizo el login");
-    	
+        currentUser.login(token);  	
     }
 }

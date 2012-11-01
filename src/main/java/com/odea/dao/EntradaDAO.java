@@ -30,7 +30,6 @@ public class EntradaDAO extends AbstractDAO {
 				entrada.getTicketExterno(), entrada.getSistemaExterno(), (entrada.getUsuario().getIdUsuario())
 				, entrada.getFecha());
 		
-		
 	}
 	
 	
@@ -39,7 +38,7 @@ public class EntradaDAO extends AbstractDAO {
 		Timestamp desdeSQL = new Timestamp(desde.getTime());
 		Timestamp hastaSQL = new Timestamp(hasta.getTime());
 		
-		Collection<Entrada> entradas = jdbcTemplate.query(sqlEntradas +" WHERE e.al_user_id = " + usuario.getIdUsuario() + " AND e.al_project_id = p.p_id AND e.al_activity_id = a.a_id AND e.al_user_id = u.u_id AND e.al_date BETWEEN '"+ desdeSQL +"' AND '"+ hastaSQL +"'", new RowMapperEntradas());
+		Collection<Entrada> entradas = jdbcTemplate.query(sqlEntradas +" WHERE e.al_user_id = ? AND e.al_project_id = p.p_id AND e.al_activity_id = a.a_id AND e.al_user_id = u.u_id AND e.al_date BETWEEN ? AND ?", new RowMapperEntradas(), usuario.getIdUsuario(), desdeSQL, hastaSQL);
 		
 		return entradas;
 	}
@@ -48,7 +47,7 @@ public class EntradaDAO extends AbstractDAO {
 		Timestamp desdeSQL = new Timestamp(desde.getTime());
 		Timestamp hastaSQL = new Timestamp(hasta.getTime());
 		
-		Collection<Entrada> entradas = jdbcTemplate.query(sqlEntradas + " WHERE e.al_user_id = u.u_id AND e.al_project_id = p.p_id AND e.al_activity_id = a.a_id AND e.al_date BETWEEN '"+ desdeSQL +"' AND '"+ hastaSQL +"'", new RowMapperEntradas());
+		Collection<Entrada> entradas = jdbcTemplate.query(sqlEntradas + " WHERE e.al_user_id = u.u_id AND e.al_project_id = p.p_id AND e.al_activity_id = a.a_id AND e.al_date BETWEEN ? AND ?", new RowMapperEntradas(), desdeSQL, hastaSQL);
 		 
 		return entradas;
 	}
@@ -57,7 +56,7 @@ public class EntradaDAO extends AbstractDAO {
 		Timestamp desdeSQL = new Timestamp(desde.getTime());
 		Timestamp hastaSQL = new Timestamp(hasta.getTime());
 		
-		Collection<Entrada> entradas = jdbcTemplate.query(sqlEntradas + " WHERE e.al_user_id = u.u_id AND e.al_project_id = " + proyecto.getIdProyecto() + " AND e.al_activity_id = a.a_id AND e.al_project_id = p.p_id AND e.al_date BETWEEN '"+ desdeSQL +"' AND '"+ hastaSQL +"'", new RowMapperEntradas());
+		Collection<Entrada> entradas = jdbcTemplate.query(sqlEntradas + " WHERE e.al_user_id = u.u_id AND e.al_project_id = ? AND e.al_activity_id = a.a_id AND e.al_project_id = p.p_id AND e.al_date BETWEEN ? AND ?", new RowMapperEntradas(), proyecto.getIdProyecto(), desdeSQL, hastaSQL);
 		
 		return entradas;
 	}
@@ -83,7 +82,6 @@ public class EntradaDAO extends AbstractDAO {
 			Proyecto proyecto = new Proyecto(rs.getInt(1), rs.getString(10));
 			Actividad actividad = new Actividad(rs.getInt(2), rs.getString(13));
 			Usuario usuario = new Usuario(rs.getInt(8), rs.getString(11), rs.getString(12));
-			//TODO sacarle el ID a Entrada
 			return new Entrada(proyecto, actividad, rs.getTime(3).getTime(), rs.getString(4), rs.getInt(5), rs.getString(6), rs.getString(7), usuario, rs.getDate(9));
 		}
 		
