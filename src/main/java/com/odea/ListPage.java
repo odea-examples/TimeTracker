@@ -2,7 +2,9 @@ package com.odea;
 
 import java.util.List;
 
+import org.apache.shiro.SecurityUtils;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.LoadableDetachableModel;
@@ -11,6 +13,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.odea.dao.EntradaDAO;
 import com.odea.domain.Entrada;
 import com.odea.domain.Usuario;
 import com.odea.services.DAOService;
@@ -19,7 +22,6 @@ import com.odea.services.DAOService;
 public class ListPage extends BasePage {
 	
     private static final Logger logger = LoggerFactory.getLogger(ListPage.class);
-
 	
     @SpringBean
 	private DAOService daoService;
@@ -27,11 +29,12 @@ public class ListPage extends BasePage {
 	
 	public ListPage(){
 		addEntradasModule();
+        add(new BookmarkablePageLink<FormPage>("link",FormPage.class));
 	}
 	
 	
 	private void addEntradasModule() {
-        ListView<Entrada> entradas = new ListView<Entrada>("entradas", createModelForEntradas()) {
+        ListView<Entrada> entradasListView = new ListView<Entrada>("entradas", createModelForEntradas()) {
             @Override
             protected void populateItem(ListItem<Entrada> item) {
             	item.add(new Label("fecha", new PropertyModel<Entrada>(item.getModel(), "fecha")));
@@ -41,8 +44,10 @@ public class ListPage extends BasePage {
                 item.add(new Label("ticketBZ", new PropertyModel<Entrada>(item.getModel(), "ticketBZ")));
             }
         };
- 
-        add(entradas);
+        
+        entradasListView.setOutputMarkupId(true);
+        
+        add(entradasListView);
     }
 	
     private LoadableDetachableModel<List<Entrada>> createModelForEntradas() {
@@ -51,10 +56,14 @@ public class ListPage extends BasePage {
  
             @Override
             protected List<Entrada> load() {
+            	            	
+            	Usuario usuario = daoService.getUsuario(SecurityUtils.getSubject().getPrincipal().toString());
             	
-            	Usuario usuario = new Usuario(57, "invitado", "invitado");
+            	logger.debug("Buscando entradas de usuario - " + usuario);
             	
                 List<Entrada> entradas = daoService.getEntradasSemanales(usuario);
+ 
+                logger.debug("Busqueda finalizada");
                 
                 return entradas;
             }

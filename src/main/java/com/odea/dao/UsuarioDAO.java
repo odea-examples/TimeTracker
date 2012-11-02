@@ -16,7 +16,7 @@ import com.odea.domain.Usuario;
 public class UsuarioDAO extends AbstractDAO {
 	
 	public Usuario getUsuario(String nombre){
-		Usuario usuario = jdbcTemplate.queryForObject("SELECT * FROM users WHERE u_name=?", 
+		Usuario usuario = jdbcTemplate.queryForObject("SELECT u.u_id, u.u_name, u.u_password FROM users u WHERE u_name=?", 
 				new RowMapperUsuario(), nombre);
 		
 		return usuario;
