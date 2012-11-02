@@ -13,7 +13,6 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.odea.dao.EntradaDAO;
 import com.odea.domain.Entrada;
 import com.odea.domain.Usuario;
 import com.odea.services.DAOService;
@@ -37,17 +36,27 @@ public class ListPage extends BasePage {
         ListView<Entrada> entradasListView = new ListView<Entrada>("entradas", createModelForEntradas()) {
             @Override
             protected void populateItem(ListItem<Entrada> item) {
+            	
+            	//TODO: Ver el tema de la 'duracion', en la pagina sale un numero erroneo
+            	
             	item.add(new Label("fecha", new PropertyModel<Entrada>(item.getModel(), "fecha")));
                 item.add(new Label("proyecto", new PropertyModel<Entrada>(item.getModel(), "proyecto")));
                 item.add(new Label("actividad", new PropertyModel<Entrada>(item.getModel(), "actividad")));
                 item.add(new Label("duracion", new PropertyModel<Entrada>(item.getModel(), "duracion")));
                 item.add(new Label("ticketBZ", new PropertyModel<Entrada>(item.getModel(), "ticketBZ")));
+                
             }
         };
         
+        entradasListView.setVisible(!entradasListView.getList().isEmpty());
         entradasListView.setOutputMarkupId(true);
         
+		Label noHayEntradasLabel = new Label("noHayEntradasLabel", "No se ha ingresado ninguna entrada de esta semana. Si quiere agregar una, puede hacerlo desde el formulario.");
+		noHayEntradasLabel.setVisible(!entradasListView.isVisible());
+		        
         add(entradasListView);
+        add(noHayEntradasLabel);
+        
     }
 	
     private LoadableDetachableModel<List<Entrada>> createModelForEntradas() {

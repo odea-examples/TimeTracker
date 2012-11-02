@@ -47,6 +47,7 @@ public class FormPage extends BasePage {
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, EntradaForm form) {
 				daoService.agregarEntrada(form.getModelObject(), usuario);
+				setResponsePage(ListPage.class);
 			}
 		};
 
