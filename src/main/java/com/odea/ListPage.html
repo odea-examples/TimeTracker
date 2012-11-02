@@ -1,11 +1,16 @@
-<table wicket:id="tabla">
-    <thead>
-    <tr>
-        <td>Id</td>
-        <td>Nombre</td>
-        <td>Descripción</td>
-        <td>Tipo</td>
-        <td>Status</td>
-    </tr>
-    </thead>
-    <tbody></tbody>
+<wicket:extend>
+	<h3>Entradas</h3>
+        <br/>
+            <table border="3" style="font-family: family_name1, family_name2; color: black; font-weight: bold;">
+                <tr><th>Fecha</th><th>Proyecto</th><th>Actividad</th><th>Duracion</th><th>Ticket Bugzilla</th></tr>
+                <span wicket:id="entradas">
+                    <tr>
+	                        <td><span wicket:id="fecha"></span></td>
+	                        <td><span wicket:id="proyecto"></span></td>
+	                        <td><span wicket:id="actividad"></span></td>
+	                        <td><span wicket:id="duracion"></span></td>
+	                        <td><span wicket:id="ticketBZ"></span></td>
+                    </tr>
+                </span>
+            </table>
+</wicket:extend>

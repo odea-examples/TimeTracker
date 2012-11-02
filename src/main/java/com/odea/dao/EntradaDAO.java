@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 import org.joda.time.DateTimeConstants;
 import org.joda.time.LocalDate;
@@ -80,6 +81,22 @@ public class EntradaDAO extends AbstractDAO {
 		Date viernes = vie.toDateTimeAtStartOfDay().toDate();
 	
 		return jdbcTemplate.queryForInt("SELECT SUM(al_duration)/10000 FROM activity_log WHERE al_user_id=? and al_date BETWEEN ? AND ?",usuario.getIdUsuario(),lunes, viernes);
+	}
+	
+	
+	public List<Entrada> getEntradasSemanales(Usuario usuario){
+		LocalDate now = new LocalDate();
+		LocalDate lu = now.withDayOfWeek(DateTimeConstants.MONDAY);
+		LocalDate vie = now.withDayOfWeek(DateTimeConstants.FRIDAY);
+		
+		Date lunes = lu.toDateTimeAtStartOfDay().toDate();
+		Date viernes = vie.toDateTimeAtStartOfDay().toDate();
+		
+		Timestamp desdeSQL = new Timestamp(lunes.getTime());
+		Timestamp hastaSQL = new Timestamp(viernes.getTime());
+		
+		return  jdbcTemplate.query(sqlEntradas +" WHERE e.al_user_id = ? AND e.al_project_id = p.p_id AND e.al_activity_id = a.a_id AND e.al_user_id = u.u_id AND e.al_date BETWEEN ? AND ?", new RowMapperEntradas(), usuario.getIdUsuario(), desdeSQL, hastaSQL);
+		
 	}
 	
 	
