@@ -36,6 +36,8 @@ public class UsuarioDAOTest extends AbstractTestCase {
 		Collection<Usuario> usuarios = dao.getUsuarios(proyecto);
 		System.out.println(usuarios.size());
 		Assert.assertTrue("No se encontro la cantidad de usuarios esperada", usuarios.size() == 53);
+		Usuario usuario= dao.getUsuario("invitado");
+		Assert.assertTrue("error al buscar invitado", usuario.getIdUsuario()==57);
 		
 	}
 	

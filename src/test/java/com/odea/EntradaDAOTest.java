@@ -1,6 +1,5 @@
 package com.odea;
 
-import java.sql.Time;
 import java.util.Collection;
 import java.util.Date;
 
@@ -8,7 +7,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.Rollback;
 
 import com.odea.dao.EntradaDAO;
 import com.odea.domain.Actividad;
@@ -50,7 +48,7 @@ public class EntradaDAOTest extends AbstractTestCase {
 		Date fecha2 = new Date(System.currentTimeMillis()+900000000);
 		Proyecto proyecto2 = new Proyecto(2,"otroProyecto");
 		Usuario usuario2 = new Usuario(54, "unNombre", "algunPassword");
-		double duracion = 3 * 10000;
+		double duracion = 3;
 		
 		entrada = new Entrada(proyecto, actividad, duracion, "Nota", ticketBZ, ticketExt, sistemaExt, usuario, fecha);
 		
@@ -76,6 +74,13 @@ public class EntradaDAOTest extends AbstractTestCase {
 	public void getEntradasDeUsuarioTest(){
 		Collection<Entrada> col = dao.getEntradas(usuario, antes, despues);
 		Assert.assertNotNull("La cantidad de entradas encontradas no es la esperada", col);
+	}
+	
+	@Test
+	public void getTotalHoras(){
+		Usuario user= new Usuario(57,"invitado","invitado");
+		int total = dao.getHorasSemanales(user);
+		Assert.assertFalse("mal calculado", total<1);
 	}
 
 	
