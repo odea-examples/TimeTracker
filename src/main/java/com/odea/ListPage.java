@@ -37,7 +37,8 @@ public class ListPage extends BasePage {
             @Override
             protected void populateItem(ListItem<Entrada> item) {
             	
-            	//TODO: Ver el tema de la 'duracion', en la pagina sale un numero erroneo
+        //TODO: Ver el tema de la 'duracion', en la pagina sale un numero erroneo.
+        //TODO: el error es porque la duracion se ingresa por un double en el modo "HH,MM" y sale en forma de tiempo en milisegundos
             	
             	item.add(new Label("fecha", new PropertyModel<Entrada>(item.getModel(), "fecha")));
                 item.add(new Label("proyecto", new PropertyModel<Entrada>(item.getModel(), "proyecto")));

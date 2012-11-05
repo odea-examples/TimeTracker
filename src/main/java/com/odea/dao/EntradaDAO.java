@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.wicket.util.time.Time;
 import org.joda.time.DateTimeConstants;
 import org.joda.time.LocalDate;
 import org.slf4j.Logger;
@@ -18,6 +19,7 @@ import com.odea.domain.Actividad;
 import com.odea.domain.Entrada;
 import com.odea.domain.Proyecto;
 import com.odea.domain.Usuario;
+import com.sun.org.apache.xpath.internal.operations.Mod;
 
 @Repository
 public class EntradaDAO extends AbstractDAO {
@@ -95,13 +97,23 @@ public class EntradaDAO extends AbstractDAO {
 		Timestamp desdeSQL = new Timestamp(lunes.getTime());
 		Timestamp hastaSQL = new Timestamp(viernes.getTime());
 		
-		return  jdbcTemplate.query(sqlEntradas +" WHERE e.al_user_id = ? AND e.al_project_id = p.p_id AND e.al_activity_id = a.a_id AND e.al_user_id = u.u_id AND e.al_date BETWEEN ? AND ?", new RowMapperEntradas(), usuario.getIdUsuario(), desdeSQL, hastaSQL);
+		return  jdbcTemplate.query(sqlEntradas +" WHERE e.al_user_id = ? AND e.al_project_id = p.p_id AND e.al_activity_id = a.a_id AND e.al_user_id = u.u_id AND e.al_date BETWEEN ? AND ?", new RowMapper<Entrada>() {
+			@Override
+			public Entrada mapRow(ResultSet rs, int rowNum) throws SQLException {
+				Proyecto proyecto = new Proyecto(rs.getInt(1), rs.getString(10));
+				Actividad actividad = new Actividad(rs.getInt(2), rs.getString(13));
+				Usuario usuario = new Usuario(rs.getInt(8), rs.getString(11), rs.getString(12));
+				return new Entrada(proyecto, actividad, ((Time.valueOf(rs.getTime(3)).getMilliseconds() /3600000)-3), rs.getString(4), rs.getInt(5), rs.getString(6), rs.getString(7), usuario, rs.getDate(9));
+			}}, usuario.getIdUsuario(), desdeSQL, hastaSQL);
+		
+		//TODO: agregado un maprow aparte para la lista
+		};
 		
 	}
 	
 	
 	
-	private class RowMapperEntradas implements RowMapper<Entrada>{
+	class RowMapperEntradas implements RowMapper<Entrada>{
 		@Override
 		public Entrada mapRow(ResultSet rs, int rowNum) throws SQLException {
 			
@@ -112,4 +124,3 @@ public class EntradaDAO extends AbstractDAO {
 		}
 		
 	}
-}
