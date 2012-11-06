@@ -6,8 +6,8 @@
 			<span wicket:id="feedBackPanel"></span>
 
 			<div>
-				<b><label for="proyecto">Proyecto</label> </b>
-				<select wicket:id="proyecto" name="proyecto" style="width: 300px" />
+				<b><label for="proyecto">Proyecto</label> </b> <select
+					wicket:id="proyecto" name="proyecto" style="width: 300px" />
 			</div>
 
 			<div>
@@ -26,15 +26,15 @@
 			</div>
 
 			<div>
-				<b><label for="nota">Nota</label></b>
-				<br>
-				<b><textarea wicket:id="nota" name="nota" rows="10" cols="40"
-					scrolling="yes" style="margin-left:34px"/></b>
+				<b><label for="nota">Nota</label></b> <br> <b><textarea
+						wicket:id="nota" name="nota" rows="10" cols="40" scrolling="yes"
+						style="margin-left: 34px" /></b>
 			</div>
 
 			<div>
-				<b><label for="ticketBZ">Ticket Bugzilla</label> <input type="text"
-					wicket:id="ticketBZ" name="ticketBZ" style="width: 70px"></b>
+				<b><label for="ticketBZ">Ticket Bugzilla</label> <input
+					type="text" wicket:id="ticketBZ" name="ticketBZ"
+					style="width: 70px"></b>
 			</div>
 
 			<div>
@@ -48,25 +48,45 @@
 					type="text" wicket:id="ticketExterno" name="ticketExterno"
 					style="width: 70px" /></b>
 			</div>
-			
 
-			<input wicket:id="submit" value="Confirmar" type="submit"/>
-			
-			
 
-			<br> <br> <br>
-			
-			
-			<div>
-				<label for="horasAcumuladas">Horas Semanales</label>
-				<span wicket:id="horasAcumuladas" name="horasAcumuladas"></span>
-			</div>
-			
+			<input wicket:id="submit" value="Confirmar" type="submit" />
+
+
+
+			<br>
+			<br>
+			<br>
 
 		</ul>
 	</form>
-	
-	
-	<li><a wicket:id="link" class="nav"><h3><span>Ver entradas semanales</span></h3></a></li>
-	
+
+
+	<div wicket:id="listViewContainer">
+		<div>
+			<label for="horasAcumuladas">Horas Semanales</label>
+			<span wicket:id="horasAcumuladas" name="horasAcumuladas">[[horas acumuladas]]</span>
+		</div>
+		<h3>Entradas</h3>
+		<br />
+		<table border="3" style="font-family: family_name1, family_name2; color: black; font-weight: bold;">
+			<tr>
+				<th>Fecha</th>
+				<th>Proyecto</th>
+				<th>Actividad</th>
+				<th>Duracion</th>
+				<th>Ticket Bugzilla</th>
+			</tr>
+			<span>
+				<tr wicket:id="entradas">
+					<td><span wicket:id="fecha_entrada"></span></td>
+					<td><span wicket:id="proyecto_entrada"></span></td>
+					<td><span wicket:id="actividad_entrada"></span></td>
+					<td><span wicket:id="duracion_entrada"></span></td>
+					<td><span wicket:id="ticketBZ_entrada"></span></td>
+				</tr>
+			</span>
+		</table>
+	</div>
+
 </wicket:extend>

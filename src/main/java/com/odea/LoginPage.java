@@ -32,8 +32,7 @@ public class LoginPage extends BasePage {
     private String userName;
     private String passwd;
 
-    public LoginPage(final PageParameters parameters) {
-        super(parameters);
+    public LoginPage() {
         LoginForm loginForm = new LoginForm("loginForm");
         add(loginForm);
         
@@ -61,6 +60,7 @@ public class LoginPage extends BasePage {
                 protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
                     try{
                     	LoginPage.this.login();
+                    	this.continueToOriginalDestination();
                     	setResponsePage(FormPage.class);
                     }catch(AuthenticationException ex){
                     	error(ex.getMessage());

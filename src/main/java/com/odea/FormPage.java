@@ -3,18 +3,22 @@ package com.odea;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
@@ -31,28 +35,72 @@ import com.odea.services.DAOService;
 
 
 public class FormPage extends BasePage {
-	
 	@SpringBean
 	private transient DAOService daoService;
+	
 	private Usuario usuario;
 	
-	public FormPage() {
-		super();
-		
-		Subject subject = SecurityUtils.getSubject();
-		this.usuario = this.daoService.getUsuario(subject.getPrincipal().toString());
+	IModel<List<Entrada>> lstEntradasModel;
+	IModel<Integer> horasSemanalesModel;
 
+	WebMarkupContainer listViewContainer;
+	
+	public FormPage() {
+		Subject subject = SecurityUtils.getSubject();
+		
+		if(!subject.isAuthenticated()){
+			this.redirectToInterceptPage(new LoginPage());
+		}
+		
+		this.usuario = this.daoService.getUsuario(subject.getPrincipal().toString());
+		this.lstEntradasModel = new LoadableDetachableModel<List<Entrada>>() { 
+            @Override
+            protected List<Entrada> load() {
+            	return daoService.getEntradasSemanales(usuario);
+            }
+        };
+        
+        this.horasSemanalesModel = new LoadableDetachableModel<Integer>() {
+    		@Override
+    		protected Integer load() {
+    			return daoService.getHorasSemanales(usuario);
+    		}
+    		
+    	}; 
+    	
+		if(usuario == null){
+			this.setResponsePage(LoginPage.class);
+		}
+
+		this.listViewContainer = new WebMarkupContainer("listViewContainer");
+		this.listViewContainer.setOutputMarkupId(true);
 		
 		EntradaForm form = new EntradaForm("form"){
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, EntradaForm form) {
 				daoService.agregarEntrada(form.getModelObject(), usuario);
-				setResponsePage(ListPage.class);
+				target.add(listViewContainer);
 			}
 		};
 
-		
-		add(new BookmarkablePageLink<ListPage>("link",ListPage.class));
+		ListView<Entrada> entradasListView = new ListView<Entrada>("entradas", this.lstEntradasModel) {
+            @Override
+            protected void populateItem(ListItem<Entrada> item) {
+            	Entrada entrada = item.getModel().getObject();            	
+            	item.add(new Label("fecha_entrada", new Model<Date>(entrada.getFecha())));
+                item.add(new Label("proyecto_entrada", entrada.getProyecto().getNombre()));
+                item.add(new Label("actividad_entrada", entrada.getActividad().getNombre()));
+                item.add(new Label("duracion_entrada", new Model<Double>(entrada.getDuracion())));
+                item.add(new Label("ticketBZ_entrada", new Model<Integer>(entrada.getTicketBZ())));
+            }
+        };
+        
+		Label horasAcumuladas = new Label("horasAcumuladas", this.horasSemanalesModel);
+
+        listViewContainer.setOutputMarkupId(true);
+		listViewContainer.add(entradasListView);
+		listViewContainer.add(horasAcumuladas);
+		add(listViewContainer);
 		add(form);	
 	
 	}
@@ -61,15 +109,6 @@ public class FormPage extends BasePage {
 		IModel<Entrada> entradaModel = new CompoundPropertyModel<Entrada>(new Entrada());
 		DropDownChoice<Actividad> comboActividad;
 		DropDownChoice<Proyecto> comboProyecto; 	
-		
-		
-		IModel<Integer> horasSemanalesModel = new LoadableDetachableModel<Integer>() {
-			@Override
-			protected Integer load() {
-				return daoService.getHorasSemanales(usuario);
-			}
-			
-		}; 
 		
 		public EntradaForm(String id) {
 			super(id);
@@ -128,14 +167,7 @@ public class FormPage extends BasePage {
 			
 			final FeedbackPanel feedBackPanel = new FeedbackPanel("feedBackPanel");
 			feedBackPanel.setOutputMarkupId(true);
-			
-			final Label horasAcumuladas = new Label("horasAcumuladas", horasSemanalesModel);
-			horasAcumuladas.setOutputMarkupId(true);
-
-			
-			
-			
-			
+						
 			AjaxButton submit = new AjaxButton("submit", this) {
 			
 				private static final long serialVersionUID = 1L;
@@ -144,7 +176,7 @@ public class FormPage extends BasePage {
 				protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 					EntradaForm.this.onSubmit(target, (EntradaForm)form);								
 					target.add(feedBackPanel);
-					target.add(horasAcumuladas);
+					target.add(listViewContainer);
 				}
 
 				@Override
@@ -164,7 +196,6 @@ public class FormPage extends BasePage {
 			add(sistemaExterno);
 			add(ticketExt);
 			add(feedBackPanel);
-			add(horasAcumuladas);
 			add(submit);
 			this.setOutputMarkupId(true);
 

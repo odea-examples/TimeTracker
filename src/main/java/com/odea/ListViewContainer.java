@@ -3,8 +3,8 @@ package com.odea;
 import java.util.List;
 
 import org.apache.shiro.SecurityUtils;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.LoadableDetachableModel;
@@ -18,18 +18,19 @@ import com.odea.domain.Usuario;
 import com.odea.services.DAOService;
 
 
-public class ListPage extends BasePage {
+public class ListViewContainer extends WebMarkupContainer {
 	
-    private static final Logger logger = LoggerFactory.getLogger(ListPage.class);
-	
-    @SpringBean
+	@SpringBean
 	private DAOService daoService;
-	
-	
-	public ListPage(){
+
+    public ListViewContainer(String id) {
+    	super(id);
 		addEntradasModule();
-        add(new BookmarkablePageLink<FormPage>("link",FormPage.class));
-	}
+		
+    }
+
+	private static final Logger logger = LoggerFactory.getLogger(ListViewContainer.class);
+	
 	
 	
 	private void addEntradasModule() {
@@ -40,7 +41,7 @@ public class ListPage extends BasePage {
         //TODO: Ver el tema de la 'duracion', en la pagina sale un numero erroneo.
         //TODO: el error es porque la duracion se ingresa por un double en el modo "HH,MM" y sale en forma de tiempo en milisegundos
         // ya lo cambie para que salgan las horas solas
-            	
+
             	item.add(new Label("fecha", new PropertyModel<Entrada>(item.getModel(), "fecha")));
                 item.add(new Label("proyecto", new PropertyModel<Entrada>(item.getModel(), "proyecto")));
                 item.add(new Label("actividad", new PropertyModel<Entrada>(item.getModel(), "actividad")));
@@ -74,12 +75,6 @@ public class ListPage extends BasePage {
             	
                 List<Entrada> entradas = daoService.getEntradasSemanales(usuario);
                 
-                int totalhs = 0;
-                
-                for (Entrada entrada : entradas) {
-					totalhs += entrada.getDuracion();
-				}
- 
                 logger.debug("Busqueda finalizada");
                 
                 return entradas;
