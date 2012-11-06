@@ -61,7 +61,7 @@ public class LoginPage extends BasePage {
                     try{
                     	LoginPage.this.login();
                     	this.continueToOriginalDestination();
-                    	setResponsePage(FormPage.class);
+                    	setResponsePage(AgregarEntradasPage.class);
                     }catch(AuthenticationException ex){
                     	error(ex.getMessage());
                     }

@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
@@ -16,7 +17,6 @@ import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
@@ -25,6 +25,8 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.apache.wicket.validation.validator.PatternValidator;
+import org.apache.wicket.validation.validator.StringValidator;
 
 import com.odea.components.datepicker.DatePickerBehavior;
 import com.odea.domain.Actividad;
@@ -34,7 +36,7 @@ import com.odea.domain.Usuario;
 import com.odea.services.DAOService;
 
 
-public class FormPage extends BasePage {
+public class AgregarEntradasPage extends BasePage {
 	@SpringBean
 	private transient DAOService daoService;
 	
@@ -45,7 +47,7 @@ public class FormPage extends BasePage {
 
 	WebMarkupContainer listViewContainer;
 	
-	public FormPage() {
+	public AgregarEntradasPage() {
 		Subject subject = SecurityUtils.getSubject();
 		
 		if(!subject.isAuthenticated()){
@@ -82,11 +84,14 @@ public class FormPage extends BasePage {
 				target.add(listViewContainer);
 			}
 		};
-
+		
 		ListView<Entrada> entradasListView = new ListView<Entrada>("entradas", this.lstEntradasModel) {
             @Override
             protected void populateItem(ListItem<Entrada> item) {
-            	Entrada entrada = item.getModel().getObject();            	
+            	Entrada entrada = item.getModel().getObject();   
+            	if((item.getIndex() % 2) == 0){
+            		item.add(new AttributeModifier("class","odd"));
+            	}
             	item.add(new Label("fecha_entrada", new Model<Date>(entrada.getFecha())));
                 item.add(new Label("proyecto_entrada", entrada.getProyecto().getNombre()));
                 item.add(new Label("actividad_entrada", entrada.getActividad().getNombre()));
@@ -158,6 +163,9 @@ public class FormPage extends BasePage {
 			TextField<String> ticketExt = new TextField<String>("ticketExterno");
 			ticketExt.setRequired(true);
 			ticketExt.setLabel(Model.of("ID Ticket Externo"));
+			StringValidator ticketExtStringValidator = new StringValidator(1, 3);
+			ticketExt.add(new PatternValidator("[0-9]+"));
+			ticketExt.add(ticketExtStringValidator);
 			
 			TextField<Date> fecha = new TextField<Date>("fecha");
 			fecha.setRequired(true);

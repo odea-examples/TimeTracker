@@ -1,3 +1,6 @@
+<wicket:head>
+	<link href="styles/tables.css" rel="stylesheet" type="text/css" />
+</wicket:head>
 <wicket:extend>
 
 	<form wicket:id="form">
@@ -54,9 +57,9 @@
 
 
 
-			<br>
-			<br>
-			<br>
+			<br/>
+			<br/>
+			<br/>
 
 		</ul>
 	</form>
@@ -70,22 +73,24 @@
 		<h3>Entradas</h3>
 		<br />
 		<table>
-			<tr>
-				<th>Fecha</th>
-				<th>Proyecto</th>
-				<th>Actividad</th>
-				<th>Duracion</th>
-				<th>Ticket Bugzilla</th>
+			<thead>
+			<tr class="odd">
+				<th scope="col">Fecha</th>
+				<th scope="col">Proyecto</th>
+				<th scope="col">Actividad</th>
+				<th scope="col">Duracion</th>
+				<th scope="col">Ticket Bugzilla</th>
 			</tr>
-			<span>
+			</thead>
+			<tbody>
 				<tr wicket:id="entradas">
-					<td><span wicket:id="fecha_entrada"></span></td>
-					<td><span wicket:id="proyecto_entrada"></span></td>
-					<td><span wicket:id="actividad_entrada"></span></td>
-					<td><span wicket:id="duracion_entrada"></span></td>
-					<td><span wicket:id="ticketBZ_entrada"></span></td>
+					<td wicket:id="fecha_entrada"/>
+					<td wicket:id="proyecto_entrada"/>
+					<td wicket:id="actividad_entrada"/>
+					<td wicket:id="duracion_entrada"/>
+					<td wicket:id="ticketBZ_entrada"/>
 				</tr>
-			</span>
+			</tbody>	
 		</table>
 	</div>
 
