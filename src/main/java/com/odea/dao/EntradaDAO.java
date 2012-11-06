@@ -34,7 +34,7 @@ public class EntradaDAO extends AbstractDAO {
 		logger.debug("Insert attempt entrada");
 		
 		jdbcTemplate.update("INSERT INTO activity_log (al_project_id, al_activity_id, al_duration, al_comment, ticket_bz, issue_tracker_externo, ite_id, al_user_id, al_date) VALUES (?,?,?,?,?,?,?,?,?)", 
-				entrada.getProyecto().getIdProyecto(), entrada.getActividad().getIdActividad(), entrada.getDuracion() * 10000, 
+				entrada.getProyecto().getIdProyecto(), entrada.getActividad().getIdActividad(), new java.sql.Time((long) ((entrada.getDuracion()*3600000))-(3600000*21)), 
 				entrada.getNota(), entrada.getTicketBZ(), 
 				entrada.getTicketExterno(), entrada.getSistemaExterno(), (entrada.getUsuario().getIdUsuario())
 				, entrada.getFecha());
@@ -75,22 +75,22 @@ public class EntradaDAO extends AbstractDAO {
 	public int getHorasSemanales(Usuario usuario) //TODO: LA SUMA ES INCORRECTA CON EL METODO ANTERIOR (comentado)
 	{
 
-		//		LocalDate now = new LocalDate();
-//		LocalDate lu = now.withDayOfWeek(DateTimeConstants.MONDAY);
-//		LocalDate vie = now.withDayOfWeek(DateTimeConstants.FRIDAY);
-//		
-//		Date lunes = lu.toDateTimeAtStartOfDay().toDate();
-//		Date viernes = vie.toDateTimeAtStartOfDay().toDate();
-//	
-//		return jdbcTemplate.queryForInt("SELECT SUM(al_duration)/10000 FROM activity_log WHERE al_user_id=? and al_date BETWEEN ? AND ?",usuario.getIdUsuario(),lunes, viernes);
-        List<Entrada> entradas = getEntradasSemanales(usuario);
-        
-        int totalhs = 0;
-        
-        for (Entrada entrada : entradas) {
-			totalhs += entrada.getDuracion();
-		}	
-        return totalhs/1000;
+				LocalDate now = new LocalDate();
+		LocalDate lu = now.withDayOfWeek(DateTimeConstants.MONDAY);
+		LocalDate vie = now.withDayOfWeek(DateTimeConstants.FRIDAY);
+		
+		Date lunes = lu.toDateTimeAtStartOfDay().toDate();
+		Date viernes = vie.toDateTimeAtStartOfDay().toDate();
+	
+		return jdbcTemplate.queryForInt("SELECT HOUR(SEC_TO_TIME(SUM(TIME_TO_SEC(al_duration)))) FROM activity_log WHERE al_user_id=? and al_date BETWEEN ? AND ?",usuario.getIdUsuario(),lunes, viernes);
+//        List<Entrada> entradas = getEntradasSemanales(usuario);
+//        
+//        int totalhs = 0;
+//        
+//        for (Entrada entrada : entradas) {
+//			totalhs += entrada.getDuracion();
+//		}	
+//        return totalhs/1000;
 	}
 	
 	
