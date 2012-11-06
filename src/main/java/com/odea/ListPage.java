@@ -39,6 +39,7 @@ public class ListPage extends BasePage {
             	
         //TODO: Ver el tema de la 'duracion', en la pagina sale un numero erroneo.
         //TODO: el error es porque la duracion se ingresa por un double en el modo "HH,MM" y sale en forma de tiempo en milisegundos
+        // ya lo cambie para que salgan las horas solas
             	
             	item.add(new Label("fecha", new PropertyModel<Entrada>(item.getModel(), "fecha")));
                 item.add(new Label("proyecto", new PropertyModel<Entrada>(item.getModel(), "proyecto")));
@@ -72,6 +73,12 @@ public class ListPage extends BasePage {
             	logger.debug("Buscando entradas de usuario - " + usuario);
             	
                 List<Entrada> entradas = daoService.getEntradasSemanales(usuario);
+                
+                int totalhs = 0;
+                
+                for (Entrada entrada : entradas) {
+					totalhs += entrada.getDuracion();
+				}
  
                 logger.debug("Busqueda finalizada");
                 

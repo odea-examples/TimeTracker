@@ -19,7 +19,6 @@ import com.odea.domain.Actividad;
 import com.odea.domain.Entrada;
 import com.odea.domain.Proyecto;
 import com.odea.domain.Usuario;
-import com.sun.org.apache.xpath.internal.operations.Mod;
 
 @Repository
 public class EntradaDAO extends AbstractDAO {
@@ -40,7 +39,7 @@ public class EntradaDAO extends AbstractDAO {
 				entrada.getTicketExterno(), entrada.getSistemaExterno(), (entrada.getUsuario().getIdUsuario())
 				, entrada.getFecha());
 		
-		logger.debug("Entrada agregada - " + new Date(System.currentTimeMillis()));
+		logger.debug(entrada.getDuracion() +"Entrada agregada - " + new Date(System.currentTimeMillis()));
 		
 	}
 	
@@ -73,16 +72,25 @@ public class EntradaDAO extends AbstractDAO {
 		return entradas;
 	}
 	
-	public int getHorasSemanales(Usuario usuario)
+	public int getHorasSemanales(Usuario usuario) //TODO: LA SUMA ES INCORRECTA CON EL METODO ANTERIOR (comentado)
 	{
-		LocalDate now = new LocalDate();
-		LocalDate lu = now.withDayOfWeek(DateTimeConstants.MONDAY);
-		LocalDate vie = now.withDayOfWeek(DateTimeConstants.FRIDAY);
-		
-		Date lunes = lu.toDateTimeAtStartOfDay().toDate();
-		Date viernes = vie.toDateTimeAtStartOfDay().toDate();
-	
-		return jdbcTemplate.queryForInt("SELECT SUM(al_duration)/10000 FROM activity_log WHERE al_user_id=? and al_date BETWEEN ? AND ?",usuario.getIdUsuario(),lunes, viernes);
+
+		//		LocalDate now = new LocalDate();
+//		LocalDate lu = now.withDayOfWeek(DateTimeConstants.MONDAY);
+//		LocalDate vie = now.withDayOfWeek(DateTimeConstants.FRIDAY);
+//		
+//		Date lunes = lu.toDateTimeAtStartOfDay().toDate();
+//		Date viernes = vie.toDateTimeAtStartOfDay().toDate();
+//	
+//		return jdbcTemplate.queryForInt("SELECT SUM(al_duration)/10000 FROM activity_log WHERE al_user_id=? and al_date BETWEEN ? AND ?",usuario.getIdUsuario(),lunes, viernes);
+        List<Entrada> entradas = getEntradasSemanales(usuario);
+        
+        int totalhs = 0;
+        
+        for (Entrada entrada : entradas) {
+			totalhs += entrada.getDuracion();
+		}	
+        return totalhs/1000;
 	}
 	
 	
@@ -103,8 +111,9 @@ public class EntradaDAO extends AbstractDAO {
 				Proyecto proyecto = new Proyecto(rs.getInt(1), rs.getString(10));
 				Actividad actividad = new Actividad(rs.getInt(2), rs.getString(13));
 				Usuario usuario = new Usuario(rs.getInt(8), rs.getString(11), rs.getString(12));
-				return new Entrada(proyecto, actividad, ((Time.valueOf(rs.getTime(3)).getMilliseconds() /3600000)-3), rs.getString(4), rs.getInt(5), rs.getString(6), rs.getString(7), usuario, rs.getDate(9));
+				return new Entrada(proyecto, actividad, ((Time.valueOf(rs.getTime(3)).getMilliseconds() /3600)-3000), rs.getString(4), rs.getInt(5), rs.getString(6), rs.getString(7), usuario, rs.getDate(9));
 			}}, usuario.getIdUsuario(), desdeSQL, hastaSQL);
+		
 		
 		//TODO: agregado un maprow aparte para la lista
 		};

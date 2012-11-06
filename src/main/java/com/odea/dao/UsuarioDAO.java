@@ -23,6 +23,13 @@ public class UsuarioDAO extends AbstractDAO {
 	}
 	
 	
+	public Usuario getUsuario(int id){
+		Usuario usuario = jdbcTemplate.queryForObject("SELECT u.u_id, u.u_name, u.u_password FROM users u WHERE u_id=?", 
+				new RowMapperUsuario(), id);
+		
+		return usuario;
+	}
+	
 	public void agregarUsuario(Usuario usuario){
 		
 		jdbcTemplate.update("INSERT INTO users(u_id,u_login,u_password) VALUES (?,?,?)", usuario.getIdUsuario(), usuario.getNombre(), usuario.getPassword());

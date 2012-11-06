@@ -16,20 +16,6 @@ public class UsuarioDAOTest extends AbstractTestCase {
 	private UsuarioDAO dao;
 	
 	@Test
-	public void getUsuarioTest() {
-		Usuario usuario = new Usuario(1,"Sebastian", "miPassword");
-		dao.agregarUsuario(usuario);
-		
-//		try {
-//			dao.agregarUsuario(usuario);			
-//		} catch (Exception e) {
-//			Assert.fail("Ocurrio un error en el metodo agregarUsuario");
-//			System.out.println(e);
-//		}
-		
-	}
-	
-	@Test
 	public void getUsuariosDeProyectoTest() {
 		Proyecto proyecto = new Proyecto(1, "Proyecto");
 		
