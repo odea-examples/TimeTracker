@@ -25,6 +25,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.apache.wicket.validation.validator.PatternValidator;
 
 import com.odea.components.datepicker.DatePickerBehavior;
 import com.odea.domain.Actividad;
@@ -35,6 +36,7 @@ import com.odea.services.DAOService;
 
 
 public class AgregarEntradasPage extends BasePage {
+
 	@SpringBean
 	private transient DAOService daoService;
 	
@@ -68,8 +70,7 @@ public class AgregarEntradasPage extends BasePage {
     		
     	}; 
     	
-//    	DropDownChoice<String> dropChoiceSelector = new DropDownChoice<String>("dropChoiceSelector");
-    	
+
 		if(usuario == null){
 			this.setResponsePage(LoginPage.class);
 		}
@@ -106,7 +107,6 @@ public class AgregarEntradasPage extends BasePage {
 		listViewContainer.add(entradasListView);
 		listViewContainer.add(horasAcumuladas);
 		add(listViewContainer);
-//		add(dropChoiceSelector);
 		add(form);	
 	
 	}
@@ -180,6 +180,7 @@ public class AgregarEntradasPage extends BasePage {
 			ticketExt.setLabel(Model.of("ID Ticket Externo"));
 			ticketExt.setOutputMarkupId(true);
 			ticketExt.setEnabled(false);
+			ticketExt.add(new PatternValidator("^[a-z0-9_-]{1,15}$"));
 			
 	
 			
