@@ -16,7 +16,7 @@ import com.odea.domain.Usuario;
 public class UsuarioDAO extends AbstractDAO {
 	
 	public Usuario getUsuario(String nombre){
-		Usuario usuario = jdbcTemplate.queryForObject("SELECT u.u_id, u.u_name, u.u_password FROM users u WHERE u_name=?", 
+		Usuario usuario = jdbcTemplate.queryForObject("SELECT u.u_id, u.u_login, u.u_password FROM users u WHERE u_login=?", 
 				new RowMapperUsuario(), nombre);
 		
 		return usuario;
@@ -24,7 +24,7 @@ public class UsuarioDAO extends AbstractDAO {
 	
 	
 	public Usuario getUsuario(int id){
-		Usuario usuario = jdbcTemplate.queryForObject("SELECT u.u_id, u.u_name, u.u_password FROM users u WHERE u_id=?", 
+		Usuario usuario = jdbcTemplate.queryForObject("SELECT u.u_id, u.u_login, u.u_password FROM users u WHERE u_id=?", 
 				new RowMapperUsuario(), id);
 		
 		return usuario;
@@ -36,7 +36,7 @@ public class UsuarioDAO extends AbstractDAO {
 	}
 	
 	public Collection<Usuario> getUsuarios(Proyecto proyecto){
-		Collection<Usuario> usuarios = jdbcTemplate.query("SELECT u.u_id, u.u_name, u.u_password FROM users u, user_bind up WHERE u.u_id=up.ub_id_u AND up.ub_id_p = ?", 
+		Collection<Usuario> usuarios = jdbcTemplate.query("SELECT u.u_id, u.u_login, u.u_password FROM users u, user_bind up WHERE u.u_id=up.ub_id_u AND up.ub_id_p = ?", 
 				new RowMapperUsuario(), proyecto.getIdProyecto());
 		
 		return usuarios;
@@ -45,7 +45,7 @@ public class UsuarioDAO extends AbstractDAO {
 	
 		
 	public Usuario getUsuario(String nombre, String password){
-		Usuario usuario = jdbcTemplate.queryForObject("SELECT u_id, u_name, u_password FROM users WHERE u_name=? AND u_password=password(?)", 
+		Usuario usuario = jdbcTemplate.queryForObject("SELECT u_id, u_login, u_password FROM users WHERE u_login=? AND u_password=password(?)", 
 				new RowMapperUsuario(), nombre, password);
 		
 		return usuario;

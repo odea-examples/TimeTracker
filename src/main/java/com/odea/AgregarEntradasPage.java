@@ -70,6 +70,8 @@ public class AgregarEntradasPage extends BasePage {
     		
     	}; 
     	
+//    	DropDownChoice<String> dropChoiceSelector = new DropDownChoice<String>("dropChoiceSelector");
+    	
 		if(usuario == null){
 			this.setResponsePage(LoginPage.class);
 		}
@@ -106,6 +108,7 @@ public class AgregarEntradasPage extends BasePage {
 		listViewContainer.add(entradasListView);
 		listViewContainer.add(horasAcumuladas);
 		add(listViewContainer);
+//		add(dropChoiceSelector);
 		add(form);	
 	
 	}

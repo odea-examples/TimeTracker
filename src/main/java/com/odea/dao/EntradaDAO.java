@@ -27,7 +27,7 @@ public class EntradaDAO extends AbstractDAO {
 
 	
 	
-	private String sqlEntradas = "SELECT e.al_project_id, e.al_activity_id, e.al_duration, e.al_comment, e.ticket_bz, e.ite_id, e.issue_tracker_externo, e.al_user_id, e.al_date, p.p_name , u.u_name, u.u_password, a.a_name FROM activity_log e, projects p, activities a, users u";
+	private String sqlEntradas = "SELECT e.al_project_id, e.al_activity_id, e.al_duration, e.al_comment, e.ticket_bz, e.ite_id, e.issue_tracker_externo, e.al_user_id, e.al_date, p.p_name , u.u_login, u.u_password, a.a_name FROM activity_log e, projects p, activities a, users u";
 
 	public void agregarEntrada(Entrada entrada){
 
@@ -72,7 +72,7 @@ public class EntradaDAO extends AbstractDAO {
 		return entradas;
 	}
 	
-	public int getHorasSemanales(Usuario usuario) //TODO: LA SUMA ES INCORRECTA CON EL METODO ANTERIOR (comentado)
+	public int getHorasSemanales(Usuario usuario) 
 	{
 
 				LocalDate now = new LocalDate();
