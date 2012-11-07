@@ -124,8 +124,8 @@ public class AgregarEntradasPage extends BasePage {
 			
 
 			ArrayList<String> sistExt = new ArrayList<String>();
-			sistExt.add("1"); //sistema de incidencias de YPF
-			sistExt.add("2"); // sistema geminis de YPF
+			sistExt.add("Sistema de Incidencias de YPF"); //sistema de incidencias de YPF
+			sistExt.add("Sistema Geminis de YPF"); // sistema geminis de YPF
 			
 			
 			
@@ -150,7 +150,7 @@ public class AgregarEntradasPage extends BasePage {
 			
 			
 			DropDownChoice<String> sistemaExterno = new DropDownChoice<String>("sistemaExterno", sistExt);
-			sistemaExterno.setRequired(true);
+			//sistemaExterno.setRequired(true);
 			sistemaExterno.setLabel(Model.of("Sistema Externo"));
 			
 			TextArea<String> nota = new TextArea<String>("nota");
@@ -164,11 +164,11 @@ public class AgregarEntradasPage extends BasePage {
 			ticketBZ.setLabel(Model.of("Ticket Bugzilla"));
 			 
 			TextField<String> ticketExt = new TextField<String>("ticketExterno");
-			ticketExt.setRequired(true);
+			//ticketExt.setRequired(true);
 			ticketExt.setLabel(Model.of("ID Ticket Externo"));
-			StringValidator ticketExtStringValidator = new StringValidator(1, 3);
-			ticketExt.add(new PatternValidator("[0-9]+"));
-			ticketExt.add(ticketExtStringValidator);
+			//StringValidator ticketExtStringValidator = new StringValidator(1, 3);
+			//ticketExt.add(new PatternValidator("[0-9]+"));
+			//ticketExt.add(ticketExtStringValidator);
 			
 			TextField<Date> fecha = new TextField<Date>("fecha");
 			fecha.setRequired(true);

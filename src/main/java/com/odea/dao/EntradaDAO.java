@@ -31,12 +31,14 @@ public class EntradaDAO extends AbstractDAO {
 
 	public void agregarEntrada(Entrada entrada){
 
+		String sistemaExterno = this.parsearSistemaExterno(entrada.getSistemaExterno()); 
+
 		logger.debug("Insert attempt entrada");
 		
 		jdbcTemplate.update("INSERT INTO activity_log (al_project_id, al_activity_id, al_duration, al_comment, ticket_bz, issue_tracker_externo, ite_id, al_user_id, al_date) VALUES (?,?,?,?,?,?,?,?,?)", 
 				entrada.getProyecto().getIdProyecto(), entrada.getActividad().getIdActividad(), new java.sql.Time((long) ((entrada.getDuracion()*3600000))-(3600000*21)), 
 				entrada.getNota(), entrada.getTicketBZ(), 
-				entrada.getTicketExterno(), entrada.getSistemaExterno(), (entrada.getUsuario().getIdUsuario())
+				sistemaExterno, entrada.getTicketExterno(), (entrada.getUsuario().getIdUsuario())
 				, entrada.getFecha());
 		
 		logger.debug(entrada.getDuracion() +"Entrada agregada - " + new Date(System.currentTimeMillis()));
@@ -93,6 +95,21 @@ public class EntradaDAO extends AbstractDAO {
 //        return totalhs/1000;
 	}
 	
+	private String parsearSistemaExterno(String sistemaExterno) {
+		String resultado = null;
+		
+		if (sistemaExterno != null) {
+			if (sistemaExterno.equals("Sistema de Incidencias de YPF")) {
+				resultado = "SIY";
+			}
+			if (sistemaExterno.equals("Sistema Geminis de YPF")) {
+				resultado = "SGY";
+			}			
+		}
+		
+		return resultado;
+	}
+	
 	
 	public List<Entrada> getEntradasSemanales(Usuario usuario){
 		LocalDate now = new LocalDate();
@@ -121,6 +138,8 @@ public class EntradaDAO extends AbstractDAO {
 	}
 	
 	
+	
+
 	
 	class RowMapperEntradas implements RowMapper<Entrada>{
 		@Override
