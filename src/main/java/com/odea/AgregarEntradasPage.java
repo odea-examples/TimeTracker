@@ -25,8 +25,6 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.apache.wicket.validation.validator.PatternValidator;
-import org.apache.wicket.validation.validator.StringValidator;
 
 import com.odea.components.datepicker.DatePickerBehavior;
 import com.odea.domain.Actividad;
@@ -114,9 +112,11 @@ public class AgregarEntradasPage extends BasePage {
 	}
 
 	public abstract class EntradaForm extends Form<Entrada> {
-		IModel<Entrada> entradaModel = new CompoundPropertyModel<Entrada>(new Entrada());
-		DropDownChoice<Actividad> comboActividad;
-		DropDownChoice<Proyecto> comboProyecto; 	
+		public IModel<Entrada> entradaModel = new CompoundPropertyModel<Entrada>(new Entrada());
+		public DropDownChoice<Actividad> comboActividad;
+		public DropDownChoice<Proyecto> comboProyecto; 	
+		public TextField<String> ticketExt;
+		public DropDownChoice<String> sistemaExterno;
 		
 		public EntradaForm(String id) {
 			super(id);
@@ -149,26 +149,39 @@ public class AgregarEntradasPage extends BasePage {
 			this.comboActividad.setLabel(Model.of("Actividad"));
 			
 			
-			DropDownChoice<String> sistemaExterno = new DropDownChoice<String>("sistemaExterno", sistExt);
-			//sistemaExterno.setRequired(true);
+			sistemaExterno = new DropDownChoice<String>("sistemaExterno", sistExt);
 			sistemaExterno.setLabel(Model.of("Sistema Externo"));
+			sistemaExterno.setOutputMarkupId(true);
+			sistemaExterno.add(new AjaxFormComponentUpdatingBehavior("onchange"){
+				@Override
+				protected void onUpdate(AjaxRequestTarget target) {
+					if (EntradaForm.this.sistemaExterno.getValue() == "") {
+						EntradaForm.this.ticketExt.setEnabled(false);
+					} else {
+						EntradaForm.this.ticketExt.setEnabled(true);
+					}
+					target.add(EntradaForm.this.ticketExt);
+				}
+				
+			});
 			
 			TextArea<String> nota = new TextArea<String>("nota");
 			
 			TextField<Double> duracion = new TextField<Double>("duracion");
 			duracion.setRequired(true);
 			duracion.setLabel(Model.of("Duracion"));
+			
 			 
 			TextField<String> ticketBZ = new TextField<String>("ticketBZ");
 			ticketBZ.setRequired(true);
 			ticketBZ.setLabel(Model.of("Ticket Bugzilla"));
 			 
-			TextField<String> ticketExt = new TextField<String>("ticketExterno");
-			//ticketExt.setRequired(true);
+			ticketExt = new TextField<String>("ticketExterno");
 			ticketExt.setLabel(Model.of("ID Ticket Externo"));
-			//StringValidator ticketExtStringValidator = new StringValidator(1, 3);
-			//ticketExt.add(new PatternValidator("[0-9]+"));
-			//ticketExt.add(ticketExtStringValidator);
+			ticketExt.setOutputMarkupId(true);
+			ticketExt.setEnabled(false);
+			
+	
 			
 			TextField<Date> fecha = new TextField<Date>("fecha");
 			fecha.setRequired(true);
