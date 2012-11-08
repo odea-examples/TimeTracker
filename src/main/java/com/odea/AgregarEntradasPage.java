@@ -25,6 +25,8 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.apache.wicket.validation.IValidatable;
+import org.apache.wicket.validation.IValidator;
 import org.apache.wicket.validation.validator.PatternValidator;
 
 import com.odea.components.datepicker.DatePickerBehavior;
@@ -181,8 +183,6 @@ public class AgregarEntradasPage extends BasePage {
 			ticketExt.setOutputMarkupId(true);
 			ticketExt.setEnabled(false);
 			ticketExt.add(new PatternValidator("^[a-z0-9_-]{1,15}$"));
-			
-	
 			
 			TextField<Date> fecha = new TextField<Date>("fecha");
 			fecha.setRequired(true);

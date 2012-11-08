@@ -87,6 +87,9 @@ public class DAOService {
 
 	public void agregarEntrada(Entrada entrada, Usuario usuario) {
 		entrada.setUsuario(usuario);
+		if (entrada.getSistemaExterno()==null){
+			entrada.setTicketExterno(null);
+		}
 		this.entradaDAO.agregarEntrada(entrada);
 	}
 	
