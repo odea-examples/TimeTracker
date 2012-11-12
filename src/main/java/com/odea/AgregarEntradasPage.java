@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import odea.behavior.NoInputBehavior;
+import odea.behavior.OnlyNumbersBehavior;
+
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.apache.wicket.AttributeModifier;
@@ -28,6 +31,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.IValidatable;
 import org.apache.wicket.validation.IValidator;
 import org.apache.wicket.validation.validator.PatternValidator;
+import org.springframework.core.type.filter.RegexPatternTypeFilter;
 
 import com.odea.components.datepicker.DatePickerBehavior;
 import com.odea.domain.Actividad;
@@ -119,6 +123,8 @@ public class AgregarEntradasPage extends BasePage {
 		public DropDownChoice<Proyecto> comboProyecto; 	
 		public TextField<String> ticketExt;
 		public DropDownChoice<String> sistemaExterno;
+		public TextField<Double> duracion;
+		
 		
 		public EntradaForm(String id) {
 			super(id);
@@ -169,9 +175,11 @@ public class AgregarEntradasPage extends BasePage {
 			
 			TextArea<String> nota = new TextArea<String>("nota");
 			
-			TextField<Double> duracion = new TextField<Double>("duracion");
+			duracion = new TextField<Double>("duracion");
 			duracion.setRequired(true);
+			duracion.setOutputMarkupId(true);
 			duracion.setLabel(Model.of("Duracion"));
+			duracion.add(new OnlyNumbersBehavior(duracion.getMarkupId()));
 			
 			 
 			TextField<String> ticketBZ = new TextField<String>("ticketBZ");
@@ -184,14 +192,17 @@ public class AgregarEntradasPage extends BasePage {
 			ticketExt.setEnabled(false);
 			ticketExt.add(new PatternValidator("^[a-z0-9_-]{1,15}$"));
 			
+			
 			TextField<Date> fecha = new TextField<Date>("fecha");
 			fecha.setRequired(true);
 			fecha.add(new DatePickerBehavior(fecha.getMarkupId()));
 			fecha.setOutputMarkupId(true);
 			fecha.setLabel(Model.of("Fecha"));
+			fecha.add(new NoInputBehavior());
 			
 			final FeedbackPanel feedBackPanel = new FeedbackPanel("feedBackPanel");
 			feedBackPanel.setOutputMarkupId(true);
+			
 						
 			AjaxButton submit = new AjaxButton("submit", this) {
 			
@@ -207,10 +218,11 @@ public class AgregarEntradasPage extends BasePage {
 				@Override
 				protected void onError(AjaxRequestTarget target, Form<?> form) {
 					target.add(feedBackPanel);
-					
 				}
 				
 			};
+
+			
 			
 			add(comboProyecto);
 			add(comboActividad);
