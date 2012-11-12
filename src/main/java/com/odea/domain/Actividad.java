@@ -2,7 +2,7 @@ package com.odea.domain;
 
 import java.io.Serializable;
 
-public class Actividad implements Serializable {
+public class Actividad implements Serializable, Comparable<Actividad> {
 	
 	
 	private int idActividad;
@@ -22,7 +22,8 @@ public class Actividad implements Serializable {
 		this.idActividad = idActividad;
 	}
 	public String getNombre() {
-		return nombre;
+        String ret = nombre.replaceAll("Ã³","ó").replaceAll("Ã©","é").replaceAll("Ã±","ñ").replaceAll("Ã¡","á").replaceAll("Ã­","í") ;
+        return ret;
 	}
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
@@ -30,7 +31,15 @@ public class Actividad implements Serializable {
 
 	@Override
 	public String toString() {
-		return this.nombre;
+        return this.getNombre();
+    }
+
+
+
+
+	@Override
+	public int compareTo(Actividad otraActividad) {
+		return this.getNombre().compareTo(otraActividad.getNombre());
 	}
 	
 	

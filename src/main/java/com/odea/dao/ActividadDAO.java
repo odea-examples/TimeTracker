@@ -2,6 +2,8 @@ package com.odea.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -26,6 +28,8 @@ public class ActividadDAO extends AbstractDAO {
 		List<Actividad> actividades = jdbcTemplate.query("SELECT pa.ab_id_a, a.a_name FROM activities a, activity_bind pa WHERE pa.ab_id_a = a.a_id AND pa.ab_id_p = ?", new RowMapperActividad(), proyecto.getIdProyecto());
 		
 		logger.debug("Busqueda exitosa");
+		
+		Collections.sort(actividades);
 		
 		return actividades;
 	}
