@@ -43,6 +43,22 @@ public class ActividadDAO extends AbstractDAO {
 		return actividades;
 	}
 	
+	public void insertarActividad(Actividad actividad){
+		System.out.println("si");
+		System.out.println(actividad.getIdActividad());
+		jdbcTemplate.update("INSERT INTO activities(a_id,a_name) VALUES(?,?)", actividad.getIdActividad(), actividad.getNombre());
+	}
+	
+	public void relacionarActividad(Actividad actividad, List<Integer> proyectos){
+		for (int i = 0; i < proyectos.size(); i++) {
+			jdbcTemplate.update("INSERT INTO activity_bind(ab_id_a,ab_id_p) VALUES (?,?)",actividad.getIdActividad(),i);
+		}
+	}
+	
+	public void borrarActividad(Actividad actividad){
+		jdbcTemplate.update("DELETE FROM activities WHERE a_id=?",actividad.getIdActividad());
+		jdbcTemplate.update("DELETE FROM activity_bind WHERE ab_id_a=?",actividad.getIdActividad());
+	}
 	
 	
 	
