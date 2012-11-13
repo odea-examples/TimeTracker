@@ -6,7 +6,8 @@ import java.util.Date;
 import java.util.List;
 
 import odea.behavior.NoInputBehavior;
-import odea.behavior.OnlyNumbersBehavior;
+import odea.behavior.NumberCommaBehavior;
+import odea.behavior.OnlyNumberBehavior;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -132,8 +133,8 @@ public class AgregarEntradasPage extends BasePage {
 			
 
 			ArrayList<String> sistExt = new ArrayList<String>();
-			sistExt.add("Sistema de Incidencias de YPF"); //sistema de incidencias de YPF
-			sistExt.add("Sistema Geminis de YPF"); // sistema geminis de YPF
+			sistExt.add("Sistema de Incidencias de YPF");
+			sistExt.add("Sistema Geminis de YPF");
 			
 			
 			
@@ -179,13 +180,15 @@ public class AgregarEntradasPage extends BasePage {
 			duracion.setRequired(true);
 			duracion.setOutputMarkupId(true);
 			duracion.setLabel(Model.of("Duracion"));
-			duracion.add(new OnlyNumbersBehavior(duracion.getMarkupId()));
+			duracion.add(new NumberCommaBehavior(duracion.getMarkupId()));
 			
 			 
 			TextField<String> ticketBZ = new TextField<String>("ticketBZ");
 			ticketBZ.setRequired(true);
 			ticketBZ.setLabel(Model.of("Ticket Bugzilla"));
+			ticketBZ.add(new OnlyNumberBehavior(ticketBZ.getMarkupId()));
 			 
+			
 			ticketExt = new TextField<String>("ticketExterno");
 			ticketExt.setLabel(Model.of("ID Ticket Externo"));
 			ticketExt.setOutputMarkupId(true);

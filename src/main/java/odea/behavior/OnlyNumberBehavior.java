@@ -11,8 +11,8 @@ import org.apache.wicket.markup.head.JavaScriptContentHeaderItem;
 import org.apache.wicket.request.Response;
 import org.apache.wicket.util.template.PackageTextTemplate;
 
-public class OnlyNumbersBehavior extends Behavior {
-
+public class OnlyNumberBehavior extends Behavior {
+	
 	@Override
 	public void bind(Component component) {
 		component.add(new AttributeAppender("onkeypress", "return isNumberKey(event);"));
@@ -20,7 +20,7 @@ public class OnlyNumbersBehavior extends Behavior {
 
     String jQuerySelector;
 
-    public OnlyNumbersBehavior(String id){
+    public OnlyNumberBehavior(String id){
         this.jQuerySelector = "#" + id;
     }
 	
@@ -29,7 +29,7 @@ public class OnlyNumbersBehavior extends Behavior {
         super.afterRender(component);
         Map<String, CharSequence> map = new HashMap<String, CharSequence>(1);
         map.put("selector", this.jQuerySelector);
-        PackageTextTemplate packageTextTemplate = new PackageTextTemplate(getClass(), "onlynumbersbehavior.js", "text/javascript");
+        PackageTextTemplate packageTextTemplate = new PackageTextTemplate(getClass(), "onlynumberbehavior.js", "text/javascript");
         String resource = packageTextTemplate.asString(map);
         String uniqueName = Long.toString(Calendar.getInstance().getTimeInMillis());
         Response response = component.getResponse();
@@ -39,5 +39,4 @@ public class OnlyNumbersBehavior extends Behavior {
 	
 	
 	
-
 }
