@@ -49,6 +49,11 @@ public class ActividadDAO extends AbstractDAO {
 		jdbcTemplate.update("INSERT INTO activities(a_id,a_name) VALUES(?,?)", actividad.getIdActividad(), actividad.getNombre());
 	}
 	
+	public void insertarNuevaActividad(Actividad actividad){
+		int id = jdbcTemplate.queryForInt("SELECT max(a_id) FROM activities") + 1;
+		jdbcTemplate.update("INSERT INTO activities(a_id,a_name) VALUES(?,?)", id, actividad.getNombre());
+	}
+	
 	public void relacionarActividad(Actividad actividad, List<Integer> proyectos){
 		for (int i = 0; i < proyectos.size(); i++) {
 			jdbcTemplate.update("INSERT INTO activity_bind(ab_id_a,ab_id_p) VALUES (?,?)",actividad.getIdActividad(),i);

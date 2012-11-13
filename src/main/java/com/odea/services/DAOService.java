@@ -38,6 +38,11 @@ public class DAOService {
 		return actividadDAO.getActividades();
 	}
 	
+	public void insertarNuevaActividad(Actividad actividad)
+	{
+		actividadDAO.insertarNuevaActividad(actividad);
+	}
+	
 	
 	
 	public void agregarEntrada(Entrada entrada){

@@ -8,13 +8,17 @@ public class Actividad implements Serializable, Comparable<Actividad> {
 	private int idActividad;
 	private String nombre;
 	
+	public Actividad() {
+		
+	}
+	
 	public Actividad(int idActividad, String nombre) {
 		this.idActividad = idActividad;
 		this.nombre = nombre;
 	}
 	
 	
-	
+
 	public int getIdActividad() {
 		return idActividad;
 	}
@@ -22,7 +26,12 @@ public class Actividad implements Serializable, Comparable<Actividad> {
 		this.idActividad = idActividad;
 	}
 	public String getNombre() {
-        String ret = nombre.replaceAll("Ã³","ó").replaceAll("Ã©","é").replaceAll("Ã±","ñ").replaceAll("Ã¡","á").replaceAll("Ã­","í") ;
+		String ret = null;
+		
+		if (nombre != null) {
+			ret = nombre.replaceAll("Ã³","ó").replaceAll("Ã©","é").replaceAll("Ã±","ñ").replaceAll("Ã¡","á").replaceAll("Ã­","í") ;			
+		}
+		
         return ret;
 	}
 	public void setNombre(String nombre) {

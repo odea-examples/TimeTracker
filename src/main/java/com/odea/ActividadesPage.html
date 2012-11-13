@@ -1,8 +1,35 @@
+<wicket:head>
+	<link href="styles/tables.css" rel="stylesheet" type="text/css" />
+</wicket:head>
+
 <wicket:extend>
 
-esto tiene que tener varios links aca llevando a
-alta
-baja
-modificacion
+	<form wicket:id="form">
+		
+		<div>
+			<b><label for="nombre">Actividad</label></b>
+			<input type="text"	wicket:id="nombre" name="nombre" style="width: 100px"/>
+		</div>
+		
+		<input wicket:id="submit" value="Confirmar" type="submit" />
+		
+	</form>
+	
+	<div wicket:id="listViewContainer">
+		<h3>Actividades</h3>
+		<br/>
+		<table>
+			<thead>
+			<tr class="odd">
+				<th scope="col">Actividad</th>
+			</tr>
+			</thead>
+			<tbody>
+				<tr wicket:id="actividades">
+					<td wicket:id="nombre_actividad"/>
+				</tr>
+			</tbody>	
+		</table>
+	</div>
 
 </wicket:extend>
