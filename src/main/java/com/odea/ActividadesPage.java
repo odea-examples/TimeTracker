@@ -6,6 +6,7 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -19,7 +20,6 @@ import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.odea.AgregarEntradasPage.EntradaForm;
 import com.odea.domain.Actividad;
 import com.odea.services.DAOService;
 
@@ -70,9 +70,23 @@ public class ActividadesPage extends BasePage{
             	if((item.getIndex() % 2) == 0){
             		item.add(new AttributeModifier("class","odd"));
             	}
+            	
             	item.add(new Label("nombre_actividad", new Model<String>(actividad.getNombre())));
-            }
-        };
+            	
+            	
+                item.add(new AjaxLink<Actividad>("deleteLink",new Model<Actividad>(actividad)) {
+                    @Override
+                    public void onClick(AjaxRequestTarget ajaxRequestTarget) {
+                        daoService.borrarActividad(getModelObject());
+                        ajaxRequestTarget.add(getPage().get("listViewContainer"));
+                    }
+
+                });
+            	
+            	
+            };
+            	
+		};
 		
    
 		listViewContainer.add(actividadListView);

@@ -43,6 +43,10 @@ public class DAOService {
 		actividadDAO.insertarNuevaActividad(actividad);
 	}
 	
+	public void borrarActividad(Actividad actividad){
+		actividadDAO.borrarActividad(actividad);
+	}
+	
 	
 	
 	public void agregarEntrada(Entrada entrada){
