@@ -1,4 +1,4 @@
-package odea.behavior;
+package com.odea.behavior.numberComma;
 
 import java.util.Calendar;
 import java.util.HashMap;
@@ -15,7 +15,7 @@ public class NumberCommaBehavior extends Behavior {
 
 	@Override
 	public void bind(Component component) {
-		component.add(new AttributeAppender("onkeypress", "return isNumberKey(event);"));
+		component.add(new AttributeAppender("onkeypress", "return isNumberCommaKey(event);"));
 	}
 
     String jQuerySelector;

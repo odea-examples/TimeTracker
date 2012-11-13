@@ -1,4 +1,4 @@
-package odea.behavior;
+package com.odea.behavior.onlyNumber;
 
 import java.util.Calendar;
 import java.util.HashMap;

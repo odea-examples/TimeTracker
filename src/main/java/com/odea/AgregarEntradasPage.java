@@ -5,9 +5,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import odea.behavior.NoInputBehavior;
-import odea.behavior.NumberCommaBehavior;
-import odea.behavior.OnlyNumberBehavior;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -34,6 +31,9 @@ import org.apache.wicket.validation.IValidator;
 import org.apache.wicket.validation.validator.PatternValidator;
 import org.springframework.core.type.filter.RegexPatternTypeFilter;
 
+import com.odea.behavior.noInput.NoInputBehavior;
+import com.odea.behavior.numberComma.NumberCommaBehavior;
+import com.odea.behavior.onlyNumber.OnlyNumberBehavior;
 import com.odea.components.datepicker.DatePickerBehavior;
 import com.odea.domain.Actividad;
 import com.odea.domain.Entrada;
@@ -125,7 +125,7 @@ public class AgregarEntradasPage extends BasePage {
 		public TextField<String> ticketExt;
 		public DropDownChoice<String> sistemaExterno;
 		public TextField<Double> duracion;
-		
+		public TextField<String> ticketBZ;
 		
 		public EntradaForm(String id) {
 			super(id);
@@ -183,8 +183,9 @@ public class AgregarEntradasPage extends BasePage {
 			duracion.add(new NumberCommaBehavior(duracion.getMarkupId()));
 			
 			 
-			TextField<String> ticketBZ = new TextField<String>("ticketBZ");
+			ticketBZ = new TextField<String>("ticketBZ");
 			ticketBZ.setRequired(true);
+			ticketBZ.setOutputMarkupId(true);
 			ticketBZ.setLabel(Model.of("Ticket Bugzilla"));
 			ticketBZ.add(new OnlyNumberBehavior(ticketBZ.getMarkupId()));
 			 

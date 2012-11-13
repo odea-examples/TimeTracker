@@ -1,4 +1,4 @@
-package odea.behavior;
+package com.odea.behavior.noInput;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.behavior.AttributeAppender;
