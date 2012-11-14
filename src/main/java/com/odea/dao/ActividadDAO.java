@@ -40,6 +40,8 @@ public class ActividadDAO extends AbstractDAO {
 	{
 		List<Actividad> actividades = jdbcTemplate.query("SELECT a.a_id, a.a_name FROM activities a", new RowMapperActividad());
 		
+		Collections.sort(actividades);
+		
 		return actividades;
 	}
 	
