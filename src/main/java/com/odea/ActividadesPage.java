@@ -12,12 +12,14 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.RequiredTextField;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.odea.domain.Actividad;
@@ -31,8 +33,15 @@ public class ActividadesPage extends BasePage{
 	
 	public WebMarkupContainer listViewContainer;
 	public IModel<List<Actividad>>lstActividadesModel;
+	public ActividadFormModify formModify;
+	public int idFinal;
+	public WebMarkupContainer panel1;
+	
+	
 	
 	public ActividadesPage() {
+		
+		
 		
 		Subject subject = SecurityUtils.getSubject();
 		
@@ -46,7 +55,8 @@ public class ActividadesPage extends BasePage{
             	return daoService.getActividades();
             }
         };
-		
+	
+        
 		ActividadForm form = new ActividadForm("form"){
 
 			@Override
@@ -57,8 +67,16 @@ public class ActividadesPage extends BasePage{
 			
 		};
 		
+		panel1 = new WebMarkupContainer("panel1");
+		this.panel1.setOutputMarkupPlaceholderTag(true);
+		this.panel1.setOutputMarkupId(true);		
+		this.panel1.setVisible(false);
+		
+		
 		this.listViewContainer = new WebMarkupContainer("listViewContainer");
 		this.listViewContainer.setOutputMarkupId(true);
+		
+		
 		
 		ListView<Actividad> actividadListView = new ListView<Actividad>("actividades", this.lstActividadesModel) {
 
@@ -82,10 +100,34 @@ public class ActividadesPage extends BasePage{
                     }
 
                 });
-            	
-            	
+                item.add(new AjaxLink<Actividad>("modifyLink",new Model<Actividad>(actividad)) {
+                    @Override
+                    public void onClick(AjaxRequestTarget ajaxRequestTarget) {
+                        
+                        panel1.setVisible(true);
+                        formModify.setVisibilityAllowed(true);
+//                        ajaxRequestTarget.add(panel1);
+                        
+                        idFinal= getModelObject().getIdActividad();
+                        ajaxRequestTarget.add(getPage().get("listViewContainer"));
+                    }
+
+                });
             };
             	
+		};
+		
+		
+		formModify = new ActividadFormModify("formModify"){
+
+			@Override
+			protected void onSubmit(AjaxRequestTarget target, ActividadFormModify formModify) {
+				daoService.modificarActividad(formModify.getModelObject().getNombre(), idFinal );
+				panel1.setVisible(false);
+//				target.add(panel1);
+				target.add(listViewContainer);
+			}
+			
 		};
 		
    
@@ -93,7 +135,9 @@ public class ActividadesPage extends BasePage{
 	
 		add(listViewContainer);
 		add(form);
+		add(formModify);
 	}
+	
 	
 	public abstract class ActividadForm extends Form<Actividad> {
 
@@ -125,6 +169,39 @@ public class ActividadesPage extends BasePage{
 		}
 		
 		protected abstract void onSubmit(AjaxRequestTarget target, ActividadForm form);
+	}
+	public abstract class ActividadFormModify extends Form<Actividad> {
+
+		public IModel<Actividad> actividadModel = new CompoundPropertyModel<Actividad>(new Actividad());
+		public RequiredTextField<String> nombre;
+		
+		public ActividadFormModify(String id) {
+			super(id);
+			
+			this.setOutputMarkupPlaceholderTag(true);
+			this.setOutputMarkupId(true);
+			this.setDefaultModel(this.actividadModel);
+
+			
+			nombre = new RequiredTextField<String>("nombre");
+			nombre.setOutputMarkupId(true);
+			
+			AjaxButton submitButton1 = new AjaxButton("submit1", this) {
+				
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+					ActividadFormModify.this.onSubmit(target, (ActividadFormModify)form);
+				}
+				
+			};
+			
+			add(nombre);
+			add(submitButton1);
+		}
+		
+		protected abstract void onSubmit(AjaxRequestTarget target, ActividadFormModify form);
 	}
 
 }

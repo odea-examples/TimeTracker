@@ -47,6 +47,9 @@ public class DAOService {
 		actividadDAO.borrarActividad(actividad);
 	}
 	
+	public void modificarActividad(String nombre, int idFinal) {
+		actividadDAO.modificarActividad(nombre, idFinal);
+	}
 	
 	
 	public void agregarEntrada(Entrada entrada){
@@ -105,5 +108,7 @@ public class DAOService {
 	public List<Entrada> getEntradasSemanales(Usuario usuario){
 		return entradaDAO.getEntradasSemanales(usuario);
 	}
+
+
 
 }

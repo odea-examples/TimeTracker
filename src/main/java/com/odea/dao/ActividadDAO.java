@@ -67,7 +67,9 @@ public class ActividadDAO extends AbstractDAO {
 		jdbcTemplate.update("DELETE FROM activity_bind WHERE ab_id_a=?",actividad.getIdActividad());
 	}
 	
-	
+	public void modificarActividad(String nombre, int idFinal) {
+		jdbcTemplate.update("UPDATE activities SET a_name=? WHERE a_id=?",nombre, idFinal);
+	}
 	
 	private class RowMapperActividad implements RowMapper<Actividad>{
 		@Override

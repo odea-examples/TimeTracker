@@ -30,9 +30,21 @@
 				<tr wicket:id="actividades">
 					<td wicket:id="nombre_actividad"/>
 					<td><a wicket:id="deleteLink" class="more" href="#"><img src="images/delete.png" alt="delete"/></a></td>
+					<td><a wicket:id="modifyLink" class="more" href="#"><img src="images/img.png" alt="img"/></a></td>
 				</tr>
 			</tbody>	
 		</table>
+	</div>
+	<div wicket;id="panel">
+	<form wicket:id="formModify" >
+	
+		<div>
+			<b><label for="nombre">Elija nuevo nombre</label></b>
+			<input type="text"	wicket:id="nombre" name="nombre" style="width: 200px"/>
+			<input wicket:id="submit1" value="Aceptar" type="submit" />
+		</div>
+	
+	</form>
 	</div>
 
 </wicket:extend>
