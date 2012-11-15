@@ -71,6 +71,11 @@ public class ActividadDAO extends AbstractDAO {
 		jdbcTemplate.update("UPDATE activities SET a_name=? WHERE a_id=?",nombre, idFinal);
 	}
 	
+	public List<Actividad> actividadesOrigen(List<Actividad> Todas, List<Actividad> delProyecto){
+		Todas.removeAll(delProyecto);
+		return Todas;
+	}
+	
 	private class RowMapperActividad implements RowMapper<Actividad>{
 		@Override
 		public Actividad mapRow(ResultSet rs, int rowNum) throws SQLException {

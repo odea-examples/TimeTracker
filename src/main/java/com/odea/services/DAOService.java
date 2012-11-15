@@ -51,6 +51,10 @@ public class DAOService {
 		actividadDAO.modificarActividad(nombre, idFinal);
 	}
 	
+	public List<Actividad> actividadesOrigen(List<Actividad> Todas, List<Actividad> delProyecto){
+		return actividadDAO.actividadesOrigen(Todas, delProyecto);
+	}
+	
 	
 	public void agregarEntrada(Entrada entrada){
 		entradaDAO.agregarEntrada(entrada);
@@ -78,6 +82,10 @@ public class DAOService {
 	
 	public List<Proyecto> getProyectos(){
 		return proyectoDAO.getProyectos();
+	}
+	
+	public void actualizarRelaciones(int idProyecto, List<Actividad> borrar, List<Actividad> añadir){
+		proyectoDAO.actualizarRelaciones(idProyecto, borrar, añadir);
 	}
 	
 	
