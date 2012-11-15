@@ -16,7 +16,6 @@ import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.odea.domain.Actividad;
 import com.odea.domain.Proyecto;
 import com.odea.services.DAOService;
 
@@ -58,12 +57,11 @@ public class ProyectosPage extends BasePage {
             	
             	item.add(new Label("nombre_proyecto", new Model<String>(proyecto.getNombre())));
             	
-            	
                 item.add(new AjaxLink<Proyecto>("deleteLink",new Model<Proyecto>(proyecto)) {
                     @Override
                     public void onClick(AjaxRequestTarget ajaxRequestTarget) {
-                        //TODO: borrarProyecto
-                        ajaxRequestTarget.add(getPage().get("listViewContainer"));
+                        daoService.borrarProyecto(getModelObject());
+                        ajaxRequestTarget.add(listViewContainer);
                     }
 
                 });
@@ -71,12 +69,10 @@ public class ProyectosPage extends BasePage {
                     @Override
                     public void onClick(AjaxRequestTarget ajaxRequestTarget) {
                         //TODO: modificarProyecto
-                    	ajaxRequestTarget.add(getPage().get("listViewContainer"));
+                    	ajaxRequestTarget.add(listViewContainer);
                     }
-
                 });
             };
-            	
 		};
 		
 		this.listViewContainer = new WebMarkupContainer("listViewContainer");

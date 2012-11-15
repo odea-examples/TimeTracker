@@ -88,6 +88,11 @@ public class DAOService {
 		proyectoDAO.actualizarRelaciones(idProyecto, borrar, añadir);
 	}
 	
+	public void borrarProyecto(Proyecto proyecto)
+	{
+		proyectoDAO.borrarProyecto(proyecto);
+	}
+	
 	
 	public Usuario getUsuario(String nombre){
 		return usuarioDAO.getUsuario(nombre);
