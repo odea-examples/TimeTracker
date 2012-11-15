@@ -1,0 +1,26 @@
+<wicket:head>
+	<link href="styles/tables.css" rel="stylesheet" type="text/css" />
+</wicket:head>
+<wicket:extend>
+
+	<div wicket:id="listViewContainer">
+		<br/>
+		<table>
+			<thead>
+			<tr class="odd">
+				<th scope="col">Proyectos</th>
+				<th scope="col">Borrar</th>
+				<th scope="col">Modificar</th>
+			</tr>
+			</thead>
+			<tbody>
+				<tr wicket:id="proyectos">
+					<td wicket:id="nombre_proyecto"/>
+					<td><a wicket:id="deleteLink" class="more" href="#"><img src="images/delete.png" alt="delete"/></a></td>
+					<td><a wicket:id="modifyLink" class="more" href="#"><img src="images/modificarIcon.gif" alt="modificarIcon"/></a></td>
+				</tr>
+			</tbody>	
+		</table>
+	</div>	
+
+</wicket:extend>
