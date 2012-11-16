@@ -3,11 +3,12 @@
     <a wicket:id="link" class="nav"><h3><span>Volver a actividades</span></h3></a>
     <div wicket:id="feedback" class="feedback">feedback</div>
     <form wicket:id="form">
-        <ul>
-            <li>Título</li>
-            <li class="full"><input wicket:id="nombre" type="text" ></li>
-            <input wicket:id="idActividad" type="text">
-            <li><input wicket:id="submit" value="Guardar" type="submit"></li>
+        <ul>        
+            <div>
+				<b><label for="nombre">Nombre Actividad:</label></b> <input type="text"
+					wicket:id="nombre" name="nombre" style="width: 300px" />
+			</div>
+            <input wicket:id="submit" value="Guardar" type="submit">
         </ul>
 
     </form>

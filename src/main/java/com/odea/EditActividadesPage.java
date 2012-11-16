@@ -55,7 +55,6 @@ public class EditActividadesPage extends BasePage{
                 else{
                 	daoService.modificarActividad(a.getNombre(),a.getIdActividad());
                 }
-                //TODO ver si usamos insertoupdate o, insery e update aparte.
                 setResponsePage(ActividadesPage.class);
             }
         };
