@@ -70,6 +70,7 @@ public class EditActividadesPage extends BasePage{
         
 
         RequiredTextField<String> nombre = new RequiredTextField<String>("nombre");
+        nombre.add(new FocusOnLoadBehavior());
         RequiredTextField<Integer> idActividad = new RequiredTextField<Integer>("idActividad"); 
         idActividad.setEnabled(false);
         idActividad.setVisible(false);

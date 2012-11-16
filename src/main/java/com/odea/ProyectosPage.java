@@ -45,7 +45,6 @@ public class ProyectosPage extends BasePage {
             }
         };
         
-        add(new BookmarkablePageLink<EditProyectosPage>("link", EditProyectosPage.class, new PageParameters().add("proyectoId", 0).add("proyectoNombre", "")));
         
         
         ListView<Proyecto> proyectoListView = new ListView<Proyecto>("proyectos", this.lstProyectosModel) {
@@ -87,7 +86,9 @@ public class ProyectosPage extends BasePage {
 		this.listViewContainer.setOutputMarkupId(true);
 		this.listViewContainer.add(proyectoListView);
 
-		
+	
+		//add(new BookmarkablePageLink<EditProyectosPage>("link", EditProyectosPage.class, new PageParameters().add("proyectoId", 0).add("proyectoNombre", "")));
+		add(new BookmarkablePageLink<EditProyectosPage>("link", EditProyectosPage.class));
 		add(listViewContainer);
         
 		

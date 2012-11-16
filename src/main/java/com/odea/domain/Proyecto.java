@@ -8,6 +8,9 @@ public class Proyecto implements Serializable, Comparable<Proyecto> {
 	private String nombre;
 	private int idProyecto;
 	
+	public Proyecto() {
+		
+	}
 	
 	public Proyecto(int idProyecto, String nombre) {
 		this.nombre = nombre;

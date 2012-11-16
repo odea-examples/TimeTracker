@@ -15,7 +15,10 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.ListMultipleChoice;
-import org.apache.wicket.markup.html.form.RequiredTextField;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.markup.html.panel.FeedbackPanel;
+import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.PropertyModel;
@@ -30,8 +33,7 @@ public class EditProyectosPage extends BasePage {
 	
 	@SpringBean
 	public transient DAOService daoService;
-
-	
+	private IModel<Proyecto> proyectoModel;
 	
 	public EditProyectosPage(){
 		
@@ -39,26 +41,44 @@ public class EditProyectosPage extends BasePage {
 		if(!subject.isAuthenticated()){
 			this.redirectToInterceptPage(new LoginPage());
 		}
-	
 		
-		EditForm form = new EditForm("form") {
-
-			@Override
-			protected void onSubmit(AjaxRequestTarget target, EditForm form) {
-				//TODO: onSubmit()
-			}
-			
-		};
-		
-		form.setOutputMarkupId(true);
+		this.proyectoModel = new CompoundPropertyModel<Proyecto>(new LoadableDetachableModel<Proyecto>() {
+            @Override
+            protected Proyecto load() {
+                return new Proyecto(0, "");
+            }
+        });
 	
-		add(form);
+        this.preparePage();    	
 		
 	}
 	
 	
 	  
-	  public abstract class EditForm extends Form<Proyecto> {
+	private void preparePage() {
+		  add(new BookmarkablePageLink<ProyectosPage>("link",ProyectosPage.class));
+	      add(new FeedbackPanel("feedback"));
+
+			
+			EditForm form = new EditForm("form", proyectoModel) {
+
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				protected void onSubmit(AjaxRequestTarget target, EditForm form) {
+					setResponsePage(ProyectosPage.class);
+				}
+				
+			};
+			
+			form.setOutputMarkupId(true);
+		
+			add(form);		
+	}
+
+
+
+	public abstract class EditForm extends Form<Proyecto> {
 		  
 		  public List<Actividad> selectedOriginals;
 		  public List<Actividad> selectedDestinations;
@@ -66,12 +86,12 @@ public class EditProyectosPage extends BasePage {
 		  public ListMultipleChoice<Actividad> destinations;
 			
 		  
-			public EditForm(String id) {
+			public EditForm(String id, IModel<Proyecto> proyecto) {
 				
-				super(id);
+				super(id, proyecto);
 				
-				//RequiredTextField<String> nombre = new RequiredTextField<String>("nombre");
-				//this.getModelObject().setNombre("nombreDePrueba");
+				TextField<String> nombre = new TextField<String>("nombre");
+				nombre.add(new FocusOnLoadBehavior());
 				
 				originals = new ListMultipleChoice<Actividad>("originals", 
 						new PropertyModel(this, "selectedOriginals"), new LoadableDetachableModel() {
@@ -107,20 +127,20 @@ public class EditProyectosPage extends BasePage {
 						      }
 						};
 					
-//						AjaxButton submit = new AjaxButton("submit") {
-//							@Override
-//						    protected void onSubmit(AjaxRequestTarget target, Form form) {
-//						        EditForm.this.onSubmit(target, (EditForm)form);
-//						        daoService.agregarProyecto(EditForm.this.getModelObject(), destinations.getModelObject());
-//						    }
-//						};
+						AjaxButton submit = new AjaxButton("submit") {
+							@Override
+						    protected void onSubmit(AjaxRequestTarget target, Form form) {
+						        EditForm.this.onSubmit(target, (EditForm)form);
+						        daoService.agregarProyecto(EditForm.this.getModelObject(), destinations.getModelObject());
+						    }
+						};
 						
-					//add(nombre);
+					add(nombre);
 					add(originals);
 					add(destinations);
 					add(addButton);
 					add(removeButton);
-					//add(submit);
+					add(submit);
 				
 			}
 			

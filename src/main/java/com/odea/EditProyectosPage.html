@@ -1,12 +1,17 @@
 <wicket:extend>
 
+	<a wicket:id="link" class="nav"><h3><span>Volver a proyectos</span></h3></a>
+	<br>
+	<div wicket:id="feedback" class="feedback">feedback</div>
 
 	<form wicket:id="form">
 
-<!-- 		<div> -->
-<!-- 			<b><label for="nombre">Nombre</label></b> <input type="text" -->
-<!-- 			wicket:id="nombre" name="nombre" style="width: 100px" /> -->
-<!-- 		</div> -->
+		<div>
+			<b><label for="nombre">Nombre</label></b> <input type="text"
+			wicket:id="nombre" name="nombre" style="width: 200px" />
+		</div>
+		
+		<br>
 	
 		<select wicket:id="originals" size="7" style="width:200px;"></select>
 		<select wicket:id="destinations" size="7" style="width:200px;"></select>
@@ -17,7 +22,7 @@
 		
 		<br>
 		<br>
-<!-- 		<input wicket:id="submit" value="Confirmar" type="submit"/> -->
+		<input wicket:id="submit" value="Confirmar" type="submit"/>
 	
 	</form>
 	
