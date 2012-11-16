@@ -1,13 +1,8 @@
 package com.odea;
 
-import java.util.Arrays;
-
 import org.apache.wicket.markup.html.form.Button;
-import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.RadioChoice;
 import org.apache.wicket.markup.html.form.RequiredTextField;
-import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
@@ -16,9 +11,7 @@ import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.googlecode.wicket.jquery.ui.form.button.AjaxButton;
 import com.odea.domain.Actividad;
-import com.odea.domain.Proyecto;
 import com.odea.services.DAOService;
 
 public class EditActividadesPage extends BasePage{

@@ -22,6 +22,7 @@ public class WicketApplication extends WebApplication
         mountPage("formulario", AgregarEntradasPage.class);
         mountPage("actividades", ActividadesPage.class);
         mountPage("proyectos", ProyectosPage.class);
+        mountPage("editProyectos", EditProyectosPage.class);
 
         getComponentInstantiationListeners().add(new SpringComponentInjector(this));
         
