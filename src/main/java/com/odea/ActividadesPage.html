@@ -3,20 +3,8 @@
 </wicket:head>
 
 <wicket:extend>
-
-	<form wicket:id="form">
-		
-		<h3>Agregar nuevas actividades</h3>
-		
-		<div>
-			<b><label for="nombre">Actividad</label></b>
-			<input type="text"	wicket:id="nombre" name="nombre" style="width: 200px"/>
-			<input wicket:id="submit" value="Agregar" type="submit" />
-		</div>
-		
-		
-	</form>
 	
+	<a wicket:id="link" href="#" class="nav">Nueva Actividad</a>
 	<div wicket:id="listViewContainer">
 		<br/>
 		<table>
@@ -34,20 +22,6 @@
 				</tr>
 			</tbody>	
 		</table>
-	</div>
-	
-	
-	
-	<div wicket;id="panel">
-	<form wicket:id="formModify" >
-	
-		<div>
-			<b><label for="nombre">Elija nuevo nombre</label></b>
-			<input type="text"	wicket:id="nombre" name="nombre" style="width: 200px"/>
-			<input wicket:id="submit1" value="Aceptar" type="submit" />
-		</div>
-	
-	</form>
 	</div>
 
 </wicket:extend>
