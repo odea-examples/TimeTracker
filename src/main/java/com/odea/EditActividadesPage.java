@@ -70,6 +70,8 @@ public class EditActividadesPage extends BasePage{
 
         RequiredTextField<String> nombre = new RequiredTextField<String>("nombre");
         RequiredTextField<Integer> idActividad = new RequiredTextField<Integer>("idActividad"); 
+        idActividad.setEnabled(false);
+        idActividad.setVisible(false);
         Button submit = new Button("submit");
 //        AjaxButton button= new AjaxButton("submit") {
 //		};
