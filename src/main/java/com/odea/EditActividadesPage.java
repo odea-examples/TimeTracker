@@ -14,6 +14,7 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.googlecode.wicket.jquery.ui.form.button.AjaxButton;
 import com.odea.domain.Actividad;
@@ -22,7 +23,9 @@ import com.odea.services.DAOService;
 
 public class EditActividadesPage extends BasePage{
 	
+	@SpringBean
 	private transient DAOService daoService;
+	
     private IModel<Actividad> actividadModel;
     
     public EditActividadesPage(){
@@ -53,6 +56,12 @@ public class EditActividadesPage extends BasePage{
             @Override
             protected void onSubmit() {
                 Actividad a = getModelObject();
+                if(a.getIdActividad()==0){
+                	daoService.insertarNuevaActividad(a);
+                }
+                else{
+                	daoService.modificarActividad(a.getNombre(),a.getIdActividad());
+                }
                 //TODO ver si usamos insertoupdate o, insery e update aparte.
                 setResponsePage(ActividadesPage.class);
             }
