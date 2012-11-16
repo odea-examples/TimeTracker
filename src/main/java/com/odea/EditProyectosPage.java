@@ -9,10 +9,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.ListMultipleChoice;
+import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.PropertyModel;
@@ -26,23 +29,36 @@ import com.odea.services.DAOService;
 public class EditProyectosPage extends BasePage {
 	
 	@SpringBean
-	private transient DAOService daoService;
-	private IModel<Proyecto> proyectoModel;
+	public transient DAOService daoService;
 
 	
 	
 	public EditProyectosPage(){
 		
-		EditForm form = new EditForm("form");
-		form.setOutputMarkupId(true);
+		Subject subject = SecurityUtils.getSubject();
+		if(!subject.isAuthenticated()){
+			this.redirectToInterceptPage(new LoginPage());
+		}
+	
 		
+		EditForm form = new EditForm("form") {
+
+			@Override
+			protected void onSubmit(AjaxRequestTarget target, EditForm form) {
+				//TODO: onSubmit()
+			}
+			
+		};
+		
+		form.setOutputMarkupId(true);
+	
 		add(form);
 		
 	}
 	
 	
 	  
-	  public class EditForm extends Form<Proyecto> {
+	  public abstract class EditForm extends Form<Proyecto> {
 		  
 		  public List<Actividad> selectedOriginals;
 		  public List<Actividad> selectedDestinations;
@@ -51,7 +67,11 @@ public class EditProyectosPage extends BasePage {
 			
 		  
 			public EditForm(String id) {
+				
 				super(id);
+				
+				//RequiredTextField<String> nombre = new RequiredTextField<String>("nombre");
+				//this.getModelObject().setNombre("nombreDePrueba");
 				
 				originals = new ListMultipleChoice<Actividad>("originals", 
 						new PropertyModel(this, "selectedOriginals"), new LoadableDetachableModel() {
@@ -81,18 +101,29 @@ public class EditProyectosPage extends BasePage {
 						};
 	
 						AjaxButton removeButton = new AjaxButton("removeButton") {
-						       @Override
+						      @Override
 						      protected void onSubmit(AjaxRequestTarget target, Form form) {
 						           update(target, selectedDestinations, destinations, originals);
 						      }
 						};
-						    
+					
+//						AjaxButton submit = new AjaxButton("submit") {
+//							@Override
+//						    protected void onSubmit(AjaxRequestTarget target, Form form) {
+//						        EditForm.this.onSubmit(target, (EditForm)form);
+//						        daoService.agregarProyecto(EditForm.this.getModelObject(), destinations.getModelObject());
+//						    }
+//						};
+						
+					//add(nombre);
 					add(originals);
 					add(destinations);
 					add(addButton);
 					add(removeButton);
+					//add(submit);
 				
 			}
+			
 		
 			private void update(AjaxRequestTarget target, List<Actividad> selections, ListMultipleChoice<Actividad> from, ListMultipleChoice<Actividad> to) {
 				List<Actividad> choicesTo;
@@ -119,7 +150,8 @@ public class EditProyectosPage extends BasePage {
 				target.add(to);
 			    target.add(from);    
 			}
-		  
-		  
+
+			protected abstract void onSubmit(AjaxRequestTarget target, EditForm form);
+			
 	  }
 }

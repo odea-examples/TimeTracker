@@ -93,6 +93,9 @@ public class DAOService {
 		proyectoDAO.borrarProyecto(proyecto);
 	}
 	
+	public void agregarProyecto(Proyecto proyecto, Collection<Actividad> actividadesRelacionadas) {
+		proyectoDAO.agregarProyecto(proyecto, actividadesRelacionadas);
+	}
 	
 	public Usuario getUsuario(String nombre){
 		return usuarioDAO.getUsuario(nombre);

@@ -45,6 +45,8 @@ public class ProyectosPage extends BasePage {
             }
         };
         
+        add(new BookmarkablePageLink<EditProyectosPage>("link", EditProyectosPage.class, new PageParameters().add("proyectoId", 0).add("proyectoNombre", "")));
+        
         
         ListView<Proyecto> proyectoListView = new ListView<Proyecto>("proyectos", this.lstProyectosModel) {
 
@@ -73,7 +75,7 @@ public class ProyectosPage extends BasePage {
                 item.add(new AjaxLink<Proyecto>("modifyLink",new Model<Proyecto>(proyecto)) {
                     @Override
                     public void onClick(AjaxRequestTarget ajaxRequestTarget) {
-                        //TODO: modificarProyecto
+                        
                     	
                     	ajaxRequestTarget.add(listViewContainer);
                     }

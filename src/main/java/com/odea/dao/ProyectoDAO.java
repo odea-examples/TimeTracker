@@ -2,12 +2,12 @@ package com.odea.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
 
 import com.odea.domain.Actividad;
 import com.odea.domain.Proyecto;
@@ -29,8 +29,8 @@ public class ProyectoDAO extends AbstractDAO {
 		return proyectos;
 	}
 	
-	public void cambiarNombreProyecto(String nombre, int id){
-		jdbcTemplate.update("UPDATE projects SET p_name=? WHERE p_id=?",nombre,id);
+	public void cambiarNombreProyecto(Proyecto proyecto){
+		jdbcTemplate.update("UPDATE projects SET p_name=? WHERE p_id=?",proyecto.getNombre(),proyecto.getIdProyecto());
 		
 	}
 	
@@ -38,6 +38,8 @@ public class ProyectoDAO extends AbstractDAO {
 		jdbcTemplate.update("DELETE FROM projects WHERE p_id=?",proyecto.getIdProyecto());
 		jdbcTemplate.update("DELETE FROM activity_bind WHERE ab_id_p=?",proyecto.getIdProyecto());
 	}
+	
+	
 	
 	public void actualizarRelaciones(int idProyecto, List<Actividad> borrar, List<Actividad> añadir){
 		
@@ -59,6 +61,20 @@ public class ProyectoDAO extends AbstractDAO {
 		
 		
 		
+	}
+	
+	public void agregarProyecto(Proyecto proyecto, Collection<Actividad> actividadesRelacionadas) {
+		
+		int idProyecto = jdbcTemplate.queryForInt("SELECT max(p_id) FROM projects")+1;
+		
+		jdbcTemplate.update("INSERT INTO projects (p_id, p_name) VALUES (?,?)", idProyecto, proyecto.getNombre());
+		
+		
+		int idActivityBind = jdbcTemplate.queryForInt("SELECT max(ab_id) FROM activity_bind")+1;
+		
+		for (Actividad actividad : actividadesRelacionadas) {
+			jdbcTemplate.update("INSERT INTO activity_bind (ab_id, ab_id_a, ab_id_p) VALUES (?,?,?)", idActivityBind, actividad.getIdActividad(), proyecto.getIdProyecto());			
+		}
 	}
 	
 }

@@ -1,5 +1,7 @@
 package com.odea;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.RequiredTextField;
@@ -22,6 +24,13 @@ public class EditActividadesPage extends BasePage{
     private IModel<Actividad> actividadModel;
     
     public EditActividadesPage(){
+    	
+    	Subject subject = SecurityUtils.getSubject();
+		
+		if(!subject.isAuthenticated()){
+			this.redirectToInterceptPage(new LoginPage());
+		}
+    	
         this.actividadModel = new CompoundPropertyModel<Actividad>(new LoadableDetachableModel<Actividad>() {
             @Override
             protected Actividad load() {
