@@ -6,6 +6,7 @@
 package com.odea;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -76,19 +77,15 @@ public class EditProyectosPage extends BasePage {
 						      @Override
 						      protected void onSubmit(AjaxRequestTarget target, Form form) {
 						            update(target,selectedOriginals, originals, destinations);
-						            target.add(originals);
-						            target.add(destinations);
 						      }
-						    };
+						};
 	
 						AjaxButton removeButton = new AjaxButton("removeButton") {
 						       @Override
 						      protected void onSubmit(AjaxRequestTarget target, Form form) {
 						           update(target, selectedDestinations, destinations, originals);
-						           target.add(destinations);
-						           target.add(originals);
 						      }
-						    };
+						};
 						    
 					add(originals);
 					add(destinations);
@@ -98,18 +95,30 @@ public class EditProyectosPage extends BasePage {
 			}
 		
 			private void update(AjaxRequestTarget target, List<Actividad> selections, ListMultipleChoice<Actividad> from, ListMultipleChoice<Actividad> to) {
-			    for (Actividad destination : selections) {
-			      List<Actividad> choices = (List<Actividad>) from.getChoices();
-			      if (!to.getChoices().contains(destination)) {
-			       // to.getChoices().add(destination);
-			        to.getModelObject().add(destination);
-			        choices.remove(destination);
-			        from.setChoices(choices);
-			      }
+				List<Actividad> choicesTo;
+				List<Actividad> choicesFrom;
+				
+				for (Actividad destination : selections) {
+					choicesTo = (List<Actividad>) to.getChoices();
+					
+					if (!choicesTo.contains(destination)) {
+						choicesTo.add(destination);
+						
+						choicesFrom = (List<Actividad>) from.getChoices();
+						choicesFrom.remove(destination);
+						
+						Collections.sort(choicesTo);
+						Collections.sort(choicesFrom);
+						
+						from.setChoices(choicesFrom);
+						to.setChoices(choicesTo);
+						
+					}
 			    }
-			    target.add(to);
-			    target.add(from);
-			  }
+			    
+				target.add(to);
+			    target.add(from);    
+			}
 		  
 		  
 	  }
