@@ -68,12 +68,13 @@ public class ProyectoDAO extends AbstractDAO {
 		int idProyecto = jdbcTemplate.queryForInt("SELECT max(p_id) FROM projects")+1;
 		
 		jdbcTemplate.update("INSERT INTO projects (p_id, p_name) VALUES (?,?)", idProyecto, proyecto.getNombre());
+
 		
-		
-		int idActivityBind = jdbcTemplate.queryForInt("SELECT max(ab_id) FROM activity_bind")+1;
+		int idActivityBind = jdbcTemplate.queryForInt("SELECT max(ab_id) FROM activity_bind");
 		
 		for (Actividad actividad : actividadesRelacionadas) {
-			jdbcTemplate.update("INSERT INTO activity_bind (ab_id, ab_id_a, ab_id_p) VALUES (?,?,?)", idActivityBind, actividad.getIdActividad(), proyecto.getIdProyecto());			
+			idActivityBind += 1;
+			jdbcTemplate.update("INSERT INTO activity_bind (ab_id, ab_id_a, ab_id_p) VALUES (?,?,?)", idActivityBind, actividad.getIdActividad(), idProyecto);			
 		}
 	}
 	

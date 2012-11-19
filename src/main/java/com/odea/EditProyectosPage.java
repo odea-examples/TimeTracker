@@ -6,6 +6,7 @@
 package com.odea;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -28,7 +29,6 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import com.odea.domain.Actividad;
 import com.odea.domain.Proyecto;
 import com.odea.services.DAOService;
-import com.sun.org.apache.xalan.internal.xsltc.runtime.Parameter;
 
 
 public class EditProyectosPage extends BasePage {
@@ -162,7 +162,11 @@ public class EditProyectosPage extends BasePage {
 							@Override
 						    protected void onSubmit(AjaxRequestTarget target, Form form) {
 						        EditForm.this.onSubmit(target, (EditForm)form);
-						        daoService.agregarProyecto(EditForm.this.getModelObject(), destinations.getModelObject());
+						        for (Actividad actividad : destinations.getChoices()) {
+									System.out.println(actividad);
+								}
+						        
+						        daoService.agregarProyecto(EditForm.this.getModelObject(), (Collection<Actividad>) destinations.getChoices());
 						    }
 						};
 						

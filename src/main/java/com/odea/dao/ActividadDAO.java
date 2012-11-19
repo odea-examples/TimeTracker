@@ -73,8 +73,11 @@ public class ActividadDAO extends AbstractDAO {
 	
 	public List<Actividad> actividadesOrigen(Proyecto proyecto){
 		
-		List<Actividad> actividades = jdbcTemplate.query("SELECT pa.ab_id_a, a.a_name FROM activities a, activity_bind pa WHERE pa.ab_id_a = a.a_id AND pa.ab_id_p <> ? AND ", new RowMapperActividad(), proyecto.getIdProyecto());
+		String sql = "SELECT DISTINCT pa.ab_id_a, a.a_name FROM activities a, activity_bind pa ";
+		sql += "WHERE pa.ab_id_a = a.a_id AND pa.ab_id_p <> ? ";
+		sql += "AND a.a_id NOT IN (SELECT DISTINCT a.a_id FROM activities a, activity_bind pa WHERE pa.ab_id_a = a.a_id AND pa.ab_id_p = ?)";
 		
+		List<Actividad> actividades = jdbcTemplate.query(sql, new RowMapperActividad(), proyecto.getIdProyecto(), proyecto.getIdProyecto());
 		
 		Collections.sort(actividades);
 		
