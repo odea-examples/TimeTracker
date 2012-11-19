@@ -103,7 +103,7 @@ public class AgregarEntradasPage extends BasePage {
             	item.add(new Label("fecha_entrada", new Model<Date>(entrada.getFecha())));
                 item.add(new Label("proyecto_entrada", entrada.getProyecto().getNombre()));
                 item.add(new Label("actividad_entrada", entrada.getActividad().getNombre()));
-                item.add(new Label("duracion_entrada", new Model<Double>(entrada.getDuracion())));
+                item.add(new Label("duracion_entrada", new Model<String>(entrada.getDuracion())));
                 item.add(new Label("ticketBZ_entrada", new Model<Integer>(entrada.getTicketBZ())));
             }
         };
@@ -124,7 +124,7 @@ public class AgregarEntradasPage extends BasePage {
 		public DropDownChoice<Proyecto> comboProyecto; 	
 		public TextField<String> ticketExt;
 		public DropDownChoice<String> sistemaExterno;
-		public TextField<Double> duracion;
+		public TextField<String> duracion;
 		public TextField<String> ticketBZ;
 		
 		public EntradaForm(String id) {
@@ -176,11 +176,11 @@ public class AgregarEntradasPage extends BasePage {
 			
 			TextArea<String> nota = new TextArea<String>("nota");
 			
-			duracion = new TextField<Double>("duracion");
+			duracion = new TextField<String>("duracion");
 			duracion.setRequired(true);
 			duracion.setOutputMarkupId(true);
 			duracion.setLabel(Model.of("Duracion"));
-			duracion.add(new NumberCommaBehavior(duracion.getMarkupId()));
+			//duracion.add(new NumberCommaBehavior(duracion.getMarkupId()));
 			
 			 
 			ticketBZ = new TextField<String>("ticketBZ");

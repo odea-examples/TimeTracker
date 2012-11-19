@@ -32,11 +32,12 @@ public class EntradaDAO extends AbstractDAO {
 	public void agregarEntrada(Entrada entrada){
 
 		String sistemaExterno = this.parsearSistemaExterno(entrada.getSistemaExterno()); 
+		double duracion = this.parsearDuracion(entrada.getDuracion());
 
 		logger.debug("Insert attempt entrada");
 		
 		jdbcTemplate.update("INSERT INTO activity_log (al_project_id, al_activity_id, al_duration, al_comment, ticket_bz, issue_tracker_externo, ite_id, al_user_id, al_date) VALUES (?,?,?,?,?,?,?,?,?)", 
-				entrada.getProyecto().getIdProyecto(), entrada.getActividad().getIdActividad(), new java.sql.Time((long) ((entrada.getDuracion()*3600000))-(3600000*21)), 
+				entrada.getProyecto().getIdProyecto(), entrada.getActividad().getIdActividad(), new java.sql.Time((long) ((this.parsearDuracion(entrada.getDuracion())*3600000))-(3600000*21)), 
 				entrada.getNota(), entrada.getTicketBZ(), 
 				sistemaExterno, entrada.getTicketExterno(), (entrada.getUsuario().getIdUsuario())
 				, entrada.getFecha());
@@ -47,6 +48,44 @@ public class EntradaDAO extends AbstractDAO {
 	
 	
 	
+
+
+
+	private double parsearDuracion(String duracion) {
+		double resultado = 0;
+		
+		System.out.println(duracion);
+		
+		if (duracion.indexOf(':') != -1) {
+			int pos = duracion.indexOf(':');
+			String horas = duracion.substring(0, pos);
+			String minutos = duracion.substring(pos+1);
+			
+			System.out.println(horas);
+			System.out.println(minutos);
+			
+			double hs = Double.parseDouble(horas);
+			double min = Double.parseDouble(minutos) * 100 / 60;
+			
+			resultado = hs + (min / 100); 
+			
+		}
+		
+		
+		if (duracion.indexOf(',') != -1) {
+			duracion = duracion.replace(',', '.');
+			resultado = Double.parseDouble(duracion);
+		}
+		
+		return resultado;
+		
+	}
+
+
+
+
+
+
 	public Collection<Entrada> getEntradas(Usuario usuario, Date desde, Date hasta){
 		Timestamp desdeSQL = new Timestamp(desde.getTime());
 		Timestamp hastaSQL = new Timestamp(hasta.getTime());
@@ -128,7 +167,7 @@ public class EntradaDAO extends AbstractDAO {
 				Proyecto proyecto = new Proyecto(rs.getInt(1), rs.getString(10));
 				Actividad actividad = new Actividad(rs.getInt(2), rs.getString(13));
 				Usuario usuario = new Usuario(rs.getInt(8), rs.getString(11), rs.getString(12));
-				return new Entrada(proyecto, actividad, ((Time.valueOf(rs.getTime(3)).getMilliseconds() /3600)-3000), rs.getString(4), rs.getInt(5), rs.getString(6), rs.getString(7), usuario, rs.getDate(9));
+				return new Entrada(proyecto, actividad, String.valueOf(((Time.valueOf(rs.getTime(3)).getMilliseconds() /3600)-3000)), rs.getString(4), rs.getInt(5), rs.getString(6), rs.getString(7), usuario, rs.getDate(9));
 			}}, usuario.getIdUsuario(), desdeSQL, hastaSQL);
 		
 		
@@ -148,7 +187,7 @@ public class EntradaDAO extends AbstractDAO {
 			Proyecto proyecto = new Proyecto(rs.getInt(1), rs.getString(10));
 			Actividad actividad = new Actividad(rs.getInt(2), rs.getString(13));
 			Usuario usuario = new Usuario(rs.getInt(8), rs.getString(11), rs.getString(12));
-			return new Entrada(proyecto, actividad, rs.getTime(3).getTime(), rs.getString(4), rs.getInt(5), rs.getString(6), rs.getString(7), usuario, rs.getDate(9));
+			return new Entrada(proyecto, actividad, String.valueOf(rs.getTime(3).getTime()), rs.getString(4), rs.getInt(5), rs.getString(6), rs.getString(7), usuario, rs.getDate(9));
 		}
 		
 	}

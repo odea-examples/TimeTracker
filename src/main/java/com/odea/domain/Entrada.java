@@ -7,7 +7,7 @@ public class Entrada implements Serializable {
 
 	private Proyecto proyecto;
 	private Actividad actividad;
-	private double duracion;
+	private String duracion;
 	private String nota;
 	private int ticketBZ;
 	private String ticketExterno;
@@ -18,7 +18,7 @@ public class Entrada implements Serializable {
 	public Entrada() {
 	}
 
-	public Entrada(Proyecto proyecto, Actividad actividad, double duracion,
+	public Entrada(Proyecto proyecto, Actividad actividad, String duracion,
 			String nota, int ticketBugZilla, String ticketExterno,
 			String sistemaExterno, Usuario usuario, Date fecha) {
 		this.proyecto = proyecto;
@@ -50,11 +50,11 @@ public class Entrada implements Serializable {
 		this.actividad = actividad;
 	}
 
-	public double getDuracion() {
+	public String getDuracion() {
 		return duracion;
 	}
 
-	public void setDuracion(double duracion) {
+	public void setDuracion(String duracion) {
 		this.duracion = duracion;
 	}
 
