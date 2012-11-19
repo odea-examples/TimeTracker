@@ -51,8 +51,8 @@ public class DAOService {
 		actividadDAO.modificarActividad(nombre, idFinal);
 	}
 	
-	public List<Actividad> actividadesOrigen(List<Actividad> Todas, List<Actividad> delProyecto){
-		return actividadDAO.actividadesOrigen(Todas, delProyecto);
+	public List<Actividad> actividadesOrigen(Proyecto proyecto){
+		return actividadDAO.actividadesOrigen(proyecto);
 	}
 	
 	

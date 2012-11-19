@@ -71,9 +71,14 @@ public class ActividadDAO extends AbstractDAO {
 		jdbcTemplate.update("UPDATE activities SET a_name=? WHERE a_id=?",nombre, idFinal);
 	}
 	
-	public List<Actividad> actividadesOrigen(List<Actividad> Todas, List<Actividad> delProyecto){
-		Todas.removeAll(delProyecto);
-		return Todas;
+	public List<Actividad> actividadesOrigen(Proyecto proyecto){
+		
+		List<Actividad> actividades = jdbcTemplate.query("SELECT pa.ab_id_a, a.a_name FROM activities a, activity_bind pa WHERE pa.ab_id_a = a.a_id AND pa.ab_id_p <> ? AND ", new RowMapperActividad(), proyecto.getIdProyecto());
+		
+		
+		Collections.sort(actividades);
+		
+		return actividades;
 	}
 	
 	private class RowMapperActividad implements RowMapper<Actividad>{

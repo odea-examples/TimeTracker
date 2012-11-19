@@ -68,17 +68,17 @@ public class ProyectosPage extends BasePage {
                     }
 
                 });
-                //item.add(new BookmarkablePageLink<EditPoyectosPage>("modifyLink",EditPoyectosPage.class,new PageParameters().add("proyectoId",proyecto.getIdProyecto()).add("proyectoNombre",proyecto.getNombre())));
+                item.add(new BookmarkablePageLink<EditProyectosPage>("modifyLink",EditProyectosPage.class,new PageParameters().add("proyectoId",proyecto.getIdProyecto()).add("proyectoNombre",proyecto.getNombre())));
                 
                 
-                item.add(new AjaxLink<Proyecto>("modifyLink",new Model<Proyecto>(proyecto)) {
-                    @Override
-                    public void onClick(AjaxRequestTarget ajaxRequestTarget) {
-                        
-                    	
-                    	ajaxRequestTarget.add(listViewContainer);
-                    }
-                });
+//                item.add(new AjaxLink<Proyecto>("modifyLink",new Model<Proyecto>(proyecto)) {
+//                    @Override
+//                    public void onClick(AjaxRequestTarget ajaxRequestTarget) {
+//                        
+//                    	
+//                    	ajaxRequestTarget.add(listViewContainer);
+//                    }
+//                });
             };
 		};
 		
@@ -88,7 +88,7 @@ public class ProyectosPage extends BasePage {
 
 	
 		//add(new BookmarkablePageLink<EditProyectosPage>("link", EditProyectosPage.class, new PageParameters().add("proyectoId", 0).add("proyectoNombre", "")));
-		add(new BookmarkablePageLink<EditProyectosPage>("link", EditProyectosPage.class));
+		add(new BookmarkablePageLink<EditProyectosPage>("link", EditProyectosPage.class, new PageParameters().add("proyectoId", 0).add("proyectoNombre", "")));
 		add(listViewContainer);
         
 		

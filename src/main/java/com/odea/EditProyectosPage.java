@@ -22,11 +22,13 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.odea.domain.Actividad;
 import com.odea.domain.Proyecto;
 import com.odea.services.DAOService;
+import com.sun.org.apache.xalan.internal.xsltc.runtime.Parameter;
 
 
 public class EditProyectosPage extends BasePage {
@@ -34,6 +36,8 @@ public class EditProyectosPage extends BasePage {
 	@SpringBean
 	public transient DAOService daoService;
 	private IModel<Proyecto> proyectoModel;
+	public ListMultipleChoice<Actividad> originals;
+	public ListMultipleChoice<Actividad> destinations;
 	
 	public EditProyectosPage(){
 		
@@ -53,8 +57,24 @@ public class EditProyectosPage extends BasePage {
 		
 	}
 	
+	public EditProyectosPage(final PageParameters parameters){
+		
+		Subject subject = SecurityUtils.getSubject();
+		if(!subject.isAuthenticated()){
+			this.redirectToInterceptPage(new LoginPage());
+		}
+		
+		this.proyectoModel = new CompoundPropertyModel<Proyecto>(new LoadableDetachableModel<Proyecto>() {
+            @Override
+            protected Proyecto load() {
+                return new Proyecto(parameters.get("proyectoId").toInt(), parameters.get("proyectoNombre").toString());
+            }
+        });
 	
-	  
+        this.preparePage();
+		
+	}
+
 	private void preparePage() {
 		  add(new BookmarkablePageLink<ProyectosPage>("link",ProyectosPage.class));
 	      add(new FeedbackPanel("feedback"));
@@ -82,8 +102,6 @@ public class EditProyectosPage extends BasePage {
 		  
 		  public List<Actividad> selectedOriginals;
 		  public List<Actividad> selectedDestinations;
-		  public ListMultipleChoice<Actividad> originals;
-		  public ListMultipleChoice<Actividad> destinations;
 			
 		  
 			public EditForm(String id, IModel<Proyecto> proyecto) {
@@ -93,11 +111,19 @@ public class EditProyectosPage extends BasePage {
 				TextField<String> nombre = new TextField<String>("nombre");
 				nombre.add(new FocusOnLoadBehavior());
 				
+				
+				
 				originals = new ListMultipleChoice<Actividad>("originals", 
 						new PropertyModel(this, "selectedOriginals"), new LoadableDetachableModel() {
+					//Proyecto proyecto= new Proyecto(parameters.get("proyectoId").toInt(), parameters.get("proyectoNombre").toString());
 						      @Override
 						      protected Object load() {
+						    if (proyectoModel.getObject().getIdProyecto()>0){
+						    	return daoService.actividadesOrigen(proyectoModel.getObject());
+						    }
+						    else{
 						        return daoService.getActividades();
+						    	}
 						      }
 						    });
 				
@@ -105,9 +131,14 @@ public class EditProyectosPage extends BasePage {
 				
 				destinations = new ListMultipleChoice<Actividad>("destinations", 
 						   new PropertyModel(this, "selectedDestinations"), new LoadableDetachableModel() {
+//					PageParameters parameters = getPageParameters();
+//					Proyecto proyecto= new Proyecto(parameters.get("proyectoId").toInt(), parameters.get("proyectoNombre").toString());
 						      @Override
 						      protected Object load() {
-						        return new ArrayList();
+						    	  if (proyectoModel.getObject().getIdProyecto()>0){
+								    	return daoService.getActividades(proyectoModel.getObject());
+								    }
+								        return new ArrayList<Actividad>();
 						      }
 						    });
 				
