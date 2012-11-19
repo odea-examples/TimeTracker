@@ -161,11 +161,7 @@ public class EditProyectosPage extends BasePage {
 						AjaxButton submit = new AjaxButton("submit") {
 							@Override
 						    protected void onSubmit(AjaxRequestTarget target, Form form) {
-						        EditForm.this.onSubmit(target, (EditForm)form);
-						        for (Actividad actividad : destinations.getChoices()) {
-									System.out.println(actividad);
-								}
-						        
+						        EditForm.this.onSubmit(target, (EditForm)form);						        
 						        daoService.agregarProyecto(EditForm.this.getModelObject(), (Collection<Actividad>) destinations.getChoices());
 						    }
 						};

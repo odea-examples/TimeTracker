@@ -63,6 +63,29 @@ public class ProyectoDAO extends AbstractDAO {
 		
 	}
 	
+	public void insertarProyecto(Proyecto proyecto, Collection<Actividad> actividadesRelacionadas) {
+		
+		if (proyecto.getIdProyecto() == 0) {
+			this.agregarProyecto(proyecto, actividadesRelacionadas);
+		}else{
+			this.modificarProyecto(proyecto, actividadesRelacionadas);
+		}
+		
+			}
+	
+	private void modificarProyecto(Proyecto proyecto, Collection<Actividad> actividadesRelacionadas) {
+		int idActivityBind = jdbcTemplate.queryForInt("SELECT max(ab_id) FROM activity_bind");
+		
+		jdbcTemplate.update("UPDATE projects SET p_name=? WHERE p_id=?", proyecto.getNombre(), proyecto.getIdProyecto());
+		
+		jdbcTemplate.update("DELETE FROM activity_bind WHERE ab_id_p=?", proyecto.getIdProyecto());
+		
+		for (Actividad actividad : actividadesRelacionadas) {
+			idActivityBind += 1;
+			jdbcTemplate.update("INSERT INTO activity_bind (ab_id, ab_id_a, ab_id_p) VALUES (?,?,?)", idActivityBind, actividad.getIdActividad(), proyecto.getIdProyecto());
+		}
+	}
+
 	public void agregarProyecto(Proyecto proyecto, Collection<Actividad> actividadesRelacionadas) {
 		
 		int idProyecto = jdbcTemplate.queryForInt("SELECT max(p_id) FROM projects")+1;
@@ -76,6 +99,7 @@ public class ProyectoDAO extends AbstractDAO {
 			idActivityBind += 1;
 			jdbcTemplate.update("INSERT INTO activity_bind (ab_id, ab_id_a, ab_id_p) VALUES (?,?,?)", idActivityBind, actividad.getIdActividad(), idProyecto);			
 		}
+
 	}
 	
 }

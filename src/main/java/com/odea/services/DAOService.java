@@ -94,7 +94,7 @@ public class DAOService {
 	}
 	
 	public void agregarProyecto(Proyecto proyecto, Collection<Actividad> actividadesRelacionadas) {
-		proyectoDAO.agregarProyecto(proyecto, actividadesRelacionadas);
+		proyectoDAO.insertarProyecto(proyecto, actividadesRelacionadas);
 	}
 	
 	public Usuario getUsuario(String nombre){
