@@ -1,1 +1,51 @@
-git checkout -b 'nombrebransh'
+0.- Revisar que todos los files esten correctamente comiteados , sino no es posible cambiar al nuevo branch
+1.- Creamos el branch donde queremos trabajar e indicamos que queremos trabajar sobre este nuevo branch :
+
+$ git checkout -b ticket13990
+
+Una vez hecho esto , vamos a poder notar que todos los commits que hagamos seran exclusivos de nuestro branch "ticket13990" 
+
+2.- Formas de trabajo :
+	Aca se presentan dos opciones , la primera seria trabajar localmente en mi branch , lo cual esta muy bien si solo yo trabajare sobre la misma. La otra opcion es hacer un push del branch , dejandolo disponible en el repositorio remoto para que otros puedan hacerle pull , este seria el caso de un branch dedicado a un release.
+	
+	para hacer push del branch , hay que hacer una de dos opciones :
+	1) $ git push nombredelbranch : push del branch
+	2) $ git config push.default current : esto hace que por default el push sea del branch actual entonces si hago eso puedo hacer $ git push normalmente y tendra el mismo efecto que la opcion 1.
+	
+
+3.- Una vez que terminamos de trabajar sobre el branch necesitamos hacer un merge para que los cambios impacten en el trunk :
+$ git checkout master
+$ git merge nombredemibranch
+
+Esto realizara un merge automatico (que en general es bastante bueno) , sino marcara los files donde es necesario arreglar los conflictos a mano , en caso de que ocurra esto ultimo todo loq ue hayq ue hacer es disparar la tool de merge de nuestra preferencia a travez de git :
+
+$ git status (esto me listara los files en conflicto)
+$ git mergetool : esto disparara nuestra merge tool de preferencia y cargara el primero de los files que necesitan merge manual , hay que repetir la operación por cada file.
+$ git commit -a -m 'mensajedemergeadecuado'
+
+$ luego hacemos de nuevo $ git merge nombredemibranch para comprobar que esta todo ok y ya podemos hacer el push correspondiente para subir todos los cambios al trunk.
+
+$ git push
+
+
+
+Administracion de branchs : 
+Especialmente cuando hacemos branching local es necesario tener en cuenta álgunos comandos básicos de administración que nos permiten aprovechar al maximo las capacidades de nuestro repo local. Todos estos comandos funcionan de forma transparente en repositorios remotos aunque no es recomendable borrar branches remotos por ningun motivo.
+
+Listar todas las branches (indicando la actual) :
+$ git branch
+
+Ver el ultimo commit de cada branch :
+$ git branch -v
+
+Listar los branches que fueron mergeados en el branch actual (normalmente nos interesa para el master/trunk) :
+$ git branch --merged
+
+Listar los branches que aun NO estan mergeados :
+$ git branch --no-merged
+
+Borrar un branch , este comando falla si el branch a borrar no fue merged contra ningun otro branch :
+$ git branch -d nombredelbranch 
+
+Forzar borrado de branch : 
+$ git branch -D nombredelbranch 
