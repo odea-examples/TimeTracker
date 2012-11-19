@@ -9,7 +9,7 @@ Una vez hecho esto , vamos a poder notar que todos los commits que hagamos seran
 	Aca se presentan dos opciones , la primera seria trabajar localmente en mi branch , lo cual esta muy bien si solo yo trabajare sobre la misma. La otra opcion es hacer un push del branch , dejandolo disponible en el repositorio remoto para que otros puedan hacerle pull , este seria el caso de un branch dedicado a un release.
 	
 	para hacer push del branch , hay que hacer una de dos opciones :
-	1) $ git push nombredelbranch : push del branch
+	1) $ git push origin nombredelbranch : push del branch
 	2) $ git config push.default current : esto hace que por default el push sea del branch actual entonces si hago eso puedo hacer $ git push normalmente y tendra el mismo efecto que la opcion 1.
 	
 
