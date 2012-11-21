@@ -185,12 +185,7 @@ public class AgregarEntradasPage extends BasePage {
 			duracion.add(new NumberCommaBehavior(duracion.getMarkupId()));
 			duracion.add(new DurationValidator());
 
-			
-			//^[0-9]{1,2}+[:,]+[0-9]{2}$
-			duracion.add(new DurationValidator());
-			
-			//^[0-9]{1,2}+[:,]+[0-9]{2}$
-			duracion.add(new DurationValidator());
+
 			
 			
 			ticketBZ = new TextField<String>("ticketBZ");
