@@ -78,6 +78,11 @@ public class DAOService {
 		return entradaDAO.getHorasSemanales(usuario);
 	}
 	
+	public void borrarEntrada(Entrada entrada){
+		entradaDAO.borrarEntrada(entrada);
+	}
+	
+	
 	
 	
 	public List<Proyecto> getProyectos(){

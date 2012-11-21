@@ -11,6 +11,7 @@ import org.apache.shiro.subject.Subject;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -107,6 +108,15 @@ public class AgregarEntradasPage extends BasePage {
                 item.add(new Label("actividad_entrada", entrada.getActividad().getNombre()));
                 item.add(new Label("duracion_entrada", new Model<String>(entrada.getDuracion())));
                 item.add(new Label("ticketBZ_entrada", new Model<Integer>(entrada.getTicketBZ())));
+
+                item.add(new AjaxLink<Entrada>("deleteLink",new Model<Entrada>(entrada)) {
+                    @Override
+                    public void onClick(AjaxRequestTarget ajaxRequestTarget) {
+                        daoService.borrarEntrada(getModelObject());
+                        ajaxRequestTarget.add(getPage().get("listViewContainer"));
+                    }
+
+                });
             }
         };
         

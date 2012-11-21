@@ -27,7 +27,7 @@ public class EntradaDAO extends AbstractDAO {
 
 	
 	
-	private String sqlEntradas = "SELECT e.al_project_id, e.al_activity_id, e.al_duration, e.al_comment, e.ticket_bz, e.ite_id, e.issue_tracker_externo, e.al_user_id, e.al_date, p.p_name , u.u_login, u.u_password, a.a_name FROM activity_log e, projects p, activities a, users u";
+	private String sqlEntradas = "SELECT e.al_timestamp, e.al_project_id, e.al_activity_id, e.al_duration, e.al_comment, e.ticket_bz, e.ite_id, e.issue_tracker_externo, e.al_user_id, e.al_date, p.p_name , u.u_login, u.u_password, a.a_name FROM activity_log e, projects p, activities a, users u";
 
 	public void agregarEntrada(Entrada entrada){
 
@@ -164,19 +164,24 @@ public class EntradaDAO extends AbstractDAO {
 		return  jdbcTemplate.query(sqlEntradas +" WHERE e.al_user_id = ? AND e.al_project_id = p.p_id AND e.al_activity_id = a.a_id AND e.al_user_id = u.u_id AND e.al_date BETWEEN ? AND ?", new RowMapper<Entrada>() {
 			@Override
 			public Entrada mapRow(ResultSet rs, int rowNum) throws SQLException {
-				Proyecto proyecto = new Proyecto(rs.getInt(1), rs.getString(10));
-				Actividad actividad = new Actividad(rs.getInt(2), rs.getString(13));
-				Usuario usuario = new Usuario(rs.getInt(8), rs.getString(11), rs.getString(12));
-				return new Entrada(proyecto, actividad, String.valueOf(((Time.valueOf(rs.getTime(3)).getMilliseconds() /3600)-3000)), rs.getString(4), rs.getInt(5), rs.getString(6), rs.getString(7), usuario, rs.getDate(9));
+				Proyecto proyecto = new Proyecto(rs.getInt(2), rs.getString(11));
+				Actividad actividad = new Actividad(rs.getInt(3), rs.getString(14));
+				Usuario usuario = new Usuario(rs.getInt(9), rs.getString(12), rs.getString(13));
+				return new Entrada(rs.getTimestamp(1), proyecto, actividad, String.valueOf(((Time.valueOf(rs.getTime(4)).getMilliseconds() /3600)-3000)), rs.getString(5), rs.getInt(6), rs.getString(7), rs.getString(8), usuario, rs.getDate(10));
 			}}, usuario.getIdUsuario(), desdeSQL, hastaSQL);
 		
-		
-		//TODO: agregado un maprow aparte para la lista
 		};
+		
+		public void borrarEntrada(Entrada entrada)
+		{
+			System.out.println(entrada.getIdEntrada());
+			jdbcTemplate.update("DELETE FROM activity_log WHERE al_timestamp=?", entrada.getIdEntrada());
+		}
 		
 	}
 	
 	
+
 	
 
 	
@@ -184,10 +189,10 @@ public class EntradaDAO extends AbstractDAO {
 		@Override
 		public Entrada mapRow(ResultSet rs, int rowNum) throws SQLException {
 			
-			Proyecto proyecto = new Proyecto(rs.getInt(1), rs.getString(10));
-			Actividad actividad = new Actividad(rs.getInt(2), rs.getString(13));
-			Usuario usuario = new Usuario(rs.getInt(8), rs.getString(11), rs.getString(12));
-			return new Entrada(proyecto, actividad, String.valueOf(rs.getTime(3).getTime()), rs.getString(4), rs.getInt(5), rs.getString(6), rs.getString(7), usuario, rs.getDate(9));
+			Proyecto proyecto = new Proyecto(rs.getInt(2), rs.getString(11));
+			Actividad actividad = new Actividad(rs.getInt(3), rs.getString(14));
+			Usuario usuario = new Usuario(rs.getInt(9), rs.getString(12), rs.getString(13));
+			return new Entrada(rs.getTimestamp(1), proyecto, actividad, String.valueOf(rs.getTime(4).getTime()), rs.getString(5), rs.getInt(6), rs.getString(7), rs.getString(8), usuario, rs.getDate(10));
 		}
 		
 	}

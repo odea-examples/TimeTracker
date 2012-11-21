@@ -1,10 +1,13 @@
 package com.odea.domain;
 
 import java.io.Serializable;
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.Date;
 
 public class Entrada implements Serializable {
 
+	private Timestamp idEntrada;
 	private Proyecto proyecto;
 	private Actividad actividad;
 	private String duracion;
@@ -18,9 +21,10 @@ public class Entrada implements Serializable {
 	public Entrada() {
 	}
 
-	public Entrada(Proyecto proyecto, Actividad actividad, String duracion,
-			String nota, int ticketBugZilla, String ticketExterno,
-			String sistemaExterno, Usuario usuario, Date fecha) {
+	public Entrada(Timestamp idEntrada, Proyecto proyecto, Actividad actividad,
+			String duracion, String nota, int ticketBugZilla,
+			String ticketExterno, String sistemaExterno, Usuario usuario, Date fecha) {
+		this.idEntrada = idEntrada;
 		this.proyecto = proyecto;
 		this.actividad = actividad;
 		this.duracion = duracion;
@@ -34,6 +38,15 @@ public class Entrada implements Serializable {
 	
 
 
+	public Timestamp getIdEntrada() {
+		return idEntrada;
+	}
+
+	public void setIdEntrada(Timestamp idEntrada) {
+		this.idEntrada = idEntrada;
+	}
+
+	
 	public Proyecto getProyecto() {
 		return proyecto;
 	}
