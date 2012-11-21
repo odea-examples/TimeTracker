@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.apache.wicket.AttributeModifier;
@@ -26,14 +25,9 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.apache.wicket.validation.IValidatable;
-import org.apache.wicket.validation.IValidator;
-import org.apache.wicket.validation.validator.EmailAddressValidator;
 import org.apache.wicket.validation.validator.PatternValidator;
-import org.springframework.core.type.filter.RegexPatternTypeFilter;
 
 import com.odea.behavior.noInput.NoInputBehavior;
-import com.odea.behavior.numberComma.NumberCommaBehavior;
 import com.odea.behavior.onlyNumber.OnlyNumberBehavior;
 import com.odea.components.datepicker.DatePickerBehavior;
 import com.odea.domain.Actividad;
@@ -182,8 +176,6 @@ public class AgregarEntradasPage extends BasePage {
 			duracion.setRequired(true);
 			duracion.setOutputMarkupId(true);
 			duracion.setLabel(Model.of("Duracion"));
-			//duracion.add(new NumberCommaBehavior(duracion.getMarkupId()));
-			//^[0-9]{1,2}+[:,]+[0-9]{2}$
 			duracion.add(new DurationValidator());
 			
 			
