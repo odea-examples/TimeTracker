@@ -28,6 +28,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.IValidatable;
 import org.apache.wicket.validation.IValidator;
+import org.apache.wicket.validation.validator.EmailAddressValidator;
 import org.apache.wicket.validation.validator.PatternValidator;
 import org.springframework.core.type.filter.RegexPatternTypeFilter;
 
@@ -40,6 +41,7 @@ import com.odea.domain.Entrada;
 import com.odea.domain.Proyecto;
 import com.odea.domain.Usuario;
 import com.odea.services.DAOService;
+import com.odea.validators.duracion.DurationValidator;
 
 
 public class AgregarEntradasPage extends BasePage {
@@ -181,14 +183,16 @@ public class AgregarEntradasPage extends BasePage {
 			duracion.setOutputMarkupId(true);
 			duracion.setLabel(Model.of("Duracion"));
 			//duracion.add(new NumberCommaBehavior(duracion.getMarkupId()));
+			//^[0-9]{1,2}+[:,]+[0-9]{2}$
+			duracion.add(new DurationValidator());
 			
-			 
+			
 			ticketBZ = new TextField<String>("ticketBZ");
 			ticketBZ.setRequired(true);
 			ticketBZ.setOutputMarkupId(true);
 			ticketBZ.setLabel(Model.of("Ticket Bugzilla"));
 			ticketBZ.add(new OnlyNumberBehavior(ticketBZ.getMarkupId()));
-			 
+			
 			
 			ticketExt = new TextField<String>("ticketExterno");
 			ticketExt.setLabel(Model.of("ID Ticket Externo"));
@@ -207,7 +211,7 @@ public class AgregarEntradasPage extends BasePage {
 			final FeedbackPanel feedBackPanel = new FeedbackPanel("feedBackPanel");
 			feedBackPanel.setOutputMarkupId(true);
 			
-						
+			
 			AjaxButton submit = new AjaxButton("submit", this) {
 			
 				private static final long serialVersionUID = 1L;
