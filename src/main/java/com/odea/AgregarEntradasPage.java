@@ -180,7 +180,8 @@ public class AgregarEntradasPage extends BasePage {
 			duracion.setRequired(true);
 			duracion.setOutputMarkupId(true);
 			duracion.setLabel(Model.of("Duracion"));
-			//duracion.add(new NumberCommaBehavior(duracion.getMarkupId()));
+			duracion.add(new NumberCommaBehavior(duracion.getMarkupId()));
+			
 			
 			 
 			ticketBZ = new TextField<String>("ticketBZ");
