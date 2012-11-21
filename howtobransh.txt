@@ -1,6 +1,6 @@
 0.- Revisar que todos los files esten correctamente comiteados , sino no es posible cambiar al nuevo branch
 1.- Creamos el branch donde queremos trabajar e indicamos que queremos trabajar sobre este nuevo branch :
-
+	
 $ git checkout -b ticket13990
 
 Una vez hecho esto , vamos a poder notar que todos los commits que hagamos seran exclusivos de nuestro branch "ticket13990" 
