@@ -1,27 +1,19 @@
 package com.odea;
 
-
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
-import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
-import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
-import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.markup.html.list.ListItem;
-import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
@@ -29,12 +21,7 @@ import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.apache.wicket.validation.IValidatable;
-import org.apache.wicket.validation.IValidator;
-import org.apache.wicket.validation.validator.EmailAddressValidator;
 import org.apache.wicket.validation.validator.PatternValidator;
-import org.omg.Dynamic.Parameter;
-import org.springframework.core.type.filter.RegexPatternTypeFilter;
 
 import com.odea.behavior.noInput.NoInputBehavior;
 import com.odea.behavior.numberComma.NumberCommaBehavior;
@@ -43,103 +30,74 @@ import com.odea.components.datepicker.DatePickerBehavior;
 import com.odea.domain.Actividad;
 import com.odea.domain.Entrada;
 import com.odea.domain.Proyecto;
-import com.odea.domain.Usuario;
 import com.odea.services.DAOService;
 import com.odea.validators.duracion.DurationValidator;
 
-
-public class AgregarEntradasPage extends BasePage {
-
+public class EditEntradasPage extends BasePage{
+	
 	@SpringBean
 	private transient DAOService daoService;
 	
-	private Usuario usuario;
-	
-	IModel<List<Entrada>> lstEntradasModel;
-	IModel<Integer> horasSemanalesModel;
-
-	WebMarkupContainer listViewContainer;
-	
-	public AgregarEntradasPage() {
-		Subject subject = SecurityUtils.getSubject();
+    private IModel<Entrada> entradaModel;
+    
+    public EditEntradasPage(final PageParameters parameters){
+    	
+    	
+    	Subject subject = SecurityUtils.getSubject();
 		
 		if(!subject.isAuthenticated()){
 			this.redirectToInterceptPage(new LoginPage());
 		}
 		
-		this.usuario = this.daoService.getUsuario(subject.getPrincipal().toString());
-		this.lstEntradasModel = new LoadableDetachableModel<List<Entrada>>() { 
-            @Override
-            protected List<Entrada> load() {
-            	return daoService.getEntradasSemanales(usuario);
-            }
-        };
-        
-        this.horasSemanalesModel = new LoadableDetachableModel<Integer>() {
-    		@Override
-    		protected Integer load() {
-    			return daoService.getHorasSemanales(usuario);
-    		}
-    		
-    	}; 
-    	
-
-		if(usuario == null){
-			this.setResponsePage(LoginPage.class);
-		}
-
-		this.listViewContainer = new WebMarkupContainer("listViewContainer");
-		this.listViewContainer.setOutputMarkupId(true);
 		
-		EntradaForm form = new EntradaForm("form"){
+    	
+		this.entradaModel = new CompoundPropertyModel<Entrada>(new LoadableDetachableModel<Entrada>() {
+            @Override
+            protected Entrada load() {
+                Entrada entrada = new Entrada();
+                System.out.println(parameters.get("id").toString());
+                entrada.setIdEntrada(Timestamp.valueOf(parameters.get("id").toString()));
+                entrada.setDuracion(parameters.get("duracion").toString());
+                entrada.setFecha(parameters.get("fecha").toTime().toDate());
+                entrada.setNota(parameters.get("nota").toString());
+                entrada.setSistemaExterno(parameters.get("sistemaExterno").toString());
+                entrada.setTicketExterno(parameters.get("ticketExterno").toString());
+                entrada.setTicketBZ(parameters.get("ticketBZ").toInt());
+                entrada.setProyecto(new Proyecto(parameters.get("idProyecto").toInt(), parameters.get("nombreProyecto").toString()));
+                entrada.setActividad(new Actividad(parameters.get("idActividad").toInt(), parameters.get("nombreActividad").toString()));
+                
+                return entrada;
+            }
+        });
+		
+        this.preparePage();    
+    }
+    
+    
+    private void preparePage(){
+
+        
+        EntradaForm form = new EntradaForm("form") {
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, EntradaForm form) {
-				daoService.agregarEntrada(form.getModelObject(), usuario);
-				target.add(listViewContainer);
+				Entrada e = getModelObject();
+				daoService.modificarEntrada(e);
+				setResponsePage(AgregarEntradasPage.class);
 			}
 		};
-		
-		ListView<Entrada> entradasListView = new ListView<Entrada>("entradas", this.lstEntradasModel) {
-            @Override
-            protected void populateItem(ListItem<Entrada> item) {
-            	Entrada entrada = item.getModel().getObject();   
-            	if((item.getIndex() % 2) == 0){
-            		item.add(new AttributeModifier("class","odd"));
-            	}
-            	item.add(new Label("fecha_entrada", new Model<Date>(entrada.getFecha())));
-                item.add(new Label("proyecto_entrada", entrada.getProyecto().getNombre()));
-                item.add(new Label("actividad_entrada", entrada.getActividad().getNombre()));
-                item.add(new Label("duracion_entrada", new Model<String>(entrada.getDuracion())));
-                item.add(new Label("ticketBZ_entrada", new Model<Integer>(entrada.getTicketBZ())));
-
-                item.add(new AjaxLink<Entrada>("deleteLink",new Model<Entrada>(entrada)) {
-                    @Override
-                    public void onClick(AjaxRequestTarget ajaxRequestTarget) {
-                        daoService.borrarEntrada(getModelObject());
-                        ajaxRequestTarget.add(getPage().get("listViewContainer"));
-                    }
-
-                });
-                
-                
-               // PageParameters parametros = new PageParameters().add("id", entrada.getIdEntrada()).add("duracion", entrada.getDuracion()).add("fecha", entrada.getFecha()).add("nota", entrada.getNota()).add("sistemaExterno", entrada.getSistemaExterno()).add("ticketExterno", entrada.getTicketExterno()).add("ticketBZ", entrada.getTicketBZ()).add("idProyecto", entrada.getProyecto().getIdProyecto()).add("nombreProyecto", entrada.getProyecto().getNombre()).add("idActividad", entrada.getActividad().getIdActividad()).add("nombreActividad", entrada.getActividad().getNombre());
-               
-               // item.add(new BookmarkablePageLink<EditEntradasPage>("modifyLink",EditEntradasPage.class, parametros));
-
-            }
-        };
         
-		Label horasAcumuladas = new Label("horasAcumuladas", this.horasSemanalesModel);
-
-        listViewContainer.setOutputMarkupId(true);
-		listViewContainer.add(entradasListView);
-		listViewContainer.add(horasAcumuladas);
-		add(listViewContainer);
-		add(form);	
-	
-	}
-
-	public abstract class EntradaForm extends Form<Entrada> {
+		form.setModel(entradaModel);
+		form.setDefaultModel(entradaModel);
+		
+		
+        add(new BookmarkablePageLink<AgregarEntradasPage>("link",AgregarEntradasPage.class));
+        add(new FeedbackPanel("feedback"));
+       
+		add(form);
+		 
+    }
+    
+    public abstract class EntradaForm extends Form<Entrada> {
 		public IModel<Entrada> entradaModel = new CompoundPropertyModel<Entrada>(new Entrada());
 		public DropDownChoice<Actividad> comboActividad;
 		public DropDownChoice<Proyecto> comboProyecto; 	
@@ -240,7 +198,6 @@ public class AgregarEntradasPage extends BasePage {
 				protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 					EntradaForm.this.onSubmit(target, (EntradaForm)form);								
 					target.add(feedBackPanel);
-					target.add(listViewContainer);
 				}
 
 				@Override
@@ -265,11 +222,9 @@ public class AgregarEntradasPage extends BasePage {
 			this.setOutputMarkupId(true);
 
 		}
-
 		
 		protected abstract void onSubmit(AjaxRequestTarget target, EntradaForm form);
-
-	}	
+		
+    }
+    
 }
-
-

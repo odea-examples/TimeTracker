@@ -78,14 +78,9 @@ public class ActividadesPage extends BasePage{
 		listViewContainer.add(actividadListView);
 		
 		add(listViewContainer);
-		
-		
+			
 		
 	}
-	
-	
-	
-	
 	
 	
 	

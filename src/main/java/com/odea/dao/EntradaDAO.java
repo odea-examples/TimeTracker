@@ -178,6 +178,11 @@ public class EntradaDAO extends AbstractDAO {
 			jdbcTemplate.update("DELETE FROM activity_log WHERE al_timestamp=?", entrada.getIdEntrada());
 		}
 		
+		
+		public void modificarEntrada(Entrada entrada) {
+			jdbcTemplate.update("UPDATE activity_log SET al_date=?, al_duration=?, al_project_id=?, al_activity_id=?, al_comment=?, ticket_bz=?, issue_tracker_externo=?, ite_id=? WHERE al_timestamp=?", entrada.getFecha(), entrada.getDuracion(), entrada.getProyecto().getIdProyecto(), entrada.getActividad().getIdActividad(), entrada.getNota(), entrada.getTicketBZ(), entrada.getSistemaExterno(), entrada.getTicketExterno(), entrada.getIdEntrada());
+		}
+		
 	}
 	
 	

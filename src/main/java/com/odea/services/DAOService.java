@@ -82,7 +82,9 @@ public class DAOService {
 		entradaDAO.borrarEntrada(entrada);
 	}
 	
-	
+	public void modificarEntrada(Entrada entrada) {
+		entradaDAO.modificarEntrada(entrada);
+	}
 	
 	
 	public List<Proyecto> getProyectos(){
