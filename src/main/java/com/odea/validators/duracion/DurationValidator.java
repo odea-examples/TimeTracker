@@ -9,8 +9,9 @@ import org.apache.wicket.validation.ValidationError;
 public class DurationValidator implements IValidator<String>{
 	
 	private final String DURACION_PATTERN 
-    = "^([0-9]{1,2}+[:,]{1}+[0-9]{1,2})|([0-9]{1,2})$";
-
+	//= "^([0-9]{1,2}+(,[0-9]{1,2}|:[0-5]{1}+[0-9]{1}))|([0-9]{1,2})$";
+	= "^([0-9]{1,2}+(,[0-9]{1,2}|:[0-5]{1}+[0-9]{1}|\\b))$";
+	
 	private final Pattern pattern;
 
 	public DurationValidator() {

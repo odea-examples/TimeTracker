@@ -54,15 +54,13 @@ public class EntradaDAO extends AbstractDAO {
 	private double parsearDuracion(String duracion) {
 		double resultado = 0;
 		
-		System.out.println(duracion);
+		boolean tieneFormatoHHMM = duracion.indexOf(':') != -1;
+		boolean tieneFormatoDecimal = duracion.indexOf(',') != -1;
 		
-		if (duracion.indexOf(':') != -1) {
+		if (tieneFormatoHHMM) {
 			int pos = duracion.indexOf(':');
 			String horas = duracion.substring(0, pos);
 			String minutos = duracion.substring(pos+1);
-			
-			System.out.println(horas);
-			System.out.println(minutos);
 			
 			double hs = Double.parseDouble(horas);
 			double min = Double.parseDouble(minutos) * 100 / 60;
@@ -72,8 +70,12 @@ public class EntradaDAO extends AbstractDAO {
 		}
 		
 		
-		if (duracion.indexOf(',') != -1) {
+		if (tieneFormatoDecimal) {
 			duracion = duracion.replace(',', '.');
+			resultado = Double.parseDouble(duracion);
+		}
+		
+		if (!(tieneFormatoDecimal || tieneFormatoHHMM)) {
 			resultado = Double.parseDouble(duracion);
 		}
 		

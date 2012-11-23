@@ -58,6 +58,7 @@ public class EditEntradasPage extends BasePage{
                 Long tiempo = new Long(entrada.getDuracion());
                 Time duration= new Time(tiempo);
                 entrada.setDuracion(duration.toString().substring(0,5));
+                
                 return entrada;
             }
         });
@@ -78,9 +79,7 @@ public class EditEntradasPage extends BasePage{
 			}
 		};
         
-		form.setModel(entradaModel);
-		form.setDefaultModel(entradaModel);
-		
+
 		
         add(new BookmarkablePageLink<AgregarEntradasPage>("link",AgregarEntradasPage.class));
         add(new FeedbackPanel("feedback"));
@@ -90,7 +89,6 @@ public class EditEntradasPage extends BasePage{
     }
     
     public abstract class EntradaForm extends Form<Entrada> {
-		public IModel<Entrada> entradaModel = new CompoundPropertyModel<Entrada>(new Entrada());
 		public DropDownChoice<Actividad> comboActividad;
 		public DropDownChoice<Proyecto> comboProyecto; 	
 		public TextField<String> ticketExt;
@@ -100,13 +98,12 @@ public class EditEntradasPage extends BasePage{
 		
 		public EntradaForm(String id) {
 			super(id);
-			this.setDefaultModel(this.entradaModel);
+			this.setDefaultModel(EditEntradasPage.this.entradaModel);
 			
 
 			ArrayList<String> sistExt = new ArrayList<String>();
 			sistExt.add("Sistema de Incidencias de YPF");
 			sistExt.add("Sistema Geminis de YPF");
-			
 			
 			
 			this.comboProyecto = new DropDownChoice<Proyecto>("proyecto",  daoService.getProyectos());
@@ -127,6 +124,7 @@ public class EditEntradasPage extends BasePage{
 			this.comboActividad.setOutputMarkupId(true);
 			this.comboActividad.setRequired(true);
 			this.comboActividad.setLabel(Model.of("Actividad"));
+			this.comboActividad.setChoices(daoService.getActividades(this.getModelObject().getProyecto()));
 			
 			
 			sistemaExterno = new DropDownChoice<String>("sistemaExterno", sistExt);
