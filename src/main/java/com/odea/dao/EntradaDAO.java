@@ -180,7 +180,14 @@ public class EntradaDAO extends AbstractDAO {
 		
 		
 		public void modificarEntrada(Entrada entrada) {
-			jdbcTemplate.update("UPDATE activity_log SET al_date=?, al_duration=?, al_project_id=?, al_activity_id=?, al_comment=?, ticket_bz=?, issue_tracker_externo=?, ite_id=? WHERE al_timestamp=?", entrada.getFecha(), entrada.getDuracion(), entrada.getProyecto().getIdProyecto(), entrada.getActividad().getIdActividad(), entrada.getNota(), entrada.getTicketBZ(), entrada.getSistemaExterno(), entrada.getTicketExterno(), entrada.getIdEntrada());
+			String sistemaExterno = this.parsearSistemaExterno(entrada.getSistemaExterno()); 
+			jdbcTemplate.update("UPDATE activity_log SET al_date=?, al_duration=?, al_project_id=?, al_activity_id=?, al_comment=?, ticket_bz=?, issue_tracker_externo=?, ite_id=? WHERE al_timestamp=?", 
+					entrada.getFecha(), new java.sql.Time((long) ((this.parsearDuracion(entrada.getDuracion())*3600000))-(3600000*21)), entrada.getProyecto().getIdProyecto(), entrada.getActividad().getIdActividad(), entrada.getNota(), entrada.getTicketBZ(), sistemaExterno, entrada.getTicketExterno(), entrada.getIdEntrada());
+		}
+
+		public Entrada buscarEntrada(long id) {
+			Timestamp fecha = new Timestamp(id);
+			return jdbcTemplate.queryForObject(sqlEntradas+" WHERE e.al_user_id = u.u_id AND e.al_project_id = p.p_id AND e.al_activity_id = a.a_id AND e.al_timestamp=?", new RowMapperEntradas(), fecha);
 		}
 		
 	}

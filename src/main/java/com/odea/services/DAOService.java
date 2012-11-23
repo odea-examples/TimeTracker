@@ -132,6 +132,10 @@ public class DAOService {
 		return entradaDAO.getEntradasSemanales(usuario);
 	}
 
+	public Entrada buscarEntrada(long id) {
+		return entradaDAO.buscarEntrada(id);
+	}
+
 
 
 }

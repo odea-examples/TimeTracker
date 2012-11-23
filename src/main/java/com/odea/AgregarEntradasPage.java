@@ -18,6 +18,7 @@ import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
@@ -25,6 +26,7 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.PatternValidator;
 
@@ -38,6 +40,7 @@ import com.odea.domain.Proyecto;
 import com.odea.domain.Usuario;
 import com.odea.services.DAOService;
 import com.odea.validators.duracion.DurationValidator;
+import com.odea.validators.ticketExterno.TicketExternoValidator;
 
 
 public class AgregarEntradasPage extends BasePage {
@@ -74,7 +77,6 @@ public class AgregarEntradasPage extends BasePage {
     		}
     		
     	}; 
-    	
 
 		if(usuario == null){
 			this.setResponsePage(LoginPage.class);
@@ -114,9 +116,8 @@ public class AgregarEntradasPage extends BasePage {
                 });
                 
                 
-               // PageParameters parametros = new PageParameters().add("id", entrada.getIdEntrada()).add("duracion", entrada.getDuracion()).add("fecha", entrada.getFecha()).add("nota", entrada.getNota()).add("sistemaExterno", entrada.getSistemaExterno()).add("ticketExterno", entrada.getTicketExterno()).add("ticketBZ", entrada.getTicketBZ()).add("idProyecto", entrada.getProyecto().getIdProyecto()).add("nombreProyecto", entrada.getProyecto().getNombre()).add("idActividad", entrada.getActividad().getIdActividad()).add("nombreActividad", entrada.getActividad().getNombre());
-               
-               // item.add(new BookmarkablePageLink<EditEntradasPage>("modifyLink",EditEntradasPage.class, parametros));
+                PageParameters parametros = new PageParameters().add("id", entrada.getIdEntrada().getTime());
+                item.add(new BookmarkablePageLink<EditEntradasPage>("modifyLink",EditEntradasPage.class, parametros));
 
             }
         };
@@ -174,18 +175,18 @@ public class AgregarEntradasPage extends BasePage {
 			sistemaExterno = new DropDownChoice<String>("sistemaExterno", sistExt);
 			sistemaExterno.setLabel(Model.of("Sistema Externo"));
 			sistemaExterno.setOutputMarkupId(true);
-			sistemaExterno.add(new AjaxFormComponentUpdatingBehavior("onchange"){
-				@Override
-				protected void onUpdate(AjaxRequestTarget target) {
-					if (EntradaForm.this.sistemaExterno.getValue() == "") {
-						EntradaForm.this.ticketExt.setEnabled(false);
-					} else {
-						EntradaForm.this.ticketExt.setEnabled(true);
-					}
-					target.add(EntradaForm.this.ticketExt);
-				}
-				
-			});
+//			sistemaExterno.add(new AjaxFormComponentUpdatingBehavior("onchange"){
+//				@Override
+//				protected void onUpdate(AjaxRequestTarget target) {
+//					if (EntradaForm.this.sistemaExterno.getValue() == "") {
+//						EntradaForm.this.ticketExt.setEnabled(false);
+//					} else {
+//						EntradaForm.this.ticketExt.setEnabled(true);
+//					}
+//					target.add(EntradaForm.this.ticketExt);
+//				}
+//				
+//			});
 			
 			TextArea<String> nota = new TextArea<String>("nota");
 			
@@ -209,8 +210,12 @@ public class AgregarEntradasPage extends BasePage {
 			ticketExt = new TextField<String>("ticketExterno");
 			ticketExt.setLabel(Model.of("ID Ticket Externo"));
 			ticketExt.setOutputMarkupId(true);
-			ticketExt.setEnabled(false);
+//			ticketExt.setEnabled(false);
 			ticketExt.add(new PatternValidator("^[a-z0-9_-]{1,15}$"));
+			System.out.println(sistemaExterno);
+//			ticketExt.add(new TicketExternoValidator(sistemaExterno ,ticketExt));
+			
+			
 			
 			
 			TextField<Date> fecha = new TextField<Date>("fecha");
@@ -253,7 +258,9 @@ public class AgregarEntradasPage extends BasePage {
 			add(sistemaExterno);
 			add(ticketExt);
 			add(feedBackPanel);
+			this.add(new TicketExternoValidator(sistemaExterno ,ticketExt));
 			add(submit);
+			
 			this.setOutputMarkupId(true);
 
 		}
