@@ -16,6 +16,7 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.IChoiceRenderer;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -152,7 +153,18 @@ public class AgregarEntradasPage extends BasePage {
 			
 			
 			
-			this.comboProyecto = new DropDownChoice<Proyecto>("proyecto",  daoService.getProyectos());
+			this.comboProyecto = new DropDownChoice<Proyecto>("proyecto", daoService.getProyectos(),new IChoiceRenderer<Proyecto>() {
+				@Override
+				public Object getDisplayValue(Proyecto object) {
+					return object.getNombre();
+				}
+
+				@Override
+				public String getIdValue(Proyecto object, int index) {
+					return Integer.toString(object.getIdProyecto());
+				}
+				
+			});
 			this.comboProyecto.setOutputMarkupId(true);	
 			this.comboProyecto.setRequired(true);
 			this.comboProyecto.setLabel(Model.of("Proyecto"));
@@ -166,7 +178,18 @@ public class AgregarEntradasPage extends BasePage {
 			});
 			
 			
-			this.comboActividad = new DropDownChoice<Actividad>("actividad");
+			this.comboActividad = new DropDownChoice<Actividad>("actividad",new ArrayList<Actividad>(),new IChoiceRenderer<Actividad>() {
+				@Override
+				public Object getDisplayValue(Actividad object) {
+					return object.getNombre();
+				}
+
+				@Override
+				public String getIdValue(Actividad object, int index) {
+					return Integer.toString(object.getIdActividad());
+				}
+				
+			});
 			this.comboActividad.setOutputMarkupId(true);
 			this.comboActividad.setRequired(true);
 			this.comboActividad.setLabel(Model.of("Actividad"));

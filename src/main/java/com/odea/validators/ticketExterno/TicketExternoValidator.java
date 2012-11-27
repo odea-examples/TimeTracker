@@ -3,8 +3,6 @@ package com.odea.validators.ticketExterno;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.form.validation.AbstractFormValidator;
-import org.apache.wicket.validation.IValidatable;
-import org.apache.wicket.validation.ValidationError;
 
 
 public class TicketExternoValidator extends AbstractFormValidator {

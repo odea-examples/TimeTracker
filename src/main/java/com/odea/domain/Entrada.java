@@ -119,4 +119,15 @@ public class Entrada implements Serializable {
 		this.fecha = fecha;
 	}
 
+	@Override
+	public String toString() {
+		return "Entrada [idEntrada=" + idEntrada + ", proyecto=" + proyecto
+				+ ", actividad=" + actividad + ", duracion=" + duracion
+				+ ", nota=" + nota + ", ticketBZ=" + ticketBZ
+				+ ", ticketExterno=" + ticketExterno + ", sistemaExterno="
+				+ sistemaExterno + ", usuario=" + usuario + ", fecha=" + fecha
+				+ "]";
+	}
+	
+	
 }
