@@ -69,8 +69,7 @@ public class AgregarEntradasPage extends BasePage {
 		this.lstEntradasModel = new LoadableDetachableModel<List<Entrada>>() { 
             @Override
             protected List<Entrada> load() {
-            	Usuario usuario2 = daoService.getUsuario(subject.getPrincipal().toString());
-            	return daoService.getEntradasSemanales(usuario2);
+            	return daoService.getEntradasSemanales(AgregarEntradasPage.this.usuario);
             }
         };
         
