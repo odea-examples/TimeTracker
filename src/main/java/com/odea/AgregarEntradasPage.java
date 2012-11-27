@@ -45,6 +45,8 @@ import com.odea.validators.ticketExterno.TicketExternoValidator;
 
 
 public class AgregarEntradasPage extends BasePage {
+	// TODO: agregada version id porque fallaba.
+	private static final long serialVersionUID = 1088210443697851501L;
 
 	@SpringBean
 	private transient DAOService daoService;
@@ -57,7 +59,7 @@ public class AgregarEntradasPage extends BasePage {
 	WebMarkupContainer listViewContainer;
 	
 	public AgregarEntradasPage() {
-		Subject subject = SecurityUtils.getSubject();
+		final Subject subject = SecurityUtils.getSubject();
 		
 		if(!subject.isAuthenticated()){
 			this.redirectToInterceptPage(new LoginPage());
@@ -67,7 +69,8 @@ public class AgregarEntradasPage extends BasePage {
 		this.lstEntradasModel = new LoadableDetachableModel<List<Entrada>>() { 
             @Override
             protected List<Entrada> load() {
-            	return daoService.getEntradasSemanales(usuario);
+            	Usuario usuario2 = daoService.getUsuario(subject.getPrincipal().toString());
+            	return daoService.getEntradasSemanales(usuario2);
             }
         };
         
