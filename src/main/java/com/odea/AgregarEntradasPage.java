@@ -94,6 +94,7 @@ public class AgregarEntradasPage extends BasePage {
 			protected void onSubmit(AjaxRequestTarget target, EntradaForm form) {
 				daoService.agregarEntrada(form.getModelObject(), usuario);
 				target.add(listViewContainer);
+				target.add(form);
 			}
 		};
 		
@@ -264,6 +265,8 @@ public class AgregarEntradasPage extends BasePage {
 					EntradaForm.this.onSubmit(target, (EntradaForm)form);								
 					target.add(feedBackPanel);
 					target.add(listViewContainer);
+					EntradaForm.this.setModelObject(new Entrada());
+					target.add(EntradaForm.this);
 				}
 
 				@Override
