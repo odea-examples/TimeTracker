@@ -1,3 +1,13 @@
+<wicket:head>
+
+	<style type='text/css'>
+		label { float: left; width: 120px; }
+		input[type=text] { float: center; width: 100px; }
+		select {width: 400px;}		
+	</style>
+
+</wicket:head>
+
 <wicket:extend>
 
     <a wicket:id="link" class="nav"><h3><span>Volver a entradas</span></h3></a>
@@ -5,54 +15,52 @@
 
 		<form wicket:id="form">
 		<ul>
-
+		
 			<span wicket:id="feedBackPanel"></span>
+			<u>Los campos marcados con un asterisco son obligatorios.</u>
 
 			<div>
-				<b><label for="proyecto">Proyecto</label> </b> <select
-					wicket:id="proyecto" name="proyecto" style="width: 300px" />
+				<b><label for="proyecto">Proyecto *</label> </b> <select
+					wicket:id="proyecto" name="proyecto"/>
 			</div>
 
 			<div>
-				<b><label for="actividad">Actividad</label> </b><select
-					wicket:id="actividad" name="actividad" style="width: 300px" />
+				<b><label for="actividad">Actividad *</label> </b><select
+					wicket:id="actividad" name="actividad"/>
 			</div>
 
 			<div>
-				<b><label for="duracion">Duracion</label></b> <input type="text"
-					wicket:id="duracion" name="duracion" style="width: 100px" />
+				<b><label for="duracion">Duracion *</label></b> <input type="text"
+					wicket:id="duracion" name="duracion"/> Formato: HH:MM o H,MM
 			</div>
 
 			<div>
-				<b><label for="fecha">Fecha</label> </b><input type="text"
-					wicket:id="fecha" name="fecha" style="width: 100px" />
-			</div>
-
-			<div>
-				<b><label for="nota">Nota</label></b> <br> <b><textarea
-						wicket:id="nota" name="nota" rows="10" cols="40" scrolling="yes"
-						style="margin-left: 34px" /></b>
+				<b><label for="fecha">Fecha *</label> </b><input type="text"
+					wicket:id="fecha" name="fecha"/>
 			</div>
 
 			<div>
 				<b><label for="ticketBZ">Ticket Bugzilla</label> <input
-					type="text" wicket:id="ticketBZ" name="ticketBZ"
-					style="width: 70px"></b>
+					type="text" wicket:id="ticketBZ" name="ticketBZ"></b>
 			</div>
 
 			<div>
 				<b><label for="sistemaExterno">Sistema Externo</label> <select
-					wicket:id="sistemaExterno" name="sistemaExterno"
-					style="width: 200px" /></b>
+					wicket:id="sistemaExterno" name="sistemaExterno" style="width:250px"/></b>
 			</div>
 
 			<div>
 				<b><label for="ticketExterno">ID Ticket Externo</label> <input
-					type="text" wicket:id="ticketExterno" name="ticketExterno"
-					style="width: 70px" /></b>
+					type="text" wicket:id="ticketExterno" name="ticketExterno"/></b>
+			</div>
+			
+			<div>
+				<b><label for="nota">Nota</label></b> <br> 
+				<b><textarea wicket:id="nota" name="nota" rows="10" cols="40" scrolling="yes"/></b>
 			</div>
 
-
+			<br/>
+			
 			<input wicket:id="submit" value="Confirmar" type="submit" />
 
 
