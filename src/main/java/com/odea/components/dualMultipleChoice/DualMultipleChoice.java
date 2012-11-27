@@ -2,39 +2,37 @@ package com.odea.components.dualMultipleChoice;
 
 import java.util.List;
 
-import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
-import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.ListMultipleChoice;
+import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.PropertyModel;
 
-public class DualMultipleChoice<T> extends Component {
+public class DualMultipleChoice<T> extends Panel {
 
 	public ListMultipleChoice<T> originals;
 	public ListMultipleChoice<T> destinations;
 	public List<T> selectedOriginals;
 	public List<T> selectedDestinations;
-	
+	public List<T> originalsList;
+	public List<T> destinationsList;
 
 
-	public DualMultipleChoice(String id, IModel<T> model, List<T> selectedOriginals, List<T> selectedDestinations) {
+	public DualMultipleChoice(String id, IModel<?> model, List<T> originalsList, List<T> destinationsList) {
 		super(id, model);
 		
-		this.selectedOriginals = selectedOriginals;
-		this.selectedDestinations = selectedDestinations;
-		
-		WebMarkupContainer container = new WebMarkupContainer("container");
+		this.originalsList = originalsList;
+		this.destinationsList = destinationsList;
 		
 		
 		originals = new ListMultipleChoice<T>("originals", new PropertyModel(this, "selectedOriginals"),
 					new LoadableDetachableModel() {
 				@Override
 				protected Object load() {
-					return DualMultipleChoice.this.originals;
+					return DualMultipleChoice.this.originalsList;
 				}							
 		});
 
@@ -45,7 +43,7 @@ public class DualMultipleChoice<T> extends Component {
 					   new LoadableDetachableModel() {
 				@Override
 				protected Object load() {
-					return DualMultipleChoice.this.destinations;
+					return DualMultipleChoice.this.destinationsList;
 				}			
 		});
 
@@ -56,36 +54,29 @@ public class DualMultipleChoice<T> extends Component {
 		AjaxButton addButton = new AjaxButton("addButton") {
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, Form form) {
-				update(target, DualMultipleChoice.this.getSelectedOriginals(), originals, destinations);
+				update(target, selectedOriginals, originals, destinations);
 			}
 		};	
-
+		
+		addButton.setOutputMarkupId(true);
+		
 		AjaxButton removeButton = new AjaxButton("removeButton") {
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, Form form) {
-				update(target, DualMultipleChoice.this.selectedDestinations, destinations,
-						originals);
+				update(target, selectedDestinations, destinations, originals);
 			}
 		};
 		
-		//TODO: Habría que ver si es necesario poner todo adentro de un panel, porque sino
-		//		no podría agregar los componentes dentro de este
+		removeButton.setOutputMarkupId(true);
 		
-		
-		
-		container.add(originals);
-		container.add(destinations);
-		container.add(addButton);
-		container.add(removeButton);
-		
+
+		add(originals);
+		add(destinations);
+		add(addButton);
+		add(removeButton);
 		
 	}
 
-	@Override
-	protected void onRender() {
-		// TODO Auto-generated method stub
-		
-	}
 	
 	
 	private void update(AjaxRequestTarget target, List<T> selections, ListMultipleChoice<T> from, ListMultipleChoice<T> to) {
@@ -110,6 +101,10 @@ public class DualMultipleChoice<T> extends Component {
 		target.add(from);
 	}
 
+
+
+
+
 	
 	//GETTERS & SETTERS
 	
@@ -117,32 +112,22 @@ public class DualMultipleChoice<T> extends Component {
 		return originals;
 	}
 
+
+
 	public void setOriginals(ListMultipleChoice<T> originals) {
 		this.originals = originals;
 	}
+
+
 
 	public ListMultipleChoice<T> getDestinations() {
 		return destinations;
 	}
 
+
+
 	public void setDestinations(ListMultipleChoice<T> destinations) {
 		this.destinations = destinations;
-	}
-
-	public List<T> getSelectedOriginals() {
-		return selectedOriginals;
-	}
-
-	public void setSelectedOriginals(List<T> selectedOriginals) {
-		this.selectedOriginals = selectedOriginals;
-	}
-
-	public List<T> getSelectedDestinations() {
-		return selectedDestinations;
-	}
-
-	public void setSelectedDestinations(List<T> selectedDestinations) {
-		this.selectedDestinations = selectedDestinations;
 	}
 	
 	
