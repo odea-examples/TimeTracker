@@ -55,6 +55,10 @@ public class DAOService {
 		return actividadDAO.actividadesOrigen(proyecto);
 	}
 	
+	public void insertarActividad(Actividad actividad, List<Proyecto> proyectosRelacionados) {
+		actividadDAO.insertarActividad(actividad, proyectosRelacionados);
+	}
+	
 	
 	public void agregarEntrada(Entrada entrada){
 		entradaDAO.agregarEntrada(entrada);
@@ -102,6 +106,14 @@ public class DAOService {
 	
 	public void agregarProyecto(Proyecto proyecto, Collection<Actividad> actividadesRelacionadas) {
 		proyectoDAO.insertarProyecto(proyecto, actividadesRelacionadas);
+	}
+	
+	public List<Proyecto> obtenerOrigen(Actividad actividad) {
+		return proyectoDAO.obtenerOrigen(actividad);
+	}
+	
+	public List<Proyecto> getProyectos(Actividad actividad) {
+		return proyectoDAO.getProyectos(actividad);
 	}
 	
 	public Usuario getUsuario(String nombre){

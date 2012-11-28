@@ -98,6 +98,7 @@ public class EditProyectosPage extends BasePage {
 		public List<Actividad> selectedDestinations;
 		public List<Actividad> listDestination;
 		public List<Actividad> listOriginals;
+		DualMultipleChoice<Actividad> dualMultiple;
 
 		public EditForm(String id, IModel<Proyecto> proyecto) {
 
@@ -109,73 +110,12 @@ public class EditProyectosPage extends BasePage {
 			nombre.add(new FocusOnLoadBehavior());
 			
 			
+			listOriginals = obtenerListaOrigen();
 			
-			if (proyectoModel.getObject().getIdProyecto() > 0) {
-				listOriginals =  daoService.actividadesOrigen(proyectoModel.getObject());
-			} else {
-				listOriginals = daoService.getActividades();
-			}
+			listDestination = obtenerListaDestino();
 			
-			if (proyectoModel.getObject().getIdProyecto() > 0) {
-				listDestination = daoService.getActividades(proyectoModel.getObject());
-			}
-			else{
-				listDestination = new ArrayList<Actividad>();
-			}
-			
-			final DualMultipleChoice<Actividad> dualMultiple = new DualMultipleChoice<Actividad>("dual", listOriginals, listDestination);
-			
-			
-			
-			
-			
-/*
-			originals = new ListMultipleChoice<Actividad>("originals",
-					new PropertyModel(this, "selectedOriginals"),
-					new LoadableDetachableModel() {
-
-						@Override
-						protected Object load() {
-							if (proyectoModel.getObject().getIdProyecto() > 0) {
-								return daoService.actividadesOrigen(proyectoModel.getObject());
-							} else {
-								return daoService.getActividades();
-							}
-						}
-					});
-
-			originals.setOutputMarkupId(true);
-
-			destinations = new ListMultipleChoice<Actividad>("destinations",
-					new PropertyModel(this, "selectedDestinations"),
-					new LoadableDetachableModel() {
-						@Override
-						protected Object load() {
-							if (proyectoModel.getObject().getIdProyecto() > 0) {
-								return daoService.getActividades(proyectoModel.getObject());
-							}
-							return new ArrayList<Actividad>();
-						}
-					});
-
-			destinations.setOutputMarkupId(true);
-
-			AjaxButton addButton = new AjaxButton("addButton") {
-				@Override
-				protected void onSubmit(AjaxRequestTarget target, Form form) {
-					update(target, selectedOriginals, originals, destinations);
-				}
-			};
-
-			AjaxButton removeButton = new AjaxButton("removeButton") {
-				@Override
-				protected void onSubmit(AjaxRequestTarget target, Form form) {
-					update(target, selectedDestinations, destinations,
-							originals);
-				}
-			};
-*/
-			
+			dualMultiple = new DualMultipleChoice<Actividad>("dual", listOriginals, listDestination);
+						
 			
 			AjaxButton submit = new AjaxButton("submit") {
 				@Override
@@ -186,44 +126,32 @@ public class EditProyectosPage extends BasePage {
 				}
 			};
 
+			
 			add(nombre);
 			add(dualMultiple);
 			add(submit);
-			/*
-			add(originals);
-			add(destinations);
-			add(addButton);
-			add(removeButton);
-			*/
-
 		}
-/*
-		private void update(AjaxRequestTarget target, List<Actividad> selections, ListMultipleChoice<Actividad> from, ListMultipleChoice<Actividad> to) {
-			List<Actividad> choicesTo;
-			List<Actividad> choicesFrom;
 
-			for (Actividad destination : selections) {
-				choicesTo = (List<Actividad>) to.getChoices();
 
-				if (!choicesTo.contains(destination)) {
-					choicesTo.add(destination);
-
-					choicesFrom = (List<Actividad>) from.getChoices();
-					choicesFrom.remove(destination);
-
-					Collections.sort(choicesTo);
-					Collections.sort(choicesFrom);
-
-					from.setChoices(choicesFrom);
-					to.setChoices(choicesTo);
-
-				}
+		private List<Actividad> obtenerListaDestino() {
+			if (proyectoModel.getObject().getIdProyecto() > 0) {
+				return daoService.getActividades(proyectoModel.getObject());
 			}
-
-			target.add(to);
-			target.add(from);
+			else{
+				return new ArrayList<Actividad>();
+			}
 		}
-*/
+
+
+		private List<Actividad> obtenerListaOrigen() {
+			if (proyectoModel.getObject().getIdProyecto() > 0) {
+				return daoService.actividadesOrigen(proyectoModel.getObject());
+			} else {
+				return daoService.getActividades();
+			}
+		}		
+		
+		
 		protected abstract void onSubmit(AjaxRequestTarget target, EditForm form);
 
 	}

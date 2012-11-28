@@ -56,12 +56,7 @@ public class ActividadDAO extends AbstractDAO {
 		jdbcTemplate.update("INSERT INTO activities(a_id,a_name) VALUES(?,?)", id, actividad.getNombre());
 	}
 	
-	public void relacionarActividad(Actividad actividad, List<Integer> proyectos){
-		for (int i = 0; i < proyectos.size(); i++) {
-			jdbcTemplate.update("INSERT INTO activity_bind(ab_id_a,ab_id_p) VALUES (?,?)",actividad.getIdActividad(),i);
-		}
-	}
-	
+
 	public void borrarActividad(Actividad actividad){
 		jdbcTemplate.update("DELETE FROM activities WHERE a_id=?",actividad.getIdActividad());
 		jdbcTemplate.update("DELETE FROM activity_bind WHERE ab_id_a=?",actividad.getIdActividad());
@@ -83,6 +78,47 @@ public class ActividadDAO extends AbstractDAO {
 		
 		return actividades;
 	}
+
+	private void agregarActividad(Actividad actividad, Collection<Proyecto> proyectosRelacionados) {
+		
+		int idActividad = jdbcTemplate.queryForInt("SELECT max(a_id) FROM activities")+1;
+		
+		jdbcTemplate.update("INSERT INTO activities (a_id, a_name) VALUES (?,?)", idActividad, actividad.getNombre());
+
+		
+		int idActivityBind = jdbcTemplate.queryForInt("SELECT max(ab_id) FROM activity_bind");
+		
+		for (Proyecto proyecto : proyectosRelacionados) {
+			idActivityBind += 1;
+			jdbcTemplate.update("INSERT INTO activity_bind (ab_id, ab_id_a, ab_id_p) VALUES (?,?,?)", idActivityBind, idActividad, proyecto.getIdProyecto());			
+		}
+
+	}
+	
+	private void modificarActividad(Actividad actividad, Collection<Proyecto> proyectosRelacionados) {
+		int idActivityBind = jdbcTemplate.queryForInt("SELECT max(ab_id) FROM activity_bind");
+		
+		jdbcTemplate.update("UPDATE activities SET a_name=? WHERE a_id=?", actividad.getNombre(), actividad.getIdActividad());
+		
+		jdbcTemplate.update("DELETE FROM activity_bind WHERE ab_id_a=?", actividad.getIdActividad());
+		
+		for (Proyecto proyecto : proyectosRelacionados) {
+			idActivityBind += 1;
+			jdbcTemplate.update("INSERT INTO activity_bind (ab_id, ab_id_a, ab_id_p) VALUES (?,?,?)", idActivityBind, actividad.getIdActividad(), proyecto.getIdProyecto());
+		}
+	}
+	
+	
+	public void insertarActividad(Actividad actividad, Collection<Proyecto> proyectosRelacionados) {
+		
+		if (actividad.getIdActividad() == 0) {
+			this.agregarActividad(actividad, proyectosRelacionados);
+		}else{
+			this.modificarActividad(actividad, proyectosRelacionados);
+		}
+		
+	}
+	
 	
 	private class RowMapperActividad implements RowMapper<Actividad>{
 		@Override
