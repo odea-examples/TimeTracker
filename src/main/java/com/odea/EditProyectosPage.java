@@ -2,7 +2,6 @@ package com.odea;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 import org.apache.shiro.SecurityUtils;
@@ -17,10 +16,10 @@ import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
-import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import com.odea.components.dualMultipleChoice.DualMultipleChoice;
 import com.odea.domain.Actividad;
 import com.odea.domain.Proyecto;
 import com.odea.services.DAOService;
@@ -97,14 +96,40 @@ public class EditProyectosPage extends BasePage {
 
 		public List<Actividad> selectedOriginals;
 		public List<Actividad> selectedDestinations;
+		public List<Actividad> listDestination;
+		public List<Actividad> listOriginals;
 
 		public EditForm(String id, IModel<Proyecto> proyecto) {
 
 			super(id, proyecto);
 
+			
+
 			TextField<String> nombre = new TextField<String>("nombre");
 			nombre.add(new FocusOnLoadBehavior());
-
+			
+			
+			
+			if (proyectoModel.getObject().getIdProyecto() > 0) {
+				listOriginals =  daoService.actividadesOrigen(proyectoModel.getObject());
+			} else {
+				listOriginals = daoService.getActividades();
+			}
+			
+			if (proyectoModel.getObject().getIdProyecto() > 0) {
+				listDestination = daoService.getActividades(proyectoModel.getObject());
+			}
+			else{
+				listDestination = new ArrayList<Actividad>();
+			}
+			
+			final DualMultipleChoice<Actividad> dualMultiple = new DualMultipleChoice<Actividad>("dual", listOriginals, listDestination);
+			
+			
+			
+			
+			
+/*
 			originals = new ListMultipleChoice<Actividad>("originals",
 					new PropertyModel(this, "selectedOriginals"),
 					new LoadableDetachableModel() {
@@ -149,25 +174,30 @@ public class EditProyectosPage extends BasePage {
 							originals);
 				}
 			};
-
+*/
+			
+			
 			AjaxButton submit = new AjaxButton("submit") {
 				@Override
 				protected void onSubmit(AjaxRequestTarget target, Form form) {
 					EditForm.this.onSubmit(target, (EditForm) form);
 					daoService.agregarProyecto(EditForm.this.getModelObject(),
-							(Collection<Actividad>) destinations.getChoices());
+							(Collection<Actividad>) dualMultiple.getDestinations().getChoices());
 				}
 			};
 
 			add(nombre);
+			add(dualMultiple);
+			add(submit);
+			/*
 			add(originals);
 			add(destinations);
 			add(addButton);
 			add(removeButton);
-			add(submit);
+			*/
 
 		}
-
+/*
 		private void update(AjaxRequestTarget target, List<Actividad> selections, ListMultipleChoice<Actividad> from, ListMultipleChoice<Actividad> to) {
 			List<Actividad> choicesTo;
 			List<Actividad> choicesFrom;
@@ -193,7 +223,7 @@ public class EditProyectosPage extends BasePage {
 			target.add(to);
 			target.add(from);
 		}
-
+*/
 		protected abstract void onSubmit(AjaxRequestTarget target, EditForm form);
 
 	}
