@@ -10,7 +10,7 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.ListMultipleChoice;
-import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
@@ -19,6 +19,7 @@ import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import com.odea.EditActividadesPage.ActividadForm;
 import com.odea.components.dualMultipleChoice.DualMultipleChoice;
 import com.odea.domain.Actividad;
 import com.odea.domain.Proyecto;
@@ -98,23 +99,33 @@ public class EditProyectosPage extends BasePage {
 		public List<Actividad> selectedDestinations;
 		public List<Actividad> listDestination;
 		public List<Actividad> listOriginals;
-		DualMultipleChoice<Actividad> dualMultiple;
+		public DualMultipleChoice<Actividad> dualMultiple;
 
 		public EditForm(String id, IModel<Proyecto> proyecto) {
 
 			super(id, proyecto);
 
-			
 
-			TextField<String> nombre = new TextField<String>("nombre");
+			RequiredTextField<String> nombre = new RequiredTextField<String>("nombre");
 			nombre.add(new FocusOnLoadBehavior());
 			
 			
-			listOriginals = obtenerListaOrigen();
-			
-			listDestination = obtenerListaDestino();
-			
-			dualMultiple = new DualMultipleChoice<Actividad>("dual", listOriginals, listDestination);
+			LoadableDetachableModel originalsModel = new LoadableDetachableModel() {
+				@Override
+				protected Object load() {
+					return EditForm.this.obtenerListaOrigen();
+				}							
+	        };
+	        
+	        LoadableDetachableModel destinationsModel = new LoadableDetachableModel() {
+				@Override
+				protected Object load() {
+					return EditForm.this.obtenerListaDestino();
+				}							
+	        };
+	        
+	        
+			dualMultiple = new DualMultipleChoice<Actividad>("dual", originalsModel, destinationsModel);
 						
 			
 			AjaxButton submit = new AjaxButton("submit") {

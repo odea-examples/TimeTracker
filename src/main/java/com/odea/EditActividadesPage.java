@@ -1,14 +1,12 @@
 package com.odea;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
-import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -70,34 +68,12 @@ public class EditActividadesPage extends BasePage{
             }
         	
         };
-        
-
-
-        
-        
 
 
         add(form);
     }
     
-	private List<Proyecto> obtenerListaDestino() {
-		if (actividadModel.getObject().getIdActividad() > 0) {
-			return daoService.getProyectos(actividadModel.getObject());
-		}
-		else{
-			return new ArrayList<Proyecto>();
-		}
-	}
 
-
-	private List<Proyecto> obtenerListaOrigen() {
-		if (actividadModel.getObject().getIdActividad() > 0) {
-			return daoService.obtenerOrigen(actividadModel.getObject());
-		} else {
-			return daoService.getProyectos();
-		}
-	}		
-    
 	
 	public abstract class ActividadForm extends Form<Actividad> {
 
@@ -106,15 +82,26 @@ public class EditActividadesPage extends BasePage{
 		public ActividadForm(String id, IModel<Actividad> model) {
 			super(id, model);
 			
-			List<Proyecto> originalsList = obtenerListaOrigen();
-			List<Proyecto> destinationsList = obtenerListaDestino();
-			
 	        RequiredTextField<String> nombre = new RequiredTextField<String>("nombre");
 	        nombre.add(new FocusOnLoadBehavior());
-
-	        dualMultiple = new DualMultipleChoice<Proyecto>("dual", originalsList, destinationsList); 
 	        
-	        Button submit = new AjaxButton("submit") {
+	        LoadableDetachableModel originalsModel = new LoadableDetachableModel() {
+				@Override
+				protected Object load() {
+					return ActividadForm.this.obtenerListaOrigen();
+				}							
+	        };
+	        
+	        LoadableDetachableModel destinationsModel = new LoadableDetachableModel() {
+				@Override
+				protected Object load() {
+					return ActividadForm.this.obtenerListaDestino();
+				}							
+	        };
+	        
+	        dualMultiple = new DualMultipleChoice<Proyecto>("dual", originalsModel, destinationsModel);
+	        
+	        AjaxButton submit = new AjaxButton("submit") {
 	        	@Override
 				protected void onSubmit(AjaxRequestTarget target, Form form) {
 	        		ActividadForm.this.onSubmit(target, (ActividadForm) form);
@@ -127,6 +114,25 @@ public class EditActividadesPage extends BasePage{
 			add(dualMultiple);
 			add(submit);
 		}
+		
+		public List<Proyecto> obtenerListaDestino() {
+			if (actividadModel.getObject().getIdActividad() > 0) {
+				return daoService.getProyectos(actividadModel.getObject());
+			}
+			else{
+				return new ArrayList<Proyecto>();
+			}
+		}
+
+
+		public List<Proyecto> obtenerListaOrigen() {
+			if (actividadModel.getObject().getIdActividad() > 0) {
+				return daoService.obtenerOrigen(actividadModel.getObject());
+			} else {
+				return daoService.getProyectos();
+			}
+		}		
+	    
 		
 		protected abstract void onSubmit(AjaxRequestTarget target, ActividadForm form);
 		

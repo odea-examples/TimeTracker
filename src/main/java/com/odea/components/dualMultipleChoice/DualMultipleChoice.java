@@ -8,7 +8,7 @@ import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.ListMultipleChoice;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 
 public class DualMultipleChoice<T> extends Panel {
@@ -17,39 +17,18 @@ public class DualMultipleChoice<T> extends Panel {
 	public ListMultipleChoice<T> destinations;
 	public List<T> selectedOriginals;
 	public List<T> selectedDestinations;
-	public List<T> originalsList;
-	public List<T> destinationsList;
 
-
-	public DualMultipleChoice(String id, List<T> originalsList, List<T> destinationsList) {
+	public DualMultipleChoice(String id, IModel<List<T>> originalsModel, IModel<List<T>> destinationsModel) {
 		super(id);
 		
-		this.originalsList = originalsList;
-		this.destinationsList = destinationsList;
-		
-		
-		originals = new ListMultipleChoice<T>("originals", new PropertyModel(this, "selectedOriginals"),
-					new LoadableDetachableModel() {
-				@Override
-				protected Object load() {
-					return DualMultipleChoice.this.originalsList;
-				}							
-		});
 
+		originals = new ListMultipleChoice<T>("originals", new PropertyModel(this, "selectedOriginals"), originalsModel);
 		originals.setOutputMarkupId(true);
 		
 		
-		destinations = new ListMultipleChoice<T>("destinations", new PropertyModel(this, "selectedDestinations"),
-					   new LoadableDetachableModel() {
-				@Override
-				protected Object load() {
-					return DualMultipleChoice.this.destinationsList;
-				}			
-		});
-
+		destinations = new ListMultipleChoice<T>("destinations", new PropertyModel(this, "selectedDestinations"), destinationsModel);
 		destinations.setOutputMarkupId(true);
-		
-		
+				
 		
 		AjaxButton addButton = new AjaxButton("addButton") {
 			@Override

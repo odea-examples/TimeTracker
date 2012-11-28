@@ -9,6 +9,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import com.odea.EditActividadesPage.ActividadForm;
 import com.odea.components.dualMultipleChoice.DualMultipleChoice;
 import com.odea.domain.Actividad;
 import com.odea.services.DAOService;
@@ -38,10 +39,23 @@ public class PruebaPage extends BasePage {
 		public Formulario(String id, IModel<Actividad> model) {
 			super(id, model);
 			
-			List<Actividad> originals = new ArrayList<Actividad>();
-			List<Actividad> destinations = daoService.getActividades();
 			
-			DualMultipleChoice<Actividad> dual = new DualMultipleChoice<Actividad>("dual", originals, destinations);
+			LoadableDetachableModel originalsModel = new LoadableDetachableModel() {
+				@Override
+				protected Object load() {
+					return new ArrayList<Actividad>();
+				}							
+	        };
+		
+	    	LoadableDetachableModel destinationsModel = new LoadableDetachableModel() {
+				@Override
+				protected Object load() {
+					return daoService.getActividades();
+				}							
+	        };
+		
+	        
+			DualMultipleChoice<Actividad> dual = new DualMultipleChoice<Actividad>("dual", originalsModel, destinationsModel);
 			
 			add(dual);
 			
