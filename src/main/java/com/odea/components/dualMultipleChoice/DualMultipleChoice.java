@@ -1,5 +1,6 @@
 package com.odea.components.dualMultipleChoice;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -7,7 +8,6 @@ import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.ListMultipleChoice;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.PropertyModel;
 
@@ -21,8 +21,8 @@ public class DualMultipleChoice<T> extends Panel {
 	public List<T> destinationsList;
 
 
-	public DualMultipleChoice(String id, IModel<?> model, List<T> originalsList, List<T> destinationsList) {
-		super(id, model);
+	public DualMultipleChoice(String id, List<T> originalsList, List<T> destinationsList) {
+		super(id);
 		
 		this.originalsList = originalsList;
 		this.destinationsList = destinationsList;
@@ -92,6 +92,10 @@ public class DualMultipleChoice<T> extends Panel {
 				choicesFrom = (List<T>) from.getChoices();
 				choicesFrom.remove(destination);
 
+				Collections.sort((List) choicesTo);
+				Collections.sort((List) choicesFrom);
+				
+				
 				from.setChoices(choicesFrom);
 				to.setChoices(choicesTo);
 			}

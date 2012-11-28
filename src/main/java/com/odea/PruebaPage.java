@@ -38,10 +38,10 @@ public class PruebaPage extends BasePage {
 		public Formulario(String id, IModel<Actividad> model) {
 			super(id, model);
 			
-			List<Actividad> originals = daoService.getActividades();
-			List<Actividad> destinations = new ArrayList<Actividad>();
+			List<Actividad> originals = new ArrayList<Actividad>();
+			List<Actividad> destinations = daoService.getActividades();
 			
-			DualMultipleChoice<Actividad> dual = new DualMultipleChoice<Actividad>("dual", model, originals, destinations);
+			DualMultipleChoice<Actividad> dual = new DualMultipleChoice<Actividad>("dual", originals, destinations);
 			
 			add(dual);
 			
