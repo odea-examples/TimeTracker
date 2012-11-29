@@ -204,6 +204,7 @@ public class AgregarEntradasPage extends BasePage {
 		public DropDownChoice<String> sistemaExterno;
 		public TextField<String> duracion;
 		public TextField<String> ticketBZ;
+		public TextField<Date> fecha;
 		
 		public EntradaForm(String id) {
 			super(id);
@@ -271,8 +272,6 @@ public class AgregarEntradasPage extends BasePage {
 			duracion.setLabel(Model.of("Duracion"));
 			duracion.add(new NumberCommaBehavior(duracion.getMarkupId()));
 			duracion.add(new DurationValidator());
-
-
 			
 			
 			ticketBZ = new TextField<String>("ticketBZ");
@@ -290,7 +289,7 @@ public class AgregarEntradasPage extends BasePage {
 			
 			
 			
-			TextField<Date> fecha = new TextField<Date>("fecha");
+			fecha = new TextField<Date>("fecha");
 			fecha.setRequired(true);
 			fecha.add(new DatePickerBehavior(fecha.getMarkupId()));
 			fecha.setOutputMarkupId(true);
@@ -307,16 +306,58 @@ public class AgregarEntradasPage extends BasePage {
 
 				@Override
 				protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+
 					EntradaForm.this.onSubmit(target, (EntradaForm)form);								
 					target.add(feedBackPanel);
 					target.add(listViewContainer);
 					EntradaForm.this.setModelObject(new Entrada());
+					
+					if (duracion.isValid()) {
+						duracion.add(new AttributeModifier("style", new Model("border-color:none")));
+					}else{
+						duracion.add(new AttributeModifier("style", new Model("border-style:solid; border-color:red;")));
+					}
+					
+					if (ticketExt.isValid()) {
+						ticketExt.add(new AttributeModifier("style", new Model("border-color:none")));
+					}else{
+						ticketExt.add(new AttributeModifier("style", new Model("border-style:solid; border-color:red;")));
+					}
+					
+					if (fecha.isValid()) {
+						fecha.add(new AttributeModifier("style", new Model("border-color:none")));
+					}else{
+						fecha.add(new AttributeModifier("style", new Model("border-style:solid; border-color:red;")));
+					}
+					
 					target.add(EntradaForm.this);
 				}
 
 				@Override
 				protected void onError(AjaxRequestTarget target, Form<?> form) {
+					
+					if (!duracion.isValid()) {
+						duracion.add(new AttributeModifier("style", new Model("border-style:solid; border-color:red;")));
+					}else{
+						duracion.add(new AttributeModifier("style", new Model("border-color:none")));
+					}
+					
+					if (!ticketExt.isValid()) {
+						ticketExt.add(new AttributeModifier("style", new Model("border-style:solid; border-color:red;")));
+					}else{
+						ticketExt.add(new AttributeModifier("style", new Model("border-color:none")));
+					}					
+					
+					if (!fecha.isValid()) {
+						fecha.add(new AttributeModifier("style", new Model("border-style:solid; border-color:red;")));
+					}else{
+						fecha.add(new AttributeModifier("style", new Model("border-color:none")));
+					}	
+					
 					target.add(feedBackPanel);
+					target.add(fecha);
+					target.add(duracion);
+					target.add(ticketExt);
 				}
 				
 			};

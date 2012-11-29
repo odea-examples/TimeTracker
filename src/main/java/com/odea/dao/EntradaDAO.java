@@ -195,7 +195,6 @@ public class EntradaDAO extends AbstractDAO {
 		
 		public void borrarEntrada(Entrada entrada)
 		{
-			System.out.println(entrada.getIdEntrada());
 			jdbcTemplate.update("DELETE FROM activity_log WHERE al_timestamp=?", entrada.getIdEntrada());
 		}
 		

@@ -30,7 +30,6 @@ public class DurationValidator implements IValidator<String>{
 		
 	}
 		private void error(IValidatable<String> validatable, String errorKey) {
-			System.out.println("on error");
 			ValidationError error = new ValidationError();
 			error.addKey(getClass().getSimpleName() + "." + errorKey);
 			error.setMessage(errorKey);

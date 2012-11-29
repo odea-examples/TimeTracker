@@ -46,8 +46,6 @@ public class ActividadDAO extends AbstractDAO {
 	}
 	
 	public void insertarActividad(Actividad actividad){
-		System.out.println("si");
-		System.out.println(actividad.getIdActividad());
 		jdbcTemplate.update("INSERT INTO activities(a_id,a_name) VALUES(?,?)", actividad.getIdActividad(), actividad.getNombre());
 	}
 	
