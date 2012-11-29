@@ -72,15 +72,19 @@
 		
 	</form>
 	
-<!-- 	Ver:<select wicket:id="dropChoiceSelector"> </select> -->
+
 
 	<div wicket:id="listViewContainer">
 		<div>
 			<label for="horasAcumuladas">Horas Semanales</label>
 			<span wicket:id="horasAcumuladas" name="horasAcumuladas">[[horas acumuladas]]</span>
 		</div>
+		
+		
 		<h3>Entradas</h3>
-		<br />
+		<select wicket:id="selectorTiempo"> </select>
+		<br/>
+		
 		<table>
 			<thead>
 			<tr class="odd">

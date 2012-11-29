@@ -45,7 +45,7 @@ import com.odea.validators.ticketExterno.TicketExternoValidator;
 
 
 public class AgregarEntradasPage extends BasePage {
-	// TODO: agregada version id porque fallaba.
+	
 	private static final long serialVersionUID = 1088210443697851501L;
 
 	@SpringBean
@@ -55,7 +55,9 @@ public class AgregarEntradasPage extends BasePage {
 	
 	IModel<List<Entrada>> lstEntradasModel;
 	IModel<Integer> horasSemanalesModel;
-
+	ListView<Entrada> entradasListView;
+	DropDownChoice<String> selectorTiempo;
+	
 	WebMarkupContainer listViewContainer;
 	
 	public AgregarEntradasPage() {
@@ -66,6 +68,7 @@ public class AgregarEntradasPage extends BasePage {
 		}
 		
 		this.usuario = this.daoService.getUsuario(subject.getPrincipal().toString());
+		
 		this.lstEntradasModel = new LoadableDetachableModel<List<Entrada>>() { 
             @Override
             protected List<Entrada> load() {
@@ -97,7 +100,10 @@ public class AgregarEntradasPage extends BasePage {
 			}
 		};
 		
-		ListView<Entrada> entradasListView = new ListView<Entrada>("entradas", this.lstEntradasModel) {
+		
+		
+		
+		entradasListView = new ListView<Entrada>("entradas", this.lstEntradasModel) {
             @Override
             protected void populateItem(ListItem<Entrada> item) {
             	Entrada entrada = item.getModel().getObject();   
@@ -126,8 +132,49 @@ public class AgregarEntradasPage extends BasePage {
             }
         };
         
+        
+		ArrayList<String> opcionesTiempo = new ArrayList<String>();
+		opcionesTiempo.add("Dia");
+		opcionesTiempo.add("Semana");
+		opcionesTiempo.add("Mes");
+		
+		
+		IModel<String> modelTiempo = new Model<String>();
+		
+		selectorTiempo = new DropDownChoice<String>("selectorTiempo", modelTiempo, opcionesTiempo);
+		
+		selectorTiempo.add(new AjaxFormComponentUpdatingBehavior("onchange"){
+			@Override
+			protected void onUpdate(AjaxRequestTarget target) {
+				
+				entradasListView.setModel(new LoadableDetachableModel<List<Entrada>>() { 
+		            @Override
+		            protected List<Entrada> load() {
+		            	List<Entrada> lista = new ArrayList<Entrada>();
+		            	
+		            	if (selectorTiempo.getConvertedInput().equals("Mes")) {
+		            		lista = daoService.getEntradasMensuales(AgregarEntradasPage.this.usuario);
+						}
+		            	if (selectorTiempo.getConvertedInput().equals("Semana")) {
+		            		lista = daoService.getEntradasSemanales(AgregarEntradasPage.this.usuario);
+		            	}
+		            	if (selectorTiempo.getConvertedInput().equals("Dia")) {
+		            		lista = daoService.getEntradasDia(AgregarEntradasPage.this.usuario);
+		            	}
+		            	
+		            	return lista;
+		            }
+		        });
+				
+				target.add(listViewContainer);
+				
+			}
+		});
+        
+        
 		Label horasAcumuladas = new Label("horasAcumuladas", this.horasSemanalesModel);
 
+		listViewContainer.add(selectorTiempo);
         listViewContainer.setOutputMarkupId(true);
 		listViewContainer.add(entradasListView);
 		listViewContainer.add(horasAcumuladas);
@@ -201,18 +248,7 @@ public class AgregarEntradasPage extends BasePage {
 			sistemaExterno = new DropDownChoice<String>("sistemaExterno", sistExt);
 			sistemaExterno.setLabel(Model.of("Sistema Externo"));
 			sistemaExterno.setOutputMarkupId(true);
-//			sistemaExterno.add(new AjaxFormComponentUpdatingBehavior("onchange"){
-//				@Override
-//				protected void onUpdate(AjaxRequestTarget target) {
-//					if (EntradaForm.this.sistemaExterno.getValue() == "") {
-//						EntradaForm.this.ticketExt.setEnabled(false);
-//					} else {
-//						EntradaForm.this.ticketExt.setEnabled(true);
-//					}
-//					target.add(EntradaForm.this.ticketExt);
-//				}
-//				
-//			});
+
 			
 			TextArea<String> nota = new TextArea<String>("nota");
 			
@@ -236,10 +272,7 @@ public class AgregarEntradasPage extends BasePage {
 			ticketExt = new TextField<String>("ticketExterno");
 			ticketExt.setLabel(Model.of("ID Ticket Externo"));
 			ticketExt.setOutputMarkupId(true);
-//			ticketExt.setEnabled(false);
 			ticketExt.add(new PatternValidator("^[a-z0-9_-]{1,15}$"));
-			System.out.println(sistemaExterno);
-//			ticketExt.add(new TicketExternoValidator(sistemaExterno ,ticketExt));
 			
 			
 			
@@ -275,6 +308,10 @@ public class AgregarEntradasPage extends BasePage {
 				
 			};
 
+			
+		
+
+			
 			
 			
 			add(comboProyecto);

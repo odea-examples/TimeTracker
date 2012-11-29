@@ -1,5 +1,6 @@
 package com.odea.services;
 
+import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -64,10 +65,34 @@ public class DAOService {
 		entradaDAO.agregarEntrada(entrada);
 	}
 	
-	public Collection<Entrada> getEntradas(Usuario usuario, Date desde, Date hasta){
+	public List<Entrada> getEntradas(Usuario usuario, Timestamp desde, Timestamp hasta){
 		return entradaDAO.getEntradas(usuario, desde, hasta);
 	}
 	
+	public List<Entrada> getEntradasMensuales(Usuario usuario) {
+		return entradaDAO.getEntradasMensuales(usuario);
+	}
+	
+	public List<Entrada> getEntradasSemanales(Usuario usuario){
+		return entradaDAO.getEntradasSemanales(usuario);
+	}
+
+	public List<Entrada> getEntradasDia(Usuario usuario) {
+		return entradaDAO.getEntradasDia(usuario);
+	}
+	
+	public void agregarEntrada(Entrada entrada, Usuario usuario) {
+		entrada.setUsuario(usuario);
+		if (entrada.getSistemaExterno()==null){
+			entrada.setTicketExterno(null);
+		}
+		this.entradaDAO.agregarEntrada(entrada);
+	}
+	
+	public Entrada buscarEntrada(long id) {
+		return entradaDAO.buscarEntrada(id);
+	}
+
 	
 	public Collection<Entrada> getEntradas(Date desde,Date hasta){
 		return entradaDAO.getEntradas(desde, hasta);
@@ -132,21 +157,6 @@ public class DAOService {
 		return usuarioDAO.getUsuario(nombre, password);
 	}
 
-	public void agregarEntrada(Entrada entrada, Usuario usuario) {
-		entrada.setUsuario(usuario);
-		if (entrada.getSistemaExterno()==null){
-			entrada.setTicketExterno(null);
-		}
-		this.entradaDAO.agregarEntrada(entrada);
-	}
-	
-	public List<Entrada> getEntradasSemanales(Usuario usuario){
-		return entradaDAO.getEntradasSemanales(usuario);
-	}
-
-	public Entrada buscarEntrada(long id) {
-		return entradaDAO.buscarEntrada(id);
-	}
 
 
 
