@@ -147,24 +147,37 @@ public class AgregarEntradasPage extends BasePage {
 			@Override
 			protected void onUpdate(AjaxRequestTarget target) {
 				
-				entradasListView.setModel(new LoadableDetachableModel<List<Entrada>>() { 
-		            @Override
-		            protected List<Entrada> load() {
-		            	List<Entrada> lista = new ArrayList<Entrada>();
-		            	
-		            	if (selectorTiempo.getConvertedInput().equals("Mes")) {
-		            		lista = daoService.getEntradasMensuales(AgregarEntradasPage.this.usuario);
+				if (selectorTiempo.getConvertedInput().equals("Mes")) {
+					entradasListView.setModel(new LoadableDetachableModel<List<Entrada>>() {
+
+						@Override
+						protected List<Entrada> load() {
+							return daoService.getEntradasMensuales(AgregarEntradasPage.this.usuario);
 						}
-		            	if (selectorTiempo.getConvertedInput().equals("Semana")) {
-		            		lista = daoService.getEntradasSemanales(AgregarEntradasPage.this.usuario);
-		            	}
-		            	if (selectorTiempo.getConvertedInput().equals("Dia")) {
-		            		lista = daoService.getEntradasDia(AgregarEntradasPage.this.usuario);
-		            	}
-		            	
-		            	return lista;
-		            }
-		        });
+						
+					});
+				}
+				if (selectorTiempo.getConvertedInput().equals("Semana")) {
+					entradasListView.setModel(new LoadableDetachableModel<List<Entrada>>() {
+						
+						@Override
+						protected List<Entrada> load() {
+							return daoService.getEntradasSemanales(AgregarEntradasPage.this.usuario);
+						}
+						
+					});
+				}
+				if (selectorTiempo.getConvertedInput().equals("Dia")) {
+					entradasListView.setModel(new LoadableDetachableModel<List<Entrada>>() {
+						
+						@Override
+						protected List<Entrada> load() {
+							return daoService.getEntradasDia(AgregarEntradasPage.this.usuario);
+						}
+						
+					});
+				}
+				
 				
 				target.add(listViewContainer);
 				
