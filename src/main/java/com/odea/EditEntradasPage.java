@@ -6,6 +6,7 @@ import java.util.Date;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
@@ -33,6 +34,7 @@ import com.odea.domain.Entrada;
 import com.odea.domain.Proyecto;
 import com.odea.services.DAOService;
 import com.odea.validators.duracion.DurationValidator;
+import com.odea.validators.ticketExterno.TicketExternoValidator;
 
 public class EditEntradasPage extends BasePage{
 	
@@ -96,6 +98,7 @@ public class EditEntradasPage extends BasePage{
 		public DropDownChoice<String> sistemaExterno;
 		public TextField<String> duracion;
 		public TextField<String> ticketBZ;
+		public TextField<Date> fecha;
 		
 		public EntradaForm(String id) {
 			super(id);
@@ -153,18 +156,7 @@ public class EditEntradasPage extends BasePage{
 			sistemaExterno = new DropDownChoice<String>("sistemaExterno", sistExt);
 			sistemaExterno.setLabel(Model.of("Sistema Externo"));
 			sistemaExterno.setOutputMarkupId(true);
-			sistemaExterno.add(new AjaxFormComponentUpdatingBehavior("onchange"){
-				@Override
-				protected void onUpdate(AjaxRequestTarget target) {
-					if (EntradaForm.this.sistemaExterno.getValue() == "") {
-						EntradaForm.this.ticketExt.setEnabled(false);
-					} else {
-						EntradaForm.this.ticketExt.setEnabled(true);
-					}
-					target.add(EntradaForm.this.ticketExt);
-				}
-				
-			});
+			
 			
 			TextArea<String> nota = new TextArea<String>("nota");
 			
@@ -188,12 +180,11 @@ public class EditEntradasPage extends BasePage{
 			ticketExt = new TextField<String>("ticketExterno");
 			ticketExt.setLabel(Model.of("ID Ticket Externo"));
 			ticketExt.setOutputMarkupId(true);
-			ticketExt.setEnabled(false);
 			ticketExt.add(new PatternValidator("^[a-z0-9_-]{1,15}$"));
+						
 			
 			
-			
-			TextField<Date> fecha = new TextField<Date>("fecha");
+			fecha = new TextField<Date>("fecha");
 			fecha.setRequired(true);
 			fecha.add(new DatePickerBehavior(fecha.getMarkupId()));
 			fecha.setOutputMarkupId(true);
@@ -212,16 +203,57 @@ public class EditEntradasPage extends BasePage{
 				protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 					EntradaForm.this.onSubmit(target, (EntradaForm)form);								
 					target.add(feedBackPanel);
+					
+					if (duracion.isValid()) {
+						duracion.add(new AttributeModifier("style", new Model("border-color:none")));
+					}else{
+						duracion.add(new AttributeModifier("style", new Model("border-style:solid; border-color:red;")));
+					}
+					
+					if (ticketExt.isValid()) {
+						ticketExt.add(new AttributeModifier("style", new Model("border-color:none")));
+					}else{
+						ticketExt.add(new AttributeModifier("style", new Model("border-style:solid; border-color:red;")));
+					}
+					
+					if (fecha.isValid()) {
+						fecha.add(new AttributeModifier("style", new Model("border-color:none")));
+					}else{
+						fecha.add(new AttributeModifier("style", new Model("border-style:solid; border-color:red;")));
+					}
+					
 				}
 
 				@Override
 				protected void onError(AjaxRequestTarget target, Form<?> form) {
+					if (!duracion.isValid()) {
+						duracion.add(new AttributeModifier("style", new Model("border-style:solid; border-color:red;")));
+					}else{
+						duracion.add(new AttributeModifier("style", new Model("border-color:none")));
+					}
+					
+					if (!ticketExt.isValid()) {
+						ticketExt.add(new AttributeModifier("style", new Model("border-style:solid; border-color:red;")));
+					}else{
+						ticketExt.add(new AttributeModifier("style", new Model("border-color:none")));
+					}					
+					
+					if (!fecha.isValid()) {
+						fecha.add(new AttributeModifier("style", new Model("border-style:solid; border-color:red;")));
+					}else{
+						fecha.add(new AttributeModifier("style", new Model("border-color:none")));
+					}	
+					
 					target.add(feedBackPanel);
+					target.add(fecha);
+					target.add(duracion);
+					target.add(ticketExt);
 				}
 				
 			};
 
 			
+			this.add(new TicketExternoValidator(sistemaExterno, ticketExt));
 			
 			add(comboProyecto);
 			add(comboActividad);
