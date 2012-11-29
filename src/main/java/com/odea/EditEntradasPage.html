@@ -11,47 +11,52 @@
 <wicket:extend>
 
     <a wicket:id="link" class="nav"><h3><span>Volver a entradas</span></h3></a>
+    
     <div wicket:id="feedback" class="feedback">feedback</div>
 
-		<form wicket:id="form">
+	<form wicket:id="form">
 		<ul>
 		
 			<span wicket:id="feedBackPanel"></span>
+			
 			<u>Los campos marcados con un asterisco son obligatorios.</u>
-
+			<br/>
+			<br/>
+			
+			
 			<div>
-				<b><label for="proyecto">Proyecto *</label> </b> <select
-					wicket:id="proyecto" name="proyecto"/>
+				<b><label for="proyecto">Proyecto *</label> </b> 
+				<select wicket:id="proyecto" name="proyecto"/>
 			</div>
 
 			<div>
-				<b><label for="actividad">Actividad *</label> </b><select
-					wicket:id="actividad" name="actividad"/>
+				<b><label for="actividad">Actividad *</label> </b>
+				<select wicket:id="actividad" name="actividad"/>
 			</div>
 
 			<div>
-				<b><label for="duracion">Duracion *</label></b> <input type="text"
-					wicket:id="duracion" name="duracion"/> Formato: HH:MM o H,MM
+				<b><label for="duracion">Duracion *</label></b> 
+				<input type="text" wicket:id="duracion" name="duracion"/> Formato: HH:MM o H,MM
 			</div>
 
 			<div>
-				<b><label for="fecha">Fecha *</label> </b><input type="text"
-					wicket:id="fecha" name="fecha"/>
+				<b><label for="fecha">Fecha *</label> 
+				</b><input type="text" wicket:id="fecha" name="fecha"/>
 			</div>
 
 			<div>
-				<b><label for="ticketBZ">Ticket Bugzilla</label> <input
-					type="text" wicket:id="ticketBZ" name="ticketBZ"></b>
+				<b><label for="ticketBZ">Ticket Bugzilla</label> 
+				<input type="text" wicket:id="ticketBZ" name="ticketBZ"></b>
 			</div>
 
 			<div>
-				<b><label for="sistemaExterno">Sistema Externo</label> <select
-					wicket:id="sistemaExterno" name="sistemaExterno" style="width:250px"/></b>
+				<b><label for="sistemaExterno">Sistema Externo</label> 
+				<select	wicket:id="sistemaExterno" name="sistemaExterno" style="width:250px"/></b>
 			</div>
 
 			<div>
-				<b><label for="ticketExterno">ID Ticket Externo</label> <input
-					type="text" wicket:id="ticketExterno" name="ticketExterno"/></b>
+				<b><label for="ticketExterno">ID Ticket Externo</label> 
+				<input type="text" wicket:id="ticketExterno" name="ticketExterno"/></b>
 			</div>
 			
 			<div>
@@ -61,14 +66,13 @@
 
 			<br/>
 			
-			<input wicket:id="submit" value="Confirmar" type="submit" />
-
-
-			<br/>
-			<br/>
-			<br/>
+			<input wicket:id="submit" value="Confirmar" type="submit"/>
 
 		</ul>
 	</form>
+	
+	<br/>
+	<br/>
+	<br/>
 	
 </wicket:extend>

@@ -8,29 +8,31 @@
 	</style>
 	
 </wicket:head>
-<wicket:extend>
 
+<wicket:extend>
 
 
 	<form wicket:id="form">
 		
-
 			<span wicket:id="feedBackPanel"></span>
+			
 			<u>Los campos marcados con un asterisco son obligatorios.</u>
-
+			<br/>
+			<br/>
+			
 			<div>
-				<b><label for="proyecto">Proyecto *</label> </b> <select
-					wicket:id="proyecto" name="proyecto"/>
+				<b><label for="proyecto">Proyecto *</label> </b> 
+				<select wicket:id="proyecto" name="proyecto"/>
 			</div>
 
 			<div>
-				<b><label for="actividad">Actividad *</label> </b><select
-					wicket:id="actividad" name="actividad"/>
+				<b><label for="actividad">Actividad *</label> </b>
+				<select wicket:id="actividad" name="actividad"/>
 			</div>
 
 			<div>
-				<b><label for="duracion">Duracion *</label></b> <input type="text"
-					wicket:id="duracion" name="duracion"/> Formato: HH:MM o H,MM
+				<b><label for="duracion">Duracion *</label></b> 
+				<input type="text" wicket:id="duracion" name="duracion"/> Formato: HH:MM o H,MM (decimal)
 			</div>
 
 			<div>
@@ -39,18 +41,18 @@
 			</div>
 
 			<div>
-				<b><label for="ticketBZ">Ticket Bugzilla</label> <input
-					type="text" wicket:id="ticketBZ" name="ticketBZ"></b>
+				<b><label for="ticketBZ">Ticket Bugzilla</label> 
+				<input type="text" wicket:id="ticketBZ" name="ticketBZ"></b>
 			</div>
 
 			<div>
-				<b><label for="sistemaExterno">Sistema Externo</label> <select
-					wicket:id="sistemaExterno" name="sistemaExterno" style="width:250px"/></b>
+				<b><label for="sistemaExterno">Sistema Externo</label>
+				<select wicket:id="sistemaExterno" name="sistemaExterno" style="width:250px"/></b>
 			</div>
 
 			<div>
-				<b><label for="ticketExterno">ID Ticket Externo</label> <input
-					type="text" wicket:id="ticketExterno" name="ticketExterno"/></b>
+				<b><label for="ticketExterno">ID Ticket Externo</label> 
+				<input type="text" wicket:id="ticketExterno" name="ticketExterno"/></b>
 			</div>
 			
 			<div>
@@ -69,6 +71,7 @@
 
 		
 	</form>
+	
 <!-- 	Ver:<select wicket:id="dropChoiceSelector"> </select> -->
 
 	<div wicket:id="listViewContainer">
@@ -87,7 +90,7 @@
 				<th scope="col">Duracion</th>
 				<th scope="col">Ticket Bugzilla</th>
 				<th scope="col">Borrar</th>
-<!-- 				<th scope="col">Modificar</th> -->
+				<th scope="col">Modificar</th>
 			</tr>
 			</thead>
 			<tbody>
@@ -99,7 +102,6 @@
 					<td wicket:id="ticketBZ_entrada"/>
 					<td><a wicket:id="deleteLink" class="more" href="#"><img src="images/delete.png" alt="delete"/></a></td>
 					<td><a wicket:id="modifyLink" class="more" href="#"><img src="images/modificarIcon.gif" alt="modificarIcon"/></a></td>
-					
 				</tr>
 			</tbody>	
 		</table>
