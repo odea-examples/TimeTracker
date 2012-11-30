@@ -36,11 +36,16 @@ public class EntradaDAO extends AbstractDAO {
 
 		logger.debug("Insert attempt entrada");
 		
+		System.out.println("SISTEMA EXTERNO:"+entrada.getSistemaExterno()+" TICKET EXTERNO:"+entrada.getTicketExterno());
+		
 		jdbcTemplate.update("INSERT INTO activity_log (al_project_id, al_activity_id, al_duration, al_comment, ticket_bz, issue_tracker_externo, ite_id, al_user_id, al_date) VALUES (?,?,?,?,?,?,?,?,?)", 
 				entrada.getProyecto().getIdProyecto(), entrada.getActividad().getIdActividad(), new java.sql.Time((long) ((this.parsearDuracion(entrada.getDuracion())*3600000))-(3600000*21)), 
 				entrada.getNota(), entrada.getTicketBZ(), 
-				sistemaExterno, entrada.getTicketExterno(), (entrada.getUsuario().getIdUsuario())
+				sistemaExterno, entrada.getTicketExterno(), entrada.getUsuario().getIdUsuario()
 				, entrada.getFecha());
+		
+		
+		
 		
 		logger.debug(entrada.getDuracion() +"Entrada agregada - " + new Date(System.currentTimeMillis()));
 		
