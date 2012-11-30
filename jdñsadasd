@@ -1,0 +1,2 @@
+fatal: ambiguous argument 'branch': unknown revision or path not in the working tree.
+Use '--' to separate paths from revisions
