@@ -3,6 +3,7 @@ package com.odea.dao;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.sql.Types;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -36,16 +37,13 @@ public class EntradaDAO extends AbstractDAO {
 
 		logger.debug("Insert attempt entrada");
 		
-		System.out.println("SISTEMA EXTERNO:"+entrada.getSistemaExterno()+" TICKET EXTERNO:"+entrada.getTicketExterno());
-		
 		jdbcTemplate.update("INSERT INTO activity_log (al_project_id, al_activity_id, al_duration, al_comment, ticket_bz, issue_tracker_externo, ite_id, al_user_id, al_date) VALUES (?,?,?,?,?,?,?,?,?)", 
+				new Object[]{
 				entrada.getProyecto().getIdProyecto(), entrada.getActividad().getIdActividad(), new java.sql.Time((long) ((this.parsearDuracion(entrada.getDuracion())*3600000))-(3600000*21)), 
 				entrada.getNota(), entrada.getTicketBZ(), 
-				sistemaExterno, entrada.getTicketExterno(), entrada.getUsuario().getIdUsuario()
-				, entrada.getFecha());
-		
-		
-		
+				sistemaExterno, entrada.getTicketExterno(), (entrada.getUsuario().getIdUsuario())
+				, entrada.getFecha()},
+				new int[]{Types.INTEGER, Types.INTEGER, Types.TIME,Types.BLOB,Types.INTEGER,Types.CHAR,Types.VARCHAR,Types.INTEGER ,Types.TIMESTAMP});
 		
 		logger.debug(entrada.getDuracion() +"Entrada agregada - " + new Date(System.currentTimeMillis()));
 		
