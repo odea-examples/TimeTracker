@@ -57,6 +57,8 @@ public class AgregarEntradasPage extends BasePage {
 	IModel<Integer> horasSemanalesModel;
 	ListView<Entrada> entradasListView;
 	DropDownChoice<String> selectorTiempo;
+	Label mensajeProyecto;
+	Label mensajeActividad;
 	
 	WebMarkupContainer listViewContainer;
 	
@@ -241,6 +243,10 @@ public class AgregarEntradasPage extends BasePage {
 				}
 			});
 			
+			mensajeProyecto = new Label("mensajeProyecto","Campo necesario");
+			mensajeProyecto.add(new AttributeModifier("style", new Model("display:none")));
+			mensajeProyecto.setOutputMarkupId(true);
+			
 			
 			this.comboActividad = new DropDownChoice<Actividad>("actividad",new ArrayList<Actividad>(),new IChoiceRenderer<Actividad>() {
 				@Override
@@ -258,6 +264,9 @@ public class AgregarEntradasPage extends BasePage {
 			this.comboActividad.setRequired(true);
 			this.comboActividad.setLabel(Model.of("Actividad"));
 			
+			mensajeActividad = new Label("mensajeActividad","Campo Necesario");
+			mensajeActividad.add(new AttributeModifier("style", new Model("display:none")));
+			mensajeActividad.setOutputMarkupId(true);
 			
 			sistemaExterno = new DropDownChoice<String>("sistemaExterno", sistExt);
 			sistemaExterno.setLabel(Model.of("Sistema Externo"));
@@ -330,6 +339,16 @@ public class AgregarEntradasPage extends BasePage {
 						fecha.add(new AttributeModifier("style", new Model("border-style:solid; border-color:red;")));
 					}
 					
+					if (comboProyecto.isValid()) {
+						mensajeProyecto.add(new AttributeModifier("style", new Model("display:none")));
+					}else{
+					}
+					
+					if (comboActividad.isValid()) {
+						mensajeActividad.add(new AttributeModifier("style", new Model("display:none")));
+					}else{
+					}
+					
 					target.add(EntradaForm.this);
 				}
 
@@ -352,12 +371,27 @@ public class AgregarEntradasPage extends BasePage {
 						fecha.add(new AttributeModifier("style", new Model("border-style:solid; border-color:red;")));
 					}else{
 						fecha.add(new AttributeModifier("style", new Model("border-color:none")));
-					}	
+					}
+					
+					if (comboProyecto.isValid()) {
+						mensajeProyecto.add(new AttributeModifier("style", new Model("display:none")));
+					}else{
+						System.out.println("else");
+						mensajeProyecto.add(new AttributeModifier("style", new Model("color:red")));
+					}
+					
+					if (comboActividad.isValid()) {
+						mensajeActividad.add(new AttributeModifier("style", new Model("display:none")));
+					}else{
+						mensajeActividad.add(new AttributeModifier("style", new Model("color:red")));
+					}
 					
 					target.add(feedBackPanel);
 					target.add(fecha);
 					target.add(duracion);
 					target.add(ticketExt);
+					target.add(mensajeProyecto);
+					target.add(mensajeActividad);
 				}
 				
 			};
@@ -367,7 +401,8 @@ public class AgregarEntradasPage extends BasePage {
 
 			
 			
-			
+			add(mensajeProyecto);
+			add(mensajeActividad);
 			add(comboProyecto);
 			add(comboActividad);
 			add(duracion);

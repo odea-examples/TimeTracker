@@ -3,7 +3,6 @@ package com.odea.components.dualMultipleChoice;
 import java.util.Collections;
 import java.util.List;
 
-import com.google.common.collect.Lists;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.form.Form;
