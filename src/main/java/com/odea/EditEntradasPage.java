@@ -3,6 +3,7 @@ package com.odea;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.StringTokenizer;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -92,7 +93,8 @@ public class EditEntradasPage extends BasePage{
     }
     
     public abstract class EntradaForm extends Form<Entrada> {
-		public DropDownChoice<Actividad> comboActividad;
+	
+    	public DropDownChoice<Actividad> comboActividad;
 		public DropDownChoice<Proyecto> comboProyecto; 	
 		public TextField<String> ticketExt;
 		public DropDownChoice<String> sistemaExterno;
@@ -106,8 +108,8 @@ public class EditEntradasPage extends BasePage{
 			
 
 			ArrayList<String> sistExt = new ArrayList<String>();
-			sistExt.add("Sistema de Incidencias de YPF");
-			sistExt.add("Sistema Geminis de YPF");
+			sistExt.add("SIY");
+			sistExt.add("SGY");
 			
 			
 			this.comboProyecto = new DropDownChoice<Proyecto>("proyecto",  daoService.getProyectos(),new IChoiceRenderer<Proyecto>() {
@@ -153,7 +155,43 @@ public class EditEntradasPage extends BasePage{
 			this.comboActividad.setChoices(daoService.getActividades(this.getModelObject().getProyecto()));
 			
 			
-			sistemaExterno = new DropDownChoice<String>("sistemaExterno", sistExt);
+			sistemaExterno = new DropDownChoice<String>("sistemaExterno", sistExt, new IChoiceRenderer<String>() {
+				@Override
+				public Object getDisplayValue(String object) {
+					if (object.equals("SGY")) {
+						object = "Sistema Geminis de YPF";
+					}
+					if (object.equals("SIY")) {
+						object = "Sistema de incidencias de YPF";
+					}
+					return object;
+				}
+
+				@Override
+				public String getIdValue(String object, int index) {
+					return object;
+				}
+/*
+				private String parsear(String nombre) {
+					String resultado = "";
+					StringTokenizer tokenizer = new StringTokenizer(nombre, " ");
+					
+					while (tokenizer.hasMoreTokens()) {
+						char nuevaLetra = tokenizer.nextToken().charAt(0);
+						if (Character.isUpperCase(nuevaLetra)) {
+							resultado += nuevaLetra;							
+						}
+					}
+					
+					return resultado;
+					
+				}
+*/			
+				
+			}
+			);
+			
+			
 			sistemaExterno.setLabel(Model.of("Sistema Externo"));
 			sistemaExterno.setOutputMarkupId(true);
 			

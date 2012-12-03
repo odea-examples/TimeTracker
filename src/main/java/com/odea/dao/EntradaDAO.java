@@ -37,11 +37,12 @@ public class EntradaDAO extends AbstractDAO {
 
 		logger.debug("Insert attempt entrada");
 		
+		System.out.println(entrada.getSistemaExterno());
 		jdbcTemplate.update("INSERT INTO activity_log (al_project_id, al_activity_id, al_duration, al_comment, ticket_bz, issue_tracker_externo, ite_id, al_user_id, al_date) VALUES (?,?,?,?,?,?,?,?,?)", 
 				new Object[]{
 				entrada.getProyecto().getIdProyecto(), entrada.getActividad().getIdActividad(), new java.sql.Time((long) ((this.parsearDuracion(entrada.getDuracion())*3600000))-(3600000*21)), 
 				entrada.getNota(), entrada.getTicketBZ(), 
-				sistemaExterno, entrada.getTicketExterno(), (entrada.getUsuario().getIdUsuario())
+				sistemaExterno, entrada.getTicketExterno(), entrada.getUsuario().getIdUsuario()
 				, entrada.getFecha()},
 				new int[]{Types.INTEGER, Types.INTEGER, Types.TIME,Types.BLOB,Types.INTEGER,Types.CHAR,Types.VARCHAR,Types.INTEGER ,Types.TIMESTAMP});
 		
@@ -204,9 +205,13 @@ public class EntradaDAO extends AbstractDAO {
 		
 		
 		public void modificarEntrada(Entrada entrada) {
-			String sistemaExterno = this.parsearSistemaExterno(entrada.getSistemaExterno()); 
+			//String sistemaExterno = this.parsearSistemaExterno(entrada.getSistemaExterno());
+			System.out.println(this.parsearSistemaExterno(entrada.getSistemaExterno()));
+			entrada.getSistemaExterno();
 			jdbcTemplate.update("UPDATE activity_log SET al_date=?, al_duration=?, al_project_id=?, al_activity_id=?, al_comment=?, ticket_bz=?, issue_tracker_externo=?, ite_id=? WHERE al_timestamp=?", 
-					entrada.getFecha(), new java.sql.Time((long) ((this.parsearDuracion(entrada.getDuracion())*3600000))-(3600000*21)), entrada.getProyecto().getIdProyecto(), entrada.getActividad().getIdActividad(), entrada.getNota(), entrada.getTicketBZ(), sistemaExterno, entrada.getTicketExterno(), entrada.getIdEntrada());
+					new Object[]{
+					entrada.getFecha(), new java.sql.Time((long) ((this.parsearDuracion(entrada.getDuracion())*3600000))-(3600000*21)), entrada.getProyecto().getIdProyecto(), entrada.getActividad().getIdActividad(), entrada.getNota(), entrada.getTicketBZ(), entrada.getSistemaExterno(), entrada.getTicketExterno(), entrada.getIdEntrada()},
+					new int[]{Types.DATE, Types.TIME, Types.INTEGER, Types.INTEGER, Types.BLOB, Types.INTEGER, Types.CHAR, Types.VARCHAR, Types.TIMESTAMP});
 		}
 
 		public Entrada buscarEntrada(long id) {
