@@ -212,7 +212,7 @@ public class AgregarEntradasPage extends BasePage {
 			super(id);
 			this.setDefaultModel(this.entradaModel);
 			
-
+			
 			ArrayList<String> sistExt = new ArrayList<String>();
 			sistExt.add("Sistema de Incidencias de YPF");
 			sistExt.add("Sistema Geminis de YPF");
@@ -377,13 +377,13 @@ public class AgregarEntradasPage extends BasePage {
 						mensajeProyecto.add(new AttributeModifier("style", new Model("display:none")));
 					}else{
 						System.out.println("else");
-						mensajeProyecto.add(new AttributeModifier("style", new Model("color:red")));
+						mensajeProyecto.add(new AttributeModifier("style", new Model("font-weight:bold;color:red")));
 					}
 					
 					if (comboActividad.isValid()) {
 						mensajeActividad.add(new AttributeModifier("style", new Model("display:none")));
 					}else{
-						mensajeActividad.add(new AttributeModifier("style", new Model("color:red")));
+						mensajeActividad.add(new AttributeModifier("style", new Model("font-weight:bold;color:red")));
 					}
 					
 					target.add(feedBackPanel);
