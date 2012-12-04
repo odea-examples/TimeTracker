@@ -41,7 +41,7 @@ import com.odea.domain.Proyecto;
 import com.odea.domain.Usuario;
 import com.odea.services.DAOService;
 import com.odea.validators.duracion.DurationValidator;
-import com.odea.validators.ticketExterno.TicketExternoValidator;
+import com.odea.validators.ticketExterno.OnRelatedFieldsNullValidator;
 
 
 public class AgregarEntradasPage extends BasePage {
@@ -412,7 +412,8 @@ public class AgregarEntradasPage extends BasePage {
 			add(sistemaExterno);
 			add(ticketExt);
 			add(feedBackPanel);
-			this.add(new TicketExternoValidator(sistemaExterno ,ticketExt));
+			this.add(new OnRelatedFieldsNullValidator(sistemaExterno ,ticketExt, "Debe poner un sistema externo para poder poner un ticket externo"));
+			this.add(new OnRelatedFieldsNullValidator(ticketExt, sistemaExterno,"Debe ingresar un ticket con ese sistema externo elegido"));
 			add(submit);
 			
 			this.setOutputMarkupId(true);

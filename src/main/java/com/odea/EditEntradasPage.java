@@ -35,7 +35,7 @@ import com.odea.domain.Entrada;
 import com.odea.domain.Proyecto;
 import com.odea.services.DAOService;
 import com.odea.validators.duracion.DurationValidator;
-import com.odea.validators.ticketExterno.TicketExternoValidator;
+import com.odea.validators.ticketExterno.OnRelatedFieldsNullValidator;
 
 public class EditEntradasPage extends BasePage{
 	
@@ -110,6 +110,7 @@ public class EditEntradasPage extends BasePage{
 			ArrayList<String> sistExt = new ArrayList<String>();
 			sistExt.add("SIY");
 			sistExt.add("SGY");
+			sistExt.add("Ninguno");
 			
 			
 			this.comboProyecto = new DropDownChoice<Proyecto>("proyecto",  daoService.getProyectos(),new IChoiceRenderer<Proyecto>() {
@@ -164,29 +165,32 @@ public class EditEntradasPage extends BasePage{
 					if (object.equals("SIY")) {
 						object = "Sistema de incidencias de YPF";
 					}
+					
 					return object;
 				}
 
 				@Override
 				public String getIdValue(String object, int index) {
+					if (object=="Ninguno"){
+						object="";
+					}
 					return object;
 				}
-/*
-				private String parsear(String nombre) {
-					String resultado = "";
-					StringTokenizer tokenizer = new StringTokenizer(nombre, " ");
-					
-					while (tokenizer.hasMoreTokens()) {
-						char nuevaLetra = tokenizer.nextToken().charAt(0);
-						if (Character.isUpperCase(nuevaLetra)) {
-							resultado += nuevaLetra;							
-						}
-					}
-					
-					return resultado;
-					
-				}
-*/			
+
+//TODO: No se si lo vamos a usar, pero, aca esta bien hecho
+				
+//				private String parsear(String nombre) {
+//					String resultado = "";
+//					for (int i = 0; i < nombre.length(); i++) {
+//						if (Character.isUpperCase(nombre.charAt(i))){
+//							resultado += nombre.charAt(i);
+//						}
+//					}
+//					
+//					return resultado;
+//					
+//				}
+		
 				
 			}
 			);
@@ -291,7 +295,8 @@ public class EditEntradasPage extends BasePage{
 			};
 
 			
-			this.add(new TicketExternoValidator(sistemaExterno, ticketExt));
+			this.add(new OnRelatedFieldsNullValidator(sistemaExterno, ticketExt,"Debe poner un sistema externo para poder poner un ticket externo"));
+			this.add(new OnRelatedFieldsNullValidator(ticketExt, sistemaExterno,"Debe ingresar un ticket con ese sistema externo elegido"));
 			
 			add(comboProyecto);
 			add(comboActividad);

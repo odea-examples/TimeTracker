@@ -146,7 +146,7 @@ public class EntradaDAO extends AbstractDAO {
 			}
 			if (sistemaExterno.equals("Sistema Geminis de YPF")) {
 				resultado = "SGY";
-			}			
+			}	
 		}
 		
 		return resultado;
@@ -205,12 +205,13 @@ public class EntradaDAO extends AbstractDAO {
 		
 		
 		public void modificarEntrada(Entrada entrada) {
-			//String sistemaExterno = this.parsearSistemaExterno(entrada.getSistemaExterno());
-			System.out.println(this.parsearSistemaExterno(entrada.getSistemaExterno()));
-			entrada.getSistemaExterno();
+			String sistemaExterno=null;
+			if (entrada.getSistemaExterno()!="Ninguno"){
+				sistemaExterno=entrada.getSistemaExterno();
+			}
 			jdbcTemplate.update("UPDATE activity_log SET al_date=?, al_duration=?, al_project_id=?, al_activity_id=?, al_comment=?, ticket_bz=?, issue_tracker_externo=?, ite_id=? WHERE al_timestamp=?", 
 					new Object[]{
-					entrada.getFecha(), new java.sql.Time((long) ((this.parsearDuracion(entrada.getDuracion())*3600000))-(3600000*21)), entrada.getProyecto().getIdProyecto(), entrada.getActividad().getIdActividad(), entrada.getNota(), entrada.getTicketBZ(), entrada.getSistemaExterno(), entrada.getTicketExterno(), entrada.getIdEntrada()},
+					entrada.getFecha(), new java.sql.Time((long) ((this.parsearDuracion(entrada.getDuracion())*3600000))-(3600000*21)), entrada.getProyecto().getIdProyecto(), entrada.getActividad().getIdActividad(), entrada.getNota(), entrada.getTicketBZ(), sistemaExterno, entrada.getTicketExterno(), entrada.getIdEntrada()},
 					new int[]{Types.DATE, Types.TIME, Types.INTEGER, Types.INTEGER, Types.BLOB, Types.INTEGER, Types.CHAR, Types.VARCHAR, Types.TIMESTAMP});
 		}
 
