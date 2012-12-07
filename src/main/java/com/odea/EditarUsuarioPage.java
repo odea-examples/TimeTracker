@@ -19,6 +19,7 @@ import org.apache.wicket.validation.ValidationError;
 
 import com.odea.domain.Usuario;
 import com.odea.services.DAOService;
+import com.odea.validators.ticketExterno.OnRelatedFieldsNullValidator;
 
 public class EditarUsuarioPage extends BasePage {
 
@@ -120,8 +121,12 @@ public class EditarUsuarioPage extends BasePage {
 
 				@Override
 				protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-					target.add(feedback);
 					EditUsuarioForm.this.onSubmit(target, (EditUsuarioForm) form);
+				}
+				
+				@Override
+				protected void onError(AjaxRequestTarget target, Form<?> form) {
+					target.add(feedback);
 				}
 			};
 			
