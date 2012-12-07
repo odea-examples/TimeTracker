@@ -16,10 +16,16 @@ import com.odea.domain.Usuario;
 public class UsuarioDAO extends AbstractDAO {
 	
 	public Usuario getUsuario(String nombre){
+		System.out.println("Aca esta el otro 2: " + nombre);
 		Usuario usuario = jdbcTemplate.queryForObject("SELECT u.u_id, u.u_login, u.u_password FROM users u WHERE u_login=?", 
 				new RowMapperUsuario(), nombre);
 		
 		return usuario;
+	}
+	
+	public void modificarUsuario(Usuario usuario)
+	{
+		jdbcTemplate.update("UPDATE users SET u_login=?, u_password=password(?) WHERE u_id=?", usuario.getNombre(), usuario.getPassword(), usuario.getIdUsuario());
 	}
 	
 	

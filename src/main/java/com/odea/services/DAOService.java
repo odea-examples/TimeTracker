@@ -142,6 +142,7 @@ public class DAOService {
 	}
 	
 	public Usuario getUsuario(String nombre){
+		System.out.println("Aca esta el otro: " + nombre);
 		return usuarioDAO.getUsuario(nombre);
 	}
 		
@@ -157,7 +158,9 @@ public class DAOService {
 		return usuarioDAO.getUsuario(nombre, password);
 	}
 
-
+	public void modificarUsuario(Usuario usuario) {
+		usuarioDAO.modificarUsuario(usuario);
+	}
 
 
 }

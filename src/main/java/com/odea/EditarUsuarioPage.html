@@ -1,0 +1,29 @@
+<wicket:extend>
+
+	<h4>Por favor, actualice sus opciones de cuenta</h4>
+	
+	<form wicket:id="form">
+	
+		<div wicket:id="feedback" class="feedback"/>
+
+		<div>
+			<b><label for="nombre">Nuevo Username: </label></b> 
+			<input type="text" wicket:id="nombre" name="nombre" style="width: 200px" />
+		</div>
+		
+		<div>
+			<b><label for="password"> Nueva Password:</label></b> 
+			<input type="password" wicket:id="password" name="password" style="width: 200px" />
+		</div>
+		
+		<div>
+			<b><label for="confirmPassword"> Confirme Password:</label></b> 
+			<input type="password" wicket:id="confirmPassword" name="confirmPassword" style="width: 200px" />
+		</div>
+		
+		
+		<input wicket:id="submit" value="Confirmar" type="submit"/>
+	
+	</form>
+
+</wicket:extend>
