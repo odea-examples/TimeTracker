@@ -8,7 +8,6 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.wicket.util.time.Time;
 import org.joda.time.DateTimeConstants;
 import org.joda.time.LocalDate;
 import org.slf4j.Logger;

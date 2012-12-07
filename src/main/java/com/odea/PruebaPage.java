@@ -1,7 +1,6 @@
 package com.odea;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.CompoundPropertyModel;
@@ -9,7 +8,6 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.odea.EditActividadesPage.ActividadForm;
 import com.odea.components.dualMultipleChoice.DualMultipleChoice;
 import com.odea.domain.Actividad;
 import com.odea.services.DAOService;

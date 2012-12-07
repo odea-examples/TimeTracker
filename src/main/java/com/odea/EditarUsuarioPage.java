@@ -4,6 +4,7 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
+import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.RequiredTextField;
@@ -17,9 +18,9 @@ import org.apache.wicket.validation.IValidatable;
 import org.apache.wicket.validation.IValidator;
 import org.apache.wicket.validation.ValidationError;
 
+import com.odea.components.modalWindow.SelectModalWindow;
 import com.odea.domain.Usuario;
 import com.odea.services.DAOService;
-import com.odea.validators.ticketExterno.OnRelatedFieldsNullValidator;
 
 public class EditarUsuarioPage extends BasePage {
 
@@ -40,8 +41,7 @@ public class EditarUsuarioPage extends BasePage {
 		}
 		
 		
-		this.usuarioModel = new CompoundPropertyModel<Usuario>(
-				new LoadableDetachableModel<Usuario>() {
+		this.usuarioModel = new CompoundPropertyModel<Usuario>(new LoadableDetachableModel<Usuario>() {
 
 					private static final long serialVersionUID = 1L;
 
@@ -53,6 +53,15 @@ public class EditarUsuarioPage extends BasePage {
 		
 		
 		
+		
+		final ModalWindow selectModalWindow = new SelectModalWindow("modalwindow"){
+            
+			public void onCancel(AjaxRequestTarget target) {
+                close(target);
+            }
+        };
+        
+		
 		EditUsuarioForm form = new EditUsuarioForm("form", usuarioModel) {
 
 			private static final long serialVersionUID = 1L;
@@ -60,12 +69,14 @@ public class EditarUsuarioPage extends BasePage {
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, EditUsuarioForm form) {
 				daoService.modificarUsuario(getModelObject());
-				setResponsePage(LoginPage.class);
+				selectModalWindow.show(target);
 			}
 
 		};
-				
-		form.setOutputMarkupId(true);
+		
+		form.setOutputMarkupId(true);	
+		
+		add(selectModalWindow);
 		add(form);
 		
 	}
