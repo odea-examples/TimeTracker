@@ -161,6 +161,11 @@ public class DAOService {
 	public void modificarUsuario(Usuario usuario) {
 		usuarioDAO.modificarUsuario(usuario);
 	}
+	
+	public List<Usuario> getUsuarios() {
+		return usuarioDAO.getUsuarios();
+	}
 
+	
 
 }

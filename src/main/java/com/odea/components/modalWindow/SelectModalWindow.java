@@ -1,9 +1,8 @@
 package com.odea.components.modalWindow;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 
-public abstract class SelectModalWindow extends ModalWindow {
+public abstract class SelectModalWindow extends modalWindow {
     public SelectModalWindow(String id) {
         super(id);
 

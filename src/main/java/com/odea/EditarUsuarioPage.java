@@ -4,7 +4,6 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
-import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.RequiredTextField;
@@ -54,7 +53,7 @@ public class EditarUsuarioPage extends BasePage {
 		
 		
 		
-		final ModalWindow selectModalWindow = new SelectModalWindow("modalwindow"){
+		final SelectModalWindow selectModalWindow = new SelectModalWindow("modalwindow"){
             
 			public void onCancel(AjaxRequestTarget target) {
                 close(target);
@@ -133,6 +132,7 @@ public class EditarUsuarioPage extends BasePage {
 				@Override
 				protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 					EditUsuarioForm.this.onSubmit(target, (EditUsuarioForm) form);
+					target.add(feedback);
 				}
 				
 				@Override
