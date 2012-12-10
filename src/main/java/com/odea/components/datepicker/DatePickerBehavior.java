@@ -1,14 +1,14 @@
 package com.odea.components.datepicker;
 
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.wicket.Component;
 import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.markup.head.JavaScriptContentHeaderItem;
 import org.apache.wicket.request.Response;
 import org.apache.wicket.util.template.PackageTextTemplate;
-
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * User: pbergonzi

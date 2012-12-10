@@ -9,7 +9,6 @@ import org.apache.wicket.validation.ValidationError;
 public class DurationValidator implements IValidator<String>{
 	
 	private final String DURACION_PATTERN 
-	//= "^([0-9]{1,2}+(,[0-9]{1,2}|:[0-5]{1}+[0-9]{1}))|([0-9]{1,2})$";
 	= "^([0-9]{1,2}+(,[0-9]{1,2}|:[0-5]{1}+[0-9]{1}|\\b))$";
 	
 	private final Pattern pattern;
@@ -21,19 +20,18 @@ public class DurationValidator implements IValidator<String>{
 	@Override
 	public void validate(IValidatable<String> validatable) {
 		final String duracion = validatable.getValue();
-		 
-		// validate password
-		if (pattern.matcher(duracion).matches() == false) {
- 
-			//Message from key "StrongPasswordValidator.not-strong-password"
-			error(validatable, "Duración con formato equivocado");}
+		 	
+		if (pattern.matcher(duracion).matches() == false) {	
+			error(validatable, "Duración con formato equivocado");
+		}
 		
 	}
-		private void error(IValidatable<String> validatable, String errorKey) {
-			ValidationError error = new ValidationError();
-			error.addKey(getClass().getSimpleName() + "." + errorKey);
-			error.setMessage(errorKey);
-			validatable.error(error);
-		}
+	
+	private void error(IValidatable<String> validatable, String errorKey) {
+		ValidationError error = new ValidationError();
+		error.addKey(getClass().getSimpleName() + "." + errorKey);
+		error.setMessage(errorKey);
+		validatable.error(error);
+	}
 
 }

@@ -1,7 +1,6 @@
 package com.odea.domain;
 
 import java.io.Serializable;
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Date;
 

@@ -12,6 +12,7 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
+import org.apache.wicket.ajax.markup.html.navigation.paging.AjaxPagingNavigator;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.DropDownChoice;
@@ -21,7 +22,7 @@ import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.list.ListItem;
-import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.markup.html.list.PageableListView;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
@@ -55,7 +56,7 @@ public class AgregarEntradasPage extends BasePage {
 	
 	IModel<List<Entrada>> lstEntradasModel;
 	IModel<Integer> horasSemanalesModel;
-	ListView<Entrada> entradasListView;
+	PageableListView<Entrada> entradasListView;
 	DropDownChoice<String> selectorTiempo;
 	Label mensajeProyecto;
 	Label mensajeActividad;
@@ -106,7 +107,7 @@ public class AgregarEntradasPage extends BasePage {
 		
 		
 		
-		entradasListView = new ListView<Entrada>("entradas", this.lstEntradasModel) {
+		entradasListView = new PageableListView<Entrada>("entradas", this.lstEntradasModel, 10) {
             @Override
             protected void populateItem(ListItem<Entrada> item) {
             	Entrada entrada = item.getModel().getObject();   
@@ -194,6 +195,8 @@ public class AgregarEntradasPage extends BasePage {
         listViewContainer.setOutputMarkupId(true);
 		listViewContainer.add(entradasListView);
 		listViewContainer.add(horasAcumuladas);
+		listViewContainer.add(new AjaxPagingNavigator("navigator", entradasListView));
+		listViewContainer.setVersioned(false);
 		add(listViewContainer);
 		add(form);	
 	
