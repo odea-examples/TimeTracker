@@ -133,6 +133,7 @@ public class EditarUsuarioPage extends BasePage {
 				@Override
 				protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 					EditUsuarioForm.this.onSubmit(target, (EditUsuarioForm) form);
+					target.add(feedback);
 				}
 				
 				@Override

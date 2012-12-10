@@ -1,0 +1,30 @@
+<wicket:head>
+	<link href="styles/tables.css" rel="stylesheet" type="text/css" />
+</wicket:head>
+
+<wicket:extend>
+
+	<div wicket:id="listViewContainer">
+	
+		<h3>Usuarios</h3>
+		
+		<table>
+			<thead>
+				<tr class="odd">
+					<th scope="col">Nombre</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr wicket:id="usuarios">
+					<td wicket:id="nombre"/>
+				</tr>
+			</tbody>
+			<tfoot>
+	            <tr>
+	                <td wicket:id="navigator" align="center" colspan="1" ></td>
+	            </tr>
+        	</tfoot>
+		</table>
+	</div>
+
+</wicket:extend>
