@@ -96,6 +96,7 @@ public class AgregarEntradasPage extends BasePage {
 		EntradaForm form = new EntradaForm("form"){
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, EntradaForm form) {
+				System.out.println(form.getModelObject().getFecha());
 				daoService.agregarEntrada(form.getModelObject(), usuario);
 				target.add(listViewContainer);
 				target.add(form);
