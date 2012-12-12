@@ -2,7 +2,7 @@ package com.odea.domain;
 
 import java.io.Serializable;
 
-public class Usuario implements Serializable {
+public class Usuario implements Serializable, Comparable<Usuario> {
 	
 	private int idUsuario;
 	private String nombre;
@@ -50,9 +50,13 @@ public class Usuario implements Serializable {
 	public String toString() {
 		return "ID:" + this.idUsuario + " - Nombre:"+ this.nombre;
 	}
-	
-	
 
+	
+	
+	@Override
+	public int compareTo(Usuario otroUsuario) {
+		return this.getNombre().compareTo(otroUsuario.getNombre());
+	}
 
 	
 }

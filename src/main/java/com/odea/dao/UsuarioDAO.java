@@ -3,6 +3,7 @@ package com.odea.dao;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.jdbc.core.RowMapper;
@@ -18,6 +19,8 @@ public class UsuarioDAO extends AbstractDAO {
 	
 	public List<Usuario> getUsuarios() {
 		List<Usuario> usuarios = jdbcTemplate.query("SELECT u.u_id, u.u_login, u.u_password FROM users u", new RowMapperUsuario());
+		
+		Collections.sort(usuarios);
 		
 		return usuarios;
 	}
