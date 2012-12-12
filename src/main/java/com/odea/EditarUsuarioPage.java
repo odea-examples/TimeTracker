@@ -33,9 +33,7 @@ public class EditarUsuarioPage extends BasePage {
 	
 	
 	public EditarUsuarioPage() {
-		
-		final Subject subject = SecurityUtils.getSubject();
-		if (!subject.isAuthenticated()) {
+		if (!SecurityUtils.getSubject().isAuthenticated()) {
 			this.redirectToInterceptPage(new LoginPage());
 		}
 		
@@ -46,7 +44,7 @@ public class EditarUsuarioPage extends BasePage {
 
 					@Override
 					protected Usuario load() {
-						return daoService.getUsuario(subject.getPrincipal().toString());
+						return daoService.getUsuario(SecurityUtils.getSubject().getPrincipal().toString());
 					}
 				});
 		
