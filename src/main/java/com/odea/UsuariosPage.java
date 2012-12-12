@@ -20,7 +20,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.odea.AgregarEntradasPage.EntradaForm;
+import com.odea.EntradasPage.EntradaForm;
 import com.odea.domain.Entrada;
 import com.odea.domain.Usuario;
 import com.odea.services.DAOService;

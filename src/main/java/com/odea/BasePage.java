@@ -13,7 +13,7 @@ import com.odea.domain.Entrada;
 
 public class BasePage extends WebPage {
 	
-	AjaxButton boton;
+	public AjaxButton botonLogout;
 	
 	public BasePage(){
 		super();
@@ -36,7 +36,7 @@ public class BasePage extends WebPage {
 		};  
 		add(form);
 	    if (!SecurityUtils.getSubject().isAuthenticated()){
-	    	boton.add(new AttributeModifier("style", new Model("display:none")));
+	    	botonLogout.add(new AttributeModifier("style", new Model("display:none")));
 	    }
 	    else{
 	    }
@@ -45,7 +45,7 @@ public class BasePage extends WebPage {
 
 		public BaseForm(String id) {
 			super(id);
-			boton = new AjaxButton("logout") {
+			botonLogout = new AjaxButton("logout") {
 
 				@Override
 				protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
@@ -53,7 +53,7 @@ public class BasePage extends WebPage {
 				}
 				
 			};
-			add(boton);
+			add(botonLogout);
 			this.setOutputMarkupId(true);
 			
 			

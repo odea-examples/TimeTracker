@@ -12,6 +12,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import com.odea.behavior.focusOnLoad.FocusOnLoadBehavior;
 import com.odea.services.LoginService;
 
 
@@ -59,7 +60,7 @@ public class LoginPage extends BasePage {
                     try{
                     	LoginPage.this.login();
                     	this.continueToOriginalDestination();
-                    	setResponsePage(AgregarEntradasPage.class);
+                    	setResponsePage(EntradasPage.class);
                     }catch(AuthenticationException ex){
                     	error(ex.getMessage());
                     }

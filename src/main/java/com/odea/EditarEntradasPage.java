@@ -36,14 +36,14 @@ import com.odea.services.DAOService;
 import com.odea.validators.duracion.DurationValidator;
 import com.odea.validators.ticketExterno.OnRelatedFieldsNullValidator;
 
-public class EditEntradasPage extends BasePage{
+public class EditarEntradasPage extends BasePage{
 	
 	@SpringBean
 	private transient DAOService daoService;
 	
     private IModel<Entrada> entradaModel;
     
-    public EditEntradasPage(final PageParameters parameters){
+    public EditarEntradasPage(final PageParameters parameters){
     	
     	
     	Subject subject = SecurityUtils.getSubject();
@@ -78,13 +78,13 @@ public class EditEntradasPage extends BasePage{
 			protected void onSubmit(AjaxRequestTarget target, EntradaForm form) {
 				Entrada e = getModelObject();
 				daoService.modificarEntrada(e);
-				setResponsePage(AgregarEntradasPage.class);
+				setResponsePage(EntradasPage.class);
 			}
 		};
         
 
 		
-        add(new BookmarkablePageLink<AgregarEntradasPage>("link",AgregarEntradasPage.class));
+        add(new BookmarkablePageLink<EntradasPage>("link",EntradasPage.class));
         add(new FeedbackPanel("feedback"));
        
 		add(form);
@@ -103,7 +103,7 @@ public class EditEntradasPage extends BasePage{
 		
 		public EntradaForm(String id) {
 			super(id);
-			this.setDefaultModel(EditEntradasPage.this.entradaModel);
+			this.setDefaultModel(EditarEntradasPage.this.entradaModel);
 			
 
 			ArrayList<String> sistExt = new ArrayList<String>();

@@ -45,7 +45,7 @@ import com.odea.validators.duracion.DurationValidator;
 import com.odea.validators.ticketExterno.OnRelatedFieldsNullValidator;
 
 
-public class AgregarEntradasPage extends BasePage {
+public class EntradasPage extends BasePage {
 	
 	private static final long serialVersionUID = 1088210443697851501L;
 
@@ -63,7 +63,7 @@ public class AgregarEntradasPage extends BasePage {
 	
 	WebMarkupContainer listViewContainer;
 	
-	public AgregarEntradasPage() {
+	public EntradasPage() {
 		final Subject subject = SecurityUtils.getSubject();
 		
 		if(!subject.isAuthenticated()){
@@ -75,7 +75,7 @@ public class AgregarEntradasPage extends BasePage {
 		this.lstEntradasModel = new LoadableDetachableModel<List<Entrada>>() { 
             @Override
             protected List<Entrada> load() {
-            	return daoService.getEntradasSemanales(AgregarEntradasPage.this.usuario);
+            	return daoService.getEntradasSemanales(EntradasPage.this.usuario);
             }
         };
         
@@ -131,7 +131,7 @@ public class AgregarEntradasPage extends BasePage {
                 
                 
                 PageParameters parametros = new PageParameters().add("id", entrada.getIdEntrada().getTime());
-                item.add(new BookmarkablePageLink<EditEntradasPage>("modifyLink",EditEntradasPage.class, parametros));
+                item.add(new BookmarkablePageLink<EditarEntradasPage>("modifyLink",EditarEntradasPage.class, parametros));
 
             }
         };
@@ -156,7 +156,7 @@ public class AgregarEntradasPage extends BasePage {
 
 						@Override
 						protected List<Entrada> load() {
-							return daoService.getEntradasMensuales(AgregarEntradasPage.this.usuario);
+							return daoService.getEntradasMensuales(EntradasPage.this.usuario);
 						}
 						
 					});
@@ -166,7 +166,7 @@ public class AgregarEntradasPage extends BasePage {
 						
 						@Override
 						protected List<Entrada> load() {
-							return daoService.getEntradasSemanales(AgregarEntradasPage.this.usuario);
+							return daoService.getEntradasSemanales(EntradasPage.this.usuario);
 						}
 						
 					});
@@ -176,7 +176,7 @@ public class AgregarEntradasPage extends BasePage {
 						
 						@Override
 						protected List<Entrada> load() {
-							return daoService.getEntradasDia(AgregarEntradasPage.this.usuario);
+							return daoService.getEntradasDia(EntradasPage.this.usuario);
 						}
 						
 					});
