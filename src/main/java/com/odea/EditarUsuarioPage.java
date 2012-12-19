@@ -33,10 +33,6 @@ public class EditarUsuarioPage extends BasePage {
 	
 	
 	public EditarUsuarioPage() {
-		if (!SecurityUtils.getSubject().isAuthenticated()) {
-			this.redirectToInterceptPage(new LoginPage());
-		}
-		
 		
 		this.usuarioModel = new CompoundPropertyModel<Usuario>(new LoadableDetachableModel<Usuario>() {
 

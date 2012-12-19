@@ -32,12 +32,6 @@ public class ProyectosPage extends BasePage {
 	
 	public ProyectosPage() {
 		
-		Subject subject = SecurityUtils.getSubject();
-		if(!subject.isAuthenticated()){
-			this.redirectToInterceptPage(new LoginPage());
-		}
-		
-		
 		this.lstProyectosModel = new LoadableDetachableModel<List<Proyecto>>() { 
             @Override
             protected List<Proyecto> load() {

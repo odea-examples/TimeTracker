@@ -44,14 +44,6 @@ public class EditarEntradasPage extends BasePage{
     private IModel<Entrada> entradaModel;
     
     public EditarEntradasPage(final PageParameters parameters){
-    	
-    	
-    	Subject subject = SecurityUtils.getSubject();
-		
-		if(!subject.isAuthenticated()){
-			this.redirectToInterceptPage(new LoginPage());
-		}
-		
 		
     	
 		this.entradaModel = new CompoundPropertyModel<Entrada>(new LoadableDetachableModel<Entrada>() {

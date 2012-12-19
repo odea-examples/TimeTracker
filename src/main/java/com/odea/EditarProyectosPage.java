@@ -35,11 +35,6 @@ public class EditarProyectosPage extends BasePage {
 
 	public EditarProyectosPage() {
 
-		Subject subject = SecurityUtils.getSubject();
-		if (!subject.isAuthenticated()) {
-			this.redirectToInterceptPage(new LoginPage());
-		}
-
 		this.proyectoModel = new CompoundPropertyModel<Proyecto>(
 				new LoadableDetachableModel<Proyecto>() {
 					@Override

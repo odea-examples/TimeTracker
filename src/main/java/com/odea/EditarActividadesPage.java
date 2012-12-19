@@ -32,11 +32,6 @@ public class EditarActividadesPage extends BasePage{
     
     public EditarActividadesPage(){
     	
-    	Subject subject = SecurityUtils.getSubject();
-		
-		if(!subject.isAuthenticated()){
-			this.redirectToInterceptPage(new LoginPage());
-		}
     	
         this.actividadModel = new CompoundPropertyModel<Actividad>(new LoadableDetachableModel<Actividad>() {
             @Override

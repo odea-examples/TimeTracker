@@ -66,9 +66,9 @@ public class EntradasPage extends BasePage {
 	public EntradasPage() {
 		final Subject subject = SecurityUtils.getSubject();
 		
-		if(!subject.isAuthenticated()){
-			this.redirectToInterceptPage(new LoginPage());
-		}
+//		if(!subject.isAuthenticated()){
+//			this.redirectToInterceptPage(new LoginPage());
+//		}
 		
 		this.usuario = this.daoService.getUsuario(subject.getPrincipal().toString());
 		

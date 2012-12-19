@@ -35,12 +35,6 @@ public class UsuariosPage extends BasePage {
 
 	
 	public UsuariosPage() {
-		
-		Subject subject = SecurityUtils.getSubject();
-		
-		if(!subject.isAuthenticated()){
-			this.redirectToInterceptPage(new LoginPage());
-		}
 
 		this.lstUsuariosModel = new LoadableDetachableModel<List<Usuario>>() { 
             @Override

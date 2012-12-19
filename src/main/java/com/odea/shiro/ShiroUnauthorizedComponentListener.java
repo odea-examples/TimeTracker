@@ -2,7 +2,10 @@ package com.odea.shiro;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.Page;
+import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.authorization.IUnauthorizedComponentInstantiationListener;
+
+import com.odea.NoAutorizadoPage;
 
 public class ShiroUnauthorizedComponentListener implements
 	IUnauthorizedComponentInstantiationListener
@@ -20,7 +23,7 @@ public class ShiroUnauthorizedComponentListener implements
 
 	@Override
 	public void onUnauthorizedInstantiation(Component component) {
-		System.out.println("-- Pase por onUnauthorizedInstantiation() - Page: " + component.getPage().getClass() + " - Component ID: " + component.getId() );
+		//System.out.println("-- Pase por onUnauthorizedInstantiation() - Page: " + component.getPage().getClass() + " - Component ID: " + component.getId() );	
 	}
 
 }
