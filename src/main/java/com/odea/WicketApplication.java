@@ -3,6 +3,9 @@ package com.odea;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 
+import com.odea.shiro.AnnotationsShiroAuthorizationStrategy;
+import com.odea.shiro.ShiroUnauthorizedComponentListener;
+
 public class WicketApplication extends WebApplication
 {    	
 
@@ -18,6 +21,12 @@ public class WicketApplication extends WebApplication
 	public void init()
 	{
 		super.init();
+		
+		AnnotationsShiroAuthorizationStrategy authz = new AnnotationsShiroAuthorizationStrategy();
+		getSecuritySettings().setAuthorizationStrategy(authz);
+		getSecuritySettings().setUnauthorizedComponentInstantiationListener(
+				new ShiroUnauthorizedComponentListener(LoginPage.class, PruebaPage.class, authz));
+				
         mountPage("login",LoginPage.class);
         mountPage("formulario", EntradasPage.class);
         mountPage("actividades", ActividadesPage.class);
