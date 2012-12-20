@@ -6,7 +6,7 @@ public class NoAutorizadoPage extends BasePage {
 
 	public NoAutorizadoPage() {
 		
-		Label mensaje = new Label("mensaje", "Usted no esta autorizado para ingresar");
+		Label mensaje = new Label("mensaje", "Usted no esta autorizado para ver esta pagina, identifiquese por favor");
 		add(mensaje);
 	}
 	

@@ -14,6 +14,7 @@ import com.odea.domain.Entrada;
 public class BasePage extends WebPage {
 	
 	public AjaxButton botonLogout;
+	public AjaxButton botonLogin;
 	
 	public BasePage(){
 		super();
@@ -39,6 +40,7 @@ public class BasePage extends WebPage {
 	    	botonLogout.add(new AttributeModifier("style", new Model("display:none")));
 	    }
 	    else{
+	    	botonLogin.add(new AttributeModifier("style", new Model("display:none")));
 	    }
 	}
 	public abstract class BaseForm extends Form<Entrada> {
@@ -54,6 +56,15 @@ public class BasePage extends WebPage {
 				
 			};
 			add(botonLogout);
+			botonLogin = new AjaxButton("login") {
+
+				@Override
+				protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+					BaseForm.this.onSubmit(target, (BaseForm) form);
+				}
+				
+			};
+			add(botonLogin);
 			this.setOutputMarkupId(true);
 			
 			
