@@ -25,7 +25,6 @@ public class DualMultipleChoice<T> extends Panel {
 		originals = new ListMultipleChoice<T>("originals", new PropertyModel<List<T>>(this, "selectedOriginals"), originalsModel);
 		originals.setOutputMarkupId(true);
 		
-		
 		destinations = new ListMultipleChoice<T>("destinations", new PropertyModel<List<T>>(this, "selectedDestinations"), destinationsModel);
 		destinations.setOutputMarkupId(true);
 				

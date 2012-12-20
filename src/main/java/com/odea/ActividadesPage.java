@@ -2,8 +2,6 @@ package com.odea;
 
 import java.util.List;
 
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.subject.Subject;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
@@ -18,6 +16,8 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import com.odea.components.confirmPanel.ConfirmationLink;
+import com.odea.components.modalWindow.SelectModalWindow;
 import com.odea.domain.Actividad;
 import com.odea.services.DAOService;
 
@@ -57,13 +57,22 @@ public class ActividadesPage extends BasePage{
             	item.add(new Label("nombre_actividad", new Model<String>(actividad.getNombre())));
             	
             	
-                item.add(new AjaxLink<Actividad>("deleteLink",new Model<Actividad>(actividad)) {
+//                item.add(new AjaxLink<Actividad>("deleteLink",new Model<Actividad>(actividad)) {
+//                    @Override
+//                    public void onClick(AjaxRequestTarget ajaxRequestTarget) {
+//                        daoService.borrarActividad(getModelObject());
+//                        ajaxRequestTarget.add(getPage().get("listViewContainer"));
+//                    }
+//                
+//
+//                });
+                item.add(new ConfirmationLink<Actividad>("deleteLink","Seguro desea borrar?",new Model<Actividad>(actividad)) {
                     @Override
                     public void onClick(AjaxRequestTarget ajaxRequestTarget) {
                         daoService.borrarActividad(getModelObject());
                         ajaxRequestTarget.add(getPage().get("listViewContainer"));
                     }
-
+                    
                 });
                 item.add(new BookmarkablePageLink<EditarActividadesPage>("modifyLink",EditarActividadesPage.class,new PageParameters().add("id",actividad.getIdActividad()).add("nombre",actividad.getNombre())));
 

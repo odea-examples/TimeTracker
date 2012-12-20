@@ -18,6 +18,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import com.odea.components.confirmPanel.ConfirmationLink;
 import com.odea.domain.Proyecto;
 import com.odea.services.DAOService;
 
@@ -54,7 +55,7 @@ public class ProyectosPage extends BasePage {
             	
             	item.add(new Label("nombre_proyecto", new Model<String>(proyecto.getNombre())));
             	
-                item.add(new AjaxLink<Proyecto>("deleteLink",new Model<Proyecto>(proyecto)) {
+                item.add(new ConfirmationLink<Proyecto>("deleteLink","Seguro desea borrar?",new Model<Proyecto>(proyecto)) {
                     @Override
                     public void onClick(AjaxRequestTarget ajaxRequestTarget) {
                         daoService.borrarProyecto(getModelObject());
