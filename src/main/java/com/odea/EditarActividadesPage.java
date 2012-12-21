@@ -3,11 +3,11 @@ package com.odea;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.subject.Subject;
+import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.extensions.markup.html.form.palette.Palette;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.IChoiceRenderer;
 import org.apache.wicket.markup.html.form.RequiredTextField;
@@ -16,11 +16,11 @@ import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.odea.behavior.focusOnLoad.FocusOnLoadBehavior;
-import com.odea.components.dualMultipleChoice.DualMultipleChoice;
 import com.odea.domain.Actividad;
 import com.odea.domain.Proyecto;
 import com.odea.services.DAOService;
@@ -96,7 +96,9 @@ public class EditarActividadesPage extends BasePage{
 					return ActividadForm.this.obtenerListaDestino();
 				}							
 	        };
-	        final Palette<Proyecto> pal = new Palette<Proyecto>("dual",seleccionadosModel,todosModel, new IChoiceRenderer<Proyecto>() {
+	        
+	        
+	        IChoiceRenderer<Proyecto> choiceRenderer = new IChoiceRenderer<Proyecto>() {
 
 				@Override
 				public Object getDisplayValue(Proyecto object) {
@@ -107,21 +109,42 @@ public class EditarActividadesPage extends BasePage{
 				public String getIdValue(Proyecto object, int index) {
 					return Integer.toString(object.getIdProyecto());
 				}
-			}, 8, false);
+				
+				
+			};
+	        
+	        
+	        final Palette<Proyecto> palette = new Palette<Proyecto>("dual",seleccionadosModel,todosModel, choiceRenderer, 8, false) {
+	        	
+	        	@Override
+	        	protected Component newAvailableHeader(final String componentId)
+	        	{
+	        		return new Label(componentId, new ResourceModel("palette.available", "Disponibles"));
+	        	}
+	        	
+	        	@Override
+	        	protected Component newSelectedHeader(final String componentId)
+	        	{
+	        		return new Label(componentId, new ResourceModel("palette.selected", "Elegidos"));
+	        	}
+	        	
+	        };
+
+	        
 	        
 //	        dualMultiple = new DualMultipleChoice<Proyecto>("dual", originalsModel, destinationsModel);
 	        
 	        AjaxButton submit = new AjaxButton("submit") {
 	        	@Override
 				protected void onSubmit(AjaxRequestTarget target, Form form) {
-	        		daoService.insertarActividad(ActividadForm.this.getModelObject(),  (List<Proyecto>) pal.getDefaultModelObject());
+	        		daoService.insertarActividad(ActividadForm.this.getModelObject(),  (List<Proyecto>) palette.getDefaultModelObject());
 	        		ActividadForm.this.onSubmit(target, (ActividadForm) form);
 	        	}
 	        };
 
 	        
 	        add(nombre);
-			add(pal);
+			add(palette);
 			add(submit);
 		}
 		
