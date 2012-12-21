@@ -1,5 +1,6 @@
 package com.odea.services;
 
+import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -55,15 +56,43 @@ public class DAOService {
 		return actividadDAO.actividadesOrigen(proyecto);
 	}
 	
+	public void insertarActividad(Actividad actividad, List<Proyecto> proyectosRelacionados) {
+		actividadDAO.insertarActividad(actividad, proyectosRelacionados);
+	}
+	
 	
 	public void agregarEntrada(Entrada entrada){
 		entradaDAO.agregarEntrada(entrada);
 	}
 	
-	public Collection<Entrada> getEntradas(Usuario usuario, Date desde, Date hasta){
+	public List<Entrada> getEntradas(Usuario usuario, Timestamp desde, Timestamp hasta){
 		return entradaDAO.getEntradas(usuario, desde, hasta);
 	}
 	
+	public List<Entrada> getEntradasMensuales(Usuario usuario) {
+		return entradaDAO.getEntradasMensuales(usuario);
+	}
+	
+	public List<Entrada> getEntradasSemanales(Usuario usuario){
+		return entradaDAO.getEntradasSemanales(usuario);
+	}
+
+	public List<Entrada> getEntradasDia(Usuario usuario) {
+		return entradaDAO.getEntradasDia(usuario);
+	}
+	
+	public void agregarEntrada(Entrada entrada, Usuario usuario) {
+		entrada.setUsuario(usuario);
+		if (entrada.getSistemaExterno()==null){
+			entrada.setTicketExterno(null);
+		}
+		this.entradaDAO.agregarEntrada(entrada);
+	}
+	
+	public Entrada buscarEntrada(long id) {
+		return entradaDAO.buscarEntrada(id);
+	}
+
 	
 	public Collection<Entrada> getEntradas(Date desde,Date hasta){
 		return entradaDAO.getEntradas(desde, hasta);
@@ -78,6 +107,13 @@ public class DAOService {
 		return entradaDAO.getHorasSemanales(usuario);
 	}
 	
+	public void borrarEntrada(Entrada entrada){
+		entradaDAO.borrarEntrada(entrada);
+	}
+	
+	public void modificarEntrada(Entrada entrada) {
+		entradaDAO.modificarEntrada(entrada);
+	}
 	
 	
 	public List<Proyecto> getProyectos(){
@@ -97,7 +133,16 @@ public class DAOService {
 		proyectoDAO.insertarProyecto(proyecto, actividadesRelacionadas);
 	}
 	
+	public List<Proyecto> obtenerOrigen(Actividad actividad) {
+		return proyectoDAO.obtenerOrigen(actividad);
+	}
+	
+	public List<Proyecto> getProyectos(Actividad actividad) {
+		return proyectoDAO.getProyectos(actividad);
+	}
+	
 	public Usuario getUsuario(String nombre){
+		System.out.println("Aca esta el otro: " + nombre);
 		return usuarioDAO.getUsuario(nombre);
 	}
 		
@@ -113,18 +158,14 @@ public class DAOService {
 		return usuarioDAO.getUsuario(nombre, password);
 	}
 
-	public void agregarEntrada(Entrada entrada, Usuario usuario) {
-		entrada.setUsuario(usuario);
-		if (entrada.getSistemaExterno()==null){
-			entrada.setTicketExterno(null);
-		}
-		this.entradaDAO.agregarEntrada(entrada);
+	public void modificarUsuario(Usuario usuario) {
+		usuarioDAO.modificarUsuario(usuario);
 	}
 	
-	public List<Entrada> getEntradasSemanales(Usuario usuario){
-		return entradaDAO.getEntradasSemanales(usuario);
+	public List<Usuario> getUsuarios() {
+		return usuarioDAO.getUsuarios();
 	}
 
-
+	
 
 }

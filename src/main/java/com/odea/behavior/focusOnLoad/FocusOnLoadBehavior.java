@@ -1,4 +1,4 @@
-package com.odea;
+package com.odea.behavior.focusOnLoad;
 
 import java.util.Calendar;
 

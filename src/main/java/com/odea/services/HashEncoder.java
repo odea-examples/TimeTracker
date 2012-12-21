@@ -1,10 +1,10 @@
 package com.odea.services;
 
-import org.springframework.stereotype.Service;
-
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+
+import org.springframework.stereotype.Service;
 
 /**
  * User: pbergonzi

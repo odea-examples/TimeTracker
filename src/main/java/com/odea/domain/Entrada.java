@@ -1,13 +1,15 @@
 package com.odea.domain;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.Date;
 
 public class Entrada implements Serializable {
 
+	private Timestamp idEntrada;
 	private Proyecto proyecto;
 	private Actividad actividad;
-	private double duracion;
+	private String duracion;
 	private String nota;
 	private int ticketBZ;
 	private String ticketExterno;
@@ -18,9 +20,10 @@ public class Entrada implements Serializable {
 	public Entrada() {
 	}
 
-	public Entrada(Proyecto proyecto, Actividad actividad, double duracion,
-			String nota, int ticketBugZilla, String ticketExterno,
-			String sistemaExterno, Usuario usuario, Date fecha) {
+	public Entrada(Timestamp idEntrada, Proyecto proyecto, Actividad actividad,
+			String duracion, String nota, int ticketBugZilla,
+			String ticketExterno, String sistemaExterno, Usuario usuario, Date fecha) {
+		this.idEntrada = idEntrada;
 		this.proyecto = proyecto;
 		this.actividad = actividad;
 		this.duracion = duracion;
@@ -34,6 +37,15 @@ public class Entrada implements Serializable {
 	
 
 
+	public Timestamp getIdEntrada() {
+		return idEntrada;
+	}
+
+	public void setIdEntrada(Timestamp idEntrada) {
+		this.idEntrada = idEntrada;
+	}
+
+	
 	public Proyecto getProyecto() {
 		return proyecto;
 	}
@@ -50,11 +62,11 @@ public class Entrada implements Serializable {
 		this.actividad = actividad;
 	}
 
-	public double getDuracion() {
+	public String getDuracion() {
 		return duracion;
 	}
 
-	public void setDuracion(double duracion) {
+	public void setDuracion(String duracion) {
 		this.duracion = duracion;
 	}
 
@@ -106,4 +118,15 @@ public class Entrada implements Serializable {
 		this.fecha = fecha;
 	}
 
+	@Override
+	public String toString() {
+		return "Entrada [idEntrada=" + idEntrada + ", proyecto=" + proyecto
+				+ ", actividad=" + actividad + ", duracion=" + duracion
+				+ ", nota=" + nota + ", ticketBZ=" + ticketBZ
+				+ ", ticketExterno=" + ticketExterno + ", sistemaExterno="
+				+ sistemaExterno + ", usuario=" + usuario + ", fecha=" + fecha
+				+ "]";
+	}
+	
+	
 }

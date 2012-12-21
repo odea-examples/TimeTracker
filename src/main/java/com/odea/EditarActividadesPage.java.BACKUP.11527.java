@@ -13,7 +13,6 @@ import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.odea.behavior.focusOnLoad.FocusOnLoadBehavior;
 import com.odea.domain.Actividad;
 import com.odea.services.DAOService;
 

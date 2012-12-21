@@ -31,7 +31,15 @@ public class ActividadesPage extends BasePage{
 	
 	public ActividadesPage(){
 
+<<<<<<< HEAD
+		Subject subject = SecurityUtils.getSubject();
+		
+		if(!subject.isAuthenticated()){
+			this.redirectToInterceptPage(new LoginPage());
+		}
+=======
 
+>>>>>>> R2
 		add(new BookmarkablePageLink<EditarActividadesPage>("link",EditarActividadesPage.class));
 		
 		this.lstActividadesModel = new LoadableDetachableModel<List<Actividad>>() { 

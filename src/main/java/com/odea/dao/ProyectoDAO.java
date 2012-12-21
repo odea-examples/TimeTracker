@@ -29,6 +29,20 @@ public class ProyectoDAO extends AbstractDAO {
 		return proyectos;
 	}
 	
+	public List<Proyecto> getProyectos(Actividad actividad)
+	{
+		List<Proyecto> proyectos = jdbcTemplate.query("SELECT ab.ab_id_p, p.p_name FROM projects p, activity_bind ab WHERE p.p_id = ab.ab_id_p AND ab.ab_id_a = ?", new RowMapper<Proyecto>() {
+			@Override
+			public Proyecto mapRow(ResultSet rs, int rowNum) throws SQLException {
+				return new Proyecto(rs.getInt(1), rs.getString(2));
+			}
+		}, actividad.getIdActividad());
+		
+		Collections.sort(proyectos);
+		
+		return proyectos;
+	}
+	
 	public void cambiarNombreProyecto(Proyecto proyecto){
 		jdbcTemplate.update("UPDATE projects SET p_name=? WHERE p_id=?",proyecto.getNombre(),proyecto.getIdProyecto());
 		
@@ -71,7 +85,7 @@ public class ProyectoDAO extends AbstractDAO {
 			this.modificarProyecto(proyecto, actividadesRelacionadas);
 		}
 		
-			}
+	}
 	
 	private void modificarProyecto(Proyecto proyecto, Collection<Actividad> actividadesRelacionadas) {
 		int idActivityBind = jdbcTemplate.queryForInt("SELECT max(ab_id) FROM activity_bind");
@@ -101,5 +115,34 @@ public class ProyectoDAO extends AbstractDAO {
 		}
 
 	}
+	
+	public List<Proyecto> obtenerOrigen(Actividad actividad)
+	{
+		String sql = "SELECT DISTINCT pa.ab_id_p, p.p_name FROM projects p, activity_bind pa ";
+		sql += "WHERE pa.ab_id_p = p.p_id AND pa.ab_id_a <> ? ";
+		sql += "AND p.p_id NOT IN (SELECT DISTINCT p.p_id FROM projects p, activity_bind pa WHERE pa.ab_id_p = p.p_id AND pa.ab_id_a = ?)";
+		
+		List<Proyecto> proyectos = jdbcTemplate.query(sql, new RowMapper<Proyecto>() {
+			@Override
+			public Proyecto mapRow(ResultSet rs, int rowNum) throws SQLException {
+				return new Proyecto(rs.getInt(1), rs.getString(2));
+			}
+		}, actividad.getIdActividad(), actividad.getIdActividad());
+		
+		Collections.sort(proyectos);
+		
+		return proyectos;
+		
+	}
+	
+	
+	public void relacionarProyecto(Proyecto proyecto, List<Integer> actividad){
+		for (int i = 0; i < actividad.size(); i++) {
+			jdbcTemplate.update("INSERT INTO activity_bind(ab_id_a,ab_id_p) VALUES (?,?)",i,proyecto.getIdProyecto());
+		}
+	}
+	
+	
+	
 	
 }
