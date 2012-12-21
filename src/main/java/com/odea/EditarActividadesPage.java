@@ -16,14 +16,14 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import com.odea.domain.Actividad;
 import com.odea.services.DAOService;
 
-public class EditActividadesPage extends BasePage{
+public class EditarActividadesPage extends BasePage{
 	
 	@SpringBean
 	private transient DAOService daoService;
 	
     private IModel<Actividad> actividadModel;
     
-    public EditActividadesPage(){
+    public EditarActividadesPage(){
     	
     	Subject subject = SecurityUtils.getSubject();
 		
@@ -40,7 +40,7 @@ public class EditActividadesPage extends BasePage{
         this.preparePage();    
     }
     
-    public EditActividadesPage(final PageParameters parameters) {
+    public EditarActividadesPage(final PageParameters parameters) {
         this.actividadModel = new CompoundPropertyModel<Actividad>(new LoadableDetachableModel<Actividad>() {
             @Override
             protected Actividad load() {

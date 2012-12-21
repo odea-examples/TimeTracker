@@ -46,7 +46,7 @@ import com.odea.domain.Usuario;
 import com.odea.services.DAOService;
 
 
-public class AgregarEntradasPage extends BasePage {
+public class EntradasPage extends BasePage {
 
 	@SpringBean
 	private transient DAOService daoService;
@@ -58,7 +58,7 @@ public class AgregarEntradasPage extends BasePage {
 
 	WebMarkupContainer listViewContainer;
 	
-	public AgregarEntradasPage() {
+	public EntradasPage() {
 		Subject subject = SecurityUtils.getSubject();
 		
 		if(!subject.isAuthenticated()){

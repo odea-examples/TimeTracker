@@ -36,7 +36,7 @@ public class ActividadesPage extends BasePage{
 		if(!subject.isAuthenticated()){
 			this.redirectToInterceptPage(new LoginPage());
 		}
-		add(new BookmarkablePageLink<EditActividadesPage>("link",EditActividadesPage.class));
+		add(new BookmarkablePageLink<EditarActividadesPage>("link",EditarActividadesPage.class));
 		
 		this.lstActividadesModel = new LoadableDetachableModel<List<Actividad>>() { 
             @Override
@@ -69,7 +69,7 @@ public class ActividadesPage extends BasePage{
                     }
 
                 });
-                item.add(new BookmarkablePageLink<EditActividadesPage>("modifyLink",EditActividadesPage.class,new PageParameters().add("id",actividad.getIdActividad()).add("nombre",actividad.getNombre())));
+                item.add(new BookmarkablePageLink<EditarActividadesPage>("modifyLink",EditarActividadesPage.class,new PageParameters().add("id",actividad.getIdActividad()).add("nombre",actividad.getNombre())));
 
             };
             

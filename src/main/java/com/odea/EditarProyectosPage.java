@@ -31,7 +31,7 @@ import com.odea.domain.Proyecto;
 import com.odea.services.DAOService;
 
 
-public class EditProyectosPage extends BasePage {
+public class EditarProyectosPage extends BasePage {
 	
 	@SpringBean
 	public transient DAOService daoService;
@@ -39,7 +39,7 @@ public class EditProyectosPage extends BasePage {
 	public ListMultipleChoice<Actividad> originals;
 	public ListMultipleChoice<Actividad> destinations;
 	
-	public EditProyectosPage(){
+	public EditarProyectosPage(){
 		
 		Subject subject = SecurityUtils.getSubject();
 		if(!subject.isAuthenticated()){
@@ -57,7 +57,7 @@ public class EditProyectosPage extends BasePage {
 		
 	}
 	
-	public EditProyectosPage(final PageParameters parameters){
+	public EditarProyectosPage(final PageParameters parameters){
 		
 		Subject subject = SecurityUtils.getSubject();
 		if(!subject.isAuthenticated()){
