@@ -1,9 +1,7 @@
 package com.odea;
 
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.subject.Subject;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.RequiredTextField;
@@ -17,6 +15,7 @@ import org.apache.wicket.validation.IValidatable;
 import org.apache.wicket.validation.IValidator;
 import org.apache.wicket.validation.ValidationError;
 
+import com.odea.components.confirmPanel.ConfirmationButton;
 import com.odea.components.modalWindow.SelectModalWindow;
 import com.odea.domain.Usuario;
 import com.odea.services.DAOService;
@@ -119,7 +118,7 @@ public class EditarUsuarioPage extends BasePage {
 			confirmPassword.add(passwordValidator);
 
 			
-			AjaxButton submit = new AjaxButton("submit") {
+			ConfirmationButton submit = new ConfirmationButton("submit","Seguro?", new Model<String>("Submit")) {
 	
 				private static final long serialVersionUID = 1L;
 
