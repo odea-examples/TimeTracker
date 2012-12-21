@@ -2,10 +2,14 @@ package com.odea;
 
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
 
+import com.odea.components.datepicker.DatePicker;
+import com.odea.components.datepicker.DatePicketDTO;
+import com.odea.components.datepicker.HorasCargadasPorDia;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.apache.wicket.AttributeModifier;
@@ -195,13 +199,25 @@ public class AgregarEntradasPage extends BasePage {
 			ticketExt.setOutputMarkupId(true);
 			ticketExt.setEnabled(false);
 			ticketExt.add(new PatternValidator("^[a-z0-9_-]{1,15}$"));
-			
-			
-			TextField<Date> fecha = new TextField<Date>("fecha");
-			fecha.setRequired(true);
-			fecha.add(new DatePickerBehavior(fecha.getMarkupId()));
-			fecha.setOutputMarkupId(true);
-			fecha.setLabel(Model.of("Fecha"));
+
+            DatePicker fecha = new DatePicker("fecha") {
+                @Override
+                public DatePicketDTO getDatePickerData() {
+                    //TODO que esto venga de la base
+                    DatePicketDTO dto = new DatePicketDTO();
+                    dto.setDedicacion(8);
+                    dto.setUsuario("pbergonzi");
+                    HorasCargadasPorDia h = new HorasCargadasPorDia(new Date(),8);
+                    Collection<HorasCargadasPorDia> c = new ArrayList<HorasCargadasPorDia>();
+                    c.add(h);
+                    dto.setHorasDia(c);
+
+                    return dto;
+                }
+            };
+
+            fecha.setRequired(true);
+            fecha.setLabel(Model.of("Fecha"));
 			fecha.add(new NoInputBehavior());
 			
 			final FeedbackPanel feedBackPanel = new FeedbackPanel("feedBackPanel");

@@ -31,6 +31,13 @@
         <org.springframework.version>3.1.2.RELEASE</org.springframework.version>
     </properties>
     <dependencies>
+        <!-- GSON -->
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.2.2</version>
+        </dependency>
+
         <!-- SHIRO -->
         <dependency>
             <groupId>org.apache.shiro</groupId>
