@@ -1,6 +1,8 @@
 package com.odea;
 
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -305,15 +307,14 @@ public class EntradasPage extends BasePage {
             final DatePicker fecha = new DatePicker("fecha") {
                 @Override
                 public DatePickerDTO getDatePickerData() {
-                    //TODO que todo esto venga de la base
-                    DatePickerDTO dto = new DatePickerDTO();
+                	DatePickerDTO dto = new DatePickerDTO();
                     dto.setDedicacion(8);
                     dto.setUsuario(usuario.getNombre());
-//                    HorasCargadasPorDia h = new HorasCargadasPorDia(new Date(),8);
-//                    Collection<HorasCargadasPorDia> c = new ArrayList<HorasCargadasPorDia>();
+//                     HorasCargadasPorDia h = new HorasCargadasPorDia(new Date(),8);
+//                     Collection<HorasCargadasPorDia> c = new ArrayList<HorasCargadasPorDia>();
                     Collection<HorasCargadasPorDia> c = daoService.getHorasDiaras(usuario);
-//                    System.out.println(c);
-//                    c.add(h);
+//                     System.out.println(c);
+//                     c.add(h);
                     dto.setHorasDia(c);
                     return dto;
                 }

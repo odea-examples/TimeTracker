@@ -25,9 +25,11 @@ function highlightState(date) {
 
     for(var i in data.horasDia){
         if(data.horasDia[i].dia == strDate){
-            return [true, data.horasDia[i].horasCargadas >= data.dedicacion ? '.completo' : '.parcial'];
+            return [true, data.horasDia[i].horasCargadas >= data.dedicacion ? 'completo' : 'parcial'];
         }
     }
+    
+
 
     return [true, "vacio" ? '' : ''];
 
