@@ -11,7 +11,6 @@ import org.apache.shiro.subject.Subject;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
-import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.ajax.markup.html.navigation.paging.AjaxPagingNavigator;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -36,8 +35,9 @@ import org.apache.wicket.validation.validator.PatternValidator;
 import com.odea.behavior.noInput.NoInputBehavior;
 import com.odea.behavior.numberComma.NumberCommaBehavior;
 import com.odea.behavior.onlyNumber.OnlyNumberBehavior;
+import com.odea.components.confirmPanel.ConfirmationLink;
 import com.odea.components.datepicker.DatePicker;
-import com.odea.components.datepicker.DatePicketDTO;
+import com.odea.components.datepicker.DatePickerDTO;
 import com.odea.components.datepicker.HorasCargadasPorDia;
 import com.odea.domain.Actividad;
 import com.odea.domain.Entrada;
@@ -46,7 +46,6 @@ import com.odea.domain.Usuario;
 import com.odea.services.DAOService;
 import com.odea.validators.duracion.DurationValidator;
 import com.odea.validators.ticketExterno.OnRelatedFieldsNullValidator;
-import com.odea.components.confirmPanel.ConfirmationLink;
 
 
 public class EntradasPage extends BasePage {
@@ -305,16 +304,17 @@ public class EntradasPage extends BasePage {
 			
             final DatePicker fecha = new DatePicker("fecha") {
                 @Override
-                public DatePicketDTO getDatePickerData() {
-                    //TODO que esto venga de la base
-                    DatePicketDTO dto = new DatePicketDTO();
-                    dto.setDedicacion(5);
-                    dto.setUsuario("pbergonzi");
-                    HorasCargadasPorDia h = new HorasCargadasPorDia(new Date(),8);
-                    Collection<HorasCargadasPorDia> c = new ArrayList<HorasCargadasPorDia>();
-                    c.add(h);
+                public DatePickerDTO getDatePickerData() {
+                    //TODO que todo esto venga de la base
+                    DatePickerDTO dto = new DatePickerDTO();
+                    dto.setDedicacion(8);
+                    dto.setUsuario(usuario.getNombre());
+//                    HorasCargadasPorDia h = new HorasCargadasPorDia(new Date(),8);
+//                    Collection<HorasCargadasPorDia> c = new ArrayList<HorasCargadasPorDia>();
+                    Collection<HorasCargadasPorDia> c = daoService.getHorasDiaras(usuario);
+//                    System.out.println(c);
+//                    c.add(h);
                     dto.setHorasDia(c);
-			
                     return dto;
                 }
             };

@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.odea.components.datepicker.HorasCargadasPorDia;
 import com.odea.dao.ActividadDAO;
 import com.odea.dao.EntradaDAO;
 import com.odea.dao.ProyectoDAO;
@@ -79,6 +80,10 @@ public class DAOService {
 
 	public List<Entrada> getEntradasDia(Usuario usuario) {
 		return entradaDAO.getEntradasDia(usuario);
+	}
+	
+	public List<HorasCargadasPorDia> getHorasDiaras(Usuario usuario){
+		return entradaDAO.horasPorDia(usuario);
 	}
 	
 	public void agregarEntrada(Entrada entrada, Usuario usuario) {

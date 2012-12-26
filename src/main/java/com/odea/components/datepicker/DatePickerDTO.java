@@ -2,15 +2,15 @@ package com.odea.components.datepicker;
 
 import java.util.Collection;
 
-public class DatePicketDTO {
+public class DatePickerDTO {
     private String usuario;
     private int dedicacion;
     private Collection<HorasCargadasPorDia> horasDia;
 
-    public DatePicketDTO() {
+    public DatePickerDTO() {
     }
 
-    public DatePicketDTO(String usuario, int dedicacion, Collection<HorasCargadasPorDia> horasDia) {
+    public DatePickerDTO(String usuario, int dedicacion, Collection<HorasCargadasPorDia> horasDia) {
         this.usuario = usuario;
         this.dedicacion = dedicacion;
         this.horasDia = horasDia;

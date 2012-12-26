@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.sql.Types;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -15,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import com.odea.components.datepicker.HorasCargadasPorDia;
 import com.odea.domain.Actividad;
 import com.odea.domain.Entrada;
 import com.odea.domain.Proyecto;
@@ -135,6 +137,17 @@ public class EntradaDAO extends AbstractDAO {
 	
 		return jdbcTemplate.queryForInt("SELECT HOUR(SEC_TO_TIME(SUM(TIME_TO_SEC(al_duration)))) FROM activity_log WHERE al_user_id=? and al_date BETWEEN ? AND ?",usuario.getIdUsuario(),lunes, viernes);
 
+	}
+	public List<HorasCargadasPorDia> horasPorDia(Usuario usuario){
+		return jdbcTemplate.query("select al_date as fecha , sum(al_duration) as duracion from  activity_log where al_user_id=? group by fecha order by fecha desc ",
+				new RowMapper() {
+
+					@Override
+					public Object mapRow(ResultSet rs, int rowNum)
+							throws SQLException {
+						return new HorasCargadasPorDia(rs.getTimestamp(1),rs.getInt(2));
+					}
+				},usuario.getIdUsuario());
 	}
 	
 	private String parsearSistemaExterno(String sistemaExterno) {

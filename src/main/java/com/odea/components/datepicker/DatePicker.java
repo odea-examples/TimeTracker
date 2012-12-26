@@ -11,11 +11,11 @@ public abstract class DatePicker extends TextField<Date> {
         this.setOutputMarkupId(true);
         add(new DatePickerBehavior(this.getMarkupId()) {
             @Override
-            public DatePicketDTO getDatePickerData() {
+            public DatePickerDTO getDatePickerData() {
                 return DatePicker.this.getDatePickerData();
             }
         });
     }
 
-    public abstract DatePicketDTO getDatePickerData();
+    public abstract DatePickerDTO getDatePickerData();
 }

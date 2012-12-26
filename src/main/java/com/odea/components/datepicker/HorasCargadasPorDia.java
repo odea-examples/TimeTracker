@@ -20,4 +20,11 @@ public class HorasCargadasPorDia {
     public int getHorasCargadas() {
         return horasCargadas;
     }
+
+	@Override
+	public String toString() {
+		return "dia:"+dia+", Horas:"+horasCargadas+".";
+	}
+    
+    
 }

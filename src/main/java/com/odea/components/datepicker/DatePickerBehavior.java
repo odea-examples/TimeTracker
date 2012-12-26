@@ -61,9 +61,9 @@ public abstract class DatePickerBehavior extends AbstractAjaxBehavior {
 
     }
 
-    public abstract DatePicketDTO getDatePickerData();
+    public abstract DatePickerDTO getDatePickerData();
 
-    private String toJson(DatePicketDTO result) {
+    private String toJson(DatePickerDTO result) {
         Gson gson = new Gson();
         return gson.toJson(result);
     }

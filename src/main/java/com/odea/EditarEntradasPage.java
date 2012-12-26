@@ -28,8 +28,7 @@ import com.odea.behavior.noInput.NoInputBehavior;
 import com.odea.behavior.numberComma.NumberCommaBehavior;
 import com.odea.behavior.onlyNumber.OnlyNumberBehavior;
 import com.odea.components.datepicker.DatePicker;
-import com.odea.components.datepicker.DatePickerBehavior;
-import com.odea.components.datepicker.DatePicketDTO;
+import com.odea.components.datepicker.DatePickerDTO;
 import com.odea.components.datepicker.HorasCargadasPorDia;
 import com.odea.domain.Actividad;
 import com.odea.domain.Entrada;
@@ -221,9 +220,9 @@ public class EditarEntradasPage extends BasePage{
 			
 			final DatePicker fecha = new DatePicker("fecha") {
                 @Override
-                public DatePicketDTO getDatePickerData() {
+                public DatePickerDTO getDatePickerData() {
                     //TODO que esto venga de la base
-                    DatePicketDTO dto = new DatePicketDTO();
+                    DatePickerDTO dto = new DatePickerDTO();
                     dto.setDedicacion(8);
                     dto.setUsuario("pbergonzi");
                     HorasCargadasPorDia h = new HorasCargadasPorDia(new Date(),8);
