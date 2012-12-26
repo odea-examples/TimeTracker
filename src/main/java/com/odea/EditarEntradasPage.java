@@ -2,6 +2,7 @@ package com.odea;
 
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 
 import org.apache.wicket.AttributeModifier;
@@ -26,7 +27,10 @@ import org.apache.wicket.validation.validator.PatternValidator;
 import com.odea.behavior.noInput.NoInputBehavior;
 import com.odea.behavior.numberComma.NumberCommaBehavior;
 import com.odea.behavior.onlyNumber.OnlyNumberBehavior;
+import com.odea.components.datepicker.DatePicker;
 import com.odea.components.datepicker.DatePickerBehavior;
+import com.odea.components.datepicker.DatePicketDTO;
+import com.odea.components.datepicker.HorasCargadasPorDia;
 import com.odea.domain.Actividad;
 import com.odea.domain.Entrada;
 import com.odea.domain.Proyecto;
@@ -215,11 +219,25 @@ public class EditarEntradasPage extends BasePage{
 						
 			
 			
-			fecha = new TextField<Date>("fecha");
-			fecha.setRequired(true);
-			fecha.add(new DatePickerBehavior(fecha.getMarkupId()));
-			fecha.setOutputMarkupId(true);
-			fecha.setLabel(Model.of("Fecha"));
+			final DatePicker fecha = new DatePicker("fecha") {
+                @Override
+                public DatePicketDTO getDatePickerData() {
+                    //TODO que esto venga de la base
+                    DatePicketDTO dto = new DatePicketDTO();
+                    dto.setDedicacion(8);
+                    dto.setUsuario("pbergonzi");
+                    HorasCargadasPorDia h = new HorasCargadasPorDia(new Date(),8);
+                    Collection<HorasCargadasPorDia> c = new ArrayList<HorasCargadasPorDia>();
+                    c.add(h);
+                    dto.setHorasDia(c);
+			
+                    return dto;
+                }
+            };
+			
+			
+            fecha.setRequired(true);
+            fecha.setLabel(Model.of("Fecha"));
 			fecha.add(new NoInputBehavior());
 			
 			final FeedbackPanel feedBackPanel = new FeedbackPanel("feedBackPanel");

@@ -1,60 +1,67 @@
 <wicket:head>
 	<link href="styles/tables.css" rel="stylesheet" type="text/css" />
+	
+	<style type='text/css'>
+		label { float: left; width: 120px; }
+		input[type=text] {width: 100px; }
+		select {width: 300px;}		
+	</style>
+	
 </wicket:head>
 <wicket:extend>
 
 
 
 	<form wicket:id="form">
-		<ul>
-
+		
 			<span wicket:id="feedBackPanel"></span>
-
+			
+			<u>Los campos marcados con un asterisco son obligatorios.</u>
+			<br/>
+			<br/>
+			
 			<div>
-				<b><label for="proyecto">Proyecto</label> </b> <select
-					wicket:id="proyecto" name="proyecto" style="width: 300px" />
+				<b><label for="proyecto">Proyecto *</label> </b> 
+				<select wicket:id="proyecto" name="proyecto"/> <span wicket:id="mensajeProyecto">Mensaje de campo necesario</span>
 			</div>
 
 			<div>
-				<b><label for="actividad">Actividad</label> </b><select
-					wicket:id="actividad" name="actividad" style="width: 300px" />
+				<b><label for="actividad">Actividad *</label> </b>
+				<select wicket:id="actividad" name="actividad"/> <span wicket:id="mensajeActividad">Mensaje de campo necesario</span>
 			</div>
 
 			<div>
-				<b><label for="duracion">Duracion</label></b> <input type="text"
-					wicket:id="duracion" name="duracion" style="width: 100px" />
+				<b><label for="duracion">Duracion *</label></b> 
+				<input type="text" wicket:id="duracion" name="duracion"/> Formato: hh:mm o 0,00h
 			</div>
 
 			<div>
-				<b><label for="fecha">Fecha</label> </b><input type="text"
-					wicket:id="fecha" name="fecha" style="width: 100px" />
+				<b><label for="fecha">Fecha *</label> </b><input type="text"
+					wicket:id="fecha" name="fecha"/>
 			</div>
 
 			<div>
-				<b><label for="nota">Nota</label></b> <br> <b><textarea
-						wicket:id="nota" name="nota" rows="10" cols="40" scrolling="yes"
-						style="margin-left: 34px" /></b>
+				<b><label for="ticketBZ">Ticket Bugzilla</label> 
+				<input type="text" wicket:id="ticketBZ" name="ticketBZ"></b>
 			</div>
 
 			<div>
-				<b><label for="ticketBZ">Ticket Bugzilla</label> <input
-					type="text" wicket:id="ticketBZ" name="ticketBZ"
-					style="width: 70px"></b>
+				<b><label for="sistemaExterno">Sistema Externo</label>
+				<select wicket:id="sistemaExterno" name="sistemaExterno" style="width:250px"/></b>
 			</div>
 
 			<div>
-				<b><label for="sistemaExterno">Sistema Externo</label> <select
-					wicket:id="sistemaExterno" name="sistemaExterno"
-					style="width: 200px" /></b>
+				<b><label for="ticketExterno">ID Ticket Externo</label> 
+				<input type="text" wicket:id="ticketExterno" name="ticketExterno"/></b>
 			</div>
-
+			
 			<div>
-				<b><label for="ticketExterno">ID Ticket Externo</label> <input
-					type="text" wicket:id="ticketExterno" name="ticketExterno"
-					style="width: 70px" /></b>
+				<b><label for="nota">Nota</label></b> <br> 
+				<b><textarea wicket:id="nota" name="nota" rows="10" cols="40" scrolling="yes"/></b>
 			</div>
 
-
+			<br/>
+			
 			<input wicket:id="submit" value="Confirmar" type="submit" />
 
 
@@ -62,17 +69,27 @@
 			<br/>
 			<br/>
 
-		</ul>
+		
 	</form>
-<!-- 	Ver:<select wicket:id="dropChoiceSelector"> </select> -->
+	
+
+
+
 
 	<div wicket:id="listViewContainer">
 		<div>
 			<label for="horasAcumuladas">Horas Semanales</label>
 			<span wicket:id="horasAcumuladas" name="horasAcumuladas">[[horas acumuladas]]</span>
 		</div>
+		
+		
 		<h3>Entradas</h3>
-		<br />
+		
+		<br/>
+		<b><label for="selectorTiempo" style="width:50px">Rango:</label></b> 
+		<select wicket:id="selectorTiempo" name="selectorTiempo" style="width:150px"></select>
+		<br/>
+		
 		<table>
 			<thead>
 			<tr class="odd">
@@ -81,6 +98,8 @@
 				<th scope="col">Actividad</th>
 				<th scope="col">Duracion</th>
 				<th scope="col">Ticket Bugzilla</th>
+				<th scope="col">Borrar</th>
+				<th scope="col">Modificar</th>
 			</tr>
 			</thead>
 			<tbody>
@@ -90,8 +109,15 @@
 					<td wicket:id="actividad_entrada"/>
 					<td wicket:id="duracion_entrada"/>
 					<td wicket:id="ticketBZ_entrada"/>
+					<td><a wicket:id="deleteLink" class="more" href="#"><img src="images/delete.png" alt="delete"/></a></td>
+					<td><a wicket:id="modifyLink" class="more" href="#"><img src="images/modificarIcon.gif" alt="modificarIcon"/></a></td>
 				</tr>
-			</tbody>	
+			</tbody>
+			<tfoot>
+            <tr>
+                <td wicket:id="navigator" align="center" colspan="7" ></td>
+            </tr>
+        </tfoot>
 		</table>
 	</div>
 

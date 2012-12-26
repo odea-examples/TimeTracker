@@ -1,29 +1,29 @@
 package com.odea.components.datepicker;
 
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
+
 <<<<<<< HEAD
 import com.google.gson.Gson;
 import org.apache.wicket.Application;
 import org.apache.wicket.behavior.AbstractAjaxBehavior;
 import org.apache.wicket.markup.head.CssContentHeaderItem;
-=======
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.apache.wicket.Component;
-import org.apache.wicket.behavior.Behavior;
->>>>>>> R2
 import org.apache.wicket.markup.head.JavaScriptContentHeaderItem;
 import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.handler.TextRequestHandler;
 import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.util.template.PackageTextTemplate;
 
-<<<<<<< HEAD
 import java.util.*;
-
 =======
->>>>>>> R2
+import org.apache.wicket.Component;
+import org.apache.wicket.behavior.Behavior;
+import org.apache.wicket.markup.head.JavaScriptContentHeaderItem;
+import org.apache.wicket.request.Response;
+import org.apache.wicket.util.template.PackageTextTemplate;
+>>>>>>> refs/remotes/origin/R2
+
 /**
  * User: pbergonzi
  * Date: 25/10/12
