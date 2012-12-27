@@ -125,7 +125,7 @@ public class EntradasPage extends BasePage {
                 item.add(new Label("duracion_entrada", new Model<String>(entrada.getDuracion())));
                 item.add(new Label("ticketBZ_entrada", new Model<Integer>(entrada.getTicketBZ())));
 
-                item.add(new ConfirmationLink<Entrada>("deleteLink","Seguro desea borrar?",new Model<Entrada>(entrada)) {
+                item.add(new ConfirmationLink<Entrada>("deleteLink","¿Seguro desea borrar?",new Model<Entrada>(entrada)) {
                     @Override
                     public void onClick(AjaxRequestTarget ajaxRequestTarget) {
                         daoService.borrarEntrada(getModelObject());

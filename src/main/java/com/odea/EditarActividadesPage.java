@@ -84,7 +84,6 @@ public class EditarActividadesPage extends BasePage{
 				@Override
 				protected Object load() {
 					return daoService.getProyectos();
-//					return ActividadForm.this.obtenerListaOrigen();
 				}							
 	        };
 	        
@@ -129,8 +128,6 @@ public class EditarActividadesPage extends BasePage{
 	        };
 
 	        
-	        
-//	        dualMultiple = new DualMultipleChoice<Proyecto>("dual", originalsModel, destinationsModel);
 	        
 	        AjaxButton submit = new AjaxButton("submit") {
 	        	@Override

@@ -168,21 +168,6 @@ public class EditarEntradasPage extends BasePage{
 					}
 					return object;
 				}
-
-//TODO: No se si lo vamos a usar, pero, aca esta bien hecho
-				
-//				private String parsear(String nombre) {
-//					String resultado = "";
-//					for (int i = 0; i < nombre.length(); i++) {
-//						if (Character.isUpperCase(nombre.charAt(i))){
-//							resultado += nombre.charAt(i);
-//						}
-//					}
-//					
-//					return resultado;
-//					
-//				}
-		
 				
 			}
 			);
