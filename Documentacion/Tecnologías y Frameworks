@@ -1,0 +1,12 @@
+Tenologías utilizadas:
+
+Wicket 6.1.0
+JDBC - BD en MySQL
+Jetty 7.6.3
+Maven
+Spring 6.0.0
+Shiro 1.2.1
+GSON 2.2.2
+
+
+
