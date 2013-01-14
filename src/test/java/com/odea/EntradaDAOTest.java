@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.odea.components.slickGrid.Data;
 import com.odea.dao.EntradaDAO;
 import com.odea.domain.Actividad;
 import com.odea.domain.Entrada;
@@ -67,7 +68,7 @@ public class EntradaDAOTest extends AbstractTestCase {
 	
 	@Test
 	public void getEntradasDeProyectoTest(){
-		Collection<Entrada> col = dao.getEntradas(proyecto, antes, despues);
+		Collection<Entrada> col = dao.getDatos(antes, despues);
 		Assert.assertNotNull("La cantidad de entradas encontradas no es la esperada", col);
 	}
 	

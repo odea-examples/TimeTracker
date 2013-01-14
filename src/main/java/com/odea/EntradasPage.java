@@ -87,7 +87,7 @@ public class EntradasPage extends BasePage {
         this.horasSemanalesModel = new LoadableDetachableModel<Integer>() {
     		@Override
     		protected Integer load() {
-    			return daoService.getHorasSemanales(usuario);
+    			return daoService.getHorasMensuales(usuario);
     		}
     		
     	}; 
@@ -102,7 +102,7 @@ public class EntradasPage extends BasePage {
 		EntradaForm form = new EntradaForm("form"){
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, EntradaForm form) {
-				System.out.println(form.getModelObject().getFecha());
+//				System.out.println(form.getModelObject().getFecha());
 				daoService.agregarEntrada(form.getModelObject(), usuario);
 				target.add(listViewContainer);
 				target.add(form);

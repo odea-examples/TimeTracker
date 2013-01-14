@@ -36,7 +36,7 @@ public abstract class DatePickerBehavior extends AbstractAjaxBehavior {
 
     @Override
     public void renderHead(Component component, IHeaderResponse response) {
-        //super.renderHead(component, response);    //To change body of overridden methods use File | Settings | File Templates.
+        super.renderHead(component, response);    //To change body of overridden methods use File | Settings | File Templates.
         CssResourceReference css = new CssResourceReference(getClass(), "datepicker.css");
         response.render(CssReferenceHeaderItem.forReference(css));
     }
@@ -45,7 +45,7 @@ public abstract class DatePickerBehavior extends AbstractAjaxBehavior {
     
     @Override
     protected void onComponentRendered() {
-        String uniqueName = Long.toString(Calendar.getInstance().getTimeInMillis());
+        String uniqueName =Long.toString(Calendar.getInstance().getTimeInMillis());
         new JavaScriptContentHeaderItem(this.prepareJSInitCall(),uniqueName + "js",null).render(this.getComponent().getResponse());
         //new CssContentHeaderItem(this.prepareCSS(),uniqueName + "css",null).render(this.getComponent().getResponse());
     }

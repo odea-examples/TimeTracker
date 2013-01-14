@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.sql.Types;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -17,6 +18,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import com.odea.components.datepicker.HorasCargadasPorDia;
+import com.odea.components.slickGrid.Data;
 import com.odea.domain.Actividad;
 import com.odea.domain.Entrada;
 import com.odea.domain.Proyecto;
@@ -103,11 +105,24 @@ public class EntradaDAO extends AbstractDAO {
 				Proyecto proyecto = new Proyecto(rs.getInt(2), rs.getString(11));
 				Actividad actividad = new Actividad(rs.getInt(3), rs.getString(14));
 				Usuario usuario = new Usuario(rs.getInt(9), rs.getString(12), rs.getString(13));
+//				Entrada e = new Entrada(rs.getTimestamp(1), proyecto, actividad, String.valueOf(((Double.parseDouble(String.valueOf(rs.getTime(4).getTime()))/3600) - 3000) /1000).substring(0,3)  /* String.valueOf(((Time.valueOf(rs.getTime(4)).getMilliseconds() /3600)-3000))*/, rs.getString(5), rs.getInt(6), rs.getString(7), parsearSistemaExterno(rs.getString(8)), usuario, rs.getDate(10));
+//				Data data;
+//				Calendar c = Calendar.getInstance();
+//				c.setTime(e.getIdEntrada());
+//				String s ="";
+//				data = new Data(e.getIdEntrada().toString(),e.getDuracion(),e.getActividad().toString(),e.getProyecto().toString(),e.getFecha().toString(),Integer.toString(e.getTicketBZ()), e.getTicketExterno(),e.getSistemaExterno(),e.getNota());
+//				System.out.println(data);
+//				System.out.println("----------------------------------------------");
+//				System.out.println("----------------------------------------------");
+//				System.out.println("----------------------------------------------");
+//				Data datas = new Data("20/01/2010","15hs","vacaciones","RRHH","25/08/2002","Task 117","Task118","Task 119","Esta es la gran descripcion");
+//				System.out.println(datas);
 				return new Entrada(rs.getTimestamp(1), proyecto, actividad, String.valueOf(((Double.parseDouble(String.valueOf(rs.getTime(4).getTime()))/3600) - 3000) /1000).substring(0,3)  /* String.valueOf(((Time.valueOf(rs.getTime(4)).getMilliseconds() /3600)-3000))*/, rs.getString(5), rs.getInt(6), rs.getString(7), parsearSistemaExterno(rs.getString(8)), usuario, rs.getDate(10));
 			}}, usuario.getIdUsuario(), desdeSQL, hastaSQL);
+		//TODO anotacion
 	}
 	
-	public Collection<Entrada> getEntradas(Date desde,Date hasta){
+	public Collection<Entrada> getEntradas2(Date desde,Date hasta){
 		Timestamp desdeSQL = new Timestamp(desde.getTime());
 		Timestamp hastaSQL = new Timestamp(hasta.getTime());
 		
@@ -124,20 +139,52 @@ public class EntradaDAO extends AbstractDAO {
 		
 		return entradas;
 	}
+	public Collection<Entrada> getEntradas(Date desde, Date hasta){
+		Timestamp desdeSQL = new Timestamp(desde.getTime());
+		Timestamp hastaSQL = new Timestamp(hasta.getTime());		
+		Collection<Entrada> entradas = jdbcTemplate.query(sqlEntradas + " WHERE e.al_user_id = u.u_id  AND e.al_activity_id = a.a_id AND e.al_project_id = p.p_id AND e.al_date BETWEEN ? AND ?", new RowMapperEntradas(), desdeSQL, hastaSQL);
+		
+		
+		return entradas;
+	}
 	
 	public int getHorasSemanales(Usuario usuario) 
 	{
-
-				LocalDate now = new LocalDate();
+		LocalDate now = new LocalDate();
 		LocalDate lu = now.withDayOfWeek(DateTimeConstants.MONDAY);
 		LocalDate vie = now.withDayOfWeek(DateTimeConstants.FRIDAY);
-		
 		Date lunes = lu.toDateTimeAtStartOfDay().toDate();
 		Date viernes = vie.toDateTimeAtStartOfDay().toDate();
-	
-		return jdbcTemplate.queryForInt("SELECT HOUR(SEC_TO_TIME(SUM(TIME_TO_SEC(al_duration)))) FROM activity_log WHERE al_user_id=? and al_date BETWEEN ? AND ?",usuario.getIdUsuario(),lunes, viernes);
-
+		
+		return this.getHorasDesdeHasta(usuario, lunes, viernes);
 	}
+	public int getHorasDiarias(Usuario usuario) 
+	{
+		LocalDate hoy = new LocalDate();
+		LocalDate maniana = hoy.plusDays(1);
+		
+		Date diaHoy = hoy.toDateTimeAtStartOfDay().toDate();
+		Date diaManiana = maniana.toDateTimeAtStartOfDay().toDate();
+		
+		return this.getHorasDesdeHasta(usuario, diaHoy,diaManiana);
+	}
+	
+	public int getHorasMensuales(Usuario usuario) 
+	{
+		LocalDate now = new LocalDate();
+		LocalDate primeroDelMes = now.withDayOfMonth(1);
+		LocalDate ultimoDelMes = now.plusMonths(1).withDayOfMonth(1).minusDays(1);
+		
+		Date primero = primeroDelMes.toDateTimeAtStartOfDay().toDate();
+		Date ultimo = ultimoDelMes.toDateTimeAtStartOfDay().toDate();
+		
+		return this.getHorasDesdeHasta(usuario, primero, ultimo);
+	}
+	
+	public int getHorasDesdeHasta(Usuario usuario, Date desde, Date hasta){
+		return jdbcTemplate.queryForInt("SELECT HOUR(SEC_TO_TIME(SUM(TIME_TO_SEC(al_duration)))) FROM activity_log WHERE al_user_id=? and al_date BETWEEN ? AND ?",usuario.getIdUsuario(),desde, hasta);
+	}
+	
 	public List<HorasCargadasPorDia> horasPorDia(Usuario usuario){
 		return jdbcTemplate.query("select al_date as fecha , sum(al_duration) as duracion from  activity_log where al_user_id=? group by fecha order by fecha desc ",
 				new RowMapper() {

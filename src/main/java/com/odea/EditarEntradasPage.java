@@ -30,6 +30,7 @@ import com.odea.behavior.onlyNumber.OnlyNumberBehavior;
 import com.odea.components.datepicker.DatePicker;
 import com.odea.components.datepicker.DatePickerDTO;
 import com.odea.components.datepicker.HorasCargadasPorDia;
+import com.odea.components.slickGrid.SlickGrid;
 import com.odea.domain.Actividad;
 import com.odea.domain.Entrada;
 import com.odea.domain.Proyecto;
@@ -224,6 +225,21 @@ public class EditarEntradasPage extends BasePage{
             fecha.setLabel(Model.of("Fecha"));
 			fecha.add(new NoInputBehavior());
 			
+			final SlickGrid slickGrid = new SlickGrid("grid") {
+				
+				@Override
+				protected String getData() {
+					// TODO Auto-generated method stub
+					return null;
+				}
+				
+				@Override
+				protected String getColumns() {
+					// TODO Auto-generated method stub
+					return null;
+				}
+			};
+			
 			final FeedbackPanel feedBackPanel = new FeedbackPanel("feedBackPanel");
 			feedBackPanel.setOutputMarkupId(true);
 			
@@ -277,7 +293,7 @@ public class EditarEntradasPage extends BasePage{
 						fecha.add(new AttributeModifier("style", new Model("border-color:none")));
 					}	
 					
-					target.add(feedBackPanel);
+//					target.add(feedBackPanel);
 					target.add(fecha);
 					target.add(duracion);
 					target.add(ticketExt);
@@ -298,6 +314,7 @@ public class EditarEntradasPage extends BasePage{
 			add(sistemaExterno);
 			add(ticketExt);
 			add(feedBackPanel);
+			add(slickGrid);
 			add(submit);
 			this.setOutputMarkupId(true);
 

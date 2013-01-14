@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.odea.components.datepicker.HorasCargadasPorDia;
+import com.odea.components.slickGrid.Columna;
+import com.odea.components.slickGrid.SlickGridDTO;
 import com.odea.dao.ActividadDAO;
 import com.odea.dao.EntradaDAO;
 import com.odea.dao.ProyectoDAO;
@@ -29,8 +31,6 @@ public class DAOService {
 	private transient ActividadDAO actividadDAO;
 	@Autowired
 	private transient ProyectoDAO proyectoDAO;
-		
-	
 	
 	public List<Actividad> getActividades(Proyecto proyecto){
 		return actividadDAO.getActividades(proyecto);
@@ -111,6 +111,15 @@ public class DAOService {
 	public int getHorasSemanales(Usuario usuario){
 		return entradaDAO.getHorasSemanales(usuario);
 	}
+	
+	public int getHorasDiarias(Usuario usuario){
+		return entradaDAO.getHorasDiarias(usuario);
+	}
+
+	public int getHorasMensuales(Usuario usuario){
+		return entradaDAO.getHorasMensuales(usuario);
+	}
+	
 	
 	public void borrarEntrada(Entrada entrada){
 		entradaDAO.borrarEntrada(entrada);
