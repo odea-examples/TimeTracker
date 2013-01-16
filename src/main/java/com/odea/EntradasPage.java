@@ -54,12 +54,10 @@ public class EntradasPage extends BasePage {
 	private Usuario usuario;
 	
 	IModel<List<Entrada>> lstEntradasModel;
-	//TODO te voy a anotar asi todos los agregaso con el data
 	IModel<List<Data>> lstDataModel;
 	IModel<Integer> horasSemanalesModel;
 	IModel<Integer> horasMesModel;
 	IModel<Integer> horasDiaModel;
-//	PageableListView<Entrada> entradasListView;
 	DropDownChoice<String> selectorTiempo;
 	Label mensajeProyecto;
 	Label mensajeActividad;
@@ -72,18 +70,9 @@ public class EntradasPage extends BasePage {
 		
 		final Subject subject = SecurityUtils.getSubject();
 		
-//		if(!subject.isAuthenticated()){
-//			this.redirectToInterceptPage(new LoginPage());
-//		}
 		
 		this.usuario = this.daoService.getUsuario(subject.getPrincipal().toString());
 		
-//		this.lstEntradasModel = new LoadableDetachableModel<List<Entrada>>() { 
-//            @Override
-//            protected List<Entrada> load() {
-//            	return daoService.getEntradasSemanales(EntradasPage.this.usuario);
-//            }
-//        };
 		this.lstDataModel = new LoadableDetachableModel<List<Data>>() { 
 			//TODO list model
             @Override
@@ -120,12 +109,10 @@ public class EntradasPage extends BasePage {
 
 		this.listViewContainer = new WebMarkupContainer("listViewContainer");
 		this.listViewContainer.setOutputMarkupId(true);
-		//TODO SLICKGRID
 		final SlickGrid slickGrid = new SlickGrid("slickGrid") {
 			
 			@Override
 			protected String getData() {
-				// TODO Auto-generated method stub
 				List<Data> data= daoService.getEntradasDia(EntradasPage.this.usuario);
 				return daoService.toJson(data);
 			}
@@ -138,7 +125,7 @@ public class EntradasPage extends BasePage {
 				Columna columna4 = new Columna("proyecto", "Proyecto", 80, 20, 800, "cell-title","proyecto", null,"Slick.Editors.Text","requiredFieldValidator");
 				Columna columna5 = new Columna("fecha", "Start", 80, 20, 800, null ,"fecha", null,"Slick.Editors.Date","requiredFieldValidator");
 				Columna columna6 = new Columna("ticket", "Ticket", 80, 20, 800, "cell-title","ticket", null,"Slick.Editors.Text",null);
-				Columna columna7 = new Columna("ticketExt", "TicketExt", 80, 20, 800, "cell-title","ticketExt", null,"Slick.Editors.Text",null);
+				Columna columna7 = new Columna("ticketExt", "TicketExt", 80, 20, 800, "cell-title","ticketExt", null,"Slick.Editors.TextTicketExt",null);
 				Columna columna8 = new Columna("sistExt", "SistExt", 80, 20, 800, "cell-title","sistExt", null,"Slick.Editors.Text",null);
 				Columna columna9 = new Columna("descripcion", "Desc", 80, 20, 600, null ,"descripcion", null,"Slick.Editors.LongText",null);
 
@@ -160,13 +147,11 @@ public class EntradasPage extends BasePage {
 				return texto;
 			}
 		};
-		//TODO TRUE
 		slickGrid.setOutputMarkupId(true);
 		
 		EntradaForm form = new EntradaForm("form"){
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, EntradaForm form) {
-//				System.out.println(form.getModelObject().getFecha());
 				daoService.agregarEntrada(form.getModelObject(), usuario);
 				target.add(listViewContainer);
 				target.add(form);
@@ -236,9 +221,7 @@ public class EntradasPage extends BasePage {
 		listViewContainer.add(horasAcumuladasDia);
 		listViewContainer.add(horasAcumuladasSemana);
 		listViewContainer.add(horasAcumuladasMes);
-//		listViewContainer.add(new AjaxPagingNavigator("navigator", entradasListView));
 		listViewContainer.setVersioned(false);
-//		add(slickGrid);
 		add(listViewContainer);
 		add(form);	
 	
