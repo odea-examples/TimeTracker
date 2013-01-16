@@ -39,6 +39,17 @@ function requiredFieldValidator(value) {
     return {valid: true, msg: null};
   }
 }
+function requiredDurationValidator(value) {
+	var regexTiempo = (/^([0-9]{1,2}(,[0-9]{1,2}|:[0-5]{1}[0-9]{1}|\b))$/);
+  if (value == null || value == undefined || !value.length || !value.match(regexTiempo)) {
+    return {valid: false, msg: "Invalid duration"};
+  }
+  else {
+    return {valid: true, msg: null};
+  }
+}
+
+
 
 function myFilter(item, args) {
 
@@ -196,20 +207,6 @@ $(function () {
 
 
   var h_runfilters = null;
-
-  // wire up the slider to apply the filter to the model
-  $("#pcSlider,#pcSlider2").slider({
-    "range": "min",
-    "slide": function (event, ui) {
-      Slick.GlobalEditorLock.cancelCurrentEdit();
-
-      if (percentCompleteThreshold != ui.value) {
-        window.clearTimeout(h_runfilters);
-        h_runfilters = window.setTimeout(updateFilter, 10);
-        percentCompleteThreshold = ui.value;
-      }
-    }
-  });
 
 
   // wire up the search textbox to apply the filter to the model

@@ -97,7 +97,7 @@ public class EntradaDAO extends AbstractDAO {
 
 
 
-	public List<Entrada> getEntradas(Usuario usuario, Timestamp desdeSQL, Timestamp hastaSQL){
+	public List<Entrada> getEntradas2(Usuario usuario, Timestamp desdeSQL, Timestamp hastaSQL){
 		
 		return jdbcTemplate.query(sqlEntradas +" WHERE e.al_user_id = ? AND e.al_project_id = p.p_id AND e.al_activity_id = a.a_id AND e.al_user_id = u.u_id AND e.al_date BETWEEN ? AND ?", new RowMapper<Entrada>() {
 			@Override
@@ -105,19 +105,38 @@ public class EntradaDAO extends AbstractDAO {
 				Proyecto proyecto = new Proyecto(rs.getInt(2), rs.getString(11));
 				Actividad actividad = new Actividad(rs.getInt(3), rs.getString(14));
 				Usuario usuario = new Usuario(rs.getInt(9), rs.getString(12), rs.getString(13));
-//				Entrada e = new Entrada(rs.getTimestamp(1), proyecto, actividad, String.valueOf(((Double.parseDouble(String.valueOf(rs.getTime(4).getTime()))/3600) - 3000) /1000).substring(0,3)  /* String.valueOf(((Time.valueOf(rs.getTime(4)).getMilliseconds() /3600)-3000))*/, rs.getString(5), rs.getInt(6), rs.getString(7), parsearSistemaExterno(rs.getString(8)), usuario, rs.getDate(10));
-//				Data data;
-//				Calendar c = Calendar.getInstance();
-//				c.setTime(e.getIdEntrada());
-//				String s ="";
-//				data = new Data(e.getIdEntrada().toString(),e.getDuracion(),e.getActividad().toString(),e.getProyecto().toString(),e.getFecha().toString(),Integer.toString(e.getTicketBZ()), e.getTicketExterno(),e.getSistemaExterno(),e.getNota());
-//				System.out.println(data);
-//				System.out.println("----------------------------------------------");
-//				System.out.println("----------------------------------------------");
-//				System.out.println("----------------------------------------------");
-//				Data datas = new Data("20/01/2010","15hs","vacaciones","RRHH","25/08/2002","Task 117","Task118","Task 119","Esta es la gran descripcion");
-//				System.out.println(datas);
 				return new Entrada(rs.getTimestamp(1), proyecto, actividad, String.valueOf(((Double.parseDouble(String.valueOf(rs.getTime(4).getTime()))/3600) - 3000) /1000).substring(0,3)  /* String.valueOf(((Time.valueOf(rs.getTime(4)).getMilliseconds() /3600)-3000))*/, rs.getString(5), rs.getInt(6), rs.getString(7), parsearSistemaExterno(rs.getString(8)), usuario, rs.getDate(10));
+			}}, usuario.getIdUsuario(), desdeSQL, hastaSQL);
+		//TODO anotacion
+	}
+public List<Data> getData(Usuario usuario, Timestamp desdeSQL, Timestamp hastaSQL){
+		
+		return jdbcTemplate.query(sqlEntradas +" WHERE e.al_user_id = ? AND e.al_project_id = p.p_id AND e.al_activity_id = a.a_id AND e.al_user_id = u.u_id AND e.al_date BETWEEN ? AND ?", new RowMapper<Data>() {
+			@Override
+			public Data mapRow(ResultSet rs, int rowNum) throws SQLException {
+				Proyecto proyecto = new Proyecto(rs.getInt(2), rs.getString(11));
+				Actividad actividad = new Actividad(rs.getInt(3), rs.getString(14));
+				Usuario usuario = new Usuario(rs.getInt(9), rs.getString(12), rs.getString(13));
+				Entrada e = new Entrada(rs.getTimestamp(1), proyecto, actividad, String.valueOf(((Double.parseDouble(String.valueOf(rs.getTime(4).getTime()))/3600) - 3000) /1000).substring(0,3)  /* String.valueOf(((Time.valueOf(rs.getTime(4)).getMilliseconds() /3600)-3000))*/, rs.getString(5), rs.getInt(6), rs.getString(7), parsearSistemaExterno(rs.getString(8)), usuario, rs.getDate(10));
+				Data data;
+				Calendar calendar = Calendar.getInstance();
+				calendar.setTime(e.getIdEntrada());
+				String stringTiempo="";
+				stringTiempo+=e.getDuracion().toString();
+				stringTiempo+="hs";
+				calendar.setTime(e.getFecha());
+				String stringFecha ="";
+				stringFecha+=calendar.get(calendar.DAY_OF_MONTH);
+				stringFecha+="/";
+				if (calendar.get(calendar.MONTH)<9){
+					stringFecha+="0";
+				}
+				stringFecha+=calendar.get((calendar.MONTH))+1;
+				stringFecha+="/";
+				stringFecha+=calendar.get(Calendar.YEAR);
+				data = new Data(e.getIdEntrada().toString(),stringTiempo,e.getActividad().toString(),e.getProyecto().toString(),stringFecha,Integer.toString(e.getTicketBZ()), e.getTicketExterno(),rs.getString(8),e.getNota());
+				return (data);
+				//				return new Entrada(rs.getTimestamp(1), proyecto, actividad, String.valueOf(((Double.parseDouble(String.valueOf(rs.getTime(4).getTime()))/3600) - 3000) /1000).substring(0,3)  /* String.valueOf(((Time.valueOf(rs.getTime(4)).getMilliseconds() /3600)-3000))*/, rs.getString(5), rs.getInt(6), rs.getString(7), parsearSistemaExterno(rs.getString(8)), usuario, rs.getDate(10));
 			}}, usuario.getIdUsuario(), desdeSQL, hastaSQL);
 		//TODO anotacion
 	}
@@ -182,7 +201,8 @@ public class EntradaDAO extends AbstractDAO {
 	}
 	
 	public int getHorasDesdeHasta(Usuario usuario, Date desde, Date hasta){
-		return jdbcTemplate.queryForInt("SELECT HOUR(SEC_TO_TIME(SUM(TIME_TO_SEC(al_duration)))) FROM activity_log WHERE al_user_id=? and al_date BETWEEN ? AND ?",usuario.getIdUsuario(),desde, hasta);
+		int num = jdbcTemplate.queryForInt("SELECT HOUR(SEC_TO_TIME(SUM(TIME_TO_SEC(al_duration)))) FROM activity_log WHERE al_user_id=? and al_date BETWEEN ? AND ?",usuario.getIdUsuario(),desde, hasta);
+		return num;
 	}
 	
 	public List<HorasCargadasPorDia> horasPorDia(Usuario usuario){
@@ -214,7 +234,7 @@ public class EntradaDAO extends AbstractDAO {
 	
 	
 	
-	public List<Entrada> getEntradasSemanales(Usuario usuario){
+	public List<Data> getEntradasSemanales(Usuario usuario){
 		LocalDate now = new LocalDate();
 		LocalDate lu = now.withDayOfWeek(DateTimeConstants.MONDAY);
 		LocalDate vie = now.withDayOfWeek(DateTimeConstants.FRIDAY);
@@ -225,10 +245,10 @@ public class EntradaDAO extends AbstractDAO {
 		Timestamp desdeSQL = new Timestamp(lunes.getTime());
 		Timestamp hastaSQL = new Timestamp(viernes.getTime());
 				
-		return this.getEntradas(usuario, desdeSQL, hastaSQL); 
+		return this.getData(usuario, desdeSQL, hastaSQL); 
 	}
 	
-	public List<Entrada> getEntradasDia(Usuario usuario){
+	public List<Data> getEntradasDia(Usuario usuario){
 		LocalDate hoy = new LocalDate();
 		LocalDate maniana = hoy.plusDays(1);
 		
@@ -238,10 +258,10 @@ public class EntradaDAO extends AbstractDAO {
 		Timestamp desdeSQL = new Timestamp(diaHoy.getTime());
 		Timestamp hastaSQL = new Timestamp(diaManiana.getTime());
 				
-		return this.getEntradas(usuario, desdeSQL, desdeSQL); 
+		return this.getData(usuario, desdeSQL, desdeSQL); 
 	}
 	
-	public List<Entrada> getEntradasMensuales(Usuario usuario){
+	public List<Data> getEntradasMensuales(Usuario usuario){
 		LocalDate now = new LocalDate();
 		LocalDate primeroDelMes = now.withDayOfMonth(1);
 		LocalDate ultimoDelMes = now.plusMonths(1).withDayOfMonth(1).minusDays(1);
@@ -252,16 +272,20 @@ public class EntradaDAO extends AbstractDAO {
 		Timestamp desdeSQL = new Timestamp(primero.getTime());
 		Timestamp hastaSQL = new Timestamp(ultimo.getTime());
 				
-		return this.getEntradas(usuario, desdeSQL, hastaSQL); 
+		return this.getData(usuario, desdeSQL, hastaSQL); 
 	}
 	
 	
 
 		
-		public void borrarEntrada(Entrada entrada)
-		{
-			jdbcTemplate.update("DELETE FROM activity_log WHERE al_timestamp=?", entrada.getIdEntrada());
-		}
+	public void borrarEntrada(Entrada entrada)
+	{
+		jdbcTemplate.update("DELETE FROM activity_log WHERE al_timestamp=?", entrada.getIdEntrada());
+	}
+	public void borrarEntrada(Timestamp entradaID)
+	{
+		jdbcTemplate.update("DELETE FROM activity_log WHERE al_timestamp=?", entradaID);
+	}
 		
 		
 		public void modificarEntrada(Entrada entrada) {

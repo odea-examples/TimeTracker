@@ -75,11 +75,17 @@
 
 
 
-
+	
 	<div wicket:id="listViewContainer">
 		<div>
-			<label for="horasAcumuladas">Horas Semanales</label>
-			<span wicket:id="horasAcumuladas" name="horasAcumuladas">[[horas acumuladas]]</span>
+			<label for="horasAcumuladasDia">Horas Diarias</label>
+			<span wicket:id="horasAcumuladasDia" name="horasAcumuladasDia">[[horas acumuladas]]</span>
+			<br>
+			<label for="horasAcumuladasSemana">Horas Semanales</label>
+			<span wicket:id="horasAcumuladasSemana" name="horasAcumuladasSemana">[[horas acumuladas]]</span>
+			<br>
+			<label for="horasAcumuladasMes">Horas Mensuales</label>
+			<span wicket:id="horasAcumuladasMes" name="horasAcumuladasMes">[[horas acumuladas]]</span>
 		</div>
 		
 		
@@ -89,36 +95,38 @@
 		<b><label for="selectorTiempo" style="width:50px">Rango:</label></b> 
 		<select wicket:id="selectorTiempo" name="selectorTiempo" style="width:150px"></select>
 		<br/>
+		<div wicket:id="slickGrid" style="width:1000px;height:500px;"></div>
 		
-		<table>
-			<thead>
-			<tr class="odd">
-				<th scope="col">Fecha</th>
-				<th scope="col">Proyecto</th>
-				<th scope="col">Actividad</th>
-				<th scope="col">Duracion</th>
-				<th scope="col">Ticket Bugzilla</th>
-				<th scope="col">Borrar</th>
-				<th scope="col">Modificar</th>
-			</tr>
-			</thead>
-			<tbody>
-				<tr wicket:id="entradas">
-					<td wicket:id="fecha_entrada"/>
-					<td wicket:id="proyecto_entrada"/>
-					<td wicket:id="actividad_entrada"/>
-					<td wicket:id="duracion_entrada"/>
-					<td wicket:id="ticketBZ_entrada"/>
-					<td><a wicket:id="deleteLink" class="more" href="#"><img src="images/delete.png" alt="delete"/></a></td>
-					<td><a wicket:id="modifyLink" class="more" href="#"><img src="images/modificarIcon.gif" alt="modificarIcon"/></a></td>
-				</tr>
-			</tbody>
-			<tfoot>
-            <tr>
-                <td wicket:id="navigator" align="center" colspan="7" ></td>
-            </tr>
-        </tfoot>
-		</table>
+		
+<!-- 		<table> -->
+<!-- 			<thead> -->
+<!-- 			<tr class="odd"> -->
+<!-- 				<th scope="col">Fecha</th> -->
+<!-- 				<th scope="col">Proyecto</th> -->
+<!-- 				<th scope="col">Actividad</th> -->
+<!-- 				<th scope="col">Duracion</th> -->
+<!-- 				<th scope="col">Ticket Bugzilla</th> -->
+<!-- 				<th scope="col">Borrar</th> -->
+<!-- 				<th scope="col">Modificar</th> -->
+<!-- 			</tr> -->
+<!-- 			</thead> -->
+<!-- 			<tbody> -->
+<!-- 				<tr wicket:id="entradas"> -->
+<!-- 					<td wicket:id="fecha_entrada"/> -->
+<!-- 					<td wicket:id="proyecto_entrada"/> -->
+<!-- 					<td wicket:id="actividad_entrada"/> -->
+<!-- 					<td wicket:id="duracion_entrada"/> -->
+<!-- 					<td wicket:id="ticketBZ_entrada"/> -->
+<!-- 					<td><a wicket:id="deleteLink" class="more" href="#"><img src="images/delete.png" alt="delete"/></a></td> -->
+<!-- 					<td><a wicket:id="modifyLink" class="more" href="#"><img src="images/modificarIcon.gif" alt="modificarIcon"/></a></td> -->
+<!-- 				</tr> -->
+<!-- 			</tbody> -->
+<!-- 			<tfoot> -->
+<!--             <tr> -->
+<!--                 <td wicket:id="navigator" align="center" colspan="7" ></td> -->
+<!--             </tr> -->
+<!--         </tfoot> -->
+<!-- 		</table> -->
 	</div>
 
 </wicket:extend>

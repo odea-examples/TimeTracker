@@ -24,18 +24,6 @@ public class Datatest extends AbstractTestCase{
 		Data datas = new Data("20/01/2010","15hs","vacaciones","RRHH","25/08/2002","Task 117","Task118","Task 119","Esta es la gran descripcion");
 		System.out.println(getdata());
     }
-	
-	@Test
-	public Collection<Data> obtenerentradas(){
-		Date antes;
-		Date despues;
-		antes = new Date(System.currentTimeMillis() - 1000000000);
-		despues = new Date(System.currentTimeMillis() + 1000000000);
-		dao.getDatos(antes,despues);
-		
-		
-		return null;
-	}
 
 public String getdata(){
 		

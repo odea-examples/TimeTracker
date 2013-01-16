@@ -139,25 +139,26 @@ public class Data {
 	 */
 	@Override
 	public String toString() {
-		String texto= "";
+		String texto= "{";
 		texto+=this.getId();
-		texto+="-";
+		texto+=",";
 		texto+=this.getDuration();
-		texto+="-";
+		texto+=",";
 		texto+=this.getActividad();
-		texto+="-";
+		texto+=",";
 		texto+=this.getProyecto();
-		texto+="-";
+		texto+=",";
 		texto+=this.getFecha();
-		texto+="-";
+		texto+=",";
 		texto+=this.getTicket();
-		texto+="-";
+		texto+=",";
 		texto+=this.getTicketExt();
-		texto+="-";
+		texto+=",";
 		texto+=this.getSistExt();
-		texto+="-";
+		texto+=",";
 		texto+=this.getDescripcion();
-		texto+="-";
+		texto+="";
+		texto+="}";
 		return texto;
 	}
 	

@@ -1,12 +1,16 @@
 package com.odea;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import org.apache.shiro.SecurityUtils;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.google.gson.Gson;
 import com.odea.components.slickGrid.SlickGrid;
+import com.odea.domain.Usuario;
 import com.odea.services.DAOService;
+import com.odea.components.slickGrid.Data;
 
 public class PruebaPage extends BasePage {
 	
@@ -37,7 +41,7 @@ public class PruebaPage extends BasePage {
 				Columna columna6 = new Columna("ticket", "Ticket", 80, 20, 800, "cell-title","ticket", null,"Slick.Editors.Text",null);
 				Columna columna7 = new Columna("ticketExt", "TicketExt", 80, 20, 800, "cell-title","ticketExt", null,"Slick.Editors.Text",null);
 				Columna columna8 = new Columna("sistExt", "SistExt", 80, 20, 800, "cell-title","sistExt", null,"Slick.Editors.Text",null);
-				Columna columna9 = new Columna("descripcion", "Desc", 80, 20, 600, null ,"descripcion", null,"Slick.Editors.Longtext",null);
+				Columna columna9 = new Columna("descripcion", "Desc", 80, 20, 600, null ,"descripcion", null,"Slick.Editors.LongText",null);
 
 				ArrayList<Columna> columnas = new ArrayList<Columna>();
 				columnas.add(columna);
@@ -51,18 +55,25 @@ public class PruebaPage extends BasePage {
 				columnas.add(columna9);
 				String texto="[";
 				for (Columna col : columnas) {
-					texto+="{id: \""+ col.getId() +"\", name: \""+  col.getName() +"\", width: "+ col.getWidth() +", minWidth: "+ col.getMinWidth() +", maxWidth: "+ col.getMaxWidth() +", cssClass: \""+ col.getCssClass() +"\", field: \""+ col.getField() +"\",formatter: "+ col.getFormatter() +", editor: "+ col.getEditor() +"},";
+					texto+="{id:\""+ col.getId() +"\", name: \""+  col.getName() +"\", width: "+ col.getWidth() +", minWidth: "+ col.getMinWidth() +", maxWidth: "+ col.getMaxWidth() +", cssClass: \""+ col.getCssClass() +"\", field: \""+ col.getField() +"\",formatter: "+ col.getFormatter() +", editor: "+ col.getEditor() +"},";
 				}
 				texto+="]";
 				return texto;
 			}
 			
 			public String getData(){
-				Data data = new Data("20/01/2010","15hs","vacaciones","RRHH","25/08/2002","Task 117","Task118","Task 119","esta es la super desc");
+				Data data = new Data("20/01/2010","6.5hs","vacaciones","RRHH","25/08/2002","Task 117","Task118","Task 119","esta es la super desc");
+				Data data2 = new Data("20/01/2010","6.5hs","vacaciones","RRHH","25/08/2002","Task 117","Task118","Task 119","esta es la super desc");
 				ArrayList<Data> datos = new ArrayList<Data>();
 				datos.add(data);
+//				datos.add(data2);
+				Usuario usuario = daoService.getUsuario(SecurityUtils.getSubject().getPrincipal().toString());
+				List<com.odea.components.slickGrid.Data> datos2= daoService.getEntradasDia(usuario);
+				System.out.println(datos);
 		        Gson gson = new Gson();
-		        return gson.toJson(datos);
+		        System.out.println(gson.toJson(datos));
+		        System.out.println(gson.toJson(datos2));
+		        return gson.toJson(datos2);
 			}
 		};
 		
