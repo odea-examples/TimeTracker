@@ -39,6 +39,8 @@ function requiredFieldValidator(value) {
     return {valid: true, msg: null};
   }
 }
+
+
 function requiredDurationValidator(value) {
 	var regexTiempo = (/^([0-9]{1,2}(,[0-9]{1,2}|:[0-5]{1}[0-9]{1}|\b))$/);
   if (value == null || value == undefined || !value.length || !value.match(regexTiempo)) {
@@ -92,7 +94,17 @@ $(".grid-header .ui-icon")
         });
   function queueAndExecuteCommand(item, column, editCommand) {
     editCommand.execute();
-    alert(JSON.stringify(item, null, 2));
+    if (JSON.stringify(column.name, null, 2) == JSON.stringify("Proyecto", null, 2)){
+    	alert("ingrese una actividad o no se guardara su cambio.");
+//    	alert(JSON.stringify(editCommand, null, 2));
+    	grid.gotoCell(editCommand.row, editCommand.cell+1);
+    	item.actividad = "";
+    	grid.updateRow(editCommand.row);
+    }
+    else{
+    	alert(JSON.stringify(item, null, 2));    	
+    }
+    
   }
 
   function undo() {
@@ -128,11 +140,16 @@ $(function () {
       //assuming you have used a dataView to create your grid
       //also assuming that its variable name is called 'dataView'
       //use the following code to get the item to be deleted from it
+      if(confirm("¿Seguro desea eleminarlo?")){
       dataView.deleteItem(id);
       alert(id);
       //This is possible because in the formatter we have assigned the row id itself as the button id;
       //now assuming your grid is called 'grid'
       grid.invalidate();        
+      }
+      else{
+    	  alert("no hace nada, despues saca este alert :)");
+      };
   });
 
   grid.onAddNewRow.subscribe(function (e, args) {
@@ -140,6 +157,7 @@ $(function () {
     $.extend(item, args.item);
     dataView.addItem(item);
   });
+  
 
   grid.onKeyDown.subscribe(function (e) {
     // select all rows on ctrl-a

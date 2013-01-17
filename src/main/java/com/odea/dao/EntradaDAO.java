@@ -171,7 +171,7 @@ public List<Data> getData(Usuario usuario, Timestamp desdeSQL, Timestamp hastaSQ
 	{
 		LocalDate now = new LocalDate();
 		LocalDate lu = now.withDayOfWeek(DateTimeConstants.MONDAY);
-		LocalDate vie = now.withDayOfWeek(DateTimeConstants.FRIDAY);
+		LocalDate vie = now.withDayOfWeek(DateTimeConstants.FRIDAY+1);
 		Date lunes = lu.toDateTimeAtStartOfDay().toDate();
 		Date viernes = vie.toDateTimeAtStartOfDay().toDate();
 		
@@ -180,7 +180,7 @@ public List<Data> getData(Usuario usuario, Timestamp desdeSQL, Timestamp hastaSQ
 	public int getHorasDiarias(Usuario usuario) 
 	{
 		LocalDate hoy = new LocalDate();
-		LocalDate maniana = hoy.plusDays(1);
+		LocalDate maniana = new LocalDate(hoy.toDate().getTime()+1);
 		
 		Date diaHoy = hoy.toDateTimeAtStartOfDay().toDate();
 		Date diaManiana = maniana.toDateTimeAtStartOfDay().toDate();

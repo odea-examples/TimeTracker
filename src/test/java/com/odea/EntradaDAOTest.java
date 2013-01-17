@@ -66,11 +66,11 @@ public class EntradaDAOTest extends AbstractTestCase {
 		Assert.assertNotNull("La cantidad de entradas encontradas no es la esperada", col);
 	}
 	
-	@Test
-	public void getEntradasDeProyectoTest(){
-		Collection<Entrada> col = dao.getDatos(antes, despues);
-		Assert.assertNotNull("La cantidad de entradas encontradas no es la esperada", col);
-	}
+//	@Test
+//	public void getEntradasDeProyectoTest(){
+//		Collection<Entrada> col = dao.getDatos(antes, despues);
+//		Assert.assertNotNull("La cantidad de entradas encontradas no es la esperada", col);
+//	}
 	
 	//TODO: arreglar test
 	/*

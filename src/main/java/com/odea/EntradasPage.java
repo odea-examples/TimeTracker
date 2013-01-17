@@ -9,13 +9,16 @@ import java.util.List;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
+import org.apache.wicket.ajax.form.OnChangeAjaxBehavior;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.form.IChoiceRenderer;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
@@ -95,6 +98,7 @@ public class EntradasPage extends BasePage {
     		}
     		
     	}; 
+
         this.horasDiaModel = new LoadableDetachableModel<Integer>() {
     		@Override
     		protected Integer load() {
@@ -119,15 +123,28 @@ public class EntradasPage extends BasePage {
 			
 			@Override
 			protected String getColumns() {
-				Columna columna = new Columna("delCol", "Delete", 80, 20, 800, null,"del", "Slick.Formatters.DeleteButton",null,null);
-				Columna columna2 = new Columna("duration", "Duracion", 80, 20, 800, "cell-title","duration", null,"Slick.Editors.Text","requiredDurationValidator");
-				Columna columna3 = new Columna("actividad", "Actividad", 80, 20, 800, "cell-title","actividad", null,"Slick.Editors.Text","requiredFieldValidator");
-				Columna columna4 = new Columna("proyecto", "Proyecto", 80, 20, 800, "cell-title","proyecto", null,"Slick.Editors.Text","requiredFieldValidator");
-				Columna columna5 = new Columna("fecha", "Start", 80, 20, 800, null ,"fecha", null,"Slick.Editors.Date","requiredFieldValidator");
-				Columna columna6 = new Columna("ticket", "Ticket", 80, 20, 800, "cell-title","ticket", null,"Slick.Editors.Text",null);
-				Columna columna7 = new Columna("ticketExt", "TicketExt", 80, 20, 800, "cell-title","ticketExt", null,"Slick.Editors.TextTicketExt",null);
-				Columna columna8 = new Columna("sistExt", "SistExt", 80, 20, 800, "cell-title","sistExt", null,"Slick.Editors.Text",null);
-				Columna columna9 = new Columna("descripcion", "Desc", 80, 20, 600, null ,"descripcion", null,"Slick.Editors.LongText",null);
+				List<Proyecto> list= daoService.getProyectos();
+				String actividades = "";
+				for (Proyecto proyecto : list) {
+					actividades+=proyecto.toString();
+					actividades+="";
+					actividades+= daoService.getActividades(proyecto).toString();
+					actividades+="";
+				};
+				
+				
+				
+				String lista = daoService.getProyectos().toString();
+				String proyectos = lista.subSequence(1, lista.length()-1).toString();
+				Columna columna = new Columna("delCol", "Delete", 80, 20, 800, null,"del", "Slick.Formatters.DeleteButton",null,null,null);
+				Columna columna2 = new Columna("duration", "Duracion", 80, 20, 800, "cell-title","duration", null,"Slick.Editors.Text","requiredDurationValidator",null);
+				Columna columna3 = new Columna("actividad", "Actividad", 80, 20, 800, "cell-title","actividad", null,"Slick.Editors.SelectRelatedEditor","requiredFieldValidator",actividades);
+				Columna columna4 = new Columna("proyecto", "Proyecto", 80, 20, 800, "cell-title","proyecto", null,"Slick.Editors.SelectEditor","requiredFieldValidator",proyectos);
+				Columna columna5 = new Columna("fecha", "Start", 80, 20, 800, null ,"fecha", null,"Slick.Editors.Date","requiredFieldValidator",null);
+				Columna columna6 = new Columna("ticket", "Ticket", 80, 20, 800, "cell-title","ticket", null,"Slick.Editors.Text",null,null);
+				Columna columna7 = new Columna("ticketExt", "TicketExt", 80, 20, 800, "cell-title","ticketExt", null,"Slick.Editors.TextTicketExt",null,null);
+				Columna columna8 = new Columna("sistExt", "SistExt", 80, 20, 800, "cell-title","sistExt", null,"Slick.Editors.Text",null,null);
+				Columna columna9 = new Columna("descripcion", "Desc", 80, 20, 600, null ,"descripcion", null,"Slick.Editors.LongText",null,null);
 
 				ArrayList<Columna> columnas = new ArrayList<Columna>();
 				columnas.add(columna);
@@ -139,9 +156,9 @@ public class EntradasPage extends BasePage {
 				columnas.add(columna6);
 				columnas.add(columna8);
 				columnas.add(columna7);
-				String texto="[";
+				String texto="[";//", options: "+ col.getOptions() +
 				for (Columna col : columnas) {
-					texto+="{id:\""+ col.getId() +"\", name: \""+  col.getName() +"\", width: "+ col.getWidth() +", minWidth: "+ col.getMinWidth() +", maxWidth: "+ col.getMaxWidth() +", cssClass: \""+ col.getCssClass() +"\", field: \""+ col.getField() +"\",formatter: "+ col.getFormatter() +", editor: "+ col.getEditor() +", validator: "+ col.getValidator() +"},";
+					texto+="{id:\""+ col.getId() +"\", name: \""+  col.getName() +"\", width: "+ col.getWidth() +", minWidth: "+ col.getMinWidth() +", maxWidth: "+ col.getMaxWidth() +", cssClass: \""+ col.getCssClass() +"\", field: \""+ col.getField() +"\",formatter: "+ col.getFormatter() +", editor: "+ col.getEditor() +", validator: "+ col.getValidator() +", options: \""+ col.getOptions() +"\"},";
 				}
 				texto+="]";
 				return texto;
@@ -310,6 +327,7 @@ public class EntradasPage extends BasePage {
 			duracion.setLabel(Model.of("Duracion"));
 			duracion.add(new NumberCommaBehavior(duracion.getMarkupId()));
 			duracion.add(new DurationValidator());
+
 			
 			
 			ticketBZ = new TextField<String>("ticketBZ");
@@ -347,6 +365,17 @@ public class EntradasPage extends BasePage {
 			
 			final FeedbackPanel feedBackPanel = new FeedbackPanel("feedBackPanel");
 			feedBackPanel.setOutputMarkupId(true);
+			
+			duracion.add(new AjaxFormComponentUpdatingBehavior("onChange"){
+
+				@Override
+				protected void onUpdate(AjaxRequestTarget target) {
+					System.out.println(duracion.getInput());
+					System.out.println(duracion.getInput());
+					System.out.println(fecha.getDefaultModelObject());
+				}
+				
+			});
 			
 						
 			AjaxButton submit = new AjaxButton("submit", this) {
@@ -474,9 +503,10 @@ public class EntradasPage extends BasePage {
 		String formatter;
 		String editor;
 		String validator;
+		String options;
 		public Columna(String id, String name, int width, int minWidth, int maxWidth,
 				String cssClass, String field, String formatter, String editor,
-				String validator) {
+				String validator, String options) {
 			super();
 			this.id = id;
 			this.name = name;
@@ -488,6 +518,19 @@ public class EntradasPage extends BasePage {
 			this.formatter = formatter;
 			this.editor = editor;
 			this.validator = validator;
+			this.options = options;
+		}
+		/**
+		 * @return the options
+		 */
+		public String getOptions() {
+			return options;
+		}
+		/**
+		 * @param options the options to set
+		 */
+		public void setOptions(String options) {
+			this.options = options;
 		}
 		/**
 		 * @return the id

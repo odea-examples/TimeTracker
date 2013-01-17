@@ -4,6 +4,8 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
+import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.head.CssReferenceHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptContentHeaderItem;
@@ -16,11 +18,22 @@ import org.apache.wicket.util.template.PackageTextTemplate;
 public abstract class SlickGrid extends WebMarkupContainer{
 	private String jQuerySelector;
 	private static final long serialVersionUID = 1L;
+	private AbstractDefaultAjaxBehavior ajaxBehavior;
 	
 	public SlickGrid(String id) {
 		super(id);
 		this.setOutputMarkupId(true);
         this.jQuerySelector= "#" +this.getMarkupId();
+        this.ajaxBehavior = new AbstractDefaultAjaxBehavior() {
+			
+			@Override
+			protected void respond(AjaxRequestTarget target) {
+				// TODO Auto-generated method stub
+				
+			}
+		}; 
+		
+        this.add(this.ajaxBehavior);
 
 }
 	@Override
@@ -61,7 +74,6 @@ public abstract class SlickGrid extends WebMarkupContainer{
 		super.onAfterRender();
 		String uniqueName =Long.toString(Calendar.getInstance().getTimeInMillis());
         new JavaScriptContentHeaderItem(this.prepareJSInitCall(),uniqueName + "js",null).render(this.getResponse());
-
 	}
 	private String prepareJSInitCall() {
 		Map<String, CharSequence> map = new HashMap<String, CharSequence>(3);
