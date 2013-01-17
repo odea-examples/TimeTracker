@@ -1,0 +1,75 @@
+YAHOO.namespace("example.calendar");
+
+YAHOO.example.calendar.init = function() {
+
+    function handleSelect(type,args,obj) {
+        var dates = args[0];
+        var date = dates[0];
+        var year = date[0], month = date[1], day = date[2];
+
+        var txtDate1 = document.getElementById("${selector}");
+        txtDate1.value = day + "/" + month + "/" + year;
+        Wicket.Ajax.ajax({"u":"${url}","c":"${datePickerId}","ep":{'selectedDate':txtDate1.value}});
+
+        //var p = Wicket.Ajax.ajax({"u":"${url}","c":"${datePickerId}","ep":{'updateF':"true"},"async":"false","dt":"json"});
+        //getRemote();
+    }
+
+    function updateCal() {
+        var txtDate1 = document.getElementById("${selector}");
+
+        if (txtDate1.value != "") {
+            YAHOO.example.calendar.cal1.select(txtDate1.value);
+            var selectedDates = YAHOO.example.calendar.cal1.getSelectedDates();
+            if (selectedDates.length > 0) {
+                var firstDate = selectedDates[0];
+                YAHOO.example.calendar.cal1.cfg.setProperty("pagedate", (firstDate.getMonth()+1) + "/" + firstDate.getFullYear());
+                YAHOO.example.calendar.cal1.render();
+            } else {
+                alert("Cannot select a date before 1/1/2009 or after 12/31/2013");
+            }
+
+        }
+    }
+
+    // For this example page, stop the Form from being submitted, and update the cal instead
+    function handleSubmit(e) {
+        updateCal();
+        YAHOO.util.Event.preventDefault(e);
+    }
+
+    function getRemote() {
+        var jsonString = $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: "${url}",
+            data: {
+                'updateF': 'true'
+            },
+            async: false
+        }).responseText;
+        return  $.parseJSON(jsonString);
+    }
+
+    YAHOO.example.calendar.cal1 = new YAHOO.widget.Calendar("cal1","${calContainer}");
+    YAHOO.example.calendar.cal1.selectEvent.subscribe(handleSelect, YAHOO.example.calendar.cal1, true);
+    YAHOO.example.calendar.cal1.cfg.setProperty("MDY_YEAR_POSITION", 3);
+    YAHOO.example.calendar.cal1.cfg.setProperty("MDY_MONTH_POSITION", 2);
+    YAHOO.example.calendar.cal1.cfg.setProperty("MDY_DAY_POSITION", 1);
+
+    var data = getRemote();
+
+    for(var i in data.horasDia){
+       //alert(data.horasDia[i].dia);
+       YAHOO.example.calendar.cal1.addRenderer(data.horasDia[i].dia, YAHOO.example.calendar.cal1.renderCellStyleHighlight1);
+    }
+
+
+
+    YAHOO.example.calendar.cal1.render();
+
+    YAHOO.util.Event.addListener("update", "click", updateCal);
+    YAHOO.util.Event.addListener("dates", "submit", handleSubmit);
+}
+
+YAHOO.util.Event.onDOMReady(YAHOO.example.calendar.init);
