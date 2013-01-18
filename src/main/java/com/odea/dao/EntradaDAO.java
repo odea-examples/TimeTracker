@@ -248,8 +248,7 @@ public List<Data> getData(Usuario usuario, Timestamp desdeSQL, Timestamp hastaSQ
 		return this.getData(usuario, desdeSQL, hastaSQL); 
 	}
 	
-	public List<Data> getEntradasDia(Usuario usuario){
-		LocalDate hoy = new LocalDate();
+	public List<Data> getEntradasDia(Usuario usuario, LocalDate hoy){
 		LocalDate maniana = hoy.plusDays(1);
 		
 		Date diaHoy = hoy.toDateTimeAtStartOfDay().toDate();

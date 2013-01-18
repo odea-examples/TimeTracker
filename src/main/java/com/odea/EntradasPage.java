@@ -2,6 +2,7 @@ package com.odea;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -30,7 +31,10 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.request.resource.JavaScriptResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.PatternValidator;
+import org.joda.time.LocalDate;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.odea.behavior.noInput.NoInputBehavior;
 import com.odea.behavior.numberComma.NumberCommaBehavior;
 import com.odea.behavior.onlyNumber.OnlyNumberBehavior;
@@ -119,7 +123,7 @@ public class EntradasPage extends BasePage {
 			
 			@Override
 			protected String getData() {
-				List<Data> data= daoService.getEntradasDia(EntradasPage.this.usuario);
+				List<Data> data= daoService.getEntradasDia(EntradasPage.this.usuario, new LocalDate());
 				return daoService.toJson(data);
 			}
 			
@@ -352,6 +356,15 @@ public class EntradasPage extends BasePage {
 				@Override
 				protected void onDateSelect(AjaxRequestTarget target, String selectedDate) {
 					System.out.println(selectedDate + " abstract");
+					String json = selectedDate;
+					List<String> campos = Arrays.asList(json.split("/"));  
+					int dia = Integer.parseInt(campos.get(0));
+					int mes = Integer.parseInt(campos.get(1));
+					int año = Integer.parseInt(campos.get(2));
+					LocalDate fecha = new LocalDate(año,mes,dia);
+					List<Data> data= daoService.getEntradasDia(EntradasPage.this.usuario, fecha);
+					String append = "start("+ daoService.toJson(data) +");";
+					target.appendJavaScript(append);
 					
 				}
 				

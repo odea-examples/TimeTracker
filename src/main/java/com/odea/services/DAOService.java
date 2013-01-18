@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -81,8 +82,8 @@ public class DAOService {
 		return entradaDAO.getEntradasSemanales(usuario);
 	}
 
-	public List<Data> getEntradasDia(Usuario usuario) {
-		return entradaDAO.getEntradasDia(usuario);
+	public List<Data> getEntradasDia(Usuario usuario, LocalDate hoy) {
+		return entradaDAO.getEntradasDia(usuario, hoy);
 	}
 	
 	public List<HorasCargadasPorDia> getHorasDiaras(Usuario usuario){

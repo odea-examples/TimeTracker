@@ -4,6 +4,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.wicket.Application;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.head.CssReferenceHeaderItem;
@@ -11,18 +12,20 @@ import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptContentHeaderItem;
 import org.apache.wicket.markup.head.JavaScriptReferenceHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.request.handler.TextRequestHandler;
 import org.apache.wicket.request.resource.CssResourceReference;
 import org.apache.wicket.request.resource.JavaScriptResourceReference;
 import org.apache.wicket.util.string.StringValue;
 import org.apache.wicket.util.template.PackageTextTemplate;
 
 import com.google.gson.Gson;
-import com.odea.components.yuidatepicker.YuiDatePicker;
 
 public abstract class SlickGrid extends WebMarkupContainer{
 	private String jQuerySelector;
 	private static final long serialVersionUID = 1L;
 	private AbstractDefaultAjaxBehavior ajaxBehavior;
+    private static final String JSON_CONTENT_TYPE = "application/json";
+    private static final String ENCODING = Application.get().getMarkupSettings().getDefaultMarkupEncoding();
 	//asd
 	
 	public SlickGrid(String id) {

@@ -120,8 +120,14 @@ $(".grid-header .ui-icon")
   }
 
 
-function init() {
-  data= ${data};
+function init(dataSecundaria) {
+	if (dataSecundaria == null || dataSecundaria == undefined || !dataSecundaria.length) {
+		data= ${data};
+	  }
+	  else{
+		alert(JSON.stringify(dataSecundaria, null, 2));
+		data= dataSecundaria;
+	  }
   dataView = new Slick.Data.DataView({ inlineFilters: true });
   grid = new Slick.Grid("${selector}", dataView, columns, options);
   grid.setSelectionModel(new Slick.RowSelectionModel());
@@ -307,7 +313,7 @@ function init() {
   // or being on a different page) to stay selected, pass 'false' to the second arg
   dataView.syncGridSelection(grid, true);
 };
-  $(document).ready(init);
-function start(){
-	$(document).ready(init);
+  $(document).ready(init(null));
+function start(dataSecundaria){
+	$(document).ready(init(dataSecundaria));
 }
