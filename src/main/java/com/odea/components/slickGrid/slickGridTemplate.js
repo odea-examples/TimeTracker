@@ -102,6 +102,9 @@ $(".grid-header .ui-icon")
     	grid.updateRow(editCommand.row);
     }
     else{
+//        var entrada = document.getElementById("${selector}");
+//        entrada.value=item;
+    	Wicket.Ajax.ajax({"u":"${url}","c":"${gridId}","ep":{'modificar':JSON.stringify(item, null, 2)}});
     	alert(JSON.stringify(item, null, 2));    	
     }
     
@@ -116,7 +119,8 @@ $(".grid-header .ui-icon")
     }
   }
 
-$(function () {
+
+function init() {
   data= ${data};
   dataView = new Slick.Data.DataView({ inlineFilters: true });
   grid = new Slick.Grid("${selector}", dataView, columns, options);
@@ -141,11 +145,12 @@ $(function () {
       //also assuming that its variable name is called 'dataView'
       //use the following code to get the item to be deleted from it
       if(confirm("¿Seguro desea eleminarlo?")){
-      dataView.deleteItem(id);
-      alert(id);
+    	  dataView.deleteItem(id);
+    	  alert(id);
+    	  Wicket.Ajax.ajax({"u":"${url}","c":"${gridId}","ep":{'borrar':JSON.stringify(id, null, 2)}});
       //This is possible because in the formatter we have assigned the row id itself as the button id;
       //now assuming your grid is called 'grid'
-      grid.invalidate();        
+    	  grid.invalidate();        
       }
       else{
     	  alert("no hace nada, despues saca este alert :)");
@@ -301,4 +306,8 @@ $(function () {
   // if you don't want the items that are not visible (due to being filtered out
   // or being on a different page) to stay selected, pass 'false' to the second arg
   dataView.syncGridSelection(grid, true);
-})
+};
+  $(document).ready(init);
+function start(){
+	$(document).ready(init);
+}

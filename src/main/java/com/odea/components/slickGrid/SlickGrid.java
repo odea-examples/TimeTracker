@@ -13,7 +13,11 @@ import org.apache.wicket.markup.head.JavaScriptReferenceHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.request.resource.CssResourceReference;
 import org.apache.wicket.request.resource.JavaScriptResourceReference;
+import org.apache.wicket.util.string.StringValue;
 import org.apache.wicket.util.template.PackageTextTemplate;
+
+import com.google.gson.Gson;
+import com.odea.components.yuidatepicker.YuiDatePicker;
 
 public abstract class SlickGrid extends WebMarkupContainer{
 	private String jQuerySelector;
@@ -29,7 +33,18 @@ public abstract class SlickGrid extends WebMarkupContainer{
 			
 			@Override
 			protected void respond(AjaxRequestTarget target) {
-				// TODO Auto-generated method stub
+                if (getRequest().getRequestParameters().getParameterNames().contains("modificar")) {
+                	Gson gson = new Gson();
+                	StringValue respuestaGson = getRequest().getRequestParameters().getParameterValue("modificar");
+                	System.out.println(respuestaGson);
+                    //(target, getRequest().getRequestParameters().getParameterValue("selectedDate").toString());
+                }
+                if (getRequest().getRequestParameters().getParameterNames().contains("borrar")) {
+                	Gson gson = new Gson();
+                	StringValue respuestaGson = getRequest().getRequestParameters().getParameterValue("borrar");
+                	System.out.println(respuestaGson);
+                    //(target, getRequest().getRequestParameters().getParameterValue("selectedDate").toString());
+                }
 				
 			}
 		}; 
@@ -77,10 +92,12 @@ public abstract class SlickGrid extends WebMarkupContainer{
         new JavaScriptContentHeaderItem(this.prepareJSInitCall(),uniqueName + "js",null).render(this.getResponse());
 	}
 	private String prepareJSInitCall() {
-		Map<String, CharSequence> map = new HashMap<String, CharSequence>(3);
+		Map<String, CharSequence> map = new HashMap<String, CharSequence>(5);
         map.put("selector", this.jQuerySelector);
         map.put("columns",getColumns());
         map.put("data",getData());
+        map.put("url", this.ajaxBehavior.getCallbackUrl());
+        map.put("gridId",this.getMarkupId());
         PackageTextTemplate packageTextTemplate = new PackageTextTemplate(SlickGrid.class, "slickGridTemplate.js", "text/javascript");
         return packageTextTemplate.asString(map);
 	}

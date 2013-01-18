@@ -27,6 +27,7 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.request.resource.JavaScriptResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.PatternValidator;
 
@@ -38,6 +39,7 @@ import com.odea.components.datepicker.DatePickerDTO;
 import com.odea.components.datepicker.HorasCargadasPorDia;
 import com.odea.components.slickGrid.Data;
 import com.odea.components.slickGrid.SlickGrid;
+import com.odea.components.yuidatepicker.YuiDatePicker;
 import com.odea.domain.Actividad;
 import com.odea.domain.Entrada;
 import com.odea.domain.Proyecto;
@@ -170,6 +172,8 @@ public class EntradasPage extends BasePage {
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, EntradaForm form) {
 				daoService.agregarEntrada(form.getModelObject(), usuario);
+				target.appendJavaScript("start();");
+//				target.appendJavaScript("startCalendar();");
 				target.add(listViewContainer);
 				target.add(form);
 			}
@@ -220,9 +224,10 @@ public class EntradasPage extends BasePage {
 //						
 //					});
 				}
-				
-				
+				target.appendJavaScript("start();");
+//				target.appendJavaScript("startCalendar();");
 				target.add(listViewContainer);
+				
 				
 			}
 		});
@@ -342,21 +347,25 @@ public class EntradasPage extends BasePage {
 			ticketExt.setOutputMarkupId(true);
 			ticketExt.add(new PatternValidator("^[a-z0-9_-]{1,15}$"));
 			
-            final DatePicker fecha = new DatePicker("fecha") {
-                @Override
-                public DatePickerDTO getDatePickerData() {
-                	DatePickerDTO dto = new DatePickerDTO();
-                    dto.setDedicacion(8);
-                    dto.setUsuario(usuario.getNombre());
-//                     HorasCargadasPorDia h = new HorasCargadasPorDia(new Date(),8);
-//                     Collection<HorasCargadasPorDia> c = new ArrayList<HorasCargadasPorDia>();
-                    Collection<HorasCargadasPorDia> c = daoService.getHorasDiaras(usuario);
-//                     System.out.println(c);
-//                     c.add(h);
-                    dto.setHorasDia(c);
-                    return dto;
-                }
-            };
+			final YuiDatePicker fecha = new YuiDatePicker("fecha") {
+				
+				@Override
+				protected void onDateSelect(AjaxRequestTarget target, String selectedDate) {
+					System.out.println(selectedDate + " abstract");
+					
+				}
+				
+				@Override
+				public DatePickerDTO getDatePickerData() {
+
+					DatePickerDTO dto = new DatePickerDTO();
+					dto.setDedicacion(8);
+	                dto.setUsuario(usuario.getNombre());
+	                Collection<HorasCargadasPorDia> c = daoService.getHorasDiaras(usuario);
+	                dto.setHorasDia(c);
+	                return dto;
+				}
+			};
 			
 			
             fecha.setRequired(true);
@@ -386,6 +395,8 @@ public class EntradasPage extends BasePage {
 				protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 					EntradaForm.this.onSubmit(target, (EntradaForm)form);								
 					target.add(feedBackPanel);
+					target.appendJavaScript("start();");
+//					target.appendJavaScript("startCalendar();");
 					target.add(listViewContainer);
 					EntradaForm.this.setModelObject(new Entrada());
 					
