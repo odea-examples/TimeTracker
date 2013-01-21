@@ -1,6 +1,7 @@
 package com.odea;
 
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -12,6 +13,7 @@ import org.apache.shiro.subject.Subject;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.form.AjaxFormChoiceComponentUpdatingBehavior;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.form.OnChangeAjaxBehavior;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
@@ -21,6 +23,9 @@ import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.form.IChoiceRenderer;
+import org.apache.wicket.markup.html.form.Radio;
+import org.apache.wicket.markup.html.form.RadioChoice;
+import org.apache.wicket.markup.html.form.RadioGroup;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
@@ -67,9 +72,13 @@ public class EntradasPage extends BasePage {
 	IModel<Integer> horasSemanalesModel;
 	IModel<Integer> horasMesModel;
 	IModel<Integer> horasDiaModel;
-	DropDownChoice<String> selectorTiempo;
+	RadioChoice<String> selectorTiempo;
 	Label mensajeProyecto;
 	Label mensajeActividad;
+	LocalDate fechaActual= new LocalDate();
+	Label horasAcumuladasDia;
+	Label horasAcumuladasSemana;
+	Label horasAcumuladasMes;
 	
 	WebMarkupContainer listViewContainer;
 	
@@ -86,21 +95,21 @@ public class EntradasPage extends BasePage {
 			//TODO list model
             @Override
             protected List<Data> load() {
-            	return daoService.getEntradasSemanales(EntradasPage.this.usuario);
+            	return daoService.getEntradasSemanales(EntradasPage.this.usuario, new LocalDate());
             }
         };
         
         this.horasSemanalesModel = new LoadableDetachableModel<Integer>() {
     		@Override
     		protected Integer load() {
-    			return daoService.getHorasSemanales(usuario);
+    			return daoService.getHorasSemanales(usuario, fechaActual);
     		}
     		
     	}; 
         this.horasMesModel = new LoadableDetachableModel<Integer>() {
     		@Override
     		protected Integer load() {
-    			return daoService.getHorasMensuales(usuario);
+    			return daoService.getHorasMensuales(usuario, fechaActual);
     		}
     		
     	}; 
@@ -108,7 +117,8 @@ public class EntradasPage extends BasePage {
         this.horasDiaModel = new LoadableDetachableModel<Integer>() {
     		@Override
     		protected Integer load() {
-    			return daoService.getHorasDiarias(usuario);
+    			return daoService.getHorasDiarias(usuario, fechaActual);
+    			
     		}
     		
     	}; 
@@ -184,64 +194,65 @@ public class EntradasPage extends BasePage {
 		};
         
         
-		ArrayList<String> opcionesTiempo = new ArrayList<String>();
-		opcionesTiempo.add("Dia");
-		opcionesTiempo.add("Semana");
-		opcionesTiempo.add("Mes");
-		
+//		ArrayList<String> opcionesTiempo = new ArrayList<String>();
+//		opcionesTiempo.add("Dia");
+//		opcionesTiempo.add("Semana");
+//		opcionesTiempo.add("Mes");
 		
 		IModel<String> modelTiempo = new Model<String>();
+		RadioGroup<String> radiog= new RadioGroup<String>("selectorTiempo",modelTiempo);
 		
-		selectorTiempo = new DropDownChoice<String>("selectorTiempo", modelTiempo, opcionesTiempo);
+		Radio dia = new Radio("dia",new Model("Dia"));
+		Radio semana = new Radio("semana",new Model("Semana"));
+		Radio mes = new Radio("mes",new Model("Mes"));
 		
-		selectorTiempo.add(new AjaxFormComponentUpdatingBehavior("onchange"){
-			@Override
-			protected void onUpdate(AjaxRequestTarget target) {
-				
-				if (selectorTiempo.getConvertedInput().equals("Mes")) {
-//					entradasListView.setModel(new LoadableDetachableModel<List<Entrada>>() {
-//
-//						@Override
-//						protected List<Entrada> load() {
-//							return daoService.getEntradasMensuales(EntradasPage.this.usuario);
-//						}
-//						
-//					});
-				}
-				if (selectorTiempo.getConvertedInput().equals("Semana")) {
-//					entradasListView.setModel(new LoadableDetachableModel<List<Entrada>>() {
-//						
-//						@Override
-//						protected List<Data> load() {
-//							return daoService.getEntradasSemanales(EntradasPage.this.usuario);
-//						}
-//						
-//					});
-				}
-				if (selectorTiempo.getConvertedInput().equals("Dia")) {
-//					entradasListView.setModel(new LoadableDetachableModel<List<Entrada>>() {
-//						
-//						@Override
-//						protected List<Entrada> load() {
-//							return daoService.getEntradasDia(EntradasPage.this.usuario);
-//						}
-//						
-//					});
-				}
-				target.appendJavaScript("start();");
-//				target.appendJavaScript("startCalendar();");
-				target.add(listViewContainer);
-				
-				
-			}
-		});
-        
-        
-		Label horasAcumuladasDia = new Label("horasAcumuladasDia", this.horasDiaModel);
-		Label horasAcumuladasSemana = new Label("horasAcumuladasSemana", this.horasSemanalesModel);
-		Label horasAcumuladasMes = new Label("horasAcumuladasMes", this.horasMesModel);
-
-		listViewContainer.add(selectorTiempo);
+		radiog.add(dia);
+		radiog.add(semana);
+		radiog.add(mes);
+		
+		
+		
+//		selectorTiempo = new DropDownChoice<String>("selectorTiempo", modelTiempo, opcionesTiempo);
+//		selectorTiempo.setOutputMarkupId(true);
+//		selectorTiempo.add(new AjaxFormComponentUpdatingBehavior("onchange"){
+//			@Override
+//			protected void onUpdate(AjaxRequestTarget target) {
+//				
+//				if (selectorTiempo.getConvertedInput().equals("Mes")) {
+//					horasMesModel.setObject(daoService.getHorasMensuales(usuario,fechaActual));
+//					target.add(listViewContainer);
+//					target.appendJavaScript("alert('holaaaa')");
+//				}
+//				if (selectorTiempo.getConvertedInput().equals("Semana")) {
+//					horasSemanalesModel.setObject(daoService.getHorasSemanales(usuario,fechaActual));
+//					target.add(listViewContainer);
+////					target.appendJavaScript("start();");
+//				}
+//				if (selectorTiempo.getConvertedInput().equals("Dia")) {
+//					horasDiaModel.setObject(daoService.getHorasDiarias(usuario,fechaActual));
+//					target.add(listViewContainer);
+////					target.appendJavaScript("start();");
+//				}
+//				target.appendJavaScript("start();");			
+//			}
+//		});
+		
+		
+		horasAcumuladasDia = new Label("horasAcumuladasDia", this.horasDiaModel);
+		horasAcumuladasDia.setOutputMarkupId(true);
+		horasAcumuladasDia.setOutputMarkupPlaceholderTag(true);
+		
+		horasAcumuladasSemana = new Label("horasAcumuladasSemana", this.horasSemanalesModel);
+		horasAcumuladasSemana.setOutputMarkupId(true);
+		horasAcumuladasSemana.setOutputMarkupPlaceholderTag(true);
+		
+		horasAcumuladasMes = new Label("horasAcumuladasMes", this.horasMesModel);
+		horasAcumuladasMes.setOutputMarkupId(true);
+		horasAcumuladasMes.setOutputMarkupPlaceholderTag(true);
+		
+		
+		
+		listViewContainer.add(radiog);
         listViewContainer.setOutputMarkupId(true);
 		listViewContainer.add(slickGrid);
 		listViewContainer.add(horasAcumuladasDia);
@@ -361,11 +372,28 @@ public class EntradasPage extends BasePage {
 					int dia = Integer.parseInt(campos.get(0));
 					int mes = Integer.parseInt(campos.get(1));
 					int año = Integer.parseInt(campos.get(2));
-					LocalDate fecha = new LocalDate(año,mes,dia);
-					List<Data> data= daoService.getEntradasDia(EntradasPage.this.usuario, fecha);
-					String append = "start("+ daoService.toJson(data) +");";
+					List<Data> data;
+						fechaActual = new LocalDate(año,mes,dia);
+						data= daoService.getEntradasDia(EntradasPage.this.usuario, fechaActual);
+					//TODOç
+						String append = "start("+ daoService.toJson(data) +");";
+						
+						System.out.println(data);
+					if (data.isEmpty()){
+						append= "start("+ daoService.toJson("vacio") +");";;
+					}
+					horasDiaModel.setObject(daoService.getHorasDiarias(usuario,fechaActual));
+					horasMesModel.setObject(daoService.getHorasMensuales(usuario,fechaActual));
+					horasSemanalesModel.setObject(daoService.getHorasSemanales(usuario,fechaActual));
+					target.add(listViewContainer);
 					target.appendJavaScript(append);
-					
+					System.out.println("-------------------------------");
+					System.out.println("-------------------------------");
+					System.out.println("-------------------------------");
+					System.out.println("-------------------------------");
+					System.out.println("-------------------------------");
+					System.out.println("-------------------------------");
+					System.out.println(selectorTiempo.getValue());
 				}
 				
 				@Override
@@ -409,7 +437,6 @@ public class EntradasPage extends BasePage {
 					EntradaForm.this.onSubmit(target, (EntradaForm)form);								
 					target.add(feedBackPanel);
 					target.appendJavaScript("start();");
-//					target.appendJavaScript("startCalendar();");
 					target.add(listViewContainer);
 					EntradaForm.this.setModelObject(new Entrada());
 					

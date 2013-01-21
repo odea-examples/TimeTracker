@@ -124,9 +124,11 @@ function init(dataSecundaria) {
 	if (dataSecundaria == null || dataSecundaria == undefined || !dataSecundaria.length) {
 		data= ${data};
 	  }
-	  else{
-		alert(JSON.stringify(dataSecundaria, null, 2));
+	  else if(dataSecundaria != "vacio"){
 		data= dataSecundaria;
+	  }
+	  else{
+		  data = [];
 	  }
   dataView = new Slick.Data.DataView({ inlineFilters: true });
   grid = new Slick.Grid("${selector}", dataView, columns, options);

@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.joda.time.LocalDate;
 
 import com.google.gson.Gson;
 import com.odea.components.slickGrid.SlickGrid;
@@ -68,7 +69,7 @@ public class PruebaPage extends BasePage {
 				datos.add(data);
 //				datos.add(data2);
 				Usuario usuario = daoService.getUsuario(SecurityUtils.getSubject().getPrincipal().toString());
-				List<com.odea.components.slickGrid.Data> datos2= daoService.getEntradasDia(usuario);
+				List<com.odea.components.slickGrid.Data> datos2= daoService.getEntradasDia(usuario, new LocalDate());
 				System.out.println(datos);
 		        Gson gson = new Gson();
 		        System.out.println(gson.toJson(datos));

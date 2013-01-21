@@ -13,6 +13,7 @@ import com.google.gson.Gson;
 import com.odea.components.datepicker.HorasCargadasPorDia;
 import com.odea.components.slickGrid.Columna;
 import com.odea.components.slickGrid.Data;
+import com.odea.components.yuidatepicker.YuiDatePicker;
 import com.odea.dao.ActividadDAO;
 import com.odea.dao.EntradaDAO;
 import com.odea.dao.ProyectoDAO;
@@ -74,12 +75,12 @@ public class DAOService {
 		return entradaDAO.getData(usuario, desde, hasta);
 	}
 	
-	public List<Data> getEntradasMensuales(Usuario usuario) {
-		return entradaDAO.getEntradasMensuales(usuario);
+	public List<Data> getEntradasMensuales(Usuario usuario, LocalDate fechaElegida) {
+		return entradaDAO.getEntradasMensuales(usuario, fechaElegida);
 	}
 	
-	public List<Data> getEntradasSemanales(Usuario usuario){
-		return entradaDAO.getEntradasSemanales(usuario);
+	public List<Data> getEntradasSemanales(Usuario usuario, LocalDate fechaElegida){
+		return entradaDAO.getEntradasSemanales(usuario, fechaElegida);
 	}
 
 	public List<Data> getEntradasDia(Usuario usuario, LocalDate hoy) {
@@ -112,16 +113,16 @@ public class DAOService {
 	}
 	
 	
-	public int getHorasSemanales(Usuario usuario){
-		return entradaDAO.getHorasSemanales(usuario);
+	public int getHorasSemanales(Usuario usuario, LocalDate now){
+		return entradaDAO.getHorasSemanales(usuario, now);
 	}
 	
-	public int getHorasDiarias(Usuario usuario){
-		return entradaDAO.getHorasDiarias(usuario);
+	public int getHorasDiarias(Usuario usuario, LocalDate now){
+		return entradaDAO.getHorasDiarias(usuario, now);
 	}
 
-	public int getHorasMensuales(Usuario usuario){
-		return entradaDAO.getHorasMensuales(usuario);
+	public int getHorasMensuales(Usuario usuario, LocalDate now){
+		return entradaDAO.getHorasMensuales(usuario, now);
 	}
 	
 	

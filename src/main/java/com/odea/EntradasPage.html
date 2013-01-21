@@ -92,8 +92,14 @@
 		<h3>Entradas</h3>
 		
 		<br/>
-		<b><label for="selectorTiempo" style="width:50px">Rango:</label></b> 
-		<select wicket:id="selectorTiempo" name="selectorTiempo" style="width:150px"></select>
+		
+		<span wicket:id="selectorTiempo">
+    		D<input wicket:id="dia" type="radio"/>
+    		S<input wicket:id="semana" type="radio"/>
+			M<input wicket:id="mes" type="radio"/>
+  		</span>
+		
+		
 		<br/>
 		<div wicket:id="slickGrid" style="width:1000px;height:500px;"></div>
 		

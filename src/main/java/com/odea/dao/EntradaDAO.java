@@ -167,9 +167,8 @@ public List<Data> getData(Usuario usuario, Timestamp desdeSQL, Timestamp hastaSQ
 		return entradas;
 	}
 	
-	public int getHorasSemanales(Usuario usuario) 
+	public int getHorasSemanales(Usuario usuario, LocalDate now) 
 	{
-		LocalDate now = new LocalDate();
 		LocalDate lu = now.withDayOfWeek(DateTimeConstants.MONDAY);
 		LocalDate vie = now.withDayOfWeek(DateTimeConstants.FRIDAY+1);
 		Date lunes = lu.toDateTimeAtStartOfDay().toDate();
@@ -177,9 +176,8 @@ public List<Data> getData(Usuario usuario, Timestamp desdeSQL, Timestamp hastaSQ
 		
 		return this.getHorasDesdeHasta(usuario, lunes, viernes);
 	}
-	public int getHorasDiarias(Usuario usuario) 
+	public int getHorasDiarias(Usuario usuario, LocalDate hoy) 
 	{
-		LocalDate hoy = new LocalDate();
 		LocalDate maniana = new LocalDate(hoy.toDate().getTime()+1);
 		
 		Date diaHoy = hoy.toDateTimeAtStartOfDay().toDate();
@@ -188,9 +186,8 @@ public List<Data> getData(Usuario usuario, Timestamp desdeSQL, Timestamp hastaSQ
 		return this.getHorasDesdeHasta(usuario, diaHoy,diaManiana);
 	}
 	
-	public int getHorasMensuales(Usuario usuario) 
+	public int getHorasMensuales(Usuario usuario, LocalDate now) 
 	{
-		LocalDate now = new LocalDate();
 		LocalDate primeroDelMes = now.withDayOfMonth(1);
 		LocalDate ultimoDelMes = now.plusMonths(1).withDayOfMonth(1).minusDays(1);
 		
@@ -234,8 +231,7 @@ public List<Data> getData(Usuario usuario, Timestamp desdeSQL, Timestamp hastaSQ
 	
 	
 	
-	public List<Data> getEntradasSemanales(Usuario usuario){
-		LocalDate now = new LocalDate();
+	public List<Data> getEntradasSemanales(Usuario usuario, LocalDate now){
 		LocalDate lu = now.withDayOfWeek(DateTimeConstants.MONDAY);
 		LocalDate vie = now.withDayOfWeek(DateTimeConstants.FRIDAY);
 		
@@ -260,8 +256,7 @@ public List<Data> getData(Usuario usuario, Timestamp desdeSQL, Timestamp hastaSQ
 		return this.getData(usuario, desdeSQL, desdeSQL); 
 	}
 	
-	public List<Data> getEntradasMensuales(Usuario usuario){
-		LocalDate now = new LocalDate();
+	public List<Data> getEntradasMensuales(Usuario usuario, LocalDate now){
 		LocalDate primeroDelMes = now.withDayOfMonth(1);
 		LocalDate ultimoDelMes = now.plusMonths(1).withDayOfMonth(1).minusDays(1);
 		
