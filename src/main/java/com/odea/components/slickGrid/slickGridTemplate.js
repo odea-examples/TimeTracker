@@ -9,6 +9,8 @@ var last= [];
 var columns = 
 	${columns};
 var data = [];
+var cantidadVeces = 0;
+var idBorrada ="";
 
 
 var options = {
@@ -152,16 +154,18 @@ function init(dataSecundaria) {
       //assuming you have used a dataView to create your grid
       //also assuming that its variable name is called 'dataView'
       //use the following code to get the item to be deleted from it
-      if(confirm("¿Seguro desea eleminarlo?")){
+      if(idBorrada != id && confirm("¿Seguro desea eleminarlo?")){
     	  dataView.deleteItem(id);
-    	  alert(id);
     	  Wicket.Ajax.ajax({"u":"${url}","c":"${gridId}","ep":{'borrar':JSON.stringify(id, null, 2)}});
       //This is possible because in the formatter we have assigned the row id itself as the button id;
       //now assuming your grid is called 'grid'
-    	  grid.invalidate();        
+    	  //TODO
+    	  grid.gotoCell(2,2);
+    	  grid.invalidate();
+    	  idBorrada= id;
       }
       else{
-    	  alert("no hace nada, despues saca este alert :)");
+//    	  alert("no hace nada, despues saca este alert :)");
       };
   });
 

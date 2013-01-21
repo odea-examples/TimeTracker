@@ -199,16 +199,7 @@ public class EntradasPage extends BasePage {
 //		opcionesTiempo.add("Semana");
 //		opcionesTiempo.add("Mes");
 		
-		IModel<String> modelTiempo = new Model<String>();
-		RadioGroup<String> radiog= new RadioGroup<String>("selectorTiempo",modelTiempo);
-		
-		Radio dia = new Radio("dia",new Model("Dia"));
-		Radio semana = new Radio("semana",new Model("Semana"));
-		Radio mes = new Radio("mes",new Model("Mes"));
-		
-		radiog.add(dia);
-		radiog.add(semana);
-		radiog.add(mes);
+
 		
 		
 		
@@ -252,7 +243,6 @@ public class EntradasPage extends BasePage {
 		
 		
 		
-		listViewContainer.add(radiog);
         listViewContainer.setOutputMarkupId(true);
 		listViewContainer.add(slickGrid);
 		listViewContainer.add(horasAcumuladasDia);
@@ -387,13 +377,6 @@ public class EntradasPage extends BasePage {
 					horasSemanalesModel.setObject(daoService.getHorasSemanales(usuario,fechaActual));
 					target.add(listViewContainer);
 					target.appendJavaScript(append);
-					System.out.println("-------------------------------");
-					System.out.println("-------------------------------");
-					System.out.println("-------------------------------");
-					System.out.println("-------------------------------");
-					System.out.println("-------------------------------");
-					System.out.println("-------------------------------");
-					System.out.println(selectorTiempo.getValue());
 				}
 				
 				@Override
@@ -426,6 +409,16 @@ public class EntradasPage extends BasePage {
 				}
 				
 			});
+			IModel<String> modelTiempo = new Model<String>();
+			RadioGroup<String> radiog= new RadioGroup<String>("selectorTiempo",modelTiempo);
+			
+			Radio dia = new Radio("dia",new Model("Dia"));
+			Radio semana = new Radio("semana",new Model("Semana"));
+			Radio mes = new Radio("mes",new Model("Mes"));
+			
+			radiog.add(dia);
+			radiog.add(semana);
+			radiog.add(mes);
 			
 						
 			AjaxButton submit = new AjaxButton("submit", this) {
@@ -534,6 +527,7 @@ public class EntradasPage extends BasePage {
 			this.add(new OnRelatedFieldsNullValidator(sistemaExterno ,ticketExt, "Debe poner un sistema externo para poder poner un ticket externo"));
 			this.add(new OnRelatedFieldsNullValidator(ticketExt, sistemaExterno,"Debe ingresar un ticket con ese sistema externo elegido"));
 			add(submit);
+			add(radiog);
 			
 			this.setOutputMarkupId(true);
 
