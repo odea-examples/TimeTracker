@@ -12,6 +12,7 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
+import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormChoiceComponentUpdatingBehavior;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
@@ -35,9 +36,11 @@ import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.resource.JavaScriptResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.apache.wicket.util.string.StringValue;
 import org.apache.wicket.validation.validator.PatternValidator;
 import org.joda.time.LocalDate;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.odea.behavior.noInput.NoInputBehavior;
@@ -129,6 +132,9 @@ public class EntradasPage extends BasePage {
 
 		this.listViewContainer = new WebMarkupContainer("listViewContainer");
 		this.listViewContainer.setOutputMarkupId(true);
+		
+		
+		
 		final SlickGrid slickGrid = new SlickGrid("slickGrid") {
 			
 			@Override
@@ -179,6 +185,19 @@ public class EntradasPage extends BasePage {
 				texto+="]";
 				return texto;
 			}
+
+			@Override
+			protected void onInfoSend(AjaxRequestTarget target,
+					String realizar, Data data) {
+				if (realizar=="borrar"){
+					//daoservice.borrar(data)
+				}
+				else{
+					//daoservice.updatear(data)
+				}
+				
+			}
+			
 		};
 		slickGrid.setOutputMarkupId(true);
 		
@@ -368,7 +387,6 @@ public class EntradasPage extends BasePage {
 					//TODOç
 						String append = "start("+ daoService.toJson(data) +");";
 						
-						System.out.println(data);
 					if (data.isEmpty()){
 						append= "start("+ daoService.toJson("vacio") +");";;
 					}
