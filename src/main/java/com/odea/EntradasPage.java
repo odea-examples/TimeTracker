@@ -2,6 +2,8 @@ package com.odea;
 
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -12,6 +14,7 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
+import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormChoiceComponentUpdatingBehavior;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
@@ -35,9 +38,11 @@ import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.resource.JavaScriptResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.apache.wicket.util.string.StringValue;
 import org.apache.wicket.validation.validator.PatternValidator;
 import org.joda.time.LocalDate;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.odea.behavior.noInput.NoInputBehavior;
@@ -129,6 +134,9 @@ public class EntradasPage extends BasePage {
 
 		this.listViewContainer = new WebMarkupContainer("listViewContainer");
 		this.listViewContainer.setOutputMarkupId(true);
+		
+		
+		
 		final SlickGrid slickGrid = new SlickGrid("slickGrid") {
 			
 			@Override
@@ -179,6 +187,73 @@ public class EntradasPage extends BasePage {
 				texto+="]";
 				return texto;
 			}
+
+			@Override
+			protected void onInfoSend(AjaxRequestTarget target,String realizar, Data data) {
+				if (realizar=="borrar"){
+					SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
+					java.util.Date parsedDate = null;
+					try {
+						parsedDate = dateFormat.parse(data.getId());
+					} catch (ParseException e) {
+						e.printStackTrace();
+					}
+					java.sql.Timestamp timestamp = new java.sql.Timestamp(parsedDate.getTime());
+					
+					
+					
+					daoService.borrarEntrada(timestamp);
+				}
+				else{
+					
+					SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+					java.util.Date parsedDate = null;
+					try {
+						parsedDate = dateFormat.parse(data.getId());
+						System.out.println("   ");
+						System.out.println("   ");
+						System.out.println("   ");
+						System.out.println("   ");
+						System.out.println("   ");
+						System.out.println(parsedDate);
+					} catch (ParseException e) {
+						e.printStackTrace();
+					}
+					java.sql.Timestamp timestamp = new java.sql.Timestamp(parsedDate.getTime());
+					Date fecha = null;
+					dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+					try {
+						fecha = dateFormat.parse(data.getFecha());
+					} catch (ParseException e) {
+						e.printStackTrace();
+					}
+					Actividad actividad = daoService.getActividad(data.getActividad());
+					Proyecto proyecto = daoService.getProyecto(data.getProyecto());
+					Integer ticket;
+					if (data.getTicket().isEmpty()){
+						ticket=0;
+					}else{
+						ticket=Integer.parseInt(data.getTicket());
+					}
+					
+					Entrada entrada = new Entrada(timestamp, proyecto, actividad, data.getDuration(),data.getDescripcion(), ticket, data.getTicketExt(), data.getSistExt(), usuario, fecha);
+					daoService.modificarEntrada(entrada);
+				}
+				List<Data> entradas;
+				entradas= daoService.getEntradasDia(EntradasPage.this.usuario, fechaActual);
+				String append = "start("+ daoService.toJson(entradas) +");";
+				
+			if (entradas.isEmpty()){
+				append= "start("+ daoService.toJson("vacio") +");";;
+			}
+			horasDiaModel.setObject(daoService.getHorasDiarias(usuario,fechaActual));
+			horasMesModel.setObject(daoService.getHorasMensuales(usuario,fechaActual));
+			horasSemanalesModel.setObject(daoService.getHorasSemanales(usuario,fechaActual));
+			target.add(listViewContainer);
+			target.appendJavaScript(append);
+				
+			}
+			
 		};
 		slickGrid.setOutputMarkupId(true);
 		
@@ -362,13 +437,12 @@ public class EntradasPage extends BasePage {
 					int dia = Integer.parseInt(campos.get(0));
 					int mes = Integer.parseInt(campos.get(1));
 					int año = Integer.parseInt(campos.get(2));
-					List<Data> data;
 						fechaActual = new LocalDate(año,mes,dia);
+						List<Data> data;
 						data= daoService.getEntradasDia(EntradasPage.this.usuario, fechaActual);
 					//TODOç
 						String append = "start("+ daoService.toJson(data) +");";
 						
-						System.out.println(data);
 					if (data.isEmpty()){
 						append= "start("+ daoService.toJson("vacio") +");";;
 					}

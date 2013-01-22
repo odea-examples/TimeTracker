@@ -15,10 +15,14 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.request.handler.TextRequestHandler;
 import org.apache.wicket.request.resource.CssResourceReference;
 import org.apache.wicket.request.resource.JavaScriptResourceReference;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.string.StringValue;
 import org.apache.wicket.util.template.PackageTextTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.gson.Gson;
+import com.odea.dao.EntradaDAO;
+import com.odea.services.DAOService;
 
 public abstract class SlickGrid extends WebMarkupContainer{
 	private String jQuerySelector;
@@ -28,6 +32,9 @@ public abstract class SlickGrid extends WebMarkupContainer{
     private static final String ENCODING = Application.get().getMarkupSettings().getDefaultMarkupEncoding();
 	//asd
 	
+    @Autowired
+    EntradaDAO entradadao;
+    
 	public SlickGrid(String id) {
 		super(id);
 		this.setOutputMarkupId(true);
@@ -38,14 +45,17 @@ public abstract class SlickGrid extends WebMarkupContainer{
 			protected void respond(AjaxRequestTarget target) {
                 if (getRequest().getRequestParameters().getParameterNames().contains("modificar")) {
                 	Gson gson = new Gson();
-                	StringValue respuestaGson = getRequest().getRequestParameters().getParameterValue("modificar");
-                	System.out.println(respuestaGson);
-                    //(target, getRequest().getRequestParameters().getParameterValue("selectedDate").toString());
+                	String respuestaGson = getRequest().getRequestParameters().getParameterValue("modificar").toString();
+					Data data = gson.fromJson(respuestaGson, Data.class);
+//					System.out.println(data);
+					SlickGrid.this.onInfoSend(target,"modificar",data);
                 }
                 if (getRequest().getRequestParameters().getParameterNames().contains("borrar")) {
                 	Gson gson = new Gson();
-                	StringValue respuestaGson = getRequest().getRequestParameters().getParameterValue("borrar");
+                	String respuestaGson = getRequest().getRequestParameters().getParameterValue("borrar").toString();
                 	System.out.println(respuestaGson);
+                	Data data = new Data(gson.fromJson(respuestaGson, String.class),null,null,null,null,null,null,null,null);
+                	SlickGrid.this.onInfoSend(target,"borrar",data);
                     //(target, getRequest().getRequestParameters().getParameterValue("selectedDate").toString());
                 }
 				
@@ -104,6 +114,7 @@ public abstract class SlickGrid extends WebMarkupContainer{
         PackageTextTemplate packageTextTemplate = new PackageTextTemplate(SlickGrid.class, "slickGridTemplate.js", "text/javascript");
         return packageTextTemplate.asString(map);
 	}
+	protected abstract void onInfoSend(AjaxRequestTarget target, String realizar, Data data);
 	
 	protected abstract String getColumns();
 	protected abstract String getData();

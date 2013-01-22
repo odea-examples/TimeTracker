@@ -37,6 +37,10 @@ public class DAOService {
 	
 	private Gson gson= new Gson();
 	
+	public Actividad getActividad(String nombre){
+		return actividadDAO.buscarPorNombre(nombre);
+	}
+	
 	public List<Actividad> getActividades(Proyecto proyecto){
 		return actividadDAO.getActividades(proyecto);
 	}
@@ -137,6 +141,9 @@ public class DAOService {
 		entradaDAO.modificarEntrada(entrada);
 	}
 	
+	public Proyecto getProyecto(String nombre){
+		return proyectoDAO.buscarPorNombre(nombre);
+	}
 	
 	public List<Proyecto> getProyectos(){
 		return proyectoDAO.getProyectos();

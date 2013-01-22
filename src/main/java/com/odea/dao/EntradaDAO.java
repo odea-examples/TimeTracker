@@ -4,6 +4,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.sql.Types;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -123,7 +125,6 @@ public List<Data> getData(Usuario usuario, Timestamp desdeSQL, Timestamp hastaSQ
 				calendar.setTime(e.getIdEntrada());
 				String stringTiempo="";
 				stringTiempo+=e.getDuracion().toString();
-				stringTiempo+="hs";
 				calendar.setTime(e.getFecha());
 				String stringFecha ="";
 				stringFecha+=calendar.get(calendar.DAY_OF_MONTH);
@@ -287,9 +288,11 @@ public List<Data> getData(Usuario usuario, Timestamp desdeSQL, Timestamp hastaSQ
 			if (entrada.getSistemaExterno()!="Ninguno"){
 				sistemaExterno=entrada.getSistemaExterno();
 			}
+			
+			java.sql.Date fechaSQL = new java.sql.Date(entrada.getFecha().getTime());
 			jdbcTemplate.update("UPDATE activity_log SET al_date=?, al_duration=?, al_project_id=?, al_activity_id=?, al_comment=?, ticket_bz=?, issue_tracker_externo=?, ite_id=? WHERE al_timestamp=?", 
 					new Object[]{
-					entrada.getFecha(), new java.sql.Time((long) ((this.parsearDuracion(entrada.getDuracion())*3600000))-(3600000*21)), entrada.getProyecto().getIdProyecto(), entrada.getActividad().getIdActividad(), entrada.getNota(), entrada.getTicketBZ(), sistemaExterno, entrada.getTicketExterno(), entrada.getIdEntrada()},
+					fechaSQL, new java.sql.Time((long) ((this.parsearDuracion(entrada.getDuracion())*3600000))-(3600000*21)), entrada.getProyecto().getIdProyecto(), entrada.getActividad().getIdActividad(), entrada.getNota(), entrada.getTicketBZ(), sistemaExterno, entrada.getTicketExterno(), entrada.getIdEntrada()},
 					new int[]{Types.DATE, Types.TIME, Types.INTEGER, Types.INTEGER, Types.BLOB, Types.INTEGER, Types.CHAR, Types.VARCHAR, Types.TIMESTAMP});
 		}
 
