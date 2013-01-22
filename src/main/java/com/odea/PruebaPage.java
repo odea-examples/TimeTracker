@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.shiro.SecurityUtils;
+import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.joda.time.LocalDate;
 
@@ -75,6 +76,13 @@ public class PruebaPage extends BasePage {
 		        System.out.println(gson.toJson(datos));
 		        System.out.println(gson.toJson(datos2));
 		        return gson.toJson(datos2);
+			}
+
+			@Override
+			protected void onInfoSend(AjaxRequestTarget target,
+					String realizar, com.odea.components.slickGrid.Data data) {
+				// TODO Auto-generated method stub
+				
 			}
 		};
 		

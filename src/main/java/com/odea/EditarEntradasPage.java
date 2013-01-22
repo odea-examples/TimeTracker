@@ -30,6 +30,7 @@ import com.odea.behavior.onlyNumber.OnlyNumberBehavior;
 import com.odea.components.datepicker.DatePicker;
 import com.odea.components.datepicker.DatePickerDTO;
 import com.odea.components.datepicker.HorasCargadasPorDia;
+import com.odea.components.slickGrid.Data;
 import com.odea.components.slickGrid.SlickGrid;
 import com.odea.domain.Actividad;
 import com.odea.domain.Entrada;
@@ -237,6 +238,13 @@ public class EditarEntradasPage extends BasePage{
 				protected String getColumns() {
 					// TODO Auto-generated method stub
 					return null;
+				}
+
+				@Override
+				protected void onInfoSend(AjaxRequestTarget target,
+						String realizar, Data data) {
+					// TODO Auto-generated method stub
+					
 				}
 			};
 			
