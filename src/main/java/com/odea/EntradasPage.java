@@ -1,7 +1,6 @@
 package com.odea;
 
 
-import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -13,18 +12,13 @@ import java.util.List;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.apache.wicket.AttributeModifier;
-import org.apache.wicket.Component;
-import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.form.AjaxFormChoiceComponentUpdatingBehavior;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
-import org.apache.wicket.ajax.form.OnChangeAjaxBehavior;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.form.IChoiceRenderer;
 import org.apache.wicket.markup.html.form.Radio;
 import org.apache.wicket.markup.html.form.RadioChoice;
@@ -36,19 +30,13 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.request.resource.JavaScriptResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.apache.wicket.util.string.StringValue;
 import org.apache.wicket.validation.validator.PatternValidator;
 import org.joda.time.LocalDate;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.odea.behavior.noInput.NoInputBehavior;
 import com.odea.behavior.numberComma.NumberCommaBehavior;
 import com.odea.behavior.onlyNumber.OnlyNumberBehavior;
-import com.odea.components.datepicker.DatePicker;
 import com.odea.components.datepicker.DatePickerDTO;
 import com.odea.components.datepicker.HorasCargadasPorDia;
 import com.odea.components.slickGrid.Data;
@@ -250,7 +238,7 @@ public class EntradasPage extends BasePage {
 			horasMesModel.setObject(daoService.getHorasMensuales(usuario,fechaActual));
 			horasSemanalesModel.setObject(daoService.getHorasSemanales(usuario,fechaActual));
 			target.add(listViewContainer);
-			target.appendJavaScript(append);
+			target.appendJavaScript(append+"initYUI;");
 				
 			}
 			
@@ -261,7 +249,7 @@ public class EntradasPage extends BasePage {
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, EntradaForm form) {
 				daoService.agregarEntrada(form.getModelObject(), usuario);
-				target.appendJavaScript("start();");
+				target.appendJavaScript("start(); initYUI;");
 //				target.appendJavaScript("startCalendar();");
 				target.add(listViewContainer);
 				target.add(form);
@@ -292,14 +280,14 @@ public class EntradasPage extends BasePage {
 //				if (selectorTiempo.getConvertedInput().equals("Semana")) {
 //					horasSemanalesModel.setObject(daoService.getHorasSemanales(usuario,fechaActual));
 //					target.add(listViewContainer);
-////					target.appendJavaScript("start();");
+////					target.appendJavaScript("start(); initYUI;");
 //				}
 //				if (selectorTiempo.getConvertedInput().equals("Dia")) {
 //					horasDiaModel.setObject(daoService.getHorasDiarias(usuario,fechaActual));
 //					target.add(listViewContainer);
-////					target.appendJavaScript("start();");
+////					target.appendJavaScript("start(); initYUI;");
 //				}
-//				target.appendJavaScript("start();");			
+//				target.appendJavaScript("start(); initYUI;");			
 //			}
 //		});
 		
@@ -503,7 +491,8 @@ public class EntradasPage extends BasePage {
 				protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 					EntradaForm.this.onSubmit(target, (EntradaForm)form);								
 					target.add(feedBackPanel);
-					target.appendJavaScript("start();");
+					target.appendJavaScript("start(); initYUI;");
+					target.appendJavaScript("YAHOO.example.calendar.init;");
 					target.add(listViewContainer);
 					EntradaForm.this.setModelObject(new Entrada());
 					
@@ -540,6 +529,8 @@ public class EntradasPage extends BasePage {
 
 				@Override
 				protected void onError(AjaxRequestTarget target, Form<?> form) {
+					
+					target.appendJavaScript("YAHOO.example.calendar.init;");
 					
 					if (!duracion.isValid()) {
 						duracion.add(new AttributeModifier("style", new Model("border-style:solid; border-color:red;")));
@@ -581,10 +572,6 @@ public class EntradasPage extends BasePage {
 				}
 				
 			};
-
-			
-		
-
 			
 			
 			add(mensajeProyecto);
@@ -604,7 +591,6 @@ public class EntradasPage extends BasePage {
 			add(radiog);
 			
 			this.setOutputMarkupId(true);
-
 		}
 
 		

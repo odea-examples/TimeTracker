@@ -1,6 +1,6 @@
 YAHOO.namespace("example.calendar");
 
-YAHOO.example.calendar.init = function() {
+initYUI = function() {
 
     function handleSelect(type,args,obj) {
         var dates = args[0];
@@ -72,4 +72,4 @@ YAHOO.example.calendar.init = function() {
     YAHOO.util.Event.addListener("dates", "submit", handleSubmit);
 }
 
-YAHOO.util.Event.onDOMReady(YAHOO.example.calendar.init);
+YAHOO.util.Event.onDOMReady(initYUI);
