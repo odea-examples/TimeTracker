@@ -43,6 +43,18 @@ public class ProyectoDAO extends AbstractDAO {
 		return proyectos;
 	}
 	
+	public Proyecto buscarPorNombre(String nombre){
+		
+		if (nombre.charAt(0)== " ".charAt(0)){
+			nombre = nombre.substring(1);
+		}
+		
+		Integer id =jdbcTemplate.queryForInt("SELECT p_id FROM projects where p_name=?", nombre);
+		
+		
+		return new Proyecto(id, nombre);
+	}
+	
 	public void cambiarNombreProyecto(Proyecto proyecto){
 		jdbcTemplate.update("UPDATE projects SET p_name=? WHERE p_id=?",proyecto.getNombre(),proyecto.getIdProyecto());
 		
