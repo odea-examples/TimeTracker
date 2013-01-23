@@ -67,13 +67,6 @@ public class ActividadDAO extends AbstractDAO {
 			nombre = nombre.replaceAll("ó","Ã³").replaceAll("é","Ã©").replaceAll("ñ","Ã±").replaceAll("á","Ã¡").replaceAll("í","Ã­") ;		
 			id = jdbcTemplate.queryForInt("SELECT a_id FROM activities where a_name=?", nombre);
 		}
-		
-		
-		System.out.println(nombre);
-		
-		
-		
-		
 		return new Actividad(id, nombre);
 	}
 	

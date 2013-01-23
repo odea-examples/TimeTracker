@@ -148,16 +148,15 @@ public class EntradasPage extends BasePage {
 				
 				String lista = daoService.getProyectos().toString();
 				String proyectos = lista.subSequence(1, lista.length()-1).toString();
-				Columna columna = new Columna("delCol", "Delete", 80, 20, 800, null,"del", "Slick.Formatters.DeleteButton",null,null,null);
-				Columna columna2 = new Columna("duration", "Duracion", 80, 20, 800, "cell-title","duration", null,"Slick.Editors.Text","requiredDurationValidator",null);
-				Columna columna3 = new Columna("actividad", "Actividad", 80, 20, 800, "cell-title","actividad", null,"Slick.Editors.SelectRelatedEditor","requiredFieldValidator",actividades);
-				Columna columna4 = new Columna("proyecto", "Proyecto", 80, 20, 800, "cell-title","proyecto", null,"Slick.Editors.SelectEditor","requiredFieldValidator",proyectos);
-				Columna columna5 = new Columna("fecha", "Start", 80, 20, 800, null ,"fecha", null,"Slick.Editors.Date","requiredFieldValidator",null);
-				Columna columna6 = new Columna("ticket", "Ticket", 80, 20, 800, "cell-title","ticket", null,"Slick.Editors.Text",null,null);
-				Columna columna7 = new Columna("ticketExt", "TicketExt", 80, 20, 800, "cell-title","ticketExt", null,"Slick.Editors.TextTicketExt",null,null);
-				Columna columna8 = new Columna("sistExt", "SistExt", 80, 20, 800, "cell-title","sistExt", null,"Slick.Editors.Text",null,null);
-				Columna columna9 = new Columna("descripcion", "Desc", 80, 20, 600, null ,"descripcion", null,"Slick.Editors.LongText",null,null);
-
+				Columna columna = new Columna("delCol", "Delete", 60, 60, 60, null,"del", "Slick.Formatters.DeleteButton",null,null,null);
+				Columna columna2 = new Columna("duration", "Duracion", 60, 60, 60, "cell-title","duration", null,"Slick.Editors.Text","requiredDurationValidator",null);
+				Columna columna3 = new Columna("actividad", "Actividad", 125, 100, 200, "cell-title","actividad", null,"Slick.Editors.SelectRelatedEditor","requiredFieldValidator",actividades);
+				Columna columna4 = new Columna("proyecto", "Proyecto", 135, 100, 200, "cell-title","proyecto", null,"Slick.Editors.SelectEditor","requiredFieldValidator",proyectos);
+				Columna columna5 = new Columna("fecha", "Start", 60, 60, 60, null ,"fecha", null,"Slick.Editors.Date","requiredFieldValidator",null);
+				Columna columna6 = new Columna("ticket", "Ticket", 50, 50, 50, "cell-title","ticket", null,"Slick.Editors.Text",null,null);
+				Columna columna7 = new Columna("ticketExt", "TicketExt", 80, 80, 100, "cell-title","ticketExt", null,"Slick.Editors.TextTicketExt",null,null);
+				Columna columna8 = new Columna("sistExt", "SistExt", 80, 80, 80, "cell-title","sistExt", null,"Slick.Editors.Text",null,null);
+				Columna columna9 = new Columna("descripcion", "Desc", 80, 80, 80, null ,"descripcion", null,"Slick.Editors.LongText",null,null);
 				ArrayList<Columna> columnas = new ArrayList<Columna>();
 				columnas.add(columna);
 				columnas.add(columna5);
@@ -198,11 +197,6 @@ public class EntradasPage extends BasePage {
 					java.util.Date parsedDate = null;
 					try {
 						parsedDate = dateFormat.parse(data.getId());
-						System.out.println("   ");
-						System.out.println("   ");
-						System.out.println("   ");
-						System.out.println("   ");
-						System.out.println("   ");
 						System.out.println(parsedDate);
 					} catch (ParseException e) {
 						e.printStackTrace();
@@ -238,7 +232,7 @@ public class EntradasPage extends BasePage {
 			horasMesModel.setObject(daoService.getHorasMensuales(usuario,fechaActual));
 			horasSemanalesModel.setObject(daoService.getHorasSemanales(usuario,fechaActual));
 			target.add(listViewContainer);
-			target.appendJavaScript(append+"initYUI;");
+			target.appendJavaScript(append+"initYUI();");
 				
 			}
 			
@@ -249,7 +243,7 @@ public class EntradasPage extends BasePage {
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, EntradaForm form) {
 				daoService.agregarEntrada(form.getModelObject(), usuario);
-				target.appendJavaScript("start(); initYUI;");
+				target.appendJavaScript("start(); initYUI();");
 //				target.appendJavaScript("startCalendar();");
 				target.add(listViewContainer);
 				target.add(form);
@@ -280,14 +274,14 @@ public class EntradasPage extends BasePage {
 //				if (selectorTiempo.getConvertedInput().equals("Semana")) {
 //					horasSemanalesModel.setObject(daoService.getHorasSemanales(usuario,fechaActual));
 //					target.add(listViewContainer);
-////					target.appendJavaScript("start(); initYUI;");
+////					target.appendJavaScript("start(); initYUI();");
 //				}
 //				if (selectorTiempo.getConvertedInput().equals("Dia")) {
 //					horasDiaModel.setObject(daoService.getHorasDiarias(usuario,fechaActual));
 //					target.add(listViewContainer);
-////					target.appendJavaScript("start(); initYUI;");
+////					target.appendJavaScript("start(); initYUI();");
 //				}
-//				target.appendJavaScript("start(); initYUI;");			
+//				target.appendJavaScript("start(); initYUI();");			
 //			}
 //		});
 		
@@ -491,8 +485,7 @@ public class EntradasPage extends BasePage {
 				protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 					EntradaForm.this.onSubmit(target, (EntradaForm)form);								
 					target.add(feedBackPanel);
-					target.appendJavaScript("start(); initYUI;");
-					target.appendJavaScript("YAHOO.example.calendar.init;");
+					target.appendJavaScript("start(); initYUI();");
 					target.add(listViewContainer);
 					EntradaForm.this.setModelObject(new Entrada());
 					
@@ -530,7 +523,6 @@ public class EntradasPage extends BasePage {
 				@Override
 				protected void onError(AjaxRequestTarget target, Form<?> form) {
 					
-					target.appendJavaScript("YAHOO.example.calendar.init;");
 					
 					if (!duracion.isValid()) {
 						duracion.add(new AttributeModifier("style", new Model("border-style:solid; border-color:red;")));
@@ -545,7 +537,7 @@ public class EntradasPage extends BasePage {
 					}					
 					
 					if (!fecha.isValid()) {
-						fecha.add(new AttributeModifier("style", new Model("border-style:solid; border-color:red;")));
+						fecha.add(new AttributeModifier("style", new Model("border-style:solid; border-color:white;")));
 					}else{
 						fecha.add(new AttributeModifier("style", new Model("border-color:none")));
 					}
@@ -562,6 +554,7 @@ public class EntradasPage extends BasePage {
 					}else{
 						mensajeActividad.add(new AttributeModifier("style", new Model("font-weight:bold;color:red")));
 					}
+					target.appendJavaScript("start(); initYUI();");
 					
 					target.add(feedBackPanel);
 					target.add(fecha);

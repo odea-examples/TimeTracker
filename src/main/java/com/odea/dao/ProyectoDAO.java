@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
@@ -49,9 +50,13 @@ public class ProyectoDAO extends AbstractDAO {
 			nombre = nombre.substring(1);
 		}
 		
-		Integer id =jdbcTemplate.queryForInt("SELECT p_id FROM projects where p_name=?", nombre);
-		
-		
+		Integer id;
+		try {
+			id = jdbcTemplate.queryForInt("SELECT p_id FROM projects where p_name=?", nombre);
+		} catch (DataAccessException e) {
+			nombre = nombre.replaceAll("ó","Ã³").replaceAll("é","Ã©").replaceAll("ñ","Ã±").replaceAll("á","Ã¡").replaceAll("í","Ã­") ;		
+			id = jdbcTemplate.queryForInt("SELECT p_id FROM projects where p_name=?", nombre);
+		}
 		return new Proyecto(id, nombre);
 	}
 	
