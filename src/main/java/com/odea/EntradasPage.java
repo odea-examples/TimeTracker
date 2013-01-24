@@ -255,9 +255,6 @@ public class EntradasPage extends BasePage {
 			}
 		};
 		
-		radioContainer = new WebMarkupContainer("radioContainer");
-		radioContainer.setOutputMarkupId(true);
-        
 		
 		horasAcumuladasDia = new Label("horasAcumuladasDia", this.horasDiaModel);
 		horasAcumuladasDia.setOutputMarkupId(true);
@@ -277,6 +274,12 @@ public class EntradasPage extends BasePage {
 		Radio dia = new Radio("dia",new Model("Dia"));
 		Radio semana = new Radio("semana",new Model("Semana"));
 		Radio mes = new Radio("mes",new Model("Mes"));
+		
+		
+		radioContainer = new WebMarkupContainer("radioContainer");
+		radioContainer.setOutputMarkupId(true);
+		radioContainer.add(radiog);
+		add(radioContainer);
 		
 		radiog.add(dia.add(new AjaxEventBehavior("onchange") {
 		     protected void onEvent(AjaxRequestTarget target) {
@@ -329,7 +332,6 @@ public class EntradasPage extends BasePage {
 		
         listViewContainer.setOutputMarkupId(true);
 		listViewContainer.add(slickGrid);
-		listViewContainer.add(radiog);
 		listViewContainer.setVersioned(false);
 		add(listViewContainer);
 		
@@ -592,6 +594,25 @@ public class EntradasPage extends BasePage {
 				}
 				
 			};
+			
+			
+			
+			AjaxButton limpiar = new AjaxButton("limpiar", this) {
+			
+				@Override
+				protected void onSubmit(AjaxRequestTarget target, Form<?> form) {	
+					EntradaForm.this.setModelObject(new Entrada());
+					target.add(form);
+					target.add(feedBackPanel);
+                    target.appendJavaScript("start(); initYUI();");
+                    target.add(listViewContainer);
+                    target.add(labelContainer);
+				}
+				
+			};
+			
+			limpiar.setDefaultFormProcessing(false);
+			add(limpiar);
 			
 			
 			add(mensajeProyecto);

@@ -61,13 +61,18 @@
 	
 				<br/>
 				
-				<div style="position: absolute; left: 260px; top: 200px;">
+				<div style="position: absolute; left: 280px; top: 200px;">
 					<input wicket:id="submit" value="Confirmar" type="submit"/>
+				</div>
+				
+				<div style="position: absolute; left: 220px; top: 200px;">
+					<input wicket:id="limpiar" value="Limpiar" type="submit"/>
 				</div>
 	
 			
 		</form>
 	
+
 	
 		<div wicket:id="labelContainer" style="position: absolute; left: 400px; top: 190px;">
 				<label for="horasAcumuladasDia">Horas Diarias</label>
@@ -79,16 +84,20 @@
 				<label for="horasAcumuladasMes">Horas Mensuales</label>
 				<span wicket:id="horasAcumuladasMes" name="horasAcumuladasMes">[[horas acumuladas]]</span>
 	    </div>
-			
-		<div wicket:id="listViewContainer" style="position:absolute;top:335px;left: 100px;">
-
+		
+		
+		<div wicket:id="radioContainer" style="position: absolute; left: 110px; top: 300px;">
 			<span wicket:id="selectorTiempo" style="position:absolute;top:330px;right:560px;width:200px;">
 	    		D<input wicket:id="dia" type="radio"  />
 	    		S<input wicket:id="semana" type="radio"/>
 				M<input wicket:id="mes" type="radio"/>
 	  		</span>
 	
-			<br/>
+		</div>
+		
+			
+		<div wicket:id="listViewContainer" style="position:absolute;top:335px;left: 100px;">	
+
 			<div wicket:id="slickGrid" style="width:900px;height:125px;"></div>
 			
 		</div>
