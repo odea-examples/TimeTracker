@@ -516,6 +516,7 @@ public class EntradasPage extends BasePage {
 					target.appendJavaScript("start(); initYUI();");
 					target.add(listViewContainer);
 					target.add(labelContainer);  
+					target.add(radioContainer);
 					EntradaForm.this.setModelObject(new Entrada());
 					
 					if (duracion.isValid()) {
@@ -591,6 +592,7 @@ public class EntradasPage extends BasePage {
 					target.add(ticketExt);
 					target.add(mensajeProyecto);
 					target.add(mensajeActividad);
+					target.add(radioContainer);
 				}
 				
 			};
@@ -607,6 +609,7 @@ public class EntradasPage extends BasePage {
                     target.appendJavaScript("start(); initYUI();");
                     target.add(listViewContainer);
                     target.add(labelContainer);
+                    target.add(radioContainer);
 				}
 				
 			};
