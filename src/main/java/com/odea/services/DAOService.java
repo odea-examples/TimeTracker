@@ -5,10 +5,15 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.google.gson.Gson;
 import com.odea.components.datepicker.HorasCargadasPorDia;
+import com.odea.components.slickGrid.Columna;
+import com.odea.components.slickGrid.Data;
+import com.odea.components.yuidatepicker.YuiDatePicker;
 import com.odea.dao.ActividadDAO;
 import com.odea.dao.EntradaDAO;
 import com.odea.dao.ProyectoDAO;
@@ -29,8 +34,12 @@ public class DAOService {
 	private transient ActividadDAO actividadDAO;
 	@Autowired
 	private transient ProyectoDAO proyectoDAO;
-		
 	
+	private Gson gson= new Gson();
+	
+	public Actividad getActividad(String nombre){
+		return actividadDAO.buscarPorNombre(nombre);
+	}
 	
 	public List<Actividad> getActividades(Proyecto proyecto){
 		return actividadDAO.getActividades(proyecto);
@@ -66,20 +75,20 @@ public class DAOService {
 		entradaDAO.agregarEntrada(entrada);
 	}
 	
-	public List<Entrada> getEntradas(Usuario usuario, Timestamp desde, Timestamp hasta){
-		return entradaDAO.getEntradas(usuario, desde, hasta);
+	public List<Data> getEntradas(Usuario usuario, Timestamp desde, Timestamp hasta){
+		return entradaDAO.getData(usuario, desde, hasta);
 	}
 	
-	public List<Entrada> getEntradasMensuales(Usuario usuario) {
-		return entradaDAO.getEntradasMensuales(usuario);
+	public List<Data> getEntradasMensuales(Usuario usuario, LocalDate fechaElegida) {
+		return entradaDAO.getEntradasMensuales(usuario, fechaElegida);
 	}
 	
-	public List<Entrada> getEntradasSemanales(Usuario usuario){
-		return entradaDAO.getEntradasSemanales(usuario);
+	public List<Data> getEntradasSemanales(Usuario usuario, LocalDate fechaElegida){
+		return entradaDAO.getEntradasSemanales(usuario, fechaElegida);
 	}
 
-	public List<Entrada> getEntradasDia(Usuario usuario) {
-		return entradaDAO.getEntradasDia(usuario);
+	public List<Data> getEntradasDia(Usuario usuario, LocalDate hoy) {
+		return entradaDAO.getEntradasDia(usuario, hoy);
 	}
 	
 	public List<HorasCargadasPorDia> getHorasDiaras(Usuario usuario){
@@ -108,18 +117,33 @@ public class DAOService {
 	}
 	
 	
-	public int getHorasSemanales(Usuario usuario){
-		return entradaDAO.getHorasSemanales(usuario);
+	public int getHorasSemanales(Usuario usuario, LocalDate now){
+		return entradaDAO.getHorasSemanales(usuario, now);
 	}
+	
+	public int getHorasDiarias(Usuario usuario, LocalDate now){
+		return entradaDAO.getHorasDiarias(usuario, now);
+	}
+
+	public int getHorasMensuales(Usuario usuario, LocalDate now){
+		return entradaDAO.getHorasMensuales(usuario, now);
+	}
+	
 	
 	public void borrarEntrada(Entrada entrada){
 		entradaDAO.borrarEntrada(entrada);
+	}
+	public void borrarEntrada(Timestamp entradaID){
+		entradaDAO.borrarEntrada(entradaID);
 	}
 	
 	public void modificarEntrada(Entrada entrada) {
 		entradaDAO.modificarEntrada(entrada);
 	}
 	
+	public Proyecto getProyecto(String nombre){
+		return proyectoDAO.buscarPorNombre(nombre);
+	}
 	
 	public List<Proyecto> getProyectos(){
 		return proyectoDAO.getProyectos();
@@ -169,6 +193,10 @@ public class DAOService {
 	
 	public List<Usuario> getUsuarios() {
 		return usuarioDAO.getUsuarios();
+	}
+	
+	public String toJson(Object o){
+		return gson.toJson(o);
 	}
 
 	

@@ -36,9 +36,9 @@ public class AnnotationsShiroAuthorizationStrategy implements IAuthorizationStra
 		if (notLoggedIn && !component.getPage().getClass().toString().equals("class com.odea.LoginPage")) {
 			throw new RestartResponseAtInterceptPageException(new LoginPage());
 		}
-		else if (component.getPage().getClass().toString().equals("class com.odea.PruebaPage")) {
-			throw new RestartResponseAtInterceptPageException(new NoAutorizadoPage());
-		}
+//		else if (component.getPage().getClass().toString().equals("class com.odea.PruebaPage")) {
+//			throw new RestartResponseAtInterceptPageException(new NoAutorizadoPage());
+//		}
 		
 		return true;	
 		/*

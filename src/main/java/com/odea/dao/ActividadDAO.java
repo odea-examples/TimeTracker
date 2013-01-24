@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
@@ -51,6 +52,22 @@ public class ActividadDAO extends AbstractDAO {
 	public void insertarNuevaActividad(Actividad actividad){
 		int id = jdbcTemplate.queryForInt("SELECT max(a_id) FROM activities") + 1;
 		jdbcTemplate.update("INSERT INTO activities(a_id,a_name) VALUES(?,?)", id, actividad.getNombre());
+	}
+	
+	public Actividad buscarPorNombre(String nombre){
+		
+		if (nombre.charAt(0)== " ".charAt(0)){
+			nombre = nombre.substring(1);
+		}
+		
+		Integer id;
+		try {
+			id = jdbcTemplate.queryForInt("SELECT a_id FROM activities where a_name=?", nombre);
+		} catch (DataAccessException e) {
+			nombre = nombre.replaceAll("ó","Ã³").replaceAll("é","Ã©").replaceAll("ñ","Ã±").replaceAll("á","Ã¡").replaceAll("í","Ã­") ;		
+			id = jdbcTemplate.queryForInt("SELECT a_id FROM activities where a_name=?", nombre);
+		}
+		return new Actividad(id, nombre);
 	}
 	
 

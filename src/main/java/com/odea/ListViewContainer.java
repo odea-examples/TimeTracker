@@ -73,11 +73,12 @@ public class ListViewContainer extends WebMarkupContainer {
             	
             	logger.debug("Buscando entradas de usuario - " + usuario);
             	
-                List<Entrada> entradas = daoService.getEntradasSemanales(usuario);
-                
-                logger.debug("Busqueda finalizada");
-                
-                return entradas;
+//                List<Entrada> entradas = daoService.getEntradasSemanales(usuario);
+//                
+//                logger.debug("Busqueda finalizada");
+//                
+//                return entradas;
+                return null;
             }
         };
     }
