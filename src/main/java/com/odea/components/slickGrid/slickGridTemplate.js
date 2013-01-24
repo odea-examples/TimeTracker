@@ -160,7 +160,7 @@ function init(dataSecundaria) {
       //This is possible because in the formatter we have assigned the row id itself as the button id;
       //now assuming your grid is called 'grid'
     	  //TODO
-    	  grid.gotoCell(2,2);
+//    	  grid.gotoCell(0,2);
     	  grid.invalidate();
     	  idBorrada= id;
       }

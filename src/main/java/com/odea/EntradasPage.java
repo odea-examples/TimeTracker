@@ -183,7 +183,7 @@ public class EntradasPage extends BasePage {
 			@Override
 			protected void onInfoSend(AjaxRequestTarget target,String realizar, Data data) {
 				if (realizar=="borrar"){
-					SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
+					SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
 					java.util.Date parsedDate = null;
 					try {
 						parsedDate = dateFormat.parse(data.getId());

@@ -279,6 +279,15 @@ public List<Data> getData(Usuario usuario, Timestamp desdeSQL, Timestamp hastaSQ
 	}
 	public void borrarEntrada(Timestamp entradaID)
 	{
+		System.out.println("--------------------------------");
+		System.out.println("--------------------------------");
+		System.out.println("--------------------------------");
+		System.out.println("--------------------------------");
+		System.out.println("--------------------------------");
+		System.out.println("--------------------------------");
+		System.out.println("--------------------------------");
+		System.out.println("--------------------------------");
+		System.out.println(entradaID);
 		jdbcTemplate.update("DELETE FROM activity_log WHERE al_timestamp=?", entradaID);
 	}
 		
