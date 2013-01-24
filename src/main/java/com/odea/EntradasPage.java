@@ -9,8 +9,6 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-import javax.swing.plaf.basic.BasicBorders.RadioButtonBorder;
-
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.apache.wicket.AttributeModifier;
@@ -40,6 +38,7 @@ import org.joda.time.LocalDate;
 import com.odea.behavior.noInput.NoInputBehavior;
 import com.odea.behavior.numberComma.NumberCommaBehavior;
 import com.odea.behavior.onlyNumber.OnlyNumberBehavior;
+import com.odea.components.ajax.AbstractInitializableComponentBehavior;
 import com.odea.components.datepicker.DatePickerDTO;
 import com.odea.components.datepicker.HorasCargadasPorDia;
 import com.odea.components.slickGrid.Data;
@@ -238,7 +237,7 @@ public class EntradasPage extends BasePage {
 			horasSemanalesModel.setObject(daoService.getHorasSemanales(usuario,fechaActual));
 			target.add(listViewContainer);
 			target.add(labelContainer); 
-			target.appendJavaScript(append+"initYUI();");
+			target.appendJavaScript(append);
 				
 			}
 			
@@ -249,7 +248,7 @@ public class EntradasPage extends BasePage {
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, EntradaForm form) {
 				daoService.agregarEntrada(form.getModelObject(), usuario);
-				target.appendJavaScript("start(); initYUI();");
+				target.appendJavaScript("start();");
 //				target.appendJavaScript("startCalendar();");
 				target.add(listViewContainer);
 				target.add(labelContainer); 
@@ -295,7 +294,7 @@ public class EntradasPage extends BasePage {
 		           
 		            target.add(listViewContainer);
 		            target.add(labelContainer); 
-		            target.appendJavaScript(append+";initYUI();");
+		            target.appendJavaScript(append);
 		      }
 		})); 
 		radiog.add(semana.add(new AjaxEventBehavior("onchange") {
@@ -310,7 +309,7 @@ public class EntradasPage extends BasePage {
 		           
 		            target.add(listViewContainer);
 		            target.add(labelContainer);
-		            target.appendJavaScript(append+";initYUI();");
+		            target.appendJavaScript(append);
 		      }
 		})); 
 		radiog.add(mes.add(new AjaxEventBehavior("onchange") {
@@ -325,7 +324,7 @@ public class EntradasPage extends BasePage {
 		           
 		            target.add(listViewContainer);
 		            target.add(labelContainer); 
-		            target.appendJavaScript(append+";initYUI();");
+		            target.appendJavaScript(append);
 		               
 		            }
 		})); 
@@ -489,6 +488,15 @@ public class EntradasPage extends BasePage {
 			};
 			
 			
+			fecha.add(new AbstractInitializableComponentBehavior(){
+
+				@Override
+				public String getInitJSCall() {
+					return "initYUI();";
+				}
+				
+			});
+			
             fecha.setRequired(true);
             fecha.setLabel(Model.of("Fecha"));
 			fecha.add(new NoInputBehavior());
@@ -516,7 +524,7 @@ public class EntradasPage extends BasePage {
 				protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 					EntradaForm.this.onSubmit(target, (EntradaForm)form);								
 					target.add(feedBackPanel);
-					target.appendJavaScript("start(); initYUI();");
+					target.appendJavaScript("start();");
 					target.add(listViewContainer);
 					target.add(labelContainer);  
 					target.add(radioContainer);
@@ -587,7 +595,7 @@ public class EntradasPage extends BasePage {
 					}else{
 						mensajeActividad.add(new AttributeModifier("style", new Model("font-weight:bold;color:red")));
 					}
-					target.appendJavaScript("start(); initYUI();");
+					target.appendJavaScript("start();");
 					
 					target.add(feedBackPanel);
 					target.add(fecha);
@@ -609,7 +617,7 @@ public class EntradasPage extends BasePage {
 					EntradaForm.this.setModelObject(new Entrada());
 					target.add(form);
 					target.add(feedBackPanel);
-                    target.appendJavaScript("start(); initYUI();");
+                    target.appendJavaScript("start();");
                     target.add(listViewContainer);
                     target.add(labelContainer);
                     target.add(radioContainer);
