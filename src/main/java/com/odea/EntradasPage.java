@@ -9,6 +9,8 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import javax.swing.plaf.basic.BasicBorders.RadioButtonBorder;
+
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.apache.wicket.AttributeModifier;
@@ -470,6 +472,7 @@ public class EntradasPage extends BasePage {
 					horasSemanalesModel.setObject(daoService.getHorasSemanales(usuario,fechaActual));
 					target.add(listViewContainer);
 					target.add(labelContainer);  
+					target.add(radioContainer);
 					target.appendJavaScript(append);
 				}
 				
