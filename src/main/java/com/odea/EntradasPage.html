@@ -11,110 +11,87 @@
 <wicket:extend>
 
 
-
-	<form wicket:id="form">
+	<div style="position: relative; min-width: 1024px; min-height: 400px;;">
 		
-			<span wicket:id="feedBackPanel"></span>
-			
-			<u>Los campos marcados con un asterisco son obligatorios.</u>
-			<br/>
-			<br/>
-			
-			<div>
-				<b><label for="proyecto">Proyecto *</label> </b> 
-				<select wicket:id="proyecto" name="proyecto"/> <span wicket:id="mensajeProyecto">Mensaje de campo necesario</span>
-			</div>
-
-			<div>
-				<b><label for="actividad">Actividad *</label> </b>
-				<select wicket:id="actividad" name="actividad"/> <span wicket:id="mensajeActividad">Mensaje de campo necesario</span>
-			</div>
-
-			<div>
-				<b><label for="duracion">Duracion *</label></b> 
-				<input type="text" wicket:id="duracion" name="duracion"/> Formato: hh:mm o 0,00h
-			</div>
-
-			<div>
-<!-- 				<b><label for="fecha">Fecha *</label> </b> -->
-				<div wicket:id="fecha"></div> <br>
-				<br>
-				<br>
-				<br>
-				<br>
-				<br>
-				<br>
-				<br>
-				<br>
-				<br>
-				<br>
-				<br>
-				<br>
-				<br>
-			</div>
-
-			<div>
-				<b><label for="ticketBZ">Ticket Bugzilla</label> 
-				<input type="text" wicket:id="ticketBZ" name="ticketBZ"></b>
-			</div>
-
-			<div>
-				<b><label for="sistemaExterno">Sistema Externo</label>
-				<select wicket:id="sistemaExterno" name="sistemaExterno" style="width:250px"/></b>
-			</div>
-
-			<div>
-				<b><label for="ticketExterno">ID Ticket Externo</label> 
-				<input type="text" wicket:id="ticketExterno" name="ticketExterno"/></b>
-			</div>
-			
-			<div>
-				<b><label for="nota">Nota</label></b> <br> 
-				<b><textarea wicket:id="nota" name="nota" rows="10" cols="40" scrolling="yes"/></b>
-			</div>
-
-			<br/>
-			
-			<input wicket:id="submit" value="Confirmar" type="submit" />
-
-
-			<br/>
-			<br/>
-			<br/>
-				<span wicket:id="selectorTiempo">
-    		D<input wicket:id="dia" type="radio"/>
-    		S<input wicket:id="semana" type="radio"/>
-			M<input wicket:id="mes" type="radio"/>
-  				</span>
-
+		<form wicket:id="form">	
+				<span wicket:id="feedBackPanel"></span>
+				
+				<u>Los campos marcados con un asterisco son obligatorios.</u>
+				<br/>
+				<br/>
+				
+					<div wicket:id="fecha" style="display: inline;"></div> 	
+				
+				<div style="position: absolute; left: 230px;">
+					<div>
+						<b><label for="proyecto">Proyecto *</label> </b> 
+						<select wicket:id="proyecto" name="proyecto"/> <span wicket:id="mensajeProyecto">Mensaje de campo necesario</span>
+					</div>
 		
-	</form>
+					<div>
+						<b><label for="actividad">Actividad *</label> </b>
+						<select wicket:id="actividad" name="actividad"/> <span wicket:id="mensajeActividad">Mensaje de campo necesario</span>
+					</div>
+		
+					<div>
+						<b><label for="duracion">Duracion *</label></b> 
+						<input type="text" wicket:id="duracion" name="duracion"/> Formato: hh:mm o 0,00h
+					</div>
+		
+					<div>
+						<b><label for="ticketBZ">Ticket Bugzilla</label> 
+						<input type="text" wicket:id="ticketBZ" name="ticketBZ"></b>
+					</div>
+		
+					<div>
+						<b><label for="sistemaExterno">Sistema Externo</label>
+						<select wicket:id="sistemaExterno" name="sistemaExterno" style="width:250px"/></b>
+					</div>
+		
+					<div>
+						<b><label for="ticketExterno">ID Ticket Externo</label> 
+						<input type="text" wicket:id="ticketExterno" name="ticketExterno"/></b>
+					</div>
+				</div>
+				
+				<div style= "position: absolute; right: 50px; left: auto;">
+					<b><label for="nota">Nota</label></b> <br> 
+					<b><textarea wicket:id="nota" name="nota" rows="10" cols="40" scrolling="yes"/></b>
+				</div>
 	
-
-
-
+				<br/>
+				
+				<div style="position: absolute; left: 260px; top: 200px;">
+					<input wicket:id="submit" value="Confirmar" type="submit"/>
+				</div>
 	
-	<div wicket:id="listViewContainer" style="position:absolute;top:250px;right:560px;width:200px;">
-		<div>
-			<label for="horasAcumuladasDia">Horas Diarias</label>
-			<span wicket:id="horasAcumuladasDia" name="horasAcumuladasDia">[[horas acumuladas]]</span>
-			<br>
-			<label for="horasAcumuladasSemana">Horas Semanales</label>
-			<span wicket:id="horasAcumuladasSemana" name="horasAcumuladasSemana">[[horas acumuladas]]</span>
-			<br>
-			<label for="horasAcumuladasMes">Horas Mensuales</label>
-			<span wicket:id="horasAcumuladasMes" name="horasAcumuladasMes">[[horas acumuladas]]</span>
+			
+		</form>
+	
+	
+		<div wicket:id="labelContainer" style="position: absolute; left: 400px; top: 190px;">
+				<label for="horasAcumuladasDia">Horas Diarias</label>
+				<span wicket:id="horasAcumuladasDia" name="horasAcumuladasDia">[[horas acumuladas]]</span>
+				<br>
+				<label for="horasAcumuladasSemana">Horas Semanales</label>
+				<span wicket:id="horasAcumuladasSemana" name="horasAcumuladasSemana">[[horas acumuladas]]</span>
+				<br>
+				<label for="horasAcumuladasMes">Horas Mensuales</label>
+				<span wicket:id="horasAcumuladasMes" name="horasAcumuladasMes">[[horas acumuladas]]</span>
+	    </div>
+			
+		<div wicket:id="listViewContainer" style="position:absolute;top:335px;left: 100px;">
+
+			<span wicket:id="selectorTiempo" style="position:absolute;top:330px;right:560px;width:200px;">
+	    		D<input wicket:id="dia" type="radio"  />
+	    		S<input wicket:id="semana" type="radio"/>
+				M<input wicket:id="mes" type="radio"/>
+	  		</span>
+	
+			<br/>
+			<div wicket:id="slickGrid" style="width:900px;height:125px;"></div>
+			
 		</div>
-		
-		
-		<h3>Entradas</h3>
-		
-		<br/>
-		
-		
-		<br/>
-		<div wicket:id="slickGrid" style="width:735px;height:500px;"></div>
-		
 	</div>
-
+		
 </wicket:extend>

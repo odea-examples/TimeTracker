@@ -12,6 +12,7 @@ import java.util.List;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
@@ -74,6 +75,8 @@ public class EntradasPage extends BasePage {
 	Label horasAcumuladasMes;
 	
 	WebMarkupContainer listViewContainer;
+	WebMarkupContainer radioContainer;
+	WebMarkupContainer labelContainer;
 	
 	public EntradasPage() {
 		
@@ -122,7 +125,7 @@ public class EntradasPage extends BasePage {
 
 		this.listViewContainer = new WebMarkupContainer("listViewContainer");
 		this.listViewContainer.setOutputMarkupId(true);
-		
+		labelContainer = new WebMarkupContainer("labelContainer");
 		
 		
 		final SlickGrid slickGrid = new SlickGrid("slickGrid") {
@@ -232,6 +235,7 @@ public class EntradasPage extends BasePage {
 			horasMesModel.setObject(daoService.getHorasMensuales(usuario,fechaActual));
 			horasSemanalesModel.setObject(daoService.getHorasSemanales(usuario,fechaActual));
 			target.add(listViewContainer);
+			target.add(labelContainer); 
 			target.appendJavaScript(append+"initYUI();");
 				
 			}
@@ -246,45 +250,14 @@ public class EntradasPage extends BasePage {
 				target.appendJavaScript("start(); initYUI();");
 //				target.appendJavaScript("startCalendar();");
 				target.add(listViewContainer);
+				target.add(labelContainer); 
 				target.add(form);
 			}
 		};
+		
+		radioContainer = new WebMarkupContainer("radioContainer");
+		radioContainer.setOutputMarkupId(true);
         
-        
-//		ArrayList<String> opcionesTiempo = new ArrayList<String>();
-//		opcionesTiempo.add("Dia");
-//		opcionesTiempo.add("Semana");
-//		opcionesTiempo.add("Mes");
-		
-
-		
-		
-		
-//		selectorTiempo = new DropDownChoice<String>("selectorTiempo", modelTiempo, opcionesTiempo);
-//		selectorTiempo.setOutputMarkupId(true);
-//		selectorTiempo.add(new AjaxFormComponentUpdatingBehavior("onchange"){
-//			@Override
-//			protected void onUpdate(AjaxRequestTarget target) {
-//				
-//				if (selectorTiempo.getConvertedInput().equals("Mes")) {
-//					horasMesModel.setObject(daoService.getHorasMensuales(usuario,fechaActual));
-//					target.add(listViewContainer);
-//					target.appendJavaScript("alert('holaaaa')");
-//				}
-//				if (selectorTiempo.getConvertedInput().equals("Semana")) {
-//					horasSemanalesModel.setObject(daoService.getHorasSemanales(usuario,fechaActual));
-//					target.add(listViewContainer);
-////					target.appendJavaScript("start(); initYUI();");
-//				}
-//				if (selectorTiempo.getConvertedInput().equals("Dia")) {
-//					horasDiaModel.setObject(daoService.getHorasDiarias(usuario,fechaActual));
-//					target.add(listViewContainer);
-////					target.appendJavaScript("start(); initYUI();");
-//				}
-//				target.appendJavaScript("start(); initYUI();");			
-//			}
-//		});
-		
 		
 		horasAcumuladasDia = new Label("horasAcumuladasDia", this.horasDiaModel);
 		horasAcumuladasDia.setOutputMarkupId(true);
@@ -298,18 +271,80 @@ public class EntradasPage extends BasePage {
 		horasAcumuladasMes.setOutputMarkupId(true);
 		horasAcumuladasMes.setOutputMarkupPlaceholderTag(true);
 		
+		IModel<String> modelTiempo = new Model<String>();
+		final RadioGroup<String> radiog= new RadioGroup<String>("selectorTiempo",modelTiempo);
+		
+		Radio dia = new Radio("dia",new Model("Dia"));
+		Radio semana = new Radio("semana",new Model("Semana"));
+		Radio mes = new Radio("mes",new Model("Mes"));
+		
+		radiog.add(dia.add(new AjaxEventBehavior("onchange") {
+		     protected void onEvent(AjaxRequestTarget target) {
+		    	 List<Data> entradas;
+		            entradas= daoService.getEntradasDia(EntradasPage.this.usuario, fechaActual);
+		            String append = "start("+ daoService.toJson(entradas) +");";
+		           
+		            if (entradas.isEmpty()){
+		                append= "start("+ daoService.toJson("vacio") +");";;
+		            }
+		           
+		            target.add(listViewContainer);
+		            target.add(labelContainer); 
+		            target.appendJavaScript(append+";initYUI();");
+		      }
+		})); 
+		radiog.add(semana.add(new AjaxEventBehavior("onchange") {
+		     protected void onEvent(AjaxRequestTarget target) {
+		    	 List<Data> entradas;
+		            entradas= daoService.getEntradasSemanales(EntradasPage.this.usuario, fechaActual);
+		            String append = "start("+ daoService.toJson(entradas) +");";
+		           
+		            if (entradas.isEmpty()){
+		                append= "start("+ daoService.toJson("vacio") +");";;
+		            }
+		           
+		            target.add(listViewContainer);
+		            target.add(labelContainer);
+		            target.appendJavaScript(append+";initYUI();");
+		      }
+		})); 
+		radiog.add(mes.add(new AjaxEventBehavior("onchange") {
+		     protected void onEvent(AjaxRequestTarget target) {
+		    	 List<Data> entradas;
+		            entradas= daoService.getEntradasMensuales(EntradasPage.this.usuario, fechaActual);
+		            String append = "start("+ daoService.toJson(entradas) +");";
+		           
+		            if (entradas.isEmpty()){
+		                append= "start("+ daoService.toJson("vacio") +");";;
+		            }
+		           
+		            target.add(listViewContainer);
+		            target.add(labelContainer); 
+		            target.appendJavaScript(append+";initYUI();");
+		               
+		            }
+		})); 
+		
 		
 		
         listViewContainer.setOutputMarkupId(true);
 		listViewContainer.add(slickGrid);
-		listViewContainer.add(horasAcumuladasDia);
-		listViewContainer.add(horasAcumuladasSemana);
-		listViewContainer.add(horasAcumuladasMes);
+		listViewContainer.add(radiog);
 		listViewContainer.setVersioned(false);
 		add(listViewContainer);
+		
+		
+		labelContainer.add(horasAcumuladasDia);
+		labelContainer.add(horasAcumuladasSemana);
+		labelContainer.add(horasAcumuladasMes);
+		labelContainer.setOutputMarkupId(true);
+		
+		add(labelContainer);
 		add(form);	
+
 	
 	}
+
 
 	public abstract class EntradaForm extends Form<Entrada> {
 		public IModel<Entrada> entradaModel = new CompoundPropertyModel<Entrada>(new Entrada());
@@ -432,6 +467,7 @@ public class EntradasPage extends BasePage {
 					horasMesModel.setObject(daoService.getHorasMensuales(usuario,fechaActual));
 					horasSemanalesModel.setObject(daoService.getHorasSemanales(usuario,fechaActual));
 					target.add(listViewContainer);
+					target.add(labelContainer);  
 					target.appendJavaScript(append);
 				}
 				
@@ -465,16 +501,6 @@ public class EntradasPage extends BasePage {
 				}
 				
 			});
-			IModel<String> modelTiempo = new Model<String>();
-			RadioGroup<String> radiog= new RadioGroup<String>("selectorTiempo",modelTiempo);
-			
-			Radio dia = new Radio("dia",new Model("Dia"));
-			Radio semana = new Radio("semana",new Model("Semana"));
-			Radio mes = new Radio("mes",new Model("Mes"));
-			
-			radiog.add(dia);
-			radiog.add(semana);
-			radiog.add(mes);
 			
 						
 			AjaxButton submit = new AjaxButton("submit", this) {
@@ -487,6 +513,7 @@ public class EntradasPage extends BasePage {
 					target.add(feedBackPanel);
 					target.appendJavaScript("start(); initYUI();");
 					target.add(listViewContainer);
+					target.add(labelContainer);  
 					EntradaForm.this.setModelObject(new Entrada());
 					
 					if (duracion.isValid()) {
@@ -581,7 +608,6 @@ public class EntradasPage extends BasePage {
 			this.add(new OnRelatedFieldsNullValidator(sistemaExterno ,ticketExt, "Debe poner un sistema externo para poder poner un ticket externo"));
 			this.add(new OnRelatedFieldsNullValidator(ticketExt, sistemaExterno,"Debe ingresar un ticket con ese sistema externo elegido"));
 			add(submit);
-			add(radiog);
 			
 			this.setOutputMarkupId(true);
 		}

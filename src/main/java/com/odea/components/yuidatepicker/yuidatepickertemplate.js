@@ -1,6 +1,18 @@
 YAHOO.namespace("example.calendar");
 
+	
+
+
 initYUI = function() {
+/*	var txtBox = document.getElementById("${selector}");
+	txtBob.onfocus = function (e) {
+		var divContainer = document.getElementById("${calContainer}");
+		if(divContainer.style.display != 'block'){
+			divContainer.style.display = 'block';
+		}else{
+			divContainer.style.display = 'none';
+		}
+	};*/
 
     function handleSelect(type,args,obj) {
         var dates = args[0];
@@ -67,7 +79,10 @@ initYUI = function() {
 
 
     YAHOO.example.calendar.cal1.render();
-
+    //YAHOO.example.calendar.cal1.hide();
+    
+    //YAHOO.util.Event.addListener("${selector}", "click", YAHOO.example.calendar.cal1.show, YAHOO.example.calendar.cal1, true); 
+    
     YAHOO.util.Event.addListener("update", "click", updateCal);
     YAHOO.util.Event.addListener("dates", "submit", handleSubmit);
 }
