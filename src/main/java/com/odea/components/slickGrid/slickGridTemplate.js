@@ -99,7 +99,7 @@ $(".grid-header .ui-icon")
     if (JSON.stringify(column.name, null, 2) == JSON.stringify("Proyecto", null, 2)){
     	alert("ingrese una actividad o no se guardara su cambio.");
 //    	alert(JSON.stringify(editCommand, null, 2));
-    	grid.gotoCell(editCommand.row, editCommand.cell+1);
+//    	grid.gotoCell(editCommand.row, editCommand.cell+1);
     	item.actividad = "";
     	grid.updateRow(editCommand.row);
     }

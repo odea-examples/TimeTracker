@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
 
-public class Entrada implements Serializable {
+public class Entrada implements Serializable,Comparable<Entrada> {
 
 	private Timestamp idEntrada;
 	private Proyecto proyecto;
@@ -127,6 +127,50 @@ public class Entrada implements Serializable {
 				+ sistemaExterno + ", usuario=" + usuario + ", fecha=" + fecha
 				+ "]";
 	}
-	
+
+	@Override
+	public int compareTo(Entrada otraEntrada) {
+		
+		int resFecha = this.getFecha().compareTo(otraEntrada.getFecha());
+		int resProyecto = this.getProyecto().compareTo(otraEntrada.getProyecto());
+		int resActividad = this.getActividad().compareTo(otraEntrada.getActividad());
+		int resTicketBZ = this.getTicketBZ() - otraEntrada.getTicketBZ();
+		
+		if (resFecha != 0) {
+			return resFecha;
+			
+		} else if (resProyecto != 0) {
+			return resProyecto;
+			
+		} else if (resActividad != 0) {
+			return resActividad;
+			
+		} else if (resTicketBZ != 0) {
+			return resTicketBZ;
+		} 		
+
+
+		if (this.getSistemaExterno() != null && otraEntrada.getSistemaExterno() != null) {
+			int resSistemaExterno = this.getSistemaExterno().compareTo(otraEntrada.getSistemaExterno());
+			
+			if (resSistemaExterno != 0) {
+				return resSistemaExterno;
+			}
+			
+		}
+		
+		if (this.getTicketExterno() != null && otraEntrada.getTicketExterno() != null) {
+			int resTicketExterno = this.getTicketExterno().compareTo(otraEntrada.getTicketExterno());
+			
+			if (resTicketExterno != 0) {
+				return resTicketExterno;
+			}
+			
+		}
+		
+		
+		return 0;
+			
+	}
 	
 }

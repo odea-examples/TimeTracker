@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -109,37 +110,55 @@ public class EntradaDAO extends AbstractDAO {
 				Usuario usuario = new Usuario(rs.getInt(9), rs.getString(12), rs.getString(13));
 				return new Entrada(rs.getTimestamp(1), proyecto, actividad, String.valueOf(((Double.parseDouble(String.valueOf(rs.getTime(4).getTime()))/3600) - 3000) /1000).substring(0,3)  /* String.valueOf(((Time.valueOf(rs.getTime(4)).getMilliseconds() /3600)-3000))*/, rs.getString(5), rs.getInt(6), rs.getString(7), parsearSistemaExterno(rs.getString(8)), usuario, rs.getDate(10));
 			}}, usuario.getIdUsuario(), desdeSQL, hastaSQL);
-		//TODO anotacion
-	}
-public List<Data> getData(Usuario usuario, Timestamp desdeSQL, Timestamp hastaSQL){
 		
-		return jdbcTemplate.query(sqlEntradas +" WHERE e.al_user_id = ? AND e.al_project_id = p.p_id AND e.al_activity_id = a.a_id AND e.al_user_id = u.u_id AND e.al_date BETWEEN ? AND ?", new RowMapper<Data>() {
+	}
+	public List<Data> getData(Usuario usuario, Timestamp desdeSQL, Timestamp hastaSQL){
+		
+		List<Entrada> listaEntradas = jdbcTemplate.query(sqlEntradas +" WHERE e.al_user_id = ? AND e.al_project_id = p.p_id AND e.al_activity_id = a.a_id AND e.al_user_id = u.u_id AND e.al_date BETWEEN ? AND ?", new RowMapper<Entrada>() {
 			@Override
-			public Data mapRow(ResultSet rs, int rowNum) throws SQLException {
+			public Entrada mapRow(ResultSet rs, int rowNum) throws SQLException {
+				
 				Proyecto proyecto = new Proyecto(rs.getInt(2), rs.getString(11));
 				Actividad actividad = new Actividad(rs.getInt(3), rs.getString(14));
 				Usuario usuario = new Usuario(rs.getInt(9), rs.getString(12), rs.getString(13));
-				Entrada e = new Entrada(rs.getTimestamp(1), proyecto, actividad, String.valueOf(((Double.parseDouble(String.valueOf(rs.getTime(4).getTime()))/3600) - 3000) /1000).substring(0,3)  /* String.valueOf(((Time.valueOf(rs.getTime(4)).getMilliseconds() /3600)-3000))*/, rs.getString(5), rs.getInt(6), rs.getString(7), parsearSistemaExterno(rs.getString(8)), usuario, rs.getDate(10));
-				Data data;
-				Calendar calendar = Calendar.getInstance();
-				calendar.setTime(e.getIdEntrada());
-				String stringTiempo="";
-				stringTiempo+=e.getDuracion().toString();
-				calendar.setTime(e.getFecha());
-				String stringFecha ="";
-				stringFecha+=calendar.get(calendar.DAY_OF_MONTH);
-				stringFecha+="/";
-				if (calendar.get(calendar.MONTH)<9){
-					stringFecha+="0";
-				}
-				stringFecha+=calendar.get((calendar.MONTH))+1;
-				stringFecha+="/";
-				stringFecha+=calendar.get(Calendar.YEAR);
-				data = new Data(e.getIdEntrada().toString(),stringTiempo,e.getActividad().toString(),e.getProyecto().toString(),stringFecha,Integer.toString(e.getTicketBZ()), e.getTicketExterno(),rs.getString(8),e.getNota());
-				return (data);
-				//				return new Entrada(rs.getTimestamp(1), proyecto, actividad, String.valueOf(((Double.parseDouble(String.valueOf(rs.getTime(4).getTime()))/3600) - 3000) /1000).substring(0,3)  /* String.valueOf(((Time.valueOf(rs.getTime(4)).getMilliseconds() /3600)-3000))*/, rs.getString(5), rs.getInt(6), rs.getString(7), parsearSistemaExterno(rs.getString(8)), usuario, rs.getDate(10));
+				Entrada e = new Entrada(rs.getTimestamp(1), proyecto, actividad, String.valueOf(((Double.parseDouble(String.valueOf(rs.getTime(4).getTime()))/3600) - 3000) /1000).substring(0,3)  /* String.valueOf(((Time.valueOf(rs.getTime(4)).getMilliseconds() /3600)-3000))*/, rs.getString(5), rs.getInt(6), rs.getString(7), rs.getString(8), usuario, rs.getDate(10));
+				return e;
+				
 			}}, usuario.getIdUsuario(), desdeSQL, hastaSQL);
-		//TODO anotacion
+		
+		
+		//Ordenamos por fecha
+		
+		Collections.sort(listaEntradas);
+		
+		
+		//Transformar en Data
+		
+		List<Data> listaData = new ArrayList<Data>();
+		Data data;
+		
+		for (Entrada entrada : listaEntradas) {			
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(entrada.getIdEntrada());
+			String stringTiempo="";
+			stringTiempo+=entrada.getDuracion().toString();
+			calendar.setTime(entrada.getFecha());
+			String stringFecha ="";
+			stringFecha+=calendar.get(calendar.DAY_OF_MONTH);
+			stringFecha+="/";
+			if (calendar.get(calendar.MONTH)<9){
+				stringFecha+="0";
+			}
+			stringFecha+=calendar.get((calendar.MONTH))+1;
+			stringFecha+="/";
+			stringFecha+=calendar.get(Calendar.YEAR);
+			
+			data = new Data(entrada.getIdEntrada().toString(),stringTiempo,entrada.getActividad().toString(),entrada.getProyecto().toString(),stringFecha,Integer.toString(entrada.getTicketBZ()), entrada.getTicketExterno(), entrada.getSistemaExterno(), entrada.getNota());
+			listaData.add(data);
+		}
+		
+		return listaData;
+		
 	}
 	
 	public Collection<Entrada> getEntradas2(Date desde,Date hasta){
