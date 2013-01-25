@@ -227,6 +227,7 @@ public class EntradasPage extends BasePage {
 					daoService.modificarEntrada(entrada);
 				}
 				List<Data> entradas;
+				fechaActual = new LocalDate();
 				entradas= daoService.getEntradasDia(EntradasPage.this.usuario, fechaActual);
 				String append = "start("+ daoService.toJson(entradas) +");";
 				
