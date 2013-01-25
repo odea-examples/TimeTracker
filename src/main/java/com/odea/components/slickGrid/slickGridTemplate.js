@@ -107,7 +107,7 @@ $(".grid-header .ui-icon")
 //        var entrada = document.getElementById("${selector}");
 //        entrada.value=item;
     	Wicket.Ajax.ajax({"u":"${url}","c":"${gridId}","ep":{'modificar':JSON.stringify(item, null, 2)}});
-    	alert(JSON.stringify(item, null, 2));    	
+//    	alert(JSON.stringify(item, null, 2));    	
     }
     
   }
@@ -123,10 +123,10 @@ $(".grid-header .ui-icon")
 
 
 function init(dataSecundaria) {
-	if (dataSecundaria == null || dataSecundaria == undefined || !dataSecundaria.length) {
+	if ((dataSecundaria == null || dataSecundaria == undefined || !dataSecundaria.length) && ${data}!=null) {
 		data= ${data};
 	  }
-	  else if(dataSecundaria != "vacio"){
+	  else if(dataSecundaria != "vacio" && !(dataSecundaria == null || dataSecundaria == undefined || !dataSecundaria.length)){
 		data= dataSecundaria;
 	  }
 	  else{
@@ -160,12 +160,10 @@ function init(dataSecundaria) {
       //This is possible because in the formatter we have assigned the row id itself as the button id;
       //now assuming your grid is called 'grid'
     	  //TODO
-//    	  grid.gotoCell(0,2);
     	  grid.invalidate();
     	  idBorrada= id;
       }
       else{
-//    	  alert("no hace nada, despues saca este alert :)");
       };
   });
 

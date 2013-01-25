@@ -75,6 +75,8 @@ public class EntradasPage extends BasePage {
 	Label horasAcumuladasSemana;
 	Label horasAcumuladasMes;
 	
+	EntradaForm form;
+	
 	WebMarkupContainer listViewContainer;
 	WebMarkupContainer radioContainer;
 	WebMarkupContainer labelContainer;
@@ -92,7 +94,7 @@ public class EntradasPage extends BasePage {
 			//TODO list model
             @Override
             protected List<Data> load() {
-            	return daoService.getEntradasSemanales(EntradasPage.this.usuario, new LocalDate());
+            	return daoService.getEntradasDia(EntradasPage.this.usuario, new LocalDate());
             }
         };
         
@@ -133,8 +135,9 @@ public class EntradasPage extends BasePage {
 			
 			@Override
 			protected String getData() {
-				List<Data> data= daoService.getEntradasDia(EntradasPage.this.usuario, new LocalDate());
-				return daoService.toJson(data);
+//				List<Data> data= daoService.getEntradasDia(EntradasPage.this.usuario, new LocalDate());
+//				return daoService.toJson(data);
+				return daoService.toJson(lstDataModel.getObject());
 			}
 			
 			@Override
@@ -191,8 +194,6 @@ public class EntradasPage extends BasePage {
 					}
 					java.sql.Timestamp timestamp = new java.sql.Timestamp(parsedDate.getTime());
 					
-					
-					
 					daoService.borrarEntrada(timestamp);
 				}
 				else{
@@ -232,23 +233,34 @@ public class EntradasPage extends BasePage {
 			if (entradas.isEmpty()){
 				append= "start("+ daoService.toJson("vacio") +");";;
 			}
+			lstDataModel.setObject(entradas);
 			horasDiaModel.setObject(daoService.getHorasDiarias(usuario,fechaActual));
 			horasMesModel.setObject(daoService.getHorasMensuales(usuario,fechaActual));
 			horasSemanalesModel.setObject(daoService.getHorasSemanales(usuario,fechaActual));
 			target.add(listViewContainer);
 			target.add(labelContainer); 
-			target.appendJavaScript(append);
+			target.add(form);
+//			target.appendJavaScript(append);
 				
 			}
 			
 		};
 		slickGrid.setOutputMarkupId(true);
+		slickGrid.add(new AbstractInitializableComponentBehavior(){
+
+			@Override
+			public String getInitJSCall() {
+				return "start("+ daoService.toJson(lstDataModel) +")";
+			}
+			
+		});
 		
-		EntradaForm form = new EntradaForm("form"){
+		form = new EntradaForm("form"){
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, EntradaForm form) {
 				daoService.agregarEntrada(form.getModelObject(), usuario);
-				target.appendJavaScript("start();");
+//				target.appendJavaScript("start();");
+				lstDataModel.setObject(daoService.getEntradasDia(usuario, new LocalDate()));
 //				target.appendJavaScript("startCalendar();");
 				target.add(listViewContainer);
 				target.add(labelContainer); 
@@ -291,10 +303,10 @@ public class EntradasPage extends BasePage {
 		            if (entradas.isEmpty()){
 		                append= "start("+ daoService.toJson("vacio") +");";;
 		            }
-		           
+		            lstDataModel.setObject(entradas);
 		            target.add(listViewContainer);
 		            target.add(labelContainer); 
-		            target.appendJavaScript(append);
+//		            target.appendJavaScript(append);
 		      }
 		})); 
 		radiog.add(semana.add(new AjaxEventBehavior("onchange") {
@@ -306,10 +318,10 @@ public class EntradasPage extends BasePage {
 		            if (entradas.isEmpty()){
 		                append= "start("+ daoService.toJson("vacio") +");";;
 		            }
-		           
+		            lstDataModel.setObject(entradas);
 		            target.add(listViewContainer);
 		            target.add(labelContainer);
-		            target.appendJavaScript(append);
+//		            target.appendJavaScript(append);
 		      }
 		})); 
 		radiog.add(mes.add(new AjaxEventBehavior("onchange") {
@@ -321,10 +333,10 @@ public class EntradasPage extends BasePage {
 		            if (entradas.isEmpty()){
 		                append= "start("+ daoService.toJson("vacio") +");";;
 		            }
-		           
+		            lstDataModel.setObject(entradas);
 		            target.add(listViewContainer);
 		            target.add(labelContainer); 
-		            target.appendJavaScript(append);
+//		            target.appendJavaScript(append);
 		               
 		            }
 		})); 
@@ -357,7 +369,7 @@ public class EntradasPage extends BasePage {
 		public DropDownChoice<String> sistemaExterno;
 		public TextField<String> duracion;
 		public TextField<String> ticketBZ;
-		public TextField<Date> fecha;
+		public YuiDatePicker fecha;
 		
 		public EntradaForm(String id) {
 			super(id);
@@ -469,10 +481,12 @@ public class EntradasPage extends BasePage {
 					horasDiaModel.setObject(daoService.getHorasDiarias(usuario,fechaActual));
 					horasMesModel.setObject(daoService.getHorasMensuales(usuario,fechaActual));
 					horasSemanalesModel.setObject(daoService.getHorasSemanales(usuario,fechaActual));
+					lstDataModel.setObject(data);
+//					target.appendJavaScript("alert('"+ daoService.toJson(lstDataModel.getObject() +"');"));
 					target.add(listViewContainer);
 					target.add(labelContainer);  
 					target.add(radioContainer);
-					target.appendJavaScript(append);
+//					target.appendJavaScript(append);
 				}
 				
 				@Override
@@ -524,7 +538,9 @@ public class EntradasPage extends BasePage {
 				protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 					EntradaForm.this.onSubmit(target, (EntradaForm)form);								
 					target.add(feedBackPanel);
-					target.appendJavaScript("start();");
+//					target.appendJavaScript("start();");
+					List<Data> entradas = daoService.getEntradasDia(usuario, new LocalDate());
+					lstDataModel.setObject(entradas);
 					target.add(listViewContainer);
 					target.add(labelContainer);  
 					target.add(radioContainer);
@@ -617,7 +633,9 @@ public class EntradasPage extends BasePage {
 					EntradaForm.this.setModelObject(new Entrada());
 					target.add(form);
 					target.add(feedBackPanel);
-                    target.appendJavaScript("start();");
+//                    target.appendJavaScript("start();");
+					List<Data> entradas = daoService.getEntradasDia(usuario,new LocalDate());
+					lstDataModel.setObject(entradas);
                     target.add(listViewContainer);
                     target.add(labelContainer);
                     target.add(radioContainer);
