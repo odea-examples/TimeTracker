@@ -652,6 +652,7 @@ public class EntradasPage extends BasePage {
 				@Override
 				protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 					LocalDate fechaHoy = new LocalDate();
+					fechaActual = fechaHoy;
 					
 					fecha.setModelObject(fechaHoy.toDate());
 					
