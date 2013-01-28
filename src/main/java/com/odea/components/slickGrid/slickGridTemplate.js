@@ -170,7 +170,7 @@ function init(dataSecundaria) {
     e.preventDefault();
   });
   grid.onClick.subscribe(function(e, args) {
-	  if (args.cell==0 && confirm('¿desea borrar?')){
+	  if (grid.getColumns()[args.cell].name=='Delete' && confirm('¿Seguro desea borrar?')){
 	    objeto = dataView.getItem(args.row);
         dataView.deleteItem(objeto.id);
 	    Wicket.Ajax.ajax({"u":"${url}","c":"${gridId}","ep":{'borrar':JSON.stringify(objeto.id, null, 2)}});
