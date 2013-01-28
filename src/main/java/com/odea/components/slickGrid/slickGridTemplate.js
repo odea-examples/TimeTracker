@@ -148,25 +148,6 @@ function init(dataSecundaria) {
     dataView.updateItem(args.item.id, args.item);
   });
 
-  //Now you can use jquery to hook up your delete button event
-  $('.del').live('click', function(){
-      var me = $(this), id = me.attr('id');
-      //assuming you have used a dataView to create your grid
-      //also assuming that its variable name is called 'dataView'
-      //use the following code to get the item to be deleted from it
-      if(idBorrada != id && confirm("¿Seguro desea eleminarlo?")){
-    	  dataView.deleteItem(id);
-    	  Wicket.Ajax.ajax({"u":"${url}","c":"${gridId}","ep":{'borrar':JSON.stringify(id, null, 2)}});
-      //This is possible because in the formatter we have assigned the row id itself as the button id;
-      //now assuming your grid is called 'grid'
-    	  //TODO
-    	  grid.invalidate();
-    	  idBorrada= id;
-      }
-      else{
-      };
-  });
-
   grid.onAddNewRow.subscribe(function (e, args) {
     var item = {"num": data.length, "id": "new_" + (Math.round(Math.random() * 10000)), "title": "New task", "duration": "1 day", "percentComplete": 0, "start": "01/01/2009", "finish": "01/01/2009", "effortDriven": false};
     $.extend(item, args.item);
@@ -188,6 +169,14 @@ function init(dataSecundaria) {
     grid.setSelectedRows(rows);
     e.preventDefault();
   });
+  grid.onClick.subscribe(function(e, args) {
+	  if (args.cell==0 && confirm('¿desea borrar?')){
+	    objeto = dataView.getItem(args.row);
+        dataView.deleteItem(objeto.id);
+	    Wicket.Ajax.ajax({"u":"${url}","c":"${gridId}","ep":{'borrar':JSON.stringify(objeto.id, null, 2)}});
+	    grid.invalidate();
+	  }
+	});
 
   grid.onSort.subscribe(function (e, args) {
     sortdir = args.sortAsc ? 1 : -1;
