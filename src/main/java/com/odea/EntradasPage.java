@@ -645,7 +645,29 @@ public class EntradasPage extends BasePage {
 			};
 			
 			limpiar.setDefaultFormProcessing(false);
-			add(limpiar);
+			
+			
+			AjaxButton btnFechaActual = new AjaxButton("btnFechaActual", this) {
+				
+				@Override
+				protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+					LocalDate fechaHoy = new LocalDate();
+					
+					fecha.setModelObject(fechaHoy.toDate());
+					
+					List<Data> dataLstView = daoService.getEntradasDia(EntradasPage.this.usuario, fechaHoy);
+					lstDataModel.setObject(dataLstView);
+					
+					target.add(form);
+					target.add(listViewContainer);
+                    target.add(labelContainer);
+                    target.add(radioContainer);
+                    target.add(feedBackPanel);
+				}
+				
+			};
+			
+			btnFechaActual.setDefaultFormProcessing(false);
 			
 			
 			add(mensajeProyecto);
@@ -662,6 +684,8 @@ public class EntradasPage extends BasePage {
 			this.add(new OnRelatedFieldsNullValidator(sistemaExterno ,ticketExt, "Debe poner un sistema externo para poder poner un ticket externo"));
 			this.add(new OnRelatedFieldsNullValidator(ticketExt, sistemaExterno,"Debe ingresar un ticket con ese sistema externo elegido"));
 			add(submit);
+			add(limpiar);
+			add(btnFechaActual);
 			
 			this.setOutputMarkupId(true);
 		}
