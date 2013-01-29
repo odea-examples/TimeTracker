@@ -18,6 +18,8 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.FormComponentPanel;
 import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.request.handler.TextRequestHandler;
 import org.apache.wicket.request.resource.CssResourceReference;
 import org.apache.wicket.request.resource.JavaScriptResourceReference;
@@ -26,6 +28,7 @@ import org.joda.time.LocalDate;
 
 import com.google.gson.Gson;
 import com.odea.behavior.noInput.NoInputBehavior;
+import com.odea.components.ajax.AbstractInitializableComponentBehavior;
 import com.odea.components.datepicker.DatePickerDTO;
 
 public abstract class YuiDatePicker extends FormComponentPanel<Date> implements IHeaderContributor {
@@ -51,6 +54,17 @@ public abstract class YuiDatePicker extends FormComponentPanel<Date> implements 
         add(this.calContainer);
         add(this.datePicker);
 
+        
+		this.add(new AbstractInitializableComponentBehavior(){
+
+			public String getInitJSCall() {
+				return "initYUI();";
+			}
+			
+		});
+
+        
+        
         this.ajaxBehavior = new AbstractDefaultAjaxBehavior() {
             @Override
             protected void respond(AjaxRequestTarget target) {
@@ -80,8 +94,9 @@ public abstract class YuiDatePicker extends FormComponentPanel<Date> implements 
 		
 		btnFechaActual.setDefaultFormProcessing(false);
 		btnFechaActual.setOutputMarkupId(true);
-        
+		
 		add(btnFechaActual);
+		
     }
 
     public void renderHead(IHeaderResponse response) {
