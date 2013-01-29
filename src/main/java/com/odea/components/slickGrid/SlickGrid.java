@@ -12,19 +12,21 @@ import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptContentHeaderItem;
 import org.apache.wicket.markup.head.JavaScriptReferenceHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.request.handler.TextRequestHandler;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.resource.CssResourceReference;
 import org.apache.wicket.request.resource.JavaScriptResourceReference;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.apache.wicket.util.string.StringValue;
 import org.apache.wicket.util.template.PackageTextTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.gson.Gson;
+import com.odea.components.ajax.AbstractInitializableComponentBehavior;
 import com.odea.dao.EntradaDAO;
-import com.odea.services.DAOService;
+
+
 
 public abstract class SlickGrid extends WebMarkupContainer{
+	private IModel<String> data;
+	private IModel<String> columnas;
 	private String jQuerySelector;
 	private static final long serialVersionUID = 1L;
 	private AbstractDefaultAjaxBehavior ajaxBehavior;
@@ -35,8 +37,10 @@ public abstract class SlickGrid extends WebMarkupContainer{
     @Autowired
     EntradaDAO entradadao;
     
-	public SlickGrid(String id) {
+	public SlickGrid(String id, IModel<String> data, IModel<String> columnas) {
 		super(id);
+		this.data = data;
+		this.columnas = columnas;
 		this.setOutputMarkupId(true);
         this.jQuerySelector= "#" +this.getMarkupId();
         this.ajaxBehavior = new AbstractDefaultAjaxBehavior() {
@@ -63,8 +67,18 @@ public abstract class SlickGrid extends WebMarkupContainer{
 		}; 
 		
         this.add(this.ajaxBehavior);
+        this.add(new AbstractInitializableComponentBehavior(){
 
-}
+			@Override
+			public String getInitJSCall() {
+				return "iniciar();";
+			}
+        	
+        });
+
+	}
+	
+	
 	@Override
 	public void renderHead(IHeaderResponse response) {
 		JSCrearResource("JS/lib/firebugx.js",response);
@@ -116,6 +130,10 @@ public abstract class SlickGrid extends WebMarkupContainer{
 	}
 	protected abstract void onInfoSend(AjaxRequestTarget target, String realizar, Data data);
 	
-	protected abstract String getColumns();
-	protected abstract String getData();
+	protected String getColumns() {
+		return this.columnas.getObject();
+	}
+	protected String getData() {
+		return this.data.getObject();
+	}
 }

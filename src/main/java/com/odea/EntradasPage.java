@@ -59,8 +59,8 @@ public class EntradasPage extends BasePage {
 
 	private Usuario usuario;
 
-	IModel<List<Entrada>> lstEntradasModel;
-	IModel<List<Data>> lstDataModel;
+//	IModel<List<Entrada>> lstEntradasModel;
+	IModel<String> lstDataModel;
 	IModel<Integer> horasSemanalesModel;
 	IModel<Integer> horasMesModel;
 	IModel<Integer> horasDiaModel;
@@ -84,14 +84,12 @@ public class EntradasPage extends BasePage {
 
 		this.slickGridJsonCols = Model.of(this.getColumns());
 
-		this.usuario = this.daoService.getUsuario(subject.getPrincipal()
-				.toString());
+		this.usuario = this.daoService.getUsuario(subject.getPrincipal().toString());
 
-		this.lstDataModel = new LoadableDetachableModel<List<Data>>() {
+		this.lstDataModel = new LoadableDetachableModel<String>() {
 			@Override
-			protected List<Data> load() {
-				return daoService.getEntradasDia(EntradasPage.this.usuario,
-						EntradasPage.this.fechaActual);
+			protected String load() {
+				return daoService.toJson(daoService.getEntradasDia(EntradasPage.this.usuario,EntradasPage.this.fechaActual));
 			}
 		};
 
@@ -127,83 +125,7 @@ public class EntradasPage extends BasePage {
 		this.listViewContainer.setOutputMarkupId(true);
 		labelContainer = new WebMarkupContainer("labelContainer");
 
-		final SlickGrid slickGrid = new SlickGrid("slickGrid") {
-			@Override
-			protected String getData() {
-				return daoService.toJson(lstDataModel.getObject());
-			}
-
-			@Override
-			protected String getColumns() {
-				List<Proyecto> list = daoService.getProyectos();
-				String actividades = "";
-				for (Proyecto proyecto : list) {
-					actividades += proyecto.toString();
-					actividades += "";
-					actividades += daoService.getActividades(proyecto)
-							.toString();
-					actividades += "";
-				}
-				;
-
-				String lista = daoService.getProyectos().toString();
-				String proyectos = lista.subSequence(1, lista.length() - 1)
-						.toString();
-				Columna columna = new Columna("delCol", "Delete", 60, 60, 60,
-						null, "del", "Slick.Formatters.DeleteButton", null,
-						null, null);
-				Columna columna2 = new Columna("duration", "Duracion", 60, 60,
-						60, "cell-title", "duration", null,
-						"Slick.Editors.Text", "requiredDurationValidator", null);
-				Columna columna3 = new Columna("actividad", "Actividad", 125,
-						100, 200, "cell-title", "actividad", null,
-						"Slick.Editors.SelectRelatedEditor",
-						"requiredFieldValidator", actividades);
-				Columna columna4 = new Columna("proyecto", "Proyecto", 135,
-						100, 200, "cell-title", "proyecto", null,
-						"Slick.Editors.SelectEditor", "requiredFieldValidator",
-						proyectos);
-				Columna columna5 = new Columna("fecha", "Start", 60, 60, 60,
-						null, "fecha", null, "Slick.Editors.Date",
-						"requiredFieldValidator", null);
-				Columna columna6 = new Columna("ticket", "Ticket", 50, 50, 50,
-						"cell-title", "ticket", null, "Slick.Editors.Text",
-						null, null);
-				Columna columna7 = new Columna("ticketExt", "TicketExt", 80,
-						80, 100, "cell-title", "ticketExt", null,
-						"Slick.Editors.TextTicketExt", null, null);
-				Columna columna8 = new Columna("sistExt", "SistExt", 80, 80,
-						80, "cell-title", "sistExt", null,
-						"Slick.Editors.Text", null, null);
-				Columna columna9 = new Columna("descripcion", "Desc", 80, 80,
-						80, null, "descripcion", null,
-						"Slick.Editors.LongText", null, null);
-				ArrayList<Columna> columnas = new ArrayList<Columna>();
-				columnas.add(columna);
-				columnas.add(columna5);
-				columnas.add(columna4);
-				columnas.add(columna3);
-				columnas.add(columna2);
-				columnas.add(columna9);
-				columnas.add(columna6);
-				columnas.add(columna8);
-				columnas.add(columna7);
-				String texto = "[";
-				for (Columna col : columnas) {
-					texto += "{id:\"" + col.getId() + "\", name: \""
-							+ col.getName() + "\", width: " + col.getWidth()
-							+ ", minWidth: " + col.getMinWidth()
-							+ ", maxWidth: " + col.getMaxWidth()
-							+ ", cssClass: \"" + col.getCssClass()
-							+ "\", field: \"" + col.getField()
-							+ "\",formatter: " + col.getFormatter()
-							+ ", editor: " + col.getEditor() + ", validator: "
-							+ col.getValidator() + ", options: \""
-							+ col.getOptions() + "\"},";
-				}
-				texto += "]";
-				return texto;
-			}
+		final SlickGrid slickGrid = new SlickGrid("slickGrid", lstDataModel, slickGridJsonCols) {
 
 			@Override
 			protected void onInfoSend(AjaxRequestTarget target,
@@ -247,20 +169,11 @@ public class EntradasPage extends BasePage {
 								usuario, fecha);
 						daoService.modificarEntrada(entrada);
 					}
-					List<Data> entradas;
+//					List<Data> entradas;
 					fechaActual = new LocalDate();
-					entradas = daoService.getEntradasDia(
-							EntradasPage.this.usuario, fechaActual);
-					String append = "start(" + daoService.toJson(entradas)
-							+ ");";
-
-					if (entradas.isEmpty()) {
-						append = "start(" + daoService.toJson("vacio") + ");";
-						;
-					}
-
-					lstDataModel.setObject(entradas);
-
+					lstDataModel.detach();
+//					entradas = daoService.getEntradasDia(EntradasPage.this.usuario, fechaActual);
+//					lstDataModel.setObject(entradas);
 					target.add(listViewContainer);
 					target.add(labelContainer);
 					target.add(form);
@@ -272,20 +185,12 @@ public class EntradasPage extends BasePage {
 		};
 
 		slickGrid.setOutputMarkupId(true);
-		slickGrid.add(new AbstractInitializableComponentBehavior() {
-			@Override
-			public String getInitJSCall() {
-				return "start(" + daoService.toJson(lstDataModel) + ")";
-			}
-
-		});
 
 		form = new EntradaForm("form") {
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, EntradaForm form) {
 				daoService.agregarEntrada(form.getModelObject(), usuario);
-				lstDataModel.setObject(daoService.getEntradasDia(usuario,
-						new LocalDate()));
+				lstDataModel.detach();
 				target.add(listViewContainer);
 				target.add(labelContainer);
 				// TODO refrescar las cajitas por separado
@@ -295,16 +200,13 @@ public class EntradasPage extends BasePage {
 
 		horasAcumuladasDia = new Label("horasAcumuladasDia", this.horasDiaModel);
 		horasAcumuladasDia.setOutputMarkupId(true);
-		// horasAcumuladasDia.setOutputMarkupPlaceholderTag(true);
 
 		horasAcumuladasSemana = new Label("horasAcumuladasSemana",
 				this.horasSemanalesModel);
 		horasAcumuladasSemana.setOutputMarkupId(true);
-		// horasAcumuladasSemana.setOutputMarkupPlaceholderTag(true);
 
 		horasAcumuladasMes = new Label("horasAcumuladasMes", this.horasMesModel);
 		horasAcumuladasMes.setOutputMarkupId(true);
-		// horasAcumuladasMes.setOutputMarkupPlaceholderTag(true);
 
 		final RadioGroup<String> radiog = new RadioGroup<String>(
 				"selectorTiempo", Model.of(new String()));
@@ -320,9 +222,10 @@ public class EntradasPage extends BasePage {
 
 		radiog.add(dia.add(new AjaxEventBehavior("onchange") {
 			protected void onEvent(AjaxRequestTarget target) {
-				List<Data> entradas = daoService.getEntradasDia(
-						EntradasPage.this.usuario, fechaActual);
-				lstDataModel.setObject(entradas);
+//				List<Data> entradas = daoService.getEntradasDia(
+//						EntradasPage.this.usuario, fechaActual);
+//				lstDataModel.setObject(entradas);
+				lstDataModel.detach();
 				target.add(listViewContainer);
 				target.add(labelContainer);
 			}
@@ -331,27 +234,25 @@ public class EntradasPage extends BasePage {
 		radiog.add(semana.add(new AjaxEventBehavior("onchange") {
 			protected void onEvent(AjaxRequestTarget target) {
 				List<Data> entradas = daoService.getEntradasSemanales(
-						EntradasPage.this.usuario, fechaActual);
-				lstDataModel.setObject(entradas);
-				target.add(listViewContainer);
-				target.add(labelContainer);
+					EntradasPage.this.usuario, fechaActual);
+					lstDataModel.setObject(daoService.toJson(entradas));
+					target.add(listViewContainer);
+					target.add(labelContainer);
 			}
 		}));
 		radiog.add(mes.add(new AjaxEventBehavior("onchange") {
 			protected void onEvent(AjaxRequestTarget target) {
 				List<Data> entradas = daoService.getEntradasMensuales(
-						EntradasPage.this.usuario, fechaActual);
-
-				lstDataModel.setObject(entradas);
-				target.add(listViewContainer);
-				target.add(labelContainer);
+					EntradasPage.this.usuario, fechaActual);
+					lstDataModel.setObject(daoService.toJson(entradas));
+					target.add(listViewContainer);
+					target.add(labelContainer);
 
 			}
 		}));
 
 		listViewContainer.setOutputMarkupId(true);
 		listViewContainer.add(slickGrid);
-		// listViewContainer.setVersioned(false);
 		add(listViewContainer);
 
 		labelContainer.add(horasAcumuladasDia);
@@ -477,16 +378,8 @@ public class EntradasPage extends BasePage {
 					int anio = Integer.parseInt(campos.get(2));
 
 					fechaActual = new LocalDate(anio, mes, dia);
-					List<Data> data = daoService.getEntradasDia(
-							EntradasPage.this.usuario, fechaActual);
-
-					horasDiaModel.setObject(daoService.getHorasDiarias(usuario,
-							fechaActual));
-					horasMesModel.setObject(daoService.getHorasMensuales(
-							usuario, fechaActual));
-					horasSemanalesModel.setObject(daoService.getHorasSemanales(
-							usuario, fechaActual));
-					lstDataModel.setObject(data);
+					List<Data> data = daoService.getEntradasDia(EntradasPage.this.usuario, fechaActual);
+					lstDataModel.detach();
 					target.add(listViewContainer);
 					target.add(labelContainer);
 					target.add(radioContainer);
@@ -520,9 +413,7 @@ public class EntradasPage extends BasePage {
 					EntradaForm.this.onSubmit(target, (EntradaForm) form);
 					target.add(feedBackPanel);
 					// TODO SACAR
-					// List<Data> entradas = daoService.getEntradasDia(usuario,
-					// new LocalDate());
-					// lstDataModel.setObject(entradas);
+					lstDataModel.detach();
 					target.add(listViewContainer);
 					target.add(labelContainer);
 					target.add(radioContainer);
@@ -565,6 +456,7 @@ public class EntradasPage extends BasePage {
 					}
 
 					target.add(EntradaForm.this);
+					//TODO agregar cada add en cajitas separandoles del datepicker
 				}
 
 				@Override
@@ -609,16 +501,14 @@ public class EntradasPage extends BasePage {
 						mensajeActividad.add(new AttributeModifier("style",
 								new Model("font-weight:bold;color:red")));
 					}
-					// TODO SACAR
-					target.appendJavaScript("start();");
 
 					target.add(feedBackPanel);
-					target.add(fecha);
+					//target.add(fecha);
 					target.add(duracion);
 					target.add(ticketExt);
 					target.add(mensajeProyecto);
 					target.add(mensajeActividad);
-					target.add(radioContainer);
+//					target.add(radioContainer);
 				}
 
 			};
@@ -669,9 +559,7 @@ public class EntradasPage extends BasePage {
 		String actividades = "";
 		for (Proyecto proyecto : list) {
 			actividades += proyecto.toString();
-			actividades += "";
 			actividades += this.daoService.getActividades(proyecto).toString();
-			actividades += "";
 		}
 		;
 

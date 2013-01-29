@@ -307,6 +307,6 @@ function init(dataSecundaria) {
   dataView.syncGridSelection(grid, true);
 };
   $(document).ready(init(null));
-function start(dataSecundaria){
+function iniciar(dataSecundaria){
 	$(document).ready(init(dataSecundaria));
 }
