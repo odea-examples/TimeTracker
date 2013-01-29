@@ -13,6 +13,7 @@ initYUI = function() {
 			divContainer.style.display = 'none';
 		}
 	};*/
+	
 
     function handleSelect(type,args,obj) {
         var dates = args[0];

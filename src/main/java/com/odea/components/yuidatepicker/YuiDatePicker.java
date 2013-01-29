@@ -1,28 +1,32 @@
 package com.odea.components.yuidatepicker;
 
-import com.google.gson.Gson;
-import com.odea.behavior.noInput.NoInputBehavior;
-import com.odea.components.datepicker.DatePickerDTO;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.wicket.Application;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.head.CssReferenceHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptContentHeaderItem;
 import org.apache.wicket.markup.head.JavaScriptReferenceHeaderItem;
 import org.apache.wicket.markup.html.IHeaderContributor;
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.FormComponentPanel;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.request.handler.TextRequestHandler;
 import org.apache.wicket.request.resource.CssResourceReference;
 import org.apache.wicket.request.resource.JavaScriptResourceReference;
 import org.apache.wicket.util.template.PackageTextTemplate;
+import org.joda.time.LocalDate;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import com.google.gson.Gson;
+import com.odea.behavior.noInput.NoInputBehavior;
+import com.odea.components.datepicker.DatePickerDTO;
 
 public abstract class YuiDatePicker extends FormComponentPanel<Date> implements IHeaderContributor {
     private static final String JSON_CONTENT_TYPE = "application/json";
@@ -59,6 +63,25 @@ public abstract class YuiDatePicker extends FormComponentPanel<Date> implements 
             }
         };
         add(this.ajaxBehavior);
+        
+        
+        AjaxButton btnFechaActual = new AjaxButton("btnFechaActual") {
+			
+			@Override
+			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+				LocalDate fecha = new LocalDate();
+				String strFecha = fecha.getDayOfMonth() + "/" + fecha.getMonthOfYear() + "/" + fecha.getYear();
+			    YuiDatePicker.this.onDateSelect(target, strFecha);
+			    YuiDatePicker.this.datePicker.setModelObject(fecha.toDate());
+			    target.add(YuiDatePicker.this);
+			}
+			
+		};
+		
+		btnFechaActual.setDefaultFormProcessing(false);
+		btnFechaActual.setOutputMarkupId(true);
+        
+		add(btnFechaActual);
     }
 
     public void renderHead(IHeaderResponse response) {

@@ -91,7 +91,6 @@ public class EntradasPage extends BasePage {
 		this.usuario = this.daoService.getUsuario(subject.getPrincipal().toString());
 		
 		this.lstDataModel = new LoadableDetachableModel<List<Data>>() { 
-			//TODO list model
             @Override
             protected List<Data> load() {
             	return daoService.getEntradasDia(EntradasPage.this.usuario, new LocalDate());
@@ -248,7 +247,6 @@ public class EntradasPage extends BasePage {
 		};
 		slickGrid.setOutputMarkupId(true);
 		slickGrid.add(new AbstractInitializableComponentBehavior(){
-
 			@Override
 			public String getInitJSCall() {
 				return "start("+ daoService.toJson(lstDataModel) +")";
@@ -464,21 +462,21 @@ public class EntradasPage extends BasePage {
 				
 				@Override
 				protected void onDateSelect(AjaxRequestTarget target, String selectedDate) {
-					System.out.println(selectedDate + " abstract");
 					String json = selectedDate;
 					List<String> campos = Arrays.asList(json.split("/"));  
 					int dia = Integer.parseInt(campos.get(0));
 					int mes = Integer.parseInt(campos.get(1));
 					int año = Integer.parseInt(campos.get(2));
-						fechaActual = new LocalDate(año,mes,dia);
-						List<Data> data;
-						data= daoService.getEntradasDia(EntradasPage.this.usuario, fechaActual);
-					//TODOç
-						String append = "start("+ daoService.toJson(data) +");";
-						
-					if (data.isEmpty()){
-						append= "start("+ daoService.toJson("vacio") +");";;
-					}
+					
+					fechaActual = new LocalDate(año,mes,dia);
+					List<Data> data = daoService.getEntradasDia(EntradasPage.this.usuario, fechaActual);
+					
+//					String append = "start("+ daoService.toJson(data) +");";
+//						
+//					if (data.isEmpty()){
+//						append = "start("+ daoService.toJson("vacio") +");";;
+//					}
+					
 					horasDiaModel.setObject(daoService.getHorasDiarias(usuario,fechaActual));
 					horasMesModel.setObject(daoService.getHorasMensuales(usuario,fechaActual));
 					horasSemanalesModel.setObject(daoService.getHorasSemanales(usuario,fechaActual));
@@ -505,7 +503,6 @@ public class EntradasPage extends BasePage {
 			
 			fecha.add(new AbstractInitializableComponentBehavior(){
 
-				@Override
 				public String getInitJSCall() {
 					return "initYUI();";
 				}
@@ -634,12 +631,6 @@ public class EntradasPage extends BasePage {
 					EntradaForm.this.setModelObject(new Entrada());
 					target.add(form);
 					target.add(feedBackPanel);
-//                    target.appendJavaScript("start();");
-					List<Data> entradas = daoService.getEntradasDia(usuario,new LocalDate());
-					lstDataModel.setObject(entradas);
-                    target.add(listViewContainer);
-                    target.add(labelContainer);
-                    target.add(radioContainer);
 				}
 				
 			};
@@ -647,28 +638,28 @@ public class EntradasPage extends BasePage {
 			limpiar.setDefaultFormProcessing(false);
 			
 			
-			AjaxButton btnFechaActual = new AjaxButton("btnFechaActual", this) {
-				
-				@Override
-				protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-					LocalDate fechaHoy = new LocalDate();
-					fechaActual = fechaHoy;
-					
-					fecha.setModelObject(fechaHoy.toDate());
-					
-					List<Data> dataLstView = daoService.getEntradasDia(EntradasPage.this.usuario, fechaHoy);
-					lstDataModel.setObject(dataLstView);
-					
-					target.add(form);
-					target.add(listViewContainer);
-                    target.add(labelContainer);
-                    target.add(radioContainer);
-                    target.add(feedBackPanel);
-				}
-				
-			};
-			
-			btnFechaActual.setDefaultFormProcessing(false);
+//			AjaxButton btnFechaActual = new AjaxButton("btnFechaActual", this) {
+//				
+//				@Override
+//				protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+//					LocalDate fechaHoy = new LocalDate();
+//					fechaActual = fechaHoy;
+//					
+//					fecha.setModelObject(fechaHoy.toDate());
+//					
+//					List<Data> dataLstView = daoService.getEntradasDia(EntradasPage.this.usuario, fechaHoy);
+//					lstDataModel.setObject(dataLstView);
+//					
+//					target.add(form);
+//					target.add(listViewContainer);
+//                  target.add(labelContainer);
+//                  target.add(radioContainer);
+//                  target.add(feedBackPanel);
+//				}
+//				
+//			};
+//			
+//			btnFechaActual.setDefaultFormProcessing(false);
 			
 			
 			add(mensajeProyecto);
@@ -686,7 +677,6 @@ public class EntradasPage extends BasePage {
 			this.add(new OnRelatedFieldsNullValidator(ticketExt, sistemaExterno,"Debe ingresar un ticket con ese sistema externo elegido"));
 			add(submit);
 			add(limpiar);
-			add(btnFechaActual);
 			
 			this.setOutputMarkupId(true);
 		}
