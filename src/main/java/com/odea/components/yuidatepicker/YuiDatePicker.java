@@ -18,8 +18,6 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.FormComponentPanel;
 import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.request.handler.TextRequestHandler;
 import org.apache.wicket.request.resource.CssResourceReference;
 import org.apache.wicket.request.resource.JavaScriptResourceReference;
@@ -32,7 +30,8 @@ import com.odea.components.ajax.AbstractInitializableComponentBehavior;
 import com.odea.components.datepicker.DatePickerDTO;
 
 public abstract class YuiDatePicker extends FormComponentPanel<Date> implements IHeaderContributor {
-    private static final String JSON_CONTENT_TYPE = "application/json";
+    
+	private static final String JSON_CONTENT_TYPE = "application/json";
     private static final String ENCODING = Application.get().getMarkupSettings().getDefaultMarkupEncoding();
 
     private TextField<Date> datePicker;
