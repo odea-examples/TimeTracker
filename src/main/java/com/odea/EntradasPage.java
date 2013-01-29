@@ -117,10 +117,6 @@ public class EntradasPage extends BasePage {
 
 		};
 
-		if (usuario == null) {
-			this.setResponsePage(LoginPage.class);
-		}
-
 		this.listViewContainer = new WebMarkupContainer("listViewContainer");
 		this.listViewContainer.setOutputMarkupId(true);
 		labelContainer = new WebMarkupContainer("labelContainer");
@@ -193,8 +189,6 @@ public class EntradasPage extends BasePage {
 				lstDataModel.detach();
 				target.add(listViewContainer);
 				target.add(labelContainer);
-				// TODO refrescar las cajitas por separado
-				target.add(form);
 			}
 		};
 
@@ -275,6 +269,7 @@ public class EntradasPage extends BasePage {
 		public TextField<String> duracion;
 		public TextField<String> ticketBZ;
 		public YuiDatePicker fecha;
+		public TextArea<String> nota;
 
 		public EntradaForm(String id) {
 			super(id);
@@ -346,7 +341,7 @@ public class EntradasPage extends BasePage {
 			sistemaExterno.setLabel(Model.of("Sistema Externo"));
 			sistemaExterno.setOutputMarkupId(true);
 
-			TextArea<String> nota = new TextArea<String>("nota");
+			nota = new TextArea<String>("nota");
 
 			duracion = new TextField<String>("duracion");
 			duracion.setRequired(true);
@@ -411,8 +406,8 @@ public class EntradasPage extends BasePage {
 				@Override
 				protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 					EntradaForm.this.onSubmit(target, (EntradaForm) form);
+
 					target.add(feedBackPanel);
-					// TODO SACAR
 					lstDataModel.detach();
 					target.add(listViewContainer);
 					target.add(labelContainer);
@@ -420,39 +415,37 @@ public class EntradasPage extends BasePage {
 					EntradaForm.this.setModelObject(new Entrada());
 
 					if (duracion.isValid()) {
-						duracion.add(new AttributeModifier("style", new Model(
-								"border-color:none")));
+						duracion.add(new AttributeModifier("style", Model
+								.of("border-color:none")));
 					} else {
-						duracion.add(new AttributeModifier("style", new Model(
-								"border-style:solid; border-color:red;")));
+						duracion.add(new AttributeModifier("style", Model
+								.of("border-style:solid; border-color:red;")));
 					}
 
 					if (ticketExt.isValid()) {
-						ticketExt.add(new AttributeModifier("style", new Model(
-								"border-color:none")));
+						ticketExt.add(new AttributeModifier("style", Model
+								.of("border-color:none")));
 					} else {
-						ticketExt.add(new AttributeModifier("style", new Model(
-								"border-style:solid; border-color:red;")));
+						ticketExt.add(new AttributeModifier("style", Model
+								.of("border-style:solid; border-color:red;")));
 					}
 
 					if (fecha.isValid()) {
-						fecha.add(new AttributeModifier("style", new Model(
-								"border-color:none")));
+						fecha.add(new AttributeModifier("style", Model
+								.of("border-color:none")));
 					} else {
-						fecha.add(new AttributeModifier("style", new Model(
-								"border-style:solid; border-color:red;")));
+						fecha.add(new AttributeModifier("style", Model
+								.of("border-style:solid; border-color:red;")));
 					}
 
 					if (comboProyecto.isValid()) {
 						mensajeProyecto.add(new AttributeModifier("style",
-								new Model("display:none")));
-					} else {
+								Model.of("display:none")));
 					}
 
 					if (comboActividad.isValid()) {
 						mensajeActividad.add(new AttributeModifier("style",
-								new Model("display:none")));
-					} else {
+								Model.of("display:none")));
 					}
 
 					target.add(EntradaForm.this);
@@ -463,43 +456,43 @@ public class EntradasPage extends BasePage {
 				protected void onError(AjaxRequestTarget target, Form<?> form) {
 
 					if (!duracion.isValid()) {
-						duracion.add(new AttributeModifier("style", new Model(
-								"border-style:solid; border-color:red;")));
+						duracion.add(new AttributeModifier("style", Model
+								.of("border-style:solid; border-color:red;")));
 					} else {
-						duracion.add(new AttributeModifier("style", new Model(
-								"border-color:none")));
+						duracion.add(new AttributeModifier("style", Model
+								.of("border-color:none")));
 					}
 
 					if (!ticketExt.isValid()) {
-						ticketExt.add(new AttributeModifier("style", new Model(
-								"border-style:solid; border-color:red;")));
+						ticketExt.add(new AttributeModifier("style", Model
+								.of("border-style:solid; border-color:red;")));
 					} else {
-						ticketExt.add(new AttributeModifier("style", new Model(
-								"border-color:none")));
+						ticketExt.add(new AttributeModifier("style", Model
+								.of("border-color:none")));
 					}
 
 					if (!fecha.isValid()) {
-						fecha.add(new AttributeModifier("style", new Model(
-								"border-style:solid; border-color:white;")));
+						fecha.add(new AttributeModifier("style", Model
+								.of("border-style:solid; border-color:white;")));
 					} else {
-						fecha.add(new AttributeModifier("style", new Model(
-								"border-color:none")));
+						fecha.add(new AttributeModifier("style", Model
+								.of("border-color:none")));
 					}
 
 					if (comboProyecto.isValid()) {
 						mensajeProyecto.add(new AttributeModifier("style",
-								new Model("display:none")));
+								Model.of("display:none")));
 					} else {
 						mensajeProyecto.add(new AttributeModifier("style",
-								new Model("font-weight:bold;color:red")));
+								Model.of("font-weight:bold;color:red")));
 					}
 
 					if (comboActividad.isValid()) {
 						mensajeActividad.add(new AttributeModifier("style",
-								new Model("display:none")));
+								Model.of("display:none")));
 					} else {
 						mensajeActividad.add(new AttributeModifier("style",
-								new Model("font-weight:bold;color:red")));
+								Model.of("font-weight:bold;color:red")));
 					}
 
 					target.add(feedBackPanel);
