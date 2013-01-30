@@ -31,63 +31,8 @@ public class PruebaPage extends BasePage {
 //		Formulario form = new Formulario("form", actividadModel);
 //		
 //		add(form);
-		
-		SlickGrid sl = new SlickGrid("idt"){
-			public String getColumns()
-			{
-				Columna columna = new Columna("delCol", "Delete", 80, 20, 800, null,"del", "Slick.Formatters.DeleteButton",null,null);
-				Columna columna2 = new Columna("duration", "Duracion", 80, 20, 800, "cell-title","duration", null,"Slick.Editors.Text",null);
-				Columna columna3 = new Columna("actividad", "Actividad", 80, 20, 800, "cell-title","actividad", null,"Slick.Editors.Text",null);
-				Columna columna4 = new Columna("proyecto", "Proyecto", 80, 20, 800, "cell-title","proyecto", null,"Slick.Editors.Text",null);
-				Columna columna5 = new Columna("fecha", "Start", 80, 20, 800, null ,"fecha", null,"Slick.Editors.Date",null);
-				Columna columna6 = new Columna("ticket", "Ticket", 80, 20, 800, "cell-title","ticket", null,"Slick.Editors.Text",null);
-				Columna columna7 = new Columna("ticketExt", "TicketExt", 80, 20, 800, "cell-title","ticketExt", null,"Slick.Editors.Text",null);
-				Columna columna8 = new Columna("sistExt", "SistExt", 80, 20, 800, "cell-title","sistExt", null,"Slick.Editors.Text",null);
-				Columna columna9 = new Columna("descripcion", "Desc", 80, 20, 600, null ,"descripcion", null,"Slick.Editors.LongText",null);
 
-				ArrayList<Columna> columnas = new ArrayList<Columna>();
-				columnas.add(columna);
-				columnas.add(columna2);
-				columnas.add(columna3);
-				columnas.add(columna4);
-				columnas.add(columna5);
-				columnas.add(columna6);
-				columnas.add(columna7);
-				columnas.add(columna8);
-				columnas.add(columna9);
-				String texto="[";
-				for (Columna col : columnas) {
-					texto+="{id:\""+ col.getId() +"\", name: \""+  col.getName() +"\", width: "+ col.getWidth() +", minWidth: "+ col.getMinWidth() +", maxWidth: "+ col.getMaxWidth() +", cssClass: \""+ col.getCssClass() +"\", field: \""+ col.getField() +"\",formatter: "+ col.getFormatter() +", editor: "+ col.getEditor() +"},";
-				}
-				texto+="]";
-				return texto;
-			}
-			
-			public String getData(){
-				Data data = new Data("20/01/2010","6.5hs","vacaciones","RRHH","25/08/2002","Task 117","Task118","Task 119","esta es la super desc");
-				Data data2 = new Data("20/01/2010","6.5hs","vacaciones","RRHH","25/08/2002","Task 117","Task118","Task 119","esta es la super desc");
-				ArrayList<Data> datos = new ArrayList<Data>();
-				datos.add(data);
-//				datos.add(data2);
-				Usuario usuario = daoService.getUsuario(SecurityUtils.getSubject().getPrincipal().toString());
-				List<com.odea.components.slickGrid.Data> datos2= daoService.getEntradasDia(usuario, new LocalDate());
-				System.out.println(datos);
-		        Gson gson = new Gson();
-		        System.out.println(gson.toJson(datos));
-		        System.out.println(gson.toJson(datos2));
-		        return gson.toJson(datos2);
-			}
 
-			@Override
-			protected void onInfoSend(AjaxRequestTarget target,
-					String realizar, com.odea.components.slickGrid.Data data) {
-				// TODO Auto-generated method stub
-				
-			}
-		};
-		
-		sl.setOutputMarkupId(true);
-		add(sl);
 	
 //	public class Formulario extends Form<Actividad> {
 //
