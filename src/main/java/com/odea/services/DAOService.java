@@ -70,6 +70,10 @@ public class DAOService {
 		actividadDAO.insertarActividad(actividad, proyectosRelacionados);
 	}
 	
+	public Actividad buscarActividadPorNombre(String nombre) {
+		return actividadDAO.buscarPorNombre(nombre);
+	}
+	
 	
 	public void agregarEntrada(Entrada entrada){
 		entradaDAO.agregarEntrada(entrada);
@@ -168,6 +172,10 @@ public class DAOService {
 	
 	public List<Proyecto> getProyectos(Actividad actividad) {
 		return proyectoDAO.getProyectos(actividad);
+	}
+	
+	public Proyecto buscarProyectoPorNombre(String nombre) {
+		return proyectoDAO.buscarPorNombre(nombre);
 	}
 	
 	public Usuario getUsuario(String nombre){

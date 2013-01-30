@@ -11,20 +11,18 @@ import com.odea.dao.ActividadDAO;
 import com.odea.dao.ProyectoDAO;
 import com.odea.domain.Actividad;
 import com.odea.domain.Proyecto;
+import com.odea.services.DAOService;
 
 
 public class ProyectoDAOTest extends AbstractTestCase {
 
 	@Autowired
-	private ProyectoDAO proyectoDAO;
-	
-	@Autowired
-	private ActividadDAO actividadDAO;
+	private DAOService daoService;
 	
 	
 	@Test
 	public void obtenerTodosLosProyectosTest(){
-		List<Proyecto> proyectos = proyectoDAO.getProyectos();
+		List<Proyecto> proyectos = daoService.getProyectos();
 		Assert.notEmpty(proyectos, "No se obtuvieron proyectos. La coleccion es nula o esta vacia.");
 	}
 	
@@ -32,7 +30,7 @@ public class ProyectoDAOTest extends AbstractTestCase {
 	@Test
 	public void obtenerProyectosDeUnaActividadTest(){
 		Actividad actividad = new Actividad(10, "Testing");
-		List<Proyecto> proyectos = proyectoDAO.getProyectos(actividad);
+		List<Proyecto> proyectos = daoService.getProyectos(actividad);
 		Assert.notEmpty(proyectos, "No se obtuvieron proyectos de la actividad. La coleccion es nula o esta vacia.");
 	}
 	
@@ -40,10 +38,10 @@ public class ProyectoDAOTest extends AbstractTestCase {
 	@Test
 	public void insertarProyectoTest(){
 		Proyecto proyecto = new Proyecto(0, "proyectoDePrueba");
-		proyectoDAO.agregarProyecto(proyecto, new ArrayList<Actividad>());
+		daoService.agregarProyecto(proyecto, new ArrayList<Actividad>());
 		
-		Proyecto proyectoBuscado = proyectoDAO.buscarPorNombre(proyecto.getNombre());
-		proyectoDAO.borrarProyecto(proyectoBuscado);
+		Proyecto proyectoBuscado = daoService.buscarProyectoPorNombre(proyecto.getNombre());
+		daoService.borrarProyecto(proyectoBuscado);
 		
 		Assert.notNull(proyectoBuscado, "No se ha encontrado el proyecto. No fue insertado correctamente o la busqueda no lo encontro");
 	}

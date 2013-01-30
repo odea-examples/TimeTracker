@@ -10,15 +10,16 @@ import org.springframework.util.Assert;
 import com.odea.dao.ActividadDAO;
 import com.odea.domain.Actividad;
 import com.odea.domain.Proyecto;
+import com.odea.services.DAOService;
 
 public class ActividadDAOTest extends AbstractTestCase {
 	
 	@Autowired
-	private ActividadDAO actividadDAO;
+	private DAOService daoService;
 	
 	@Test
 	public void obtenerTodasLasActividadesTest() {
-		List<Actividad> actividades = actividadDAO.getActividades();
+		List<Actividad> actividades = daoService.getActividades();
 		Assert.notEmpty(actividades, "No se encontraron actividades. La coleccion es nula o esta vacia");
 	}
 	
@@ -26,17 +27,17 @@ public class ActividadDAOTest extends AbstractTestCase {
 	public void obtenerActividadesDeProyectoTest() {
 		Proyecto proyecto = new Proyecto(10, "YPF-DBU");
 		
-		List<Actividad> actividades = actividadDAO.getActividades(proyecto);
+		List<Actividad> actividades = daoService.getActividades(proyecto);
 		Assert.notEmpty(actividades, "No se encontraron actividades de este proyecto. La coleccion es nula o esta vacia");
 	}
 	
 	@Test
 	public void insertarActividadTest(){
 		Actividad actividad = new Actividad(0, "ActividadDePrueba");
-		actividadDAO.insertarActividad(actividad, new ArrayList<Proyecto>());
+		daoService.insertarActividad(actividad, new ArrayList<Proyecto>());
 		
-		Actividad actividadBuscada = actividadDAO.buscarPorNombre(actividad.getNombre());
-		actividadDAO.borrarActividad(actividadBuscada);
+		Actividad actividadBuscada = daoService.buscarActividadPorNombre(actividad.getNombre());
+		daoService.borrarActividad(actividadBuscada);
 		
 		Assert.notNull(actividadBuscada, "No se ha encontrado la actividad buscada. No se inserto correctamente o la busqueda fallo");
 	}
