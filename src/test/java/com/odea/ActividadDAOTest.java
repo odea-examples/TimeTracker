@@ -1,203 +1,44 @@
 package com.odea;
 
-import java.util.Collection;
-import java.util.Iterator;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.ListIterator;
 
-import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.Assert;
 
 import com.odea.dao.ActividadDAO;
-import com.odea.dao.EntradaDAO;
 import com.odea.domain.Actividad;
-import com.odea.domain.Usuario;
+import com.odea.domain.Proyecto;
 
 public class ActividadDAOTest extends AbstractTestCase {
 	
 	@Autowired
-	private ActividadDAO dao;
+	private ActividadDAO actividadDAO;
 	
-	@Autowired
-	EntradaDAO daoe;
+	@Test
+	public void obtenerTodasLasActividadesTest() {
+		List<Actividad> actividades = actividadDAO.getActividades();
+		Assert.notEmpty(actividades, "No se encontraron actividades. La coleccion es nula o esta vacia");
+	}
 	
-	public Actividad actividad = new Actividad(1,"Actividad 1");
-	public List<Integer> lista;
-	
-	public void setUp(){
-		super.setUp();
+	@Test
+	public void obtenerActividadesDeProyectoTest() {
+		Proyecto proyecto = new Proyecto(10, "YPF-DBU");
 		
-		lista = new List<Integer>() {
-
-			@Override
-			public boolean add(Integer e) {
-				// TODO Auto-generated method stub
-				return false;
-			}
-
-			@Override
-			public void add(int index, Integer element) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public boolean addAll(Collection<? extends Integer> c) {
-				// TODO Auto-generated method stub
-				return false;
-			}
-
-			@Override
-			public boolean addAll(int index, Collection<? extends Integer> c) {
-				// TODO Auto-generated method stub
-				return false;
-			}
-
-			@Override
-			public void clear() {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public boolean contains(Object o) {
-				// TODO Auto-generated method stub
-				return false;
-			}
-
-			@Override
-			public boolean containsAll(Collection<?> c) {
-				// TODO Auto-generated method stub
-				return false;
-			}
-
-			@Override
-			public Integer get(int index) {
-				// TODO Auto-generated method stub
-				return null;
-			}
-
-			@Override
-			public int indexOf(Object o) {
-				// TODO Auto-generated method stub
-				return 0;
-			}
-
-			@Override
-			public boolean isEmpty() {
-				// TODO Auto-generated method stub
-				return false;
-			}
-
-			@Override
-			public Iterator<Integer> iterator() {
-				// TODO Auto-generated method stub
-				return null;
-			}
-
-			@Override
-			public int lastIndexOf(Object o) {
-				// TODO Auto-generated method stub
-				return 0;
-			}
-
-			@Override
-			public ListIterator<Integer> listIterator() {
-				// TODO Auto-generated method stub
-				return null;
-			}
-
-			@Override
-			public ListIterator<Integer> listIterator(int index) {
-				// TODO Auto-generated method stub
-				return null;
-			}
-
-			@Override
-			public boolean remove(Object o) {
-				// TODO Auto-generated method stub
-				return false;
-			}
-
-			@Override
-			public Integer remove(int index) {
-				// TODO Auto-generated method stub
-				return null;
-			}
-
-			@Override
-			public boolean removeAll(Collection<?> c) {
-				// TODO Auto-generated method stub
-				return false;
-			}
-
-			@Override
-			public boolean retainAll(Collection<?> c) {
-				// TODO Auto-generated method stub
-				return false;
-			}
-
-			@Override
-			public Integer set(int index, Integer element) {
-				// TODO Auto-generated method stub
-				return null;
-			}
-
-			@Override
-			public int size() {
-				// TODO Auto-generated method stub
-				return 0;
-			}
-
-			@Override
-			public List<Integer> subList(int fromIndex, int toIndex) {
-				// TODO Auto-generated method stub
-				return null;
-			}
-
-			@Override
-			public Object[] toArray() {
-				// TODO Auto-generated method stub
-				return null;
-			}
-
-			@Override
-			public <T> T[] toArray(T[] a) {
-				// TODO Auto-generated method stub
-				return null;
-			}
-		};
-		lista.clear();
-		lista.add(1);
-		lista.add(3);
-		lista.add(5);
-		lista.add(8);
+		List<Actividad> actividades = actividadDAO.getActividades(proyecto);
+		Assert.notEmpty(actividades, "No se encontraron actividades de este proyecto. La coleccion es nula o esta vacia");
 	}
 	
 	@Test
-	public void insertarTest(){
-		System.out.println("hola");
-		Actividad act = new Actividad(199,"Actividad 1");
-		System.out.println(actividad.getIdActividad());
-		dao.insertarActividad(act);
+	public void insertarActividadTest(){
+		Actividad actividad = new Actividad(0, "ActividadDePrueba");
+		actividadDAO.insertarActividad(actividad, new ArrayList<Proyecto>());
+		
+		Actividad actividadBuscada = actividadDAO.buscarPorNombre(actividad.getNombre());
+		actividadDAO.borrarActividad(actividadBuscada);
+		
+		Assert.notNull(actividadBuscada, "No se ha encontrado la actividad buscada. No se inserto correctamente o la busqueda fallo");
 	}
-	
-	@Test
-	public void relacionarTest (){
-		//dao.relacionarActividad(actividad,lista);
-		//TODO:arreglar test
-	}
-	
-	@Test
-	public void borrarTest(){
-		dao.borrarActividad(actividad);
-	}
-	
-	@Test
-	public void getTotalHoras(){
-		Usuario user= new Usuario(57,"invitado","invitado");
-	//	int total = daoe.getHorasSemanales(user);
-		//Assert.assertFalse("mal calculado", total<1);
-	}
+
 }
