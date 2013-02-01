@@ -22,7 +22,7 @@ public class Datatest extends AbstractTestCase{
 	@Test
     public void testData() {
 		Data datas = new Data("20/01/2010","15hs","vacaciones","RRHH","25/08/2002","Task 117","Task118","Task 119","Esta es la gran descripcion");
-		System.out.println(getdata());
+		//System.out.println(getdata());
     }
 
 public String getdata(){

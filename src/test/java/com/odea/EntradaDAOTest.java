@@ -28,5 +28,34 @@ public class EntradaDAOTest extends AbstractTestCase {
 		daoService.borrarEntrada(entrada);
 	}
 
+	@Test
+	public void getEntradasDiariasTest() {
+		Usuario usuario = new Usuario(57, "Invitado", "invitado");
+		LocalDate fecha = new LocalDate().minusYears(5);
+		System.out.println(fecha);
+		
+		Entrada entrada = new Entrada(new Timestamp(fecha.toDate().getTime()), new Proyecto(10, "YPF-DBU"), new Actividad(10, "Testing"), "1", "Nota", 1, "1", "sistemaExterno", usuario, fecha.toDate());
+		
+		//TODO: Completar test
+//		daoService.agregarEntrada(entrada);
+		
+//		List<Data> entradasDia = daoService.getEntradasDia(usuario, fecha);
+//		
+//		Assert.notEmpty(entradasDia, "No se encontro la entrada.");
+//		
+//		try {
+//			Data data = entradasDia.get(0);
+//			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+//			Date parsedDate = dateFormat.parse(data.getId());
+//			Timestamp timestamp = new Timestamp(parsedDate.getTime());
+//			daoService.borrarEntrada(timestamp);
+//		} catch (ParseException e) {
+//			throw new RuntimeException(e);
+//		}
+
+	}
+	
+	
+	
 
 }

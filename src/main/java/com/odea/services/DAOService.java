@@ -145,6 +145,10 @@ public class DAOService {
 		entradaDAO.modificarEntrada(entrada);
 	}
 	
+	public List<String> getSistemasExternos() {
+		return entradaDAO.getSistemasExternos();
+	}
+	
 	public Proyecto getProyecto(String nombre){
 		return proyectoDAO.buscarPorNombre(nombre);
 	}

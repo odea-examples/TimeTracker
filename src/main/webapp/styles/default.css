@@ -52,7 +52,7 @@ p#backlinks a:hover {color: #151515;}
 
 
 /* Page */
-.page {width: 900px; margin: 0 auto; text-align: left; background: #FFF url('../img/content-bg.gif') repeat-y 0 0;}
+.page {width: 900px; margin: 0 auto; text-align: left; background: #FFF url('../img/bg.png') repeat-y 0 0;}
 .col-l {float: left; width: 23%; background-color: #DDECF1; border-top: 1px solid #578B9E;} 
 .col-r {float: right; width: 76%;}
 .col-l-in {margin: 0 0 0 0;} .col-r-in {margin: 1.2em 2em 2em 1.2em;}

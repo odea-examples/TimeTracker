@@ -59,7 +59,6 @@ public class EntradasPage extends BasePage {
 
 	private Usuario usuario;
 
-//	IModel<List<Entrada>> lstEntradasModel;
 	IModel<String> lstDataModel;
 	IModel<Integer> horasSemanalesModel;
 	IModel<Integer> horasMesModel;
@@ -84,12 +83,15 @@ public class EntradasPage extends BasePage {
 
 		this.slickGridJsonCols = Model.of(this.getColumns());
 
-		this.usuario = this.daoService.getUsuario(subject.getPrincipal().toString());
+		this.usuario = this.daoService.getUsuario(subject.getPrincipal()
+				.toString());
 
 		this.lstDataModel = new LoadableDetachableModel<String>() {
 			@Override
 			protected String load() {
-				return daoService.toJson(daoService.getEntradasDia(EntradasPage.this.usuario,EntradasPage.this.fechaActual));
+				return daoService.toJson(daoService.getEntradasDia(
+						EntradasPage.this.usuario,
+						EntradasPage.this.fechaActual));
 			}
 		};
 
@@ -121,7 +123,8 @@ public class EntradasPage extends BasePage {
 		this.listViewContainer.setOutputMarkupId(true);
 		labelContainer = new WebMarkupContainer("labelContainer");
 
-		final SlickGrid slickGrid = new SlickGrid("slickGrid", lstDataModel, slickGridJsonCols) {
+		final SlickGrid slickGrid = new SlickGrid("slickGrid", lstDataModel,
+				slickGridJsonCols) {
 
 			@Override
 			protected void onInfoSend(AjaxRequestTarget target,
@@ -165,11 +168,13 @@ public class EntradasPage extends BasePage {
 								usuario, fecha);
 						daoService.modificarEntrada(entrada);
 					}
-//					List<Data> entradas;
+					// List<Data> entradas;
 					fechaActual = new LocalDate();
 					lstDataModel.detach();
-//					entradas = daoService.getEntradasDia(EntradasPage.this.usuario, fechaActual);
-//					lstDataModel.setObject(entradas);
+					// entradas =
+					// daoService.getEntradasDia(EntradasPage.this.usuario,
+					// fechaActual);
+					// lstDataModel.setObject(entradas);
 					target.add(listViewContainer);
 					target.add(labelContainer);
 					target.add(form);
@@ -216,9 +221,6 @@ public class EntradasPage extends BasePage {
 
 		radiog.add(dia.add(new AjaxEventBehavior("onchange") {
 			protected void onEvent(AjaxRequestTarget target) {
-//				List<Data> entradas = daoService.getEntradasDia(
-//						EntradasPage.this.usuario, fechaActual);
-//				lstDataModel.setObject(entradas);
 				lstDataModel.detach();
 				target.add(listViewContainer);
 				target.add(labelContainer);
@@ -228,19 +230,19 @@ public class EntradasPage extends BasePage {
 		radiog.add(semana.add(new AjaxEventBehavior("onchange") {
 			protected void onEvent(AjaxRequestTarget target) {
 				List<Data> entradas = daoService.getEntradasSemanales(
-					EntradasPage.this.usuario, fechaActual);
-					lstDataModel.setObject(daoService.toJson(entradas));
-					target.add(listViewContainer);
-					target.add(labelContainer);
+						EntradasPage.this.usuario, fechaActual);
+				lstDataModel.setObject(daoService.toJson(entradas));
+				target.add(listViewContainer);
+				target.add(labelContainer);
 			}
 		}));
 		radiog.add(mes.add(new AjaxEventBehavior("onchange") {
 			protected void onEvent(AjaxRequestTarget target) {
 				List<Data> entradas = daoService.getEntradasMensuales(
-					EntradasPage.this.usuario, fechaActual);
-					lstDataModel.setObject(daoService.toJson(entradas));
-					target.add(listViewContainer);
-					target.add(labelContainer);
+						EntradasPage.this.usuario, fechaActual);
+				lstDataModel.setObject(daoService.toJson(entradas));
+				target.add(listViewContainer);
+				target.add(labelContainer);
 
 			}
 		}));
@@ -274,11 +276,6 @@ public class EntradasPage extends BasePage {
 		public EntradaForm(String id) {
 			super(id);
 			this.setDefaultModel(this.entradaModel);
-
-			// TODO esto va en la db
-			ArrayList<String> sistExt = new ArrayList<String>();
-			sistExt.add("Sistema de Incidencias de YPF");
-			sistExt.add("Sistema Geminis de YPF");
 
 			this.comboProyecto = new DropDownChoice<Proyecto>("proyecto",
 					daoService.getProyectos(), new IChoiceRenderer<Proyecto>() {
@@ -337,11 +334,12 @@ public class EntradasPage extends BasePage {
 			mensajeActividad.setOutputMarkupId(true);
 
 			sistemaExterno = new DropDownChoice<String>("sistemaExterno",
-					sistExt);
+					daoService.getSistemasExternos());
 			sistemaExterno.setLabel(Model.of("Sistema Externo"));
 			sistemaExterno.setOutputMarkupId(true);
 
 			nota = new TextArea<String>("nota");
+			nota.setOutputMarkupId(true);
 
 			duracion = new TextField<String>("duracion");
 			duracion.setRequired(true);
@@ -373,7 +371,8 @@ public class EntradasPage extends BasePage {
 					int anio = Integer.parseInt(campos.get(2));
 
 					fechaActual = new LocalDate(anio, mes, dia);
-					List<Data> data = daoService.getEntradasDia(EntradasPage.this.usuario, fechaActual);
+					List<Data> data = daoService.getEntradasDia(
+							EntradasPage.this.usuario, fechaActual);
 					lstDataModel.detach();
 					target.add(listViewContainer);
 					target.add(labelContainer);
@@ -448,8 +447,20 @@ public class EntradasPage extends BasePage {
 								Model.of("display:none")));
 					}
 
-					target.add(EntradaForm.this);
-					//TODO agregar cada add en cajitas separandoles del datepicker
+					target.add(comboProyecto);
+					target.add(comboActividad);
+					target.add(comboProyecto);
+					target.add(sistemaExterno);
+					target.add(duracion);
+					target.add(ticketBZ);
+					target.add(nota);
+					target.add(ticketExt);
+					target.add(feedBackPanel);
+					target.add(mensajeProyecto);
+					target.add(mensajeActividad);
+					
+					//TODO: ver de como hacer para hacer refresh del calendario solamente (sin el TextField) 
+					target.add(fecha);
 				}
 
 				@Override
@@ -496,12 +507,12 @@ public class EntradasPage extends BasePage {
 					}
 
 					target.add(feedBackPanel);
-					//target.add(fecha);
+					// target.add(fecha);
 					target.add(duracion);
 					target.add(ticketExt);
 					target.add(mensajeProyecto);
 					target.add(mensajeActividad);
-//					target.add(radioContainer);
+					// target.add(radioContainer);
 				}
 
 			};

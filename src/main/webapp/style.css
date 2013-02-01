@@ -3,7 +3,7 @@
 	font-size: 13px;
 	color: #666666;
 	background-color: #FFFFFF;
-	background-image: url(images/BG.gif);
+	background-image: url(images/BG.png);
 	background-repeat: repeat-x;
 	margin: 0px;
 	padding: 0px;
@@ -51,7 +51,7 @@
 #wrap #header {
 	background-image: url(images/LOGO.gif);
 	background-repeat: no-repeat;
-	height: 165px;
+	height: 95px;
 	margin: 0px;
 	padding: 0px;
 }

@@ -176,6 +176,7 @@ public class EntradaDAO extends AbstractDAO {
 		
 		return entradas;
 	}
+	
 	public Collection<Entrada> getEntradas(Date desde, Date hasta){
 		Timestamp desdeSQL = new Timestamp(desde.getTime());
 		Timestamp hastaSQL = new Timestamp(hasta.getTime());		
@@ -327,7 +328,18 @@ public class EntradaDAO extends AbstractDAO {
 			return jdbcTemplate.queryForObject(sqlEntradas+" WHERE e.al_user_id = u.u_id AND e.al_project_id = p.p_id AND e.al_activity_id = a.a_id AND e.al_timestamp=?", new RowMapperEntradas(), fecha);
 		}
 		
+		
+		public List<String> getSistemasExternos() {
+			ArrayList<String> sistemasExternos = new ArrayList<String>();
+			sistemasExternos.add("Sistema de Incidencias de YPF");
+			sistemasExternos.add("Sistema Geminis de YPF");
+			
+			return sistemasExternos;
+		}
+		
+		
 	}
+
 	
 	
 
