@@ -1,6 +1,7 @@
 package com.odea;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -13,18 +14,23 @@ import com.odea.domain.Usuario;
 public class UsuarioDAOTest extends AbstractTestCase {
 
 	@Autowired
-	private UsuarioDAO dao;
+	private UsuarioDAO usuarioDAO;
 	
 	@Test
 	public void getUsuariosDeProyectoTest() {
 		Proyecto proyecto = new Proyecto(1, "Proyecto");
 		
-		Collection<Usuario> usuarios = dao.getUsuarios(proyecto);
-		System.out.println(usuarios.size());
+		Collection<Usuario> usuarios = usuarioDAO.getUsuarios(proyecto);
 		Assert.assertTrue("No se encontro la cantidad de usuarios esperada", usuarios.size() == 53);
-		Usuario usuario= dao.getUsuario("invitado");
-		Assert.assertTrue("error al buscar invitado", usuario.getIdUsuario()==57);
+		Usuario usuario= usuarioDAO.getUsuario("invitado");
+		Assert.assertTrue("Error al buscar invitado", usuario.getIdUsuario()==57);
 		
+	}
+	
+	@Test
+	public void obtenerTodosLosUsuariosTest() {
+		List<Usuario> usuarios = usuarioDAO.getUsuarios();
+		org.springframework.util.Assert.notEmpty(usuarios, "No se encontraron usuarios. La coleccion es nula o esta vacia.");
 	}
 	
 	

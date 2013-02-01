@@ -125,12 +125,8 @@ public class EntradaDAO extends AbstractDAO {
 			}}, usuario.getIdUsuario(), desdeSQL, hastaSQL);
 		
 		
-		//Ordenamos por fecha
-		
 		Collections.sort(listaEntradas);
 		
-		
-		//Transformar en Data
 		
 		List<Data> listaData = new ArrayList<Data>();
 		Data data;
@@ -202,7 +198,7 @@ public class EntradaDAO extends AbstractDAO {
 		Date diaHoy = hoy.toDateTimeAtStartOfDay().toDate();
 		Date diaManiana = maniana.toDateTimeAtStartOfDay().toDate();
 		
-		return this.getHorasDesdeHasta(usuario, diaHoy,diaManiana);
+		return this.getHorasDesdeHasta(usuario, diaHoy, diaManiana);
 	}
 	
 	public int getHorasMensuales(Usuario usuario, LocalDate now) 

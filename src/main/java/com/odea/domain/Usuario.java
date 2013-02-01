@@ -48,7 +48,7 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 
 	@Override
 	public String toString() {
-		return "ID:" + this.idUsuario + " - Nombre:"+ this.nombre;
+		return this.nombre;
 	}
 
 	

@@ -35,7 +35,6 @@ import org.joda.time.LocalDate;
 
 import com.odea.behavior.numberComma.NumberCommaBehavior;
 import com.odea.behavior.onlyNumber.OnlyNumberBehavior;
-import com.odea.components.ajax.AbstractInitializableComponentBehavior;
 import com.odea.components.datepicker.DatePickerDTO;
 import com.odea.components.datepicker.HorasCargadasPorDia;
 import com.odea.components.slickGrid.Columna;
@@ -65,9 +64,9 @@ public class EntradasPage extends BasePage {
 	IModel<Integer> horasDiaModel;
 	IModel<String> slickGridJsonCols;
 	RadioChoice<String> selectorTiempo;
+	LocalDate fechaActual = new LocalDate();
 	Label mensajeProyecto;
 	Label mensajeActividad;
-	LocalDate fechaActual = new LocalDate();
 	Label horasAcumuladasDia;
 	Label horasAcumuladasSemana;
 	Label horasAcumuladasMes;
@@ -77,10 +76,11 @@ public class EntradasPage extends BasePage {
 	WebMarkupContainer listViewContainer;
 	WebMarkupContainer radioContainer;
 	WebMarkupContainer labelContainer;
+	
 
 	public EntradasPage() {
-		final Subject subject = SecurityUtils.getSubject();
 
+		final Subject subject = SecurityUtils.getSubject();
 		this.slickGridJsonCols = Model.of(this.getColumns());
 
 		this.usuario = this.daoService.getUsuario(subject.getPrincipal()
@@ -114,14 +114,13 @@ public class EntradasPage extends BasePage {
 			@Override
 			protected Integer load() {
 				return daoService.getHorasDiarias(usuario, fechaActual);
-
 			}
 
 		};
 
 		this.listViewContainer = new WebMarkupContainer("listViewContainer");
 		this.listViewContainer.setOutputMarkupId(true);
-		labelContainer = new WebMarkupContainer("labelContainer");
+		this.labelContainer = new WebMarkupContainer("labelContainer");
 
 		final SlickGrid slickGrid = new SlickGrid("slickGrid", lstDataModel,
 				slickGridJsonCols) {
@@ -147,7 +146,6 @@ public class EntradasPage extends BasePage {
 								.getId());
 						java.sql.Timestamp timestamp = new java.sql.Timestamp(
 								parsedDate.getTime());
-						System.out.println(data.getFecha());
 						dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 						Date fecha = dateFormat.parse(data.getFecha());
 						Actividad actividad = daoService.getActividad(data
@@ -187,7 +185,7 @@ public class EntradasPage extends BasePage {
 
 		slickGrid.setOutputMarkupId(true);
 
-		form = new EntradaForm("form") {
+		this.form = new EntradaForm("form") {
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, EntradaForm form) {
 				daoService.agregarEntrada(form.getModelObject(), usuario);
@@ -197,15 +195,17 @@ public class EntradasPage extends BasePage {
 			}
 		};
 
-		horasAcumuladasDia = new Label("horasAcumuladasDia", this.horasDiaModel);
-		horasAcumuladasDia.setOutputMarkupId(true);
+		this.horasAcumuladasDia = new Label("horasAcumuladasDia",
+				this.horasDiaModel);
+		this.horasAcumuladasDia.setOutputMarkupId(true);
 
-		horasAcumuladasSemana = new Label("horasAcumuladasSemana",
+		this.horasAcumuladasSemana = new Label("horasAcumuladasSemana",
 				this.horasSemanalesModel);
-		horasAcumuladasSemana.setOutputMarkupId(true);
+		this.horasAcumuladasSemana.setOutputMarkupId(true);
 
-		horasAcumuladasMes = new Label("horasAcumuladasMes", this.horasMesModel);
-		horasAcumuladasMes.setOutputMarkupId(true);
+		this.horasAcumuladasMes = new Label("horasAcumuladasMes",
+				this.horasMesModel);
+		this.horasAcumuladasMes.setOutputMarkupId(true);
 
 		final RadioGroup<String> radiog = new RadioGroup<String>(
 				"selectorTiempo", Model.of(new String()));
@@ -255,7 +255,40 @@ public class EntradasPage extends BasePage {
 		labelContainer.add(horasAcumuladasSemana);
 		labelContainer.add(horasAcumuladasMes);
 		labelContainer.setOutputMarkupId(true);
+		
+		
+		final DropDownChoice<Usuario> selectorUsuario = new DropDownChoice<Usuario>("selectorUsuario", new LoadableDetachableModel<List<Usuario>>() {
+			@Override
+			protected List<Usuario> load() {
+				return daoService.getUsuarios();
+			}
+		});
 
+		selectorUsuario.setModel(new Model<Usuario>(this.usuario));
+		
+		selectorUsuario.add(new AjaxFormComponentUpdatingBehavior("onchange") {
+			@Override
+			protected void onUpdate(AjaxRequestTarget target) {
+				
+				EntradasPage.this.usuario = selectorUsuario.getModelObject();
+				
+				List<Data> entradas = daoService.getEntradasDia(EntradasPage.this.usuario, fechaActual);
+				lstDataModel.setObject(daoService.toJson(entradas));
+				
+				target.add(EntradasPage.this.form);
+				target.add(EntradasPage.this.listViewContainer);
+				target.add(EntradasPage.this.labelContainer);
+				target.add(EntradasPage.this.radioContainer);
+			}
+			
+		});
+		
+		selectorUsuario.setOutputMarkupId(true);
+		
+		
+		
+		
+		add(selectorUsuario);
 		add(labelContainer);
 		add(form);
 
@@ -290,6 +323,7 @@ public class EntradasPage extends BasePage {
 						}
 
 					});
+
 			this.comboProyecto.setOutputMarkupId(true);
 			this.comboProyecto.setRequired(true);
 			this.comboProyecto.setLabel(Model.of("Proyecto"));
@@ -324,6 +358,7 @@ public class EntradasPage extends BasePage {
 						}
 
 					});
+
 			this.comboActividad.setOutputMarkupId(true);
 			this.comboActividad.setRequired(true);
 			this.comboActividad.setLabel(Model.of("Actividad"));
@@ -458,8 +493,9 @@ public class EntradasPage extends BasePage {
 					target.add(feedBackPanel);
 					target.add(mensajeProyecto);
 					target.add(mensajeActividad);
-					
-					//TODO: ver de como hacer para hacer refresh del calendario solamente (sin el TextField) 
+
+					// TODO: Ver cómo hacer refresh del calendario solamente
+					// (sin el TextField).
 					target.add(fecha);
 				}
 
@@ -541,14 +577,12 @@ public class EntradasPage extends BasePage {
 			add(sistemaExterno);
 			add(ticketExt);
 			add(feedBackPanel);
-			this.add(new OnRelatedFieldsNullValidator(sistemaExterno,
-					ticketExt,
-					"Debe poner un sistema externo para poder poner un ticket externo"));
-			this.add(new OnRelatedFieldsNullValidator(ticketExt,
-					sistemaExterno,
-					"Debe ingresar un ticket con ese sistema externo elegido"));
 			add(submit);
 			add(limpiar);
+			add(new OnRelatedFieldsNullValidator(sistemaExterno, ticketExt,
+					"Debe poner un sistema externo para poder poner un ticket externo"));
+			add(new OnRelatedFieldsNullValidator(ticketExt, sistemaExterno,
+					"Debe ingresar un ticket con ese sistema externo elegido"));
 
 			this.setOutputMarkupId(true);
 		}
