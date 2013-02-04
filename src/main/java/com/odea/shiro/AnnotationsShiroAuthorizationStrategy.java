@@ -66,7 +66,7 @@ public class AnnotationsShiroAuthorizationStrategy implements IAuthorizationStra
 		String idComponent = component.getId();
 		String accion = action.toString();
 		
-		if (!usuario.equals("admin")) {
+		if (!usuario.equals("pgotelli")) {
 			if (idComponent == "selectorUsuario") {
 				return false;
 			}

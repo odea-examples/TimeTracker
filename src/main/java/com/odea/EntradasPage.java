@@ -39,10 +39,10 @@ import com.odea.components.datepicker.DatePickerDTO;
 import com.odea.components.datepicker.HorasCargadasPorDia;
 import com.odea.components.slickGrid.Columna;
 import com.odea.components.slickGrid.Data;
-import com.odea.components.slickGrid.SlickGrid;
 import com.odea.components.slickGrid.Enumeraciones.editores;
 import com.odea.components.slickGrid.Enumeraciones.formatos;
 import com.odea.components.slickGrid.Enumeraciones.validador;
+import com.odea.components.slickGrid.SlickGrid;
 import com.odea.components.yuidatepicker.YuiDatePicker;
 import com.odea.domain.Actividad;
 import com.odea.domain.Entrada;
@@ -63,6 +63,7 @@ public class EntradasPage extends BasePage {
 	private EntradaForm form;
 	private RadioChoice<String> selectorTiempo;
 	private LocalDate fechaActual = new LocalDate();
+	private String radioSeleccionado = "dia";
 	private IModel<String> lstDataModel;
 	private IModel<Integer> horasSemanalesModel;
 	private IModel<Integer> horasMesModel;
@@ -89,9 +90,24 @@ public class EntradasPage extends BasePage {
 		this.lstDataModel = new LoadableDetachableModel<String>() {
 			@Override
 			protected String load() {
+				if (radioSeleccionado == "dia"){
 				return daoService.toJson(daoService.getEntradasDia(
 						EntradasPage.this.usuario,
 						EntradasPage.this.fechaActual));
+				}
+				if (radioSeleccionado == "mes"){
+					return daoService.toJson(daoService.getEntradasMensuales(
+							EntradasPage.this.usuario,
+							EntradasPage.this.fechaActual));
+				}
+				if (radioSeleccionado == "semana"){
+					return daoService.toJson(daoService.getEntradasSemanales(
+							EntradasPage.this.usuario,
+							EntradasPage.this.fechaActual));
+				}
+				else {
+					throw new RuntimeException("radio seleccionado erroneo o loqueseaquepaso");
+				}
 			}
 		};
 
@@ -161,12 +177,13 @@ public class EntradasPage extends BasePage {
 					}
 					
 					
-					EntradasPage.this.fechaActual = new LocalDate();
+//					EntradasPage.this.fechaActual = new LocalDate();
 					EntradasPage.this.lstDataModel.detach();
 					
 					target.add(listViewContainer);
 					target.add(labelContainer);
-					target.add(form);
+//					target.add(form);
+					// poner target.add separados, o no ponerlos directamente
 					
 				} catch (Exception e) {
 					throw new RuntimeException(e);
@@ -216,6 +233,7 @@ public class EntradasPage extends BasePage {
 		radiog.add(dia.add(new AjaxEventBehavior("onchange") {
 			
 			protected void onEvent(AjaxRequestTarget target) {
+				EntradasPage.this.radioSeleccionado = "dia";
 				EntradasPage.this.lstDataModel.detach();
 				target.add(listViewContainer);
 				target.add(labelContainer);
@@ -226,6 +244,7 @@ public class EntradasPage extends BasePage {
 		radiog.add(semana.add(new AjaxEventBehavior("onchange") {
 			
 			protected void onEvent(AjaxRequestTarget target) {
+				EntradasPage.this.radioSeleccionado = "semana";
 				List<Data> entradas = daoService.getEntradasSemanales(EntradasPage.this.usuario, EntradasPage.this.fechaActual);
 				lstDataModel.setObject(daoService.toJson(entradas));
 				target.add(listViewContainer);
@@ -238,6 +257,7 @@ public class EntradasPage extends BasePage {
 		radiog.add(mes.add(new AjaxEventBehavior("onchange") {
 			
 			protected void onEvent(AjaxRequestTarget target) {
+				EntradasPage.this.radioSeleccionado = "mes";
 				List<Data> entradas = daoService.getEntradasMensuales(EntradasPage.this.usuario, EntradasPage.this.fechaActual);
 				lstDataModel.setObject(daoService.toJson(entradas));
 				target.add(listViewContainer);
@@ -256,13 +276,17 @@ public class EntradasPage extends BasePage {
 		this.labelContainer.setOutputMarkupId(true);
 		
 		
-		
-		
-		final DropDownChoice<Usuario> selectorUsuario = new DropDownChoice<Usuario>("selectorUsuario", new LoadableDetachableModel<List<Usuario>>() {
+		final DropDownChoice<Usuario> selectorUsuario = new DropDownChoice<Usuario>("selectorUsuario",daoService.getUsuarios(),new IChoiceRenderer<Usuario>() {
 			@Override
-			protected List<Usuario> load() {
-				return daoService.getUsuarios();
+			public Object getDisplayValue(Usuario object) {
+				return object.getNombre();
 			}
+
+			@Override
+			public String getIdValue(Usuario object, int index) {
+				return Integer.toString(object.getIdUsuario());
+			}
+			
 		});
 
 		selectorUsuario.setModel(new Model<Usuario>(this.usuario));
@@ -421,8 +445,7 @@ public class EntradasPage extends BasePage {
 					int anio = Integer.parseInt(campos.get(2));
 
 					fechaActual = new LocalDate(anio, mes, dia);
-					List<Data> data = daoService.getEntradasDia(
-							EntradasPage.this.usuario, fechaActual);
+					radioSeleccionado = "dia";
 					lstDataModel.detach();
 					target.add(listViewContainer);
 					target.add(labelContainer);
@@ -461,7 +484,7 @@ public class EntradasPage extends BasePage {
 					EntradasPage.this.lstDataModel.detach();
 					target.add(EntradasPage.this.listViewContainer);
 					target.add(EntradasPage.this.labelContainer);
-					target.add(EntradasPage.this.radioContainer);
+//					target.add(EntradasPage.this.radioContainer);
 					EntradaForm.this.setModelObject(new Entrada());
 
 					if (duracion.isValid()) {
@@ -604,22 +627,15 @@ public class EntradasPage extends BasePage {
 		String lista = daoService.getProyectos().toString();
 		String proyectos = lista.subSequence(1, lista.length() - 1).toString();
 		
-				"del", formatos.DeleteButton.getVal(), null, null, null);
-		Columna columna2 = new Columna("duration", "Duracion", 60, 60, 60, "cell-title", "duration", null, "Slick.Editors.Text", "requiredDurationValidator", null);
-				"cell-title", "duration", null, editores.Text.getVal(),
-				validador.duracionRequerida.getVal(), null);
-		Columna columna5 = new Columna("fecha", "Start", 60, 60, 60, null, "fecha", null, "Slick.Editors.Date", "requiredFieldValidator", null);
-		Columna columna6 = new Columna("ticket", "Ticket", 50, 50, 50, "cell-title", "ticket", null, "Slick.Editors.Text", null, null);
-				editores.SelectRelatedEditor.getVal(), validador.textoRequerido.getVal(),
-		Columna columna8 = new Columna("sistExt", "SistExt", 80, 80, 80, "cell-title", "sistExt", null, "Slick.Editors.Text", null, null);
-		Columna columna9 = new Columna("descripcion", "Desc", 80, 80, 80, null, "descripcion", null, "Slick.Editors.LongText", null, null);
-				"cell-title", "proyecto", null, editores.SelectEditor.getVal(),
-				validador.textoRequerido.getVal(), proyectos);
-				"fecha", null, editores.Date.getVal(), validador.textoRequerido.getVal(),
-				"cell-title", "ticket", null, editores.Text.getVal(), null, null);
-				"cell-title", "ticketExt", null, editores.Text.getVal(),
-				"cell-title", "sistExt", null, editores.Text.getVal(), null, null);
-				"descripcion", null, editores.LongText.getVal(), null, null);
+		Columna columna = new Columna("delCol", "Delete", 60, 60, 60, null,	"del", formatos.DeleteButton.getVal(), null, null, null);
+		Columna columna2 = new Columna("duration", "Duracion", 60, 60, 60,"cell-title", "duration", null, editores.Text.getVal(),	validador.duracionRequerida.getVal(), null);
+		Columna columna3 = new Columna("actividad", "Actividad", 125, 100, 200,	"cell-title", "actividad", null,editores.SelectRelatedEditor.getVal(), validador.textoRequerido.getVal(),actividades);
+		Columna columna4 = new Columna("proyecto", "Proyecto", 135, 100, 200,"cell-title", "proyecto", null, editores.SelectEditor.getVal(),validador.textoRequerido.getVal(), proyectos);
+		Columna columna5 = new Columna("fecha", "Start", 60, 60, 60, null,"fecha", null, editores.Date.getVal(), validador.textoRequerido.getVal(),null);
+		Columna columna6 = new Columna("ticket", "Ticket", 50, 50, 50,"cell-title", "ticket", null, editores.Text.getVal(), null, null);
+		Columna columna7 = new Columna("ticketExt", "TicketExt", 80, 80, 100,"cell-title", "ticketExt", null, editores.Text.getVal(),null, null);
+		Columna columna8 = new Columna("sistExt", "SistExt", 80, 80, 80,"cell-title", "sistExt", null, editores.Text.getVal(), null, null);
+		Columna columna9 = new Columna("descripcion", "Desc", 80, 80, 80, null,"descripcion", null, editores.LongText.getVal(), null, null);
 		ArrayList<Columna> columnas = new ArrayList<Columna>();
 		columnas.add(columna);
 		columnas.add(columna5);
