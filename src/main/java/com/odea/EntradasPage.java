@@ -60,25 +60,22 @@ public class EntradasPage extends BasePage {
 	private transient DAOService daoService;
 
 	private Usuario usuario;
-
-	IModel<String> lstDataModel;
-	IModel<Integer> horasSemanalesModel;
-	IModel<Integer> horasMesModel;
-	IModel<Integer> horasDiaModel;
-	IModel<String> slickGridJsonCols;
-	RadioChoice<String> selectorTiempo;
-	LocalDate fechaActual = new LocalDate();
-	Label mensajeProyecto;
-	Label mensajeActividad;
-	Label horasAcumuladasDia;
-	Label horasAcumuladasSemana;
-	Label horasAcumuladasMes;
-
-	EntradaForm form;
-
-	WebMarkupContainer listViewContainer;
-	WebMarkupContainer radioContainer;
-	WebMarkupContainer labelContainer;
+	private EntradaForm form;
+	private RadioChoice<String> selectorTiempo;
+	private LocalDate fechaActual = new LocalDate();
+	private IModel<String> lstDataModel;
+	private IModel<Integer> horasSemanalesModel;
+	private IModel<Integer> horasMesModel;
+	private IModel<Integer> horasDiaModel;
+	private IModel<String> slickGridJsonCols;
+	private Label mensajeProyecto;
+	private Label mensajeActividad;
+	private Label horasAcumuladasDia;
+	private Label horasAcumuladasSemana;
+	private Label horasAcumuladasMes;
+	private WebMarkupContainer listViewContainer;
+	private WebMarkupContainer radioContainer;
+	private WebMarkupContainer labelContainer;
 	
 
 	public EntradasPage() {
@@ -123,65 +120,58 @@ public class EntradasPage extends BasePage {
 
 		this.listViewContainer = new WebMarkupContainer("listViewContainer");
 		this.listViewContainer.setOutputMarkupId(true);
-		this.labelContainer = new WebMarkupContainer("labelContainer");
 
-		final SlickGrid slickGrid = new SlickGrid("slickGrid", lstDataModel,
-				slickGridJsonCols) {
+		
+		final SlickGrid slickGrid = new SlickGrid("slickGrid", this.lstDataModel, this.slickGridJsonCols) {
 
 			@Override
-			protected void onInfoSend(AjaxRequestTarget target,
-					String realizar, Data data) {
+			protected void onInfoSend(AjaxRequestTarget target, String realizar, Data data) {
 				try {
+					
 					if (realizar == "borrar") {
-
-						SimpleDateFormat dateFormat = new SimpleDateFormat(
-								"yyyy-MM-dd HH:mm:ss.SSS");
-						java.util.Date parsedDate = dateFormat.parse(data
-								.getId());
-						java.sql.Timestamp timestamp = new java.sql.Timestamp(
-								parsedDate.getTime());
+						SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+						java.util.Date parsedDate = dateFormat.parse(data.getId());
+						java.sql.Timestamp timestamp = new java.sql.Timestamp(parsedDate.getTime());
 						daoService.borrarEntrada(timestamp);
+						
 					} else {
 
-						SimpleDateFormat dateFormat = new SimpleDateFormat(
-								"yyyy-MM-dd HH:mm:ss.SSS");
-						java.util.Date parsedDate = dateFormat.parse(data
-								.getId());
-						java.sql.Timestamp timestamp = new java.sql.Timestamp(
-								parsedDate.getTime());
+						SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+						java.util.Date parsedDate = dateFormat.parse(data.getId());
+						java.sql.Timestamp timestamp = new java.sql.Timestamp(parsedDate.getTime());
 						dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 						Date fecha = dateFormat.parse(data.getFecha());
-						Actividad actividad = daoService.getActividad(data
-								.getActividad());
-						Proyecto proyecto = daoService.getProyecto(data
-								.getProyecto());
+						
+						Actividad actividad = daoService.getActividad(data.getActividad());
+						Proyecto proyecto = daoService.getProyecto(data.getProyecto());
+						
 						Integer ticket;
+						
 						if (data.getTicket().isEmpty()) {
 							ticket = 0;
 						} else {
 							ticket = Integer.parseInt(data.getTicket());
 						}
 
-						Entrada entrada = new Entrada(timestamp, proyecto,
-								actividad, data.getDuration(),
-								data.getDescripcion(), ticket,
-								data.getTicketExt(), data.getSistExt(),
+						Entrada entrada = new Entrada(timestamp, proyecto, actividad, data.getDuration(),
+								data.getDescripcion(), ticket, data.getTicketExt(), data.getSistExt(),
 								usuario, fecha);
+						
 						daoService.modificarEntrada(entrada);
 					}
-					// List<Data> entradas;
-					fechaActual = new LocalDate();
-					lstDataModel.detach();
-					// entradas =
-					// daoService.getEntradasDia(EntradasPage.this.usuario,
-					// fechaActual);
-					// lstDataModel.setObject(entradas);
+					
+					
+					EntradasPage.this.fechaActual = new LocalDate();
+					EntradasPage.this.lstDataModel.detach();
+					
 					target.add(listViewContainer);
 					target.add(labelContainer);
 					target.add(form);
+					
 				} catch (Exception e) {
 					throw new RuntimeException(e);
 				}
+				
 			}
 
 		};
@@ -192,57 +182,63 @@ public class EntradasPage extends BasePage {
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, EntradaForm form) {
 				daoService.agregarEntrada(form.getModelObject(), usuario);
-				lstDataModel.detach();
+				EntradasPage.this.lstDataModel.detach();
+				
 				target.add(listViewContainer);
 				target.add(labelContainer);
 			}
 		};
 
-		this.horasAcumuladasDia = new Label("horasAcumuladasDia",
-				this.horasDiaModel);
+		
+		
+		this.horasAcumuladasDia = new Label("horasAcumuladasDia", this.horasDiaModel);
 		this.horasAcumuladasDia.setOutputMarkupId(true);
 
-		this.horasAcumuladasSemana = new Label("horasAcumuladasSemana",
-				this.horasSemanalesModel);
+		this.horasAcumuladasSemana = new Label("horasAcumuladasSemana", this.horasSemanalesModel);
 		this.horasAcumuladasSemana.setOutputMarkupId(true);
 
-		this.horasAcumuladasMes = new Label("horasAcumuladasMes",
-				this.horasMesModel);
+		this.horasAcumuladasMes = new Label("horasAcumuladasMes", this.horasMesModel);
 		this.horasAcumuladasMes.setOutputMarkupId(true);
 
-		final RadioGroup<String> radiog = new RadioGroup<String>(
-				"selectorTiempo", Model.of(new String()));
+		
+		
+		
+		final RadioGroup<String> radiog = new RadioGroup<String>("selectorTiempo", Model.of(new String()));
 
 		Radio<String> dia = new Radio<String>("dia", Model.of("Dia"));
 		Radio<String> semana = new Radio<String>("semana", Model.of("Semana"));
 		Radio<String> mes = new Radio<String>("mes", Model.of("Mes"));
 
-		radioContainer = new WebMarkupContainer("radioContainer");
-		radioContainer.setOutputMarkupId(true);
-		radioContainer.add(radiog);
-		add(radioContainer);
+		this.radioContainer = new WebMarkupContainer("radioContainer");
+		this.radioContainer.setOutputMarkupId(true);
+		this.radioContainer.add(radiog);
 
 		radiog.add(dia.add(new AjaxEventBehavior("onchange") {
+			
 			protected void onEvent(AjaxRequestTarget target) {
-				lstDataModel.detach();
+				EntradasPage.this.lstDataModel.detach();
 				target.add(listViewContainer);
 				target.add(labelContainer);
 			}
+			
 		}));
 
 		radiog.add(semana.add(new AjaxEventBehavior("onchange") {
+			
 			protected void onEvent(AjaxRequestTarget target) {
-				List<Data> entradas = daoService.getEntradasSemanales(
-						EntradasPage.this.usuario, fechaActual);
+				List<Data> entradas = daoService.getEntradasSemanales(EntradasPage.this.usuario, EntradasPage.this.fechaActual);
 				lstDataModel.setObject(daoService.toJson(entradas));
 				target.add(listViewContainer);
 				target.add(labelContainer);
 			}
+			
 		}));
+		
+		
 		radiog.add(mes.add(new AjaxEventBehavior("onchange") {
+			
 			protected void onEvent(AjaxRequestTarget target) {
-				List<Data> entradas = daoService.getEntradasMensuales(
-						EntradasPage.this.usuario, fechaActual);
+				List<Data> entradas = daoService.getEntradasMensuales(EntradasPage.this.usuario, EntradasPage.this.fechaActual);
 				lstDataModel.setObject(daoService.toJson(entradas));
 				target.add(listViewContainer);
 				target.add(labelContainer);
@@ -250,14 +246,16 @@ public class EntradasPage extends BasePage {
 			}
 		}));
 
-		listViewContainer.setOutputMarkupId(true);
-		listViewContainer.add(slickGrid);
-		add(listViewContainer);
+		this.listViewContainer.add(slickGrid);
 
-		labelContainer.add(horasAcumuladasDia);
-		labelContainer.add(horasAcumuladasSemana);
-		labelContainer.add(horasAcumuladasMes);
-		labelContainer.setOutputMarkupId(true);
+
+		this.labelContainer = new WebMarkupContainer("labelContainer");
+		this.labelContainer.add(horasAcumuladasDia);
+		this.labelContainer.add(horasAcumuladasSemana);
+		this.labelContainer.add(horasAcumuladasMes);
+		this.labelContainer.setOutputMarkupId(true);
+		
+		
 		
 		
 		final DropDownChoice<Usuario> selectorUsuario = new DropDownChoice<Usuario>("selectorUsuario", new LoadableDetachableModel<List<Usuario>>() {
@@ -268,6 +266,7 @@ public class EntradasPage extends BasePage {
 		});
 
 		selectorUsuario.setModel(new Model<Usuario>(this.usuario));
+		selectorUsuario.setOutputMarkupId(true);
 		
 		selectorUsuario.add(new AjaxFormComponentUpdatingBehavior("onchange") {
 			@Override
@@ -286,20 +285,22 @@ public class EntradasPage extends BasePage {
 			
 		});
 		
-		selectorUsuario.setOutputMarkupId(true);
-		
 		
 		
 		
 		add(selectorUsuario);
+		add(radioContainer);
+		add(listViewContainer);		
 		add(labelContainer);
 		add(form);
 
 	}
 
+
+	
 	public abstract class EntradaForm extends Form<Entrada> {
-		public IModel<Entrada> entradaModel = new CompoundPropertyModel<Entrada>(
-				new Entrada());
+		
+		public IModel<Entrada> entradaModel = new CompoundPropertyModel<Entrada>(new Entrada());
 		public DropDownChoice<Actividad> comboActividad;
 		public DropDownChoice<Proyecto> comboProyecto;
 		public TextField<String> ticketExt;
@@ -308,11 +309,15 @@ public class EntradasPage extends BasePage {
 		public TextField<String> ticketBZ;
 		public YuiDatePicker fecha;
 		public TextArea<String> nota;
+		
 
 		public EntradaForm(String id) {
 			super(id);
 			this.setDefaultModel(this.entradaModel);
+			this.setOutputMarkupId(true);
 
+			
+			
 			this.comboProyecto = new DropDownChoice<Proyecto>("proyecto",
 					daoService.getProyectos(), new IChoiceRenderer<Proyecto>() {
 						@Override
@@ -341,12 +346,14 @@ public class EntradasPage extends BasePage {
 					target.add(EntradaForm.this.comboActividad);
 				}
 			});
+			
+			EntradasPage.this.mensajeProyecto = new Label("mensajeProyecto", "Campo necesario");
+			EntradasPage.this.mensajeProyecto.add(new AttributeModifier("style", Model.of("display:none")));
+			EntradasPage.this.mensajeProyecto.setOutputMarkupId(true);
 
-			mensajeProyecto = new Label("mensajeProyecto", "Campo necesario");
-			mensajeProyecto.add(new AttributeModifier("style", Model
-					.of("display:none")));
-			mensajeProyecto.setOutputMarkupId(true);
-
+			
+			
+			
 			this.comboActividad = new DropDownChoice<Actividad>("actividad",
 					new ArrayList<Actividad>(),
 					new IChoiceRenderer<Actividad>() {
@@ -362,40 +369,45 @@ public class EntradasPage extends BasePage {
 
 					});
 
+			
 			this.comboActividad.setOutputMarkupId(true);
 			this.comboActividad.setRequired(true);
 			this.comboActividad.setLabel(Model.of("Actividad"));
 
-			mensajeActividad = new Label("mensajeActividad", "Campo Necesario");
-			mensajeActividad.add(new AttributeModifier("style", Model
-					.of("display:none")));
-			mensajeActividad.setOutputMarkupId(true);
+			EntradasPage.this.mensajeActividad = new Label("mensajeActividad", "Campo Necesario");
+			EntradasPage.this.mensajeActividad.add(new AttributeModifier("style", Model.of("display:none")));
+			EntradasPage.this.mensajeActividad.setOutputMarkupId(true);
+			
 
-			sistemaExterno = new DropDownChoice<String>("sistemaExterno",
-					daoService.getSistemasExternos());
-			sistemaExterno.setLabel(Model.of("Sistema Externo"));
-			sistemaExterno.setOutputMarkupId(true);
+			
+			this.sistemaExterno = new DropDownChoice<String>("sistemaExterno", daoService.getSistemasExternos());
+			this.sistemaExterno.setLabel(Model.of("Sistema Externo"));
+			this.sistemaExterno.setOutputMarkupId(true);
 
-			nota = new TextArea<String>("nota");
-			nota.setOutputMarkupId(true);
+			
+			this.nota = new TextArea<String>("nota");
+			this.nota.setOutputMarkupId(true);
 
-			duracion = new TextField<String>("duracion");
-			duracion.setRequired(true);
-			duracion.setOutputMarkupId(true);
-			duracion.setLabel(Model.of("Duracion"));
-			duracion.add(new NumberCommaBehavior(duracion.getMarkupId()));
-			duracion.add(new DurationValidator());
+			
+			this.duracion = new TextField<String>("duracion");
+			this.duracion.setRequired(true);
+			this.duracion.setOutputMarkupId(true);
+			this.duracion.setLabel(Model.of("Duracion"));
+			this.duracion.add(new NumberCommaBehavior(duracion.getMarkupId()));
+			this.duracion.add(new DurationValidator());
 
-			ticketBZ = new TextField<String>("ticketBZ");
-			ticketBZ.setRequired(true);
-			ticketBZ.setOutputMarkupId(true);
-			ticketBZ.setLabel(Model.of("Ticket Bugzilla"));
-			ticketBZ.add(new OnlyNumberBehavior(ticketBZ.getMarkupId()));
+			
+			this.ticketBZ = new TextField<String>("ticketBZ");
+			this.ticketBZ.setRequired(true);
+			this.ticketBZ.setOutputMarkupId(true);
+			this.ticketBZ.setLabel(Model.of("Ticket Bugzilla"));
+			this.ticketBZ.add(new OnlyNumberBehavior(ticketBZ.getMarkupId()));
 
-			ticketExt = new TextField<String>("ticketExterno");
-			ticketExt.setLabel(Model.of("ID Ticket Externo"));
-			ticketExt.setOutputMarkupId(true);
-			ticketExt.add(new PatternValidator("^[a-z0-9_-]{1,15}$"));
+			
+			this.ticketExt = new TextField<String>("ticketExterno");
+			this.ticketExt.setLabel(Model.of("ID Ticket Externo"));
+			this.ticketExt.setOutputMarkupId(true);
+			this.ticketExt.add(new PatternValidator("^[a-z0-9_-]{1,15}$"));
 
 			final YuiDatePicker fecha = new YuiDatePicker("fecha") {
 
@@ -432,10 +444,11 @@ public class EntradasPage extends BasePage {
 			fecha.setRequired(true);
 			fecha.setLabel(Model.of("Fecha"));
 
-			final FeedbackPanel feedBackPanel = new FeedbackPanel(
-					"feedBackPanel");
+			final FeedbackPanel feedBackPanel = new FeedbackPanel("feedBackPanel");
 			feedBackPanel.setOutputMarkupId(true);
 
+			
+			
 			AjaxButton submit = new AjaxButton("submit", this) {
 
 				private static final long serialVersionUID = 1L;
@@ -445,46 +458,40 @@ public class EntradasPage extends BasePage {
 					EntradaForm.this.onSubmit(target, (EntradaForm) form);
 
 					target.add(feedBackPanel);
-					lstDataModel.detach();
-					target.add(listViewContainer);
-					target.add(labelContainer);
-					target.add(radioContainer);
+					EntradasPage.this.lstDataModel.detach();
+					target.add(EntradasPage.this.listViewContainer);
+					target.add(EntradasPage.this.labelContainer);
+					target.add(EntradasPage.this.radioContainer);
 					EntradaForm.this.setModelObject(new Entrada());
 
 					if (duracion.isValid()) {
-						duracion.add(new AttributeModifier("style", Model
-								.of("border-color:none")));
+						duracion.add(new AttributeModifier("style", Model.of("border-color:none")));
 					} else {
-						duracion.add(new AttributeModifier("style", Model
-								.of("border-style:solid; border-color:red;")));
+						duracion.add(new AttributeModifier("style", Model.of("border-style:solid; border-color:red;")));
 					}
 
 					if (ticketExt.isValid()) {
-						ticketExt.add(new AttributeModifier("style", Model
-								.of("border-color:none")));
+						ticketExt.add(new AttributeModifier("style", Model.of("border-color:none")));
 					} else {
-						ticketExt.add(new AttributeModifier("style", Model
-								.of("border-style:solid; border-color:red;")));
+						ticketExt.add(new AttributeModifier("style", Model.of("border-style:solid; border-color:red;")));
 					}
 
 					if (fecha.isValid()) {
-						fecha.add(new AttributeModifier("style", Model
-								.of("border-color:none")));
+						fecha.add(new AttributeModifier("style", Model.of("border-color:none")));
 					} else {
-						fecha.add(new AttributeModifier("style", Model
-								.of("border-style:solid; border-color:red;")));
+						fecha.add(new AttributeModifier("style", Model.of("border-style:solid; border-color:red;")));
 					}
 
 					if (comboProyecto.isValid()) {
-						mensajeProyecto.add(new AttributeModifier("style",
-								Model.of("display:none")));
+						mensajeProyecto.add(new AttributeModifier("style", Model.of("display:none")));
 					}
 
 					if (comboActividad.isValid()) {
-						mensajeActividad.add(new AttributeModifier("style",
-								Model.of("display:none")));
+						mensajeActividad.add(new AttributeModifier("style", Model.of("display:none")));
 					}
 
+					
+					
 					target.add(comboProyecto);
 					target.add(comboActividad);
 					target.add(comboProyecto);
@@ -506,52 +513,40 @@ public class EntradasPage extends BasePage {
 				protected void onError(AjaxRequestTarget target, Form<?> form) {
 
 					if (!duracion.isValid()) {
-						duracion.add(new AttributeModifier("style", Model
-								.of("border-style:solid; border-color:red;")));
+						duracion.add(new AttributeModifier("style", Model.of("border-style:solid; border-color:red;")));
 					} else {
-						duracion.add(new AttributeModifier("style", Model
-								.of("border-color:none")));
+						duracion.add(new AttributeModifier("style", Model.of("border-color:none")));
 					}
 
 					if (!ticketExt.isValid()) {
-						ticketExt.add(new AttributeModifier("style", Model
-								.of("border-style:solid; border-color:red;")));
+						ticketExt.add(new AttributeModifier("style", Model.of("border-style:solid; border-color:red;")));
 					} else {
-						ticketExt.add(new AttributeModifier("style", Model
-								.of("border-color:none")));
+						ticketExt.add(new AttributeModifier("style", Model.of("border-color:none")));
 					}
 
 					if (!fecha.isValid()) {
-						fecha.add(new AttributeModifier("style", Model
-								.of("border-style:solid; border-color:white;")));
+						fecha.add(new AttributeModifier("style", Model.of("border-style:solid; border-color:white;")));
 					} else {
-						fecha.add(new AttributeModifier("style", Model
-								.of("border-color:none")));
+						fecha.add(new AttributeModifier("style", Model.of("border-color:none")));
 					}
 
 					if (comboProyecto.isValid()) {
-						mensajeProyecto.add(new AttributeModifier("style",
-								Model.of("display:none")));
+						mensajeProyecto.add(new AttributeModifier("style", Model.of("display:none")));
 					} else {
-						mensajeProyecto.add(new AttributeModifier("style",
-								Model.of("font-weight:bold;color:red")));
+						mensajeProyecto.add(new AttributeModifier("style", Model.of("font-weight:bold;color:red")));
 					}
 
 					if (comboActividad.isValid()) {
-						mensajeActividad.add(new AttributeModifier("style",
-								Model.of("display:none")));
+						mensajeActividad.add(new AttributeModifier("style",	Model.of("display:none")));
 					} else {
-						mensajeActividad.add(new AttributeModifier("style",
-								Model.of("font-weight:bold;color:red")));
+						mensajeActividad.add(new AttributeModifier("style",	Model.of("font-weight:bold;color:red")));
 					}
 
 					target.add(feedBackPanel);
-					// target.add(fecha);
 					target.add(duracion);
 					target.add(ticketExt);
 					target.add(mensajeProyecto);
 					target.add(mensajeActividad);
-					// target.add(radioContainer);
 				}
 
 			};
@@ -569,6 +564,8 @@ public class EntradasPage extends BasePage {
 
 			limpiar.setDefaultFormProcessing(false);
 
+			
+			
 			add(mensajeProyecto);
 			add(mensajeActividad);
 			add(comboProyecto);
@@ -582,18 +579,17 @@ public class EntradasPage extends BasePage {
 			add(feedBackPanel);
 			add(submit);
 			add(limpiar);
-			add(new OnRelatedFieldsNullValidator(sistemaExterno, ticketExt,
-					"Debe poner un sistema externo para poder poner un ticket externo"));
-			add(new OnRelatedFieldsNullValidator(ticketExt, sistemaExterno,
-					"Debe ingresar un ticket con ese sistema externo elegido"));
-
-			this.setOutputMarkupId(true);
+			add(new OnRelatedFieldsNullValidator(sistemaExterno, ticketExt, "Debe poner un sistema externo para poder poner un ticket externo"));
+			add(new OnRelatedFieldsNullValidator(ticketExt, sistemaExterno, "Debe ingresar un ticket con ese sistema externo elegido"));
 		}
 
-		protected abstract void onSubmit(AjaxRequestTarget target,
-				EntradaForm form);
+		
+		protected abstract void onSubmit(AjaxRequestTarget target, EntradaForm form);
 
 	}
+	
+	
+	
 
 	private String getColumns() {
 		
@@ -603,33 +599,26 @@ public class EntradasPage extends BasePage {
 			actividades += proyecto.toString();
 			actividades += this.daoService.getActividades(proyecto).toString();
 		}
-		;
 
+		
 		String lista = daoService.getProyectos().toString();
 		String proyectos = lista.subSequence(1, lista.length() - 1).toString();
-		Columna columna = new Columna("delCol", "Delete", 60, 60, 60, null,
+		
 				"del", formatos.DeleteButton.getVal(), null, null, null);
-		Columna columna2 = new Columna("duration", "Duracion", 60, 60, 60,
+		Columna columna2 = new Columna("duration", "Duracion", 60, 60, 60, "cell-title", "duration", null, "Slick.Editors.Text", "requiredDurationValidator", null);
 				"cell-title", "duration", null, editores.Text.getVal(),
 				validador.duracionRequerida.getVal(), null);
-		Columna columna3 = new Columna("actividad", "Actividad", 125, 100, 200,
-				"cell-title", "actividad", null,
+		Columna columna5 = new Columna("fecha", "Start", 60, 60, 60, null, "fecha", null, "Slick.Editors.Date", "requiredFieldValidator", null);
+		Columna columna6 = new Columna("ticket", "Ticket", 50, 50, 50, "cell-title", "ticket", null, "Slick.Editors.Text", null, null);
 				editores.SelectRelatedEditor.getVal(), validador.textoRequerido.getVal(),
-				actividades);
-		Columna columna4 = new Columna("proyecto", "Proyecto", 135, 100, 200,
+		Columna columna8 = new Columna("sistExt", "SistExt", 80, 80, 80, "cell-title", "sistExt", null, "Slick.Editors.Text", null, null);
+		Columna columna9 = new Columna("descripcion", "Desc", 80, 80, 80, null, "descripcion", null, "Slick.Editors.LongText", null, null);
 				"cell-title", "proyecto", null, editores.SelectEditor.getVal(),
 				validador.textoRequerido.getVal(), proyectos);
-		Columna columna5 = new Columna("fecha", "Start", 60, 60, 60, null,
 				"fecha", null, editores.Date.getVal(), validador.textoRequerido.getVal(),
-				null);
-		Columna columna6 = new Columna("ticket", "Ticket", 50, 50, 50,
 				"cell-title", "ticket", null, editores.Text.getVal(), null, null);
-		Columna columna7 = new Columna("ticketExt", "TicketExt", 80, 80, 100,
 				"cell-title", "ticketExt", null, editores.Text.getVal(),
-				null, null);
-		Columna columna8 = new Columna("sistExt", "SistExt", 80, 80, 80,
 				"cell-title", "sistExt", null, editores.Text.getVal(), null, null);
-		Columna columna9 = new Columna("descripcion", "Desc", 80, 80, 80, null,
 				"descripcion", null, editores.LongText.getVal(), null, null);
 		ArrayList<Columna> columnas = new ArrayList<Columna>();
 		columnas.add(columna);
@@ -641,6 +630,7 @@ public class EntradasPage extends BasePage {
 		columnas.add(columna6);
 		columnas.add(columna8);
 		columnas.add(columna7);
+		
 		String texto = "[";
 		for (Columna col : columnas) {
 			texto += "{id:\"" + col.getId() + "\", name: \"" + col.getName()
