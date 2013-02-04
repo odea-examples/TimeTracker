@@ -148,11 +148,11 @@ function init(dataSecundaria) {
     dataView.updateItem(args.item.id, args.item);
   });
 
-  grid.onAddNewRow.subscribe(function (e, args) {
-    var item = {"num": data.length, "id": "new_" + (Math.round(Math.random() * 10000)), "title": "New task", "duration": "1 day", "percentComplete": 0, "start": "01/01/2009", "finish": "01/01/2009", "effortDriven": false};
-    $.extend(item, args.item);
-    dataView.addItem(item);
-  });
+//  grid.onAddNewRow.subscribe(function (e, args) {
+//    var item = {"num": data.length, "id": "new_" + (Math.round(Math.random() * 10000)), "title": "New task", "duration": "1 day", "percentComplete": 0, "start": "01/01/2009", "finish": "01/01/2009", "effortDriven": false};
+//    $.extend(item, args.item);
+//    dataView.addItem(item);
+//  });
   
 
   grid.onKeyDown.subscribe(function (e) {
@@ -170,7 +170,9 @@ function init(dataSecundaria) {
     e.preventDefault();
   });
   grid.onClick.subscribe(function(e, args) {
-	  if (grid.getColumns()[args.cell].name=='Delete' && confirm('¿Seguro desea borrar?')){
+	  objeto = dataView.getItem(args.row);
+//	  alert(JSON.stringify(objeto, null, 2));
+	  if (grid.getColumns()[args.cell].name=='Delete' && objeto!=undefined && confirm('¿Seguro desea borrar?')){
 	    objeto = dataView.getItem(args.row);
         dataView.deleteItem(objeto.id);
 	    Wicket.Ajax.ajax({"u":"${url}","c":"${gridId}","ep":{'borrar':JSON.stringify(objeto.id, null, 2)}});
@@ -219,7 +221,7 @@ function init(dataSecundaria) {
 
   dataView.onPagingInfoChanged.subscribe(function (e, pagingInfo) {
     var isLastPage = pagingInfo.pageNum == pagingInfo.totalPages - 1;
-    var enableAddRow = isLastPage || pagingInfo.pageSize == 0;
+    var enableAddRow = false;
     var options = grid.getOptions();
 
     if (options.enableAddRow != enableAddRow) {
