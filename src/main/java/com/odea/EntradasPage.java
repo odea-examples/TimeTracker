@@ -150,8 +150,18 @@ public class EntradasPage extends BasePage {
 							ticket = Integer.parseInt(data.getTicket());
 						}
 
+						
+						String sistemaExterno = null;
+						
+						if (data.getSistExt().equals("Sistema de Incidencias de YPF")) {
+							sistemaExterno = "SIY";
+						}
+						if (data.getSistExt().equals(" Sistema Geminis de YPF")) {
+							sistemaExterno = "SGY";
+						}
+						
 						Entrada entrada = new Entrada(timestamp, proyecto, actividad, data.getDuration(),
-								data.getDescripcion(), ticket, data.getTicketExt(), data.getSistExt(),
+								data.getDescripcion(), ticket, data.getTicketExt(), sistemaExterno,
 								usuario, fecha);
 						
 						daoService.modificarEntrada(entrada);
@@ -598,18 +608,21 @@ public class EntradasPage extends BasePage {
 		}
 
 		
-		String lista = daoService.getProyectos().toString();
-		String proyectos = lista.subSequence(1, lista.length() - 1).toString();
+		String listaProyectos = daoService.getProyectos().toString();
+		String proyectos = listaProyectos.subSequence(1, listaProyectos.length() - 1).toString();
+		
+		String listaSistemaExterno = daoService.getSistemasExternos().toString();
+		String sistemasExternos = listaSistemaExterno.subSequence(1, listaSistemaExterno.length() - 1).toString();
 		
 		Columna columna = new Columna("delCol", "Delete", 60, 60, 60, null, "del", "Slick.Formatters.DeleteButton", null, null, null);
 		Columna columna2 = new Columna("duration", "Duracion", 60, 60, 60, "cell-title", "duration", null, "Slick.Editors.Text", "requiredDurationValidator", null);
 		Columna columna3 = new Columna("actividad", "Actividad", 125, 100, 200, "cell-title", "actividad", null, "Slick.Editors.SelectRelatedEditor", "requiredFieldValidator",	actividades);
 		Columna columna4 = new Columna("proyecto", "Proyecto", 135, 100, 200, "cell-title", "proyecto", null, "Slick.Editors.SelectEditor",	"requiredFieldValidator", proyectos);
-		Columna columna5 = new Columna("fecha", "Start", 60, 60, 60, null, "fecha", null, "Slick.Editors.Date", "requiredFieldValidator", null);
+		Columna columna5 = new Columna("fecha", "Fecha", 60, 60, 60, null, "fecha", null, "Slick.Editors.Date", "requiredFieldValidator", null);
 		Columna columna6 = new Columna("ticket", "Ticket", 50, 50, 50, "cell-title", "ticket", null, "Slick.Editors.Text", null, null);
-		Columna columna7 = new Columna("ticketExt", "TicketExt", 80, 80, 100, "cell-title", "ticketExt", null, "Slick.Editors.TextTicketExt", null, null);
-		Columna columna8 = new Columna("sistExt", "SistExt", 80, 80, 80, "cell-title", "sistExt", null, "Slick.Editors.Text", null, null);
-		Columna columna9 = new Columna("descripcion", "Desc", 80, 80, 80, null, "descripcion", null, "Slick.Editors.LongText", null, null);
+		Columna columna7 = new Columna("ticketExt", "Ticket Externo", 80, 80, 100, "cell-title", "ticketExt", null, "Slick.Editors.TextTicketExt", null, null);
+		Columna columna8 = new Columna("sistExt", "Sistema Externo", 80, 80, 80, "cell-title", "sistExt", null, "Slick.Editors.SelectEditor", null, sistemasExternos);
+		Columna columna9 = new Columna("descripcion", "Descripcion", 80, 80, 80, null, "descripcion", null, "Slick.Editors.LongText", null, null);
 		
 		ArrayList<Columna> columnas = new ArrayList<Columna>();
 		columnas.add(columna);
