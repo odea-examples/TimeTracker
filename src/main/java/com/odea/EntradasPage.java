@@ -172,16 +172,18 @@ public class EntradasPage extends BasePage {
 						
 						String sistemaExterno = null;
 						
+						
 						if (data.getSistExt().equals("Sistema de Incidencias de YPF")) {
 							sistemaExterno = "SIY";
-						}
-						if (data.getSistExt().equals(" Sistema Geminis de YPF")) {
+						} else if (data.getSistExt().equals(" Sistema Geminis de YPF")) {
 							sistemaExterno = "SGY";
+						} else {
+							sistemaExterno = data.getSistExt();
 						}
 						
 						Entrada entrada = new Entrada(timestamp, proyecto, actividad, data.getDuration(),
 								data.getDescripcion(), ticket, data.getTicketExt(), sistemaExterno,
-								usuario, fecha);
+								EntradasPage.this.usuario, fecha);
 						
 						daoService.modificarEntrada(entrada);
 					}
