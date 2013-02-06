@@ -77,6 +77,7 @@ public class EntradasPage extends BasePage {
 	private WebMarkupContainer listViewContainer;
 	private WebMarkupContainer radioContainer;
 	private WebMarkupContainer labelContainer;
+	private WebMarkupContainer selectorUsuarioContainer;
 	
 
 	public EntradasPage() {
@@ -137,6 +138,8 @@ public class EntradasPage extends BasePage {
 		this.listViewContainer = new WebMarkupContainer("listViewContainer");
 		this.listViewContainer.setOutputMarkupId(true);
 
+		this.selectorUsuarioContainer = new WebMarkupContainer("selectorUsuarioContainer");
+		this.selectorUsuarioContainer.setOutputMarkupId(true);
 		
 		final SlickGrid slickGrid = new SlickGrid("slickGrid", this.lstDataModel, this.slickGridJsonCols) {
 
@@ -323,10 +326,12 @@ public class EntradasPage extends BasePage {
 			
 		});
 		
+		this.selectorUsuarioContainer.add(selectorUsuario);
 		
 		
 		
-		add(selectorUsuario);
+		
+		add(selectorUsuarioContainer);
 		add(radioContainer);
 		add(listViewContainer);		
 		add(labelContainer);

@@ -67,7 +67,7 @@ public class AnnotationsShiroAuthorizationStrategy implements IAuthorizationStra
 		String accion = action.toString();
 		
 		if (!usuario.equals("pgotelli")) {
-			if (idComponent == "selectorUsuario") {
+			if (idComponent == "selectorUsuarioContainer") {
 				return false;
 			}
 		}
