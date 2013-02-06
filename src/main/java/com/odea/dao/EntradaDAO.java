@@ -2,6 +2,7 @@ package com.odea.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.sql.Types;
 import java.text.ParseException;
@@ -13,8 +14,11 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import javax.management.RuntimeErrorException;
+
 import org.joda.time.DateTimeConstants;
 import org.joda.time.LocalDate;
+import org.joda.time.LocalTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.RowMapper;
@@ -119,7 +123,20 @@ public class EntradaDAO extends AbstractDAO {
 				Proyecto proyecto = new Proyecto(rs.getInt(2), rs.getString(11));
 				Actividad actividad = new Actividad(rs.getInt(3), rs.getString(14));
 				Usuario usuario = new Usuario(rs.getInt(9), rs.getString(12), rs.getString(13));
-				Entrada e = new Entrada(rs.getTimestamp(1), proyecto, actividad, String.valueOf(((Double.parseDouble(String.valueOf(rs.getTime(4).getTime()))/3600) - 3000) /1000).substring(0,3)  /* String.valueOf(((Time.valueOf(rs.getTime(4)).getMilliseconds() /3600)-3000))*/, rs.getString(5), rs.getInt(6), rs.getString(7), rs.getString(8), usuario, rs.getDate(10));
+				SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+				String t = rs.getTime(4).toString();
+				Date fechasdf= null;
+				try {
+					fechasdf= dateFormat.parse(t);
+				} catch (ParseException e1) {
+					throw new RuntimeException(e1);
+				}
+				Calendar cal = Calendar.getInstance();
+				cal.setTime(fechasdf);
+				System.out.println(cal.get(Calendar.HOUR_OF_DAY));
+				System.out.println(cal.get(Calendar.MINUTE));
+				
+				Entrada e = new Entrada(rs.getTimestamp(1), proyecto, actividad, cal.get(Calendar.HOUR_OF_DAY)+","+((cal.get(Calendar.MINUTE))*10/6)  /* String.valueOf(((Time.valueOf(rs.getTime(4)).getMilliseconds() /3600)-3000))*/, rs.getString(5), rs.getInt(6), rs.getString(7), rs.getString(8), usuario, rs.getDate(10));
 				return e;
 				
 			}}, usuario.getIdUsuario(), desdeSQL, hastaSQL);
@@ -136,6 +153,12 @@ public class EntradaDAO extends AbstractDAO {
 			calendar.setTime(entrada.getIdEntrada());
 			String stringTiempo="";
 			stringTiempo+=entrada.getDuracion().toString();
+			System.out.println("------------------");
+			System.out.println("------------------");
+			System.out.println("------------------");
+			System.out.println("------------------");
+			System.out.println(stringTiempo);
+			System.out.println(entrada.getDuracion());
 			calendar.setTime(entrada.getFecha());
 			String stringFecha ="";
 			stringFecha+=calendar.get(calendar.DAY_OF_MONTH);
@@ -311,7 +334,7 @@ public class EntradaDAO extends AbstractDAO {
 			if (entrada.getSistemaExterno()!="Ninguno"){
 				sistemaExterno=entrada.getSistemaExterno();
 			}
-			
+			System.out.println(new java.sql.Time((long) ((this.parsearDuracion(entrada.getDuracion())*3600000))-(3600000*21)));
 			java.sql.Date fechaSQL = new java.sql.Date(entrada.getFecha().getTime());
 			jdbcTemplate.update("UPDATE activity_log SET al_date=?, al_duration=?, al_project_id=?, al_activity_id=?, al_comment=?, ticket_bz=?, issue_tracker_externo=?, ite_id=? WHERE al_timestamp=?", 
 					new Object[]{
