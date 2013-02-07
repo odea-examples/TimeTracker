@@ -1,8 +1,11 @@
 package com.odea.components.yuidatepicker;
 
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.wicket.Application;
@@ -18,6 +21,7 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.FormComponentPanel;
 import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.request.handler.TextRequestHandler;
 import org.apache.wicket.request.resource.CssResourceReference;
 import org.apache.wicket.request.resource.JavaScriptResourceReference;
@@ -37,7 +41,9 @@ public abstract class YuiDatePicker extends FormComponentPanel<Date> implements 
     private TextField<Date> datePicker;
     private WebMarkupContainer calContainer;
     private AbstractDefaultAjaxBehavior ajaxBehavior;
-
+    protected Date ultimaFecha = new LocalDate().toDate();
+    
+    
     public YuiDatePicker(String id) {
         super(id);
         this.setOutputMarkupId(true);
@@ -48,8 +54,7 @@ public abstract class YuiDatePicker extends FormComponentPanel<Date> implements 
         this.datePicker = new TextField<Date>("date");
         this.datePicker.setOutputMarkupId(true);
         this.datePicker.add(new NoInputBehavior());
-
-
+        
         add(this.calContainer);
         add(this.datePicker);
 
@@ -68,13 +73,24 @@ public abstract class YuiDatePicker extends FormComponentPanel<Date> implements 
             @Override
             protected void respond(AjaxRequestTarget target) {
                 if (getRequest().getRequestParameters().getParameterNames().contains("selectedDate")) {
-                    YuiDatePicker.this.onDateSelect(target, getRequest().getRequestParameters().getParameterValue("selectedDate").toString());
+                	String strFecha = getRequest().getRequestParameters().getParameterValue("selectedDate").toString();
+                    YuiDatePicker.this.onDateSelect(target, strFecha);
+                    
+                    List<String> campos = Arrays.asList(strFecha.split("/"));
+					int dia = Integer.parseInt(campos.get(0));
+					int mes = Integer.parseInt(campos.get(1));
+					int anio = Integer.parseInt(campos.get(2));
+                    Date nuevaFecha = new LocalDate(anio, mes, dia).toDate();
+                    YuiDatePicker.this.ultimaFecha = nuevaFecha;
+                    
                 }
+                
                 if (getRequest().getRequestParameters().getParameterNames().contains("updateF")) {
                     YuiDatePicker.this.respondHorasOcupacion();
                 }
             }
         };
+        
         add(this.ajaxBehavior);
         
         
@@ -85,6 +101,7 @@ public abstract class YuiDatePicker extends FormComponentPanel<Date> implements 
 				LocalDate fecha = new LocalDate();
 				String strFecha = fecha.getDayOfMonth() + "/" + fecha.getMonthOfYear() + "/" + fecha.getYear();
 			    YuiDatePicker.this.onDateSelect(target, strFecha);
+			    YuiDatePicker.this.ultimaFecha = fecha.toDate();
 			    YuiDatePicker.this.datePicker.setModelObject(fecha.toDate());
 			    target.add(YuiDatePicker.this);
 			}
@@ -139,6 +156,7 @@ public abstract class YuiDatePicker extends FormComponentPanel<Date> implements 
 
     @Override
     protected void onBeforeRender() {
+    	this.setModelObject(this.ultimaFecha);
         this.datePicker.setModel(getModel());
         super.onBeforeRender();
     }
@@ -155,7 +173,8 @@ public abstract class YuiDatePicker extends FormComponentPanel<Date> implements 
         TextRequestHandler jsonHandler = new TextRequestHandler(JSON_CONTENT_TYPE, ENCODING, jsonResultList);
         getRequestCycle().scheduleRequestHandlerAfterCurrent(jsonHandler);
     }
-
+    
+    
     protected abstract void onDateSelect(AjaxRequestTarget target, String selectedDate);
 
 }

@@ -455,15 +455,14 @@ public class EntradasPage extends BasePage {
 			final YuiDatePicker fecha = new YuiDatePicker("fecha") {
 
 				@Override
-				protected void onDateSelect(AjaxRequestTarget target,
-						String selectedDate) {
+				protected void onDateSelect(AjaxRequestTarget target, String selectedDate) {
 					String json = selectedDate;
 					List<String> campos = Arrays.asList(json.split("/"));
 					int dia = Integer.parseInt(campos.get(0));
 					int mes = Integer.parseInt(campos.get(1));
 					int anio = Integer.parseInt(campos.get(2));
 
-					fechaActual = new LocalDate(anio, mes, dia);
+					EntradasPage.this.fechaActual = new LocalDate(anio, mes, dia);
 					radioSeleccionado = "dia";
 					lstDataModel.detach();
 					target.add(listViewContainer);
