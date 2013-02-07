@@ -1,5 +1,6 @@
 package com.odea;
 
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -39,9 +40,6 @@ import com.odea.components.datepicker.DatePickerDTO;
 import com.odea.components.datepicker.HorasCargadasPorDia;
 import com.odea.components.slickGrid.Columna;
 import com.odea.components.slickGrid.Data;
-import com.odea.components.slickGrid.Enumeraciones.editores;
-import com.odea.components.slickGrid.Enumeraciones.formatos;
-import com.odea.components.slickGrid.Enumeraciones.validador;
 import com.odea.components.slickGrid.SlickGrid;
 import com.odea.components.yuidatepicker.YuiDatePicker;
 import com.odea.domain.Actividad;
@@ -149,15 +147,15 @@ public class EntradasPage extends BasePage {
 					
 					if (realizar == "borrar") {
 						SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-						java.util.Date parsedDate = dateFormat.parse(data.getId());
-						java.sql.Timestamp timestamp = new java.sql.Timestamp(parsedDate.getTime());
+						Date parsedDate = dateFormat.parse(data.getId());
+						Timestamp timestamp = new Timestamp(parsedDate.getTime());
 						daoService.borrarEntrada(timestamp);
 						
 					} else {
 
 						SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-						java.util.Date parsedDate = dateFormat.parse(data.getId());
-						java.sql.Timestamp timestamp = new java.sql.Timestamp(parsedDate.getTime());
+						Date parsedDate = dateFormat.parse(data.getId());
+						Timestamp timestamp = new Timestamp(parsedDate.getTime());
 						dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 						Date fecha = dateFormat.parse(data.getFecha());
 						
@@ -192,9 +190,6 @@ public class EntradasPage extends BasePage {
 						
 						daoService.modificarEntrada(entrada);
 					}
-					
-					
-//					EntradasPage.this.fechaActual = new LocalDate();
 					EntradasPage.this.lstDataModel.detach();
 					
 					target.add(listViewContainer);
@@ -262,8 +257,9 @@ public class EntradasPage extends BasePage {
 			
 			protected void onEvent(AjaxRequestTarget target) {
 				EntradasPage.this.radioSeleccionado = "semana";
-				List<Data> entradas = daoService.getEntradasSemanales(EntradasPage.this.usuario, EntradasPage.this.fechaActual);
-				lstDataModel.setObject(daoService.toJson(entradas));
+//				List<Data> entradas = daoService.getEntradasSemanales(EntradasPage.this.usuario, EntradasPage.this.fechaActual);
+//				lstDataModel.setObject(daoService.toJson(entradas));
+				EntradasPage.this.lstDataModel.detach();
 				target.add(listViewContainer);
 				target.add(labelContainer);
 			}
@@ -275,8 +271,9 @@ public class EntradasPage extends BasePage {
 			
 			protected void onEvent(AjaxRequestTarget target) {
 				EntradasPage.this.radioSeleccionado = "mes";
-				List<Data> entradas = daoService.getEntradasMensuales(EntradasPage.this.usuario, EntradasPage.this.fechaActual);
-				lstDataModel.setObject(daoService.toJson(entradas));
+//				List<Data> entradas = daoService.getEntradasSemanales(EntradasPage.this.usuario, EntradasPage.this.fechaActual);
+//				lstDataModel.setObject(daoService.toJson(entradas));
+				EntradasPage.this.lstDataModel.detach();
 				target.add(listViewContainer);
 				target.add(labelContainer);
 
@@ -493,7 +490,7 @@ public class EntradasPage extends BasePage {
 			AjaxButton submit = new AjaxButton("submit", this) {
 
 				private static final long serialVersionUID = 1L;
-
+				
 				@Override
 				protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 					EntradaForm.this.onSubmit(target, (EntradaForm) form);
@@ -502,7 +499,6 @@ public class EntradasPage extends BasePage {
 					EntradasPage.this.lstDataModel.detach();
 					target.add(EntradasPage.this.listViewContainer);
 					target.add(EntradasPage.this.labelContainer);
-//					target.add(EntradasPage.this.radioContainer);
 					EntradaForm.this.setModelObject(new Entrada());
 
 					if (duracion.isValid()) {
