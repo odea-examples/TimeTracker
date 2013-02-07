@@ -153,10 +153,6 @@ public class EntradaDAO extends AbstractDAO {
 			calendar.setTime(entrada.getIdEntrada());
 			String stringTiempo="";
 			stringTiempo+=entrada.getDuracion().toString();
-			System.out.println("------------------");
-			System.out.println("------------------");
-			System.out.println("------------------");
-			System.out.println("------------------");
 			System.out.println(stringTiempo);
 			System.out.println(entrada.getDuracion());
 			calendar.setTime(entrada.getFecha());
@@ -169,8 +165,11 @@ public class EntradaDAO extends AbstractDAO {
 			stringFecha+=calendar.get((calendar.MONTH))+1;
 			stringFecha+="/";
 			stringFecha+=calendar.get(Calendar.YEAR);
-			
-			data = new Data(entrada.getIdEntrada().toString(),stringTiempo,entrada.getActividad().toString(),entrada.getProyecto().toString(),stringFecha,Integer.toString(entrada.getTicketBZ()), entrada.getTicketExterno(), entrada.getSistemaExterno(), entrada.getNota());
+			String ticket = Integer.toString(entrada.getTicketBZ());
+			if (ticket.equals("0")){
+				ticket="";
+			}
+			data = new Data(entrada.getIdEntrada().toString(),stringTiempo,entrada.getActividad().toString(),entrada.getProyecto().toString(),stringFecha,ticket , entrada.getTicketExterno(), entrada.getSistemaExterno(), entrada.getNota());
 			listaData.add(data);
 		}
 		
@@ -316,14 +315,6 @@ public class EntradaDAO extends AbstractDAO {
 	}
 	public void borrarEntrada(Timestamp entradaID)
 	{
-		System.out.println("--------------------------------");
-		System.out.println("--------------------------------");
-		System.out.println("--------------------------------");
-		System.out.println("--------------------------------");
-		System.out.println("--------------------------------");
-		System.out.println("--------------------------------");
-		System.out.println("--------------------------------");
-		System.out.println("--------------------------------");
 		System.out.println(entradaID);
 		jdbcTemplate.update("DELETE FROM activity_log WHERE al_timestamp=?", entradaID);
 	}
