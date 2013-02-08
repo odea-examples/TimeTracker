@@ -343,6 +343,7 @@ public class EntradaDAO extends AbstractDAO {
 			ArrayList<String> sistemasExternos = new ArrayList<String>();
 			sistemasExternos.add("Sistema de Incidencias de YPF");
 			sistemasExternos.add("Sistema Geminis de YPF");
+			sistemasExternos.add("Ninguno");
 			
 			return sistemasExternos;
 		}
