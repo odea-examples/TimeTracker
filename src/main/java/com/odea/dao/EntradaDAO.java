@@ -133,8 +133,8 @@ public class EntradaDAO extends AbstractDAO {
 				}
 				Calendar cal = Calendar.getInstance();
 				cal.setTime(fechasdf);
-				System.out.println(cal.get(Calendar.HOUR_OF_DAY));
-				System.out.println(cal.get(Calendar.MINUTE));
+				//System.out.println(cal.get(Calendar.HOUR_OF_DAY));
+				//System.out.println(cal.get(Calendar.MINUTE));
 				
 				Entrada e = new Entrada(rs.getTimestamp(1), proyecto, actividad, cal.get(Calendar.HOUR_OF_DAY)+","+((cal.get(Calendar.MINUTE))*10/6)  /* String.valueOf(((Time.valueOf(rs.getTime(4)).getMilliseconds() /3600)-3000))*/, rs.getString(5), rs.getInt(6), rs.getString(7), rs.getString(8), usuario, rs.getDate(10));
 				return e;
@@ -153,8 +153,8 @@ public class EntradaDAO extends AbstractDAO {
 			calendar.setTime(entrada.getIdEntrada());
 			String stringTiempo="";
 			stringTiempo+=entrada.getDuracion().toString();
-			System.out.println(stringTiempo);
-			System.out.println(entrada.getDuracion());
+			//System.out.println(stringTiempo);
+			//System.out.println(entrada.getDuracion());
 			calendar.setTime(entrada.getFecha());
 			String stringFecha ="";
 			stringFecha+=calendar.get(calendar.DAY_OF_MONTH);
@@ -315,7 +315,7 @@ public class EntradaDAO extends AbstractDAO {
 	}
 	public void borrarEntrada(Timestamp entradaID)
 	{
-		System.out.println(entradaID);
+		//System.out.println(entradaID);
 		jdbcTemplate.update("DELETE FROM activity_log WHERE al_timestamp=?", entradaID);
 	}
 		
@@ -325,7 +325,7 @@ public class EntradaDAO extends AbstractDAO {
 			if (entrada.getSistemaExterno()!="Ninguno"){
 				sistemaExterno=entrada.getSistemaExterno();
 			}
-			System.out.println(new java.sql.Time((long) ((this.parsearDuracion(entrada.getDuracion())*3600000))-(3600000*21)));
+			//System.out.println(new java.sql.Time((long) ((this.parsearDuracion(entrada.getDuracion())*3600000))-(3600000*21)));
 			java.sql.Date fechaSQL = new java.sql.Date(entrada.getFecha().getTime());
 			jdbcTemplate.update("UPDATE activity_log SET al_date=?, al_duration=?, al_project_id=?, al_activity_id=?, al_comment=?, ticket_bz=?, issue_tracker_externo=?, ite_id=? WHERE al_timestamp=?", 
 					new Object[]{

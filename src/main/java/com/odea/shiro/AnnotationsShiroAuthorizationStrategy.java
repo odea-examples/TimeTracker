@@ -64,10 +64,11 @@ public class AnnotationsShiroAuthorizationStrategy implements IAuthorizationStra
 		
 		String usuario = SecurityUtils.getSubject().getPrincipal().toString();
 		String idComponent = component.getId();
+		String page = component.getPage().getClass().toString();
 		String accion = action.toString();
 		
-		if (!usuario.equals("pgotelli")) {
-			if (idComponent == "selectorUsuarioContainer") {
+		if (!usuario.equals("invitado")) {
+			if ((idComponent == "selectorUsuarioContainer") || page.equals("class com.odea.FeriadosPage")) {
 				return false;
 			}
 		}
