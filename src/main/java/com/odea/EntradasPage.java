@@ -388,7 +388,7 @@ public class EntradasPage extends BasePage {
 				}
 			});
 			
-			EntradasPage.this.mensajeProyecto = new Label("mensajeProyecto", "Campo necesario");
+			EntradasPage.this.mensajeProyecto = new Label("mensajeProyecto", "Campo obligatorio");
 			EntradasPage.this.mensajeProyecto.add(new AttributeModifier("style", Model.of("display:none")));
 			EntradasPage.this.mensajeProyecto.setOutputMarkupId(true);
 
@@ -415,13 +415,16 @@ public class EntradasPage extends BasePage {
 			this.comboActividad.setRequired(true);
 			this.comboActividad.setLabel(Model.of("Actividad"));
 
-			EntradasPage.this.mensajeActividad = new Label("mensajeActividad", "Campo Necesario");
+			EntradasPage.this.mensajeActividad = new Label("mensajeActividad", "Campo obligatorio");
 			EntradasPage.this.mensajeActividad.add(new AttributeModifier("style", Model.of("display:none")));
 			EntradasPage.this.mensajeActividad.setOutputMarkupId(true);
 			
-
 			
-			this.sistemaExterno = new DropDownChoice<String>("sistemaExterno", daoService.getSistemasExternos());
+			
+			List<String> sistemasExternos = daoService.getSistemasExternos();
+			sistemasExternos.remove("Ninguno");
+			
+			this.sistemaExterno = new DropDownChoice<String>("sistemaExterno", sistemasExternos);
 			this.sistemaExterno.setLabel(Model.of("Sistema Externo"));
 			this.sistemaExterno.setOutputMarkupId(true);
 

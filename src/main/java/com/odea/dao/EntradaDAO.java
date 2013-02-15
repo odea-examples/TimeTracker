@@ -260,7 +260,10 @@ public class EntradaDAO extends AbstractDAO {
 			}
 			if (sistemaExterno.equals("Sistema Geminis de YPF")) {
 				resultado = "SGY";
-			}	
+			}
+			if (sistemaExterno.equals("Ninguno")) {
+				resultado = null;
+			}
 		}
 		
 		return resultado;

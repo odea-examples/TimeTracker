@@ -118,7 +118,7 @@ public class EditarUsuarioPage extends BasePage {
 			confirmPassword.add(passwordValidator);
 
 			
-			ConfirmationButton submit = new ConfirmationButton("submit","Seguro?", new Model<String>("Submit")) {
+			ConfirmationButton submit = new ConfirmationButton("submit","¿Está seguro de que desea realizar los cambios?", new Model<String>("Confirmar")) {
 	
 				private static final long serialVersionUID = 1L;
 
