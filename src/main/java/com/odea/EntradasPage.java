@@ -443,7 +443,7 @@ public class EntradasPage extends BasePage {
 
 			
 			this.ticketBZ = new TextField<String>("ticketBZ");
-			this.ticketBZ.setRequired(true);
+			this.ticketBZ.setRequired(false);
 			this.ticketBZ.setOutputMarkupId(true);
 			this.ticketBZ.setLabel(Model.of("Ticket Bugzilla"));
 			this.ticketBZ.add(new OnlyNumberBehavior(ticketBZ.getMarkupId()));
