@@ -10,7 +10,7 @@ public abstract class ConfirmationLink<T> extends AjaxLink<T>
 	private static final long serialVersionUID = 1L;
 	private final String text;
 
-	public ConfirmationLink( String id, String text, IModel<T> model)
+	public ConfirmationLink(String id, String text, IModel<T> model)
 	{
 		super(id, model);
 		this.text = text;

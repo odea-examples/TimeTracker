@@ -9,7 +9,7 @@ public class ConfirmationButton extends AjaxButton{
 	
 	private final String text;
 	
-	public ConfirmationButton( String id, String text, IModel model)
+	public ConfirmationButton(String id, String text, IModel model)
 	{
 		super(id, model);
 		this.text = text;

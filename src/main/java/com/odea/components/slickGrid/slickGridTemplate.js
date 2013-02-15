@@ -56,7 +56,7 @@ function requiredDurationValidator(value) {
   function queueAndExecuteCommand(item, column, editCommand) {
     editCommand.execute();
     if (JSON.stringify(column.name, null, 2) == JSON.stringify("Proyecto", null, 2)){
-    	alert("ingrese una actividad o no se guardara su cambio.");
+    	alert("Ingrese una Actividad o no se guardara su cambio.");
 //    	alert(JSON.stringify(editCommand, null, 2));
 //    	grid.gotoCell(editCommand.row, editCommand.cell+1);
     	item.actividad = "";
@@ -95,7 +95,7 @@ function init(dataSecundaria) {
   grid.onClick.subscribe(function(e, args) {
 	  objeto = dataView.getItem(args.row);
 //	  alert(JSON.stringify(objeto, null, 2));
-	  if (grid.getColumns()[args.cell].name=='Delete' && objeto!=undefined && confirm('¿Seguro desea borrar?')){
+	  if (grid.getColumns()[args.cell].name=='Delete' && objeto!=undefined && confirm(' ¿Está seguro de que desea borrar la entrada? ')){
 	    objeto = dataView.getItem(args.row);
         dataView.deleteItem(objeto.id);
 	    Wicket.Ajax.ajax({"u":"${url}","c":"${gridId}","ep":{'borrar':JSON.stringify(objeto.id, null, 2)}});

@@ -40,6 +40,9 @@ public class ProyectosPage extends BasePage {
             }
         };
         
+
+        Label tituloModificar = new Label("tituloModificar", "Modificar");
+        Label tituloBorrar = new Label("tituloBorrar", "Borrar");
         
         
         ListView<Proyecto> proyectoListView = new ListView<Proyecto>("proyectos", this.lstProyectosModel) {
@@ -55,7 +58,7 @@ public class ProyectosPage extends BasePage {
             	
             	item.add(new Label("nombre_proyecto", new Model<String>(proyecto.getNombre())));
             	
-                item.add(new ConfirmationLink<Proyecto>("deleteLink","¿Seguro desea borrar?",new Model<Proyecto>(proyecto)) {
+                item.add(new ConfirmationLink<Proyecto>("deleteLink","¿Está seguro de que desea borrar el proyecto?",new Model<Proyecto>(proyecto)) {
                     @Override
                     public void onClick(AjaxRequestTarget ajaxRequestTarget) {
                         daoService.borrarProyecto(getModelObject());
@@ -71,7 +74,9 @@ public class ProyectosPage extends BasePage {
 		this.listViewContainer = new WebMarkupContainer("listViewContainer");
 		this.listViewContainer.setOutputMarkupId(true);
 		this.listViewContainer.add(proyectoListView);
-
+		this.listViewContainer.add(tituloBorrar);
+		this.listViewContainer.add(tituloModificar);
+		
 		add(new BookmarkablePageLink<EditarProyectosPage>("link", EditarProyectosPage.class, new PageParameters().add("proyectoId", 0).add("proyectoNombre", "")));
 		add(listViewContainer);        
 		
