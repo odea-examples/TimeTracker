@@ -9,7 +9,9 @@ public class Feriado implements Serializable {
 	public Date fecha;
 	public String descripcion;
 	
-	
+	public Feriado() {
+		
+	}
 
 	public Feriado(java.sql.Date date, String string) {
 		this.fecha = date;

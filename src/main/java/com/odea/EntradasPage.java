@@ -474,7 +474,8 @@ public class EntradasPage extends BasePage {
 				@Override
 				public DatePickerDTO getDatePickerData() {
 					DatePickerDTO dto = new DatePickerDTO();
-					dto.setDedicacion(daoService.getDedicacion(usuario,new Date()));
+					//dto.setDedicacion(daoService.getDedicacion(usuario, new Date()));
+					dto.setDedicacion(8);
 					dto.setUsuario(usuario.getNombre());
 					Collection<HorasCargadasPorDia> c = daoService
 							.getHorasDiaras(usuario);

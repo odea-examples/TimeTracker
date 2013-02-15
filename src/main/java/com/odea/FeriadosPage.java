@@ -1,22 +1,15 @@
 package com.odea;
 
-import java.util.Collection;
-
-import org.apache.shiro.SecurityUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.odea.components.datepicker.DatePickerDTO;
-import com.odea.components.datepicker.HorasCargadasPorDia;
 import com.odea.components.yuidatepicker.YuiDatePicker;
 import com.odea.domain.Feriado;
-import com.odea.domain.Usuario;
-import com.odea.services.DAOService;
 
 
 public class FeriadosPage extends BasePage {
