@@ -48,7 +48,7 @@ public class AnnotationsShiroAuthorizationStrategy implements IAuthorizationStra
 	
 	private boolean verificarComponente(Component component, Action action) {
 		
-		usuario = SecurityUtils.getSubject().getPrincipal().toString();
+		this.usuario = SecurityUtils.getSubject().getPrincipal().toString();
 		String idComponent = component.getId();
 		String page = component.getPage().getClass().toString();
 		String accion = action.toString();
@@ -76,6 +76,8 @@ public class AnnotationsShiroAuthorizationStrategy implements IAuthorizationStra
 //			throw new RestartResponseAtInterceptPageException(new NoAutorizadoPage());
 //		}
 		
+		
+		//Dice invitado pero debería ser admin, pero como lo usamos para hacer pruebas por ahora lo dejamos como invitado
 		if (!usuario.equals("invitado")) {
 			
 			if (paginasAccesoLimitado.contains(page)) {
@@ -89,6 +91,16 @@ public class AnnotationsShiroAuthorizationStrategy implements IAuthorizationStra
 			}
 			
 		}
+		
+		
+		//El invitado no debería ser capaz de cambiar su contraseña o nombre de usuario.
+		if (usuario.equals("invitado")) {
+			if (page.equals("class com.odea.EditarUsuarioPage")) {
+				throw new RestartResponseAtInterceptPageException(new NoAutorizadoPage());
+			}
+		}
+		
+		
 		
 		return true;
 	}
