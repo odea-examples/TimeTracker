@@ -26,6 +26,7 @@ import com.odea.domain.Actividad;
 import com.odea.domain.Entrada;
 import com.odea.domain.Proyecto;
 import com.odea.domain.Usuario;
+import com.odea.domain.Feriado;
 
 @Repository
 public class EntradaDAO extends AbstractDAO {
@@ -353,7 +354,22 @@ public class EntradaDAO extends AbstractDAO {
 			
 		}
 		public void insertarFeriado(LocalDate fecha,String desc ){
-			jdbcTemplate.update("INSERT INTO feriados VALUES(?,?)",fecha,desc);
+			jdbcTemplate.update("REPLACE INTO feriados VALUES(?,?)",fecha,desc);
+		}
+		public void borrarFeriado(LocalDate fecha){
+			jdbcTemplate.update("DELETE FROM feriados WHERE fecha = ?",fecha);
+		}
+		
+		public List<Feriado> buscarFeriados(){
+			return jdbcTemplate.query("",new RowMapper<Feriado>(){
+
+				@Override
+				public Feriado mapRow(ResultSet rs, int rowNum)
+						throws SQLException {
+					return new Feriado(rs.getDate(1),rs.getString(2));
+				}
+				
+			});
 		}
 		public List<String> getSistemasExternos() {
 			ArrayList<String> sistemasExternos = new ArrayList<String>();
