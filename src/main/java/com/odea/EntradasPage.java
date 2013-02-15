@@ -470,7 +470,7 @@ public class EntradasPage extends BasePage {
 				@Override
 				public DatePickerDTO getDatePickerData() {
 					DatePickerDTO dto = new DatePickerDTO();
-					dto.setDedicacion(8);
+					dto.setDedicacion(daoService.getDedicacion(usuario,new Date()));
 					dto.setUsuario(usuario.getNombre());
 					Collection<HorasCargadasPorDia> c = daoService
 							.getHorasDiaras(usuario);
@@ -540,9 +540,6 @@ public class EntradasPage extends BasePage {
 					target.add(feedBackPanel);
 					target.add(mensajeProyecto);
 					target.add(mensajeActividad);
-
-					// TODO: Ver cómo hacer refresh del calendario solamente
-					// (sin el TextField).
 					target.add(fecha);
 				}
 
