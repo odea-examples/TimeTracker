@@ -13,7 +13,9 @@ public class ConfirmationButton extends AjaxButton{
 	{
 		super(id, model);
 		this.text = text;
+		
 	}
+	
 	@Override
 	protected void updateAjaxAttributes(AjaxRequestAttributes attributes) {
 		super.updateAjaxAttributes(attributes);
