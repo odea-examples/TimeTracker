@@ -59,7 +59,8 @@ public class LoginPage extends BasePage {
                 protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
                     try{
                     	LoginPage.this.login();
-                    	this.continueToOriginalDestination();
+                    	//Mejor que entre directamente a EntradasPage
+                    	//this.continueToOriginalDestination();
                     	setResponsePage(EntradasPage.class);
                     }catch(AuthenticationException ex){
                     	error(ex.getMessage());

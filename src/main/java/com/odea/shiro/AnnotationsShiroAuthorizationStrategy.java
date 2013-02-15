@@ -67,9 +67,9 @@ public class AnnotationsShiroAuthorizationStrategy implements IAuthorizationStra
 		
 		
 		ArrayList<String> paginasAccesoLimitado = new ArrayList<String>();
+		paginasAccesoLimitado.add("class com.odea.EntradasPage");
 		paginasAccesoLimitado.add("class com.odea.ProyectosPage");
 		paginasAccesoLimitado.add("class com.odea.ActividadesPage");
-		paginasAccesoLimitado.add("class com.odea.EntradasPage");
 		
 		//Hasta que la pagina no este con completa funcionalidad, no estará disponible para ningún usuario
 //		if (page.equals("class com.odea.FeriadosPage")) {

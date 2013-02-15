@@ -27,7 +27,7 @@ public class BasePage extends WebPage {
 	}
 	private void preparePage(){
 		
-
+		
 	    BaseForm form = new BaseForm("formLogout") {
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, BaseForm form) {
@@ -46,27 +46,30 @@ public class BasePage extends WebPage {
 	public abstract class BaseForm extends Form<Entrada> {
 
 		public BaseForm(String id) {
+			
 			super(id);
-			botonLogout = new AjaxButton("logout") {
-
-				@Override
-				protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-					BaseForm.this.onSubmit(target, (BaseForm) form);
-				}
-				
-			};
-			add(botonLogout);
-			botonLogin = new AjaxButton("login") {
-
-				@Override
-				protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-					BaseForm.this.onSubmit(target, (BaseForm) form);
-				}
-				
-			};
-			add(botonLogin);
 			this.setOutputMarkupId(true);
 			
+			botonLogin = new AjaxButton("login") {
+				@Override
+				protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+					BaseForm.this.onSubmit(target, (BaseForm) form);
+				}
+				
+			};
+			
+			botonLogout = new AjaxButton("logout") {
+				@Override
+				protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+					BaseForm.this.onSubmit(target, (BaseForm) form);
+				}
+				
+			};
+			
+	
+			
+			add(botonLogin);
+			add(botonLogout);	
 			
 		}
 

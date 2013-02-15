@@ -7,8 +7,8 @@ public abstract class SelectModalWindow extends ModalWindow {
     public SelectModalWindow(String id) {
         super(id);
 
-        setInitialWidth(300);
-        setInitialHeight(80);
+        setInitialWidth(400);
+        setInitialHeight(130);
 
         setTitle("Notificacion");
 

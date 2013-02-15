@@ -620,8 +620,8 @@ public class EntradasPage extends BasePage {
 			add(feedBackPanel);
 			add(submit);
 			add(limpiar);
-			add(new OnRelatedFieldsNullValidator(sistemaExterno, ticketExt, "Debe poner un sistema externo para poder poner un ticket externo"));
-			add(new OnRelatedFieldsNullValidator(ticketExt, sistemaExterno, "Debe ingresar un ticket con ese sistema externo elegido"));
+			add(new OnRelatedFieldsNullValidator(sistemaExterno, ticketExt, "Debe seleccionar un Sistema Externo si quiere elegir un ID Ticket Externo"));
+			add(new OnRelatedFieldsNullValidator(ticketExt, sistemaExterno, "Debe ingresar un ID Ticket Externo con el Sistema Externo elegido"));
 		}
 
 		
