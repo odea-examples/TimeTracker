@@ -2,7 +2,6 @@ package com.odea.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.sql.Types;
 import java.text.ParseException;
@@ -14,11 +13,8 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-import javax.management.RuntimeErrorException;
-
 import org.joda.time.DateTimeConstants;
 import org.joda.time.LocalDate;
-import org.joda.time.LocalTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.RowMapper;
@@ -30,6 +26,7 @@ import com.odea.domain.Actividad;
 import com.odea.domain.Entrada;
 import com.odea.domain.Proyecto;
 import com.odea.domain.Usuario;
+import com.odea.domain.Feriado;
 
 @Repository
 public class EntradaDAO extends AbstractDAO {
@@ -342,6 +339,38 @@ public class EntradaDAO extends AbstractDAO {
 		}
 		
 		
+		public Date getFeriados(LocalDate now){
+			LocalDate primeroDelMes = now.withDayOfMonth(1);
+			LocalDate ultimoDelMes = now.plusMonths(1).withDayOfMonth(1).minusDays(1);
+			
+			Date primero = primeroDelMes.toDateTimeAtStartOfDay().toDate();
+			Date ultimo = ultimoDelMes.toDateTimeAtStartOfDay().toDate();
+			
+			Timestamp desdeSQL = new Timestamp(primero.getTime());
+			Timestamp hastaSQL = new Timestamp(ultimo.getTime());
+			
+			
+			return jdbcTemplate.queryForObject("SELECT fecha FROM feriados WHERE fecha BETWEEN ? AND ?", Date.class,desdeSQL, hastaSQL);
+			
+		}
+		public void insertarFeriado(LocalDate fecha,String desc ){
+			jdbcTemplate.update("REPLACE INTO feriados VALUES(?,?)",fecha,desc);
+		}
+		public void borrarFeriado(LocalDate fecha){
+			jdbcTemplate.update("DELETE FROM feriados WHERE fecha = ?",fecha);
+		}
+		
+		public List<Feriado> buscarFeriados(){
+			return jdbcTemplate.query("",new RowMapper<Feriado>(){
+
+				@Override
+				public Feriado mapRow(ResultSet rs, int rowNum)
+						throws SQLException {
+					return new Feriado(rs.getDate(1),rs.getString(2));
+				}
+				
+			});
+		}
 		public List<String> getSistemasExternos() {
 			ArrayList<String> sistemasExternos = new ArrayList<String>();
 			sistemasExternos.add("Sistema de Incidencias de YPF");

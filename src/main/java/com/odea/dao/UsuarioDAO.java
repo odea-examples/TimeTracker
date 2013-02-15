@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.jdbc.core.RowMapper;
@@ -65,6 +66,10 @@ public class UsuarioDAO extends AbstractDAO {
 				new RowMapperUsuario(), nombre, password);
 		
 		return usuario;
+	}
+	
+	public Integer getDedicacion(Usuario usuario, Date fechaAct){
+		return jdbcTemplate.queryForInt("SELECT dedicacion FROM dedicacion_usuario WHERE usuario_id=? AND fecha_desde<? and fecha_hasta<>'2000-1-1'",usuario.getIdUsuario(),fechaAct);
 	}
 	
 	

@@ -207,6 +207,10 @@ public class DAOService {
 		return usuarioDAO.getUsuarios();
 	}
 	
+	public Integer getDedicacion(Usuario usuario, Date fechaAct){
+		return usuarioDAO.getDedicacion(usuario, fechaAct);
+	}
+	
 	public String toJson(Object o){
 		return gson.toJson(o);
 	}
