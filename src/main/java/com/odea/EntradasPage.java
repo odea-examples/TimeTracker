@@ -32,6 +32,7 @@ import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.PatternValidator;
+import org.apache.wicket.validation.validator.StringValidator;
 import org.joda.time.LocalDate;
 
 import com.odea.behavior.numberComma.NumberCommaBehavior;
@@ -431,6 +432,8 @@ public class EntradasPage extends BasePage {
 
 			
 			this.nota = new TextArea<String>("nota");
+			this.nota.add(new StringValidator(0, 10000));
+			this.nota.setLabel(Model.of("Nota"));
 			this.nota.setOutputMarkupId(true);
 
 			
@@ -451,8 +454,9 @@ public class EntradasPage extends BasePage {
 			
 			this.ticketExt = new TextField<String>("ticketExterno");
 			this.ticketExt.setLabel(Model.of("ID Ticket Externo"));
+			this.ticketExt.add(new StringValidator(0, 15));
+			//this.ticketExt.add(new PatternValidator("^[a-z0-9_-]{1,15}$"));
 			this.ticketExt.setOutputMarkupId(true);
-			this.ticketExt.add(new PatternValidator("^[a-z0-9_-]{1,15}$"));
 
 			final YuiDatePicker fecha = new YuiDatePicker("fecha") {
 
@@ -659,7 +663,7 @@ public class EntradasPage extends BasePage {
 		Columna columna4 = new Columna("proyecto", "Proyecto", 135, 100, 200, "cell-title", "proyecto", null, "Slick.Editors.SelectEditor",	"requiredFieldValidator", proyectos);
 		Columna columna5 = new Columna("fecha", "Fecha", 60, 60, 60, null, "fecha", null, "Slick.Editors.Date", "requiredFieldValidator", null);
 		Columna columna6 = new Columna("ticket", "Ticket", 50, 50, 50, "cell-title", "ticket", null, "Slick.Editors.Text", null, null);
-		Columna columna7 = new Columna("ticketExt", "Ticket Externo", 80, 80, 100, "cell-title", "ticketExt", null, "Slick.Editors.TextTicketExt", null, null);
+		Columna columna7 = new Columna("ticketExt", "Ticket Externo", 80, 80, 100, "cell-title", "ticketExt", null, "Slick.Editors.TextTicketExt", "ticketExternoValidator", null);
 		Columna columna8 = new Columna("sistExt", "Sistema Externo", 80, 80, 80, "cell-title", "sistExt", null, "Slick.Editors.SelectEditor", null, sistemasExternos);
 		Columna columna9 = new Columna("descripcion", "Descripcion", 80, 80, 80, null, "descripcion", null, "Slick.Editors.LongText", null, null);
 		

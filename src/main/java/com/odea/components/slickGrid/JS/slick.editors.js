@@ -710,7 +710,7 @@
       $wrapper = $("<DIV style='z-index:10000;position:absolute;background:white;padding:5px;border:3px solid gray; -moz-border-radius:10px; border-radius:10px;'/>")
           .appendTo($container);
 
-      $input = $("<TEXTAREA hidefocus rows=5 style='backround:white;width:250px;height:80px;border:0;outline:0'>")
+      $input = $("<TEXTAREA hidefocus rows=5 maxlength=10000 style='backround:white;width:250px;height:80px;border:0;outline:0'>")
           .appendTo($wrapper);
 
       $("<DIV style='text-align:right'><BUTTON>Save</BUTTON><BUTTON>Cancel</BUTTON></DIV>")
@@ -742,7 +742,7 @@
     this.save = function () {
       args.commitChanges();
     };
-
+    
     this.cancel = function () {
       $input.val(defaultValue);
       args.cancelChanges();
@@ -786,13 +786,21 @@
     this.isValueChanged = function () {
       return (!($input.val() == "" && defaultValue == null)) && ($input.val() != defaultValue);
     };
+    
 
     this.validate = function () {
     	//actividad no tiene que estar vacio
-    	var valor= args.item.actividad;
+    	var valor = args.item.actividad;
         if(valor == null || valor == undefined || !valor.length){
         	return {valid: false, msg: "This is a required field"};
     	}
+      if (args.column.validator) {
+        var validationResults = args.column.validator($input.val());
+        if (!validationResults.valid) {
+          return validationResults;
+        }
+      }
+
       return {
         valid: true,
         msg: null

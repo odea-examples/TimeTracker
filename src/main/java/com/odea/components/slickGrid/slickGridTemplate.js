@@ -49,6 +49,27 @@ function requiredDurationValidator(value) {
 }
 
 
+function ticketExternoValidator(value) {
+	var regexVal = (/^([a-z0-9_-]{1,15})$/);
+  if (value == null || value == undefined || !value.length || !value.match(regexVal)) {
+    return {valid: false, msg: "Invalid value"};
+  }
+  else {
+    return {valid: true, msg: null};
+  }
+}
+
+function descripcionValidator(value) {
+	var regexVal = (/((^$)|(^(.{1,50})$))/);
+  if (value == null || value == undefined || !value.length || !value.match(regexVal)) {
+    return {valid: false, msg: "Invalid value"};
+  }
+  else {
+    return {valid: true, msg: null};
+  }
+}
+
+
 
 
 
