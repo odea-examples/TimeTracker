@@ -11,7 +11,7 @@ public class Entrada implements Serializable,Comparable<Entrada> {
 	private Actividad actividad;
 	private String duracion;
 	private String nota;
-	private int ticketBZ;
+	private Integer ticketBZ;
 	private String ticketExterno;
 	private String sistemaExterno;
 	private Usuario usuario;
@@ -21,7 +21,7 @@ public class Entrada implements Serializable,Comparable<Entrada> {
 	}
 
 	public Entrada(Timestamp idEntrada, Proyecto proyecto, Actividad actividad,
-			String duracion, String nota, int ticketBugZilla,
+			String duracion, String nota, Integer ticketBugZilla,
 			String ticketExterno, String sistemaExterno, Usuario usuario, Date fecha) {
 		this.idEntrada = idEntrada;
 		this.proyecto = proyecto;
@@ -78,11 +78,11 @@ public class Entrada implements Serializable,Comparable<Entrada> {
 		this.nota = nota;
 	}
 
-	public int getTicketBZ() {
+	public Integer getTicketBZ() {
 		return ticketBZ;
 	}
 
-	public void setTicketBZ(int ticketBZ) {
+	public void setTicketBZ(Integer ticketBZ) {
 		this.ticketBZ = ticketBZ;
 	}
 

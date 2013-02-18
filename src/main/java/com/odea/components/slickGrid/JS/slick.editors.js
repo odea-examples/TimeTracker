@@ -81,6 +81,8 @@
         if(valor == null || valor == undefined || !valor.length){
         	return {valid: false, msg: "This is a required field"};
     	}
+        
+        
       if (args.column.validator) {
         var validationResults = args.column.validator($input.val());
         if (!validationResults.valid) {

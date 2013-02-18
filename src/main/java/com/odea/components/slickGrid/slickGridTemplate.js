@@ -69,6 +69,16 @@ function descripcionValidator(value) {
   }
 }
 
+function ticketBugzillaValidator(value) {
+	var regexVal = (/^([0-9]{0,5})$/);
+  if (!value.match(regexVal)) {
+	  return {valid: false, msg: "Invalid value"};
+  }
+  else {
+    return {valid: true, msg: null};
+  }
+}
+
 
 
 

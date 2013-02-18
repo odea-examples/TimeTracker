@@ -1,5 +1,6 @@
 package com.odea;
 
+import java.awt.font.NumericShaper;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -31,7 +32,9 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.apache.wicket.util.parse.metapattern.parsers.IntegerVariableAssignmentParser;
 import org.apache.wicket.validation.validator.PatternValidator;
+import org.apache.wicket.validation.validator.RangeValidator;
 import org.apache.wicket.validation.validator.StringValidator;
 import org.joda.time.LocalDate;
 
@@ -349,7 +352,7 @@ public class EntradasPage extends BasePage {
 		public TextField<String> ticketExt;
 		public DropDownChoice<String> sistemaExterno;
 		public TextField<String> duracion;
-		public TextField<String> ticketBZ;
+		public TextField<Integer> ticketBZ;
 		public YuiDatePicker fecha;
 		public TextArea<String> nota;
 		
@@ -445,17 +448,15 @@ public class EntradasPage extends BasePage {
 			this.duracion.add(new DurationValidator());
 
 			
-			this.ticketBZ = new TextField<String>("ticketBZ");
-			this.ticketBZ.setRequired(true);
-			this.ticketBZ.setOutputMarkupId(true);
+			this.ticketBZ = new TextField<Integer>("ticketBZ");
 			this.ticketBZ.setLabel(Model.of("Ticket Bugzilla"));
 			this.ticketBZ.add(new OnlyNumberBehavior(ticketBZ.getMarkupId()));
+			this.ticketBZ.setOutputMarkupId(true);
 
 			
 			this.ticketExt = new TextField<String>("ticketExterno");
 			this.ticketExt.setLabel(Model.of("ID Ticket Externo"));
 			this.ticketExt.add(new StringValidator(0, 15));
-			//this.ticketExt.add(new PatternValidator("^[a-z0-9_-]{1,15}$"));
 			this.ticketExt.setOutputMarkupId(true);
 
 			final YuiDatePicker fecha = new YuiDatePicker("fecha") {
@@ -662,7 +663,7 @@ public class EntradasPage extends BasePage {
 		Columna columna3 = new Columna("actividad", "Actividad", 125, 100, 200, "cell-title", "actividad", null, "Slick.Editors.SelectRelatedEditor", "requiredFieldValidator",	actividades);
 		Columna columna4 = new Columna("proyecto", "Proyecto", 135, 100, 200, "cell-title", "proyecto", null, "Slick.Editors.SelectEditor",	"requiredFieldValidator", proyectos);
 		Columna columna5 = new Columna("fecha", "Fecha", 60, 60, 60, null, "fecha", null, "Slick.Editors.Date", "requiredFieldValidator", null);
-		Columna columna6 = new Columna("ticket", "Ticket", 50, 50, 50, "cell-title", "ticket", null, "Slick.Editors.Text", null, null);
+		Columna columna6 = new Columna("ticket", "Ticket", 50, 50, 50, "cell-title", "ticket", null, "Slick.Editors.Text", "ticketBugzillaValidator", null);
 		Columna columna7 = new Columna("ticketExt", "Ticket Externo", 80, 80, 100, "cell-title", "ticketExt", null, "Slick.Editors.TextTicketExt", "ticketExternoValidator", null);
 		Columna columna8 = new Columna("sistExt", "Sistema Externo", 80, 80, 80, "cell-title", "sistExt", null, "Slick.Editors.SelectEditor", null, sistemasExternos);
 		Columna columna9 = new Columna("descripcion", "Descripcion", 80, 80, 80, null, "descripcion", null, "Slick.Editors.LongText", null, null);
