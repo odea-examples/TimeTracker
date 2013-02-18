@@ -40,7 +40,7 @@ function requiredFieldValidator(value) {
 
 function requiredDurationValidator(value) {
 	var regexTiempo = (/^([0-9]{1,2}(,[0-9]{1,2}|:[0-5]{1}[0-9]{1}|\b))$/);
-  if (value == null || value == undefined || !value.length || !value.match(regexTiempo)) {
+  if (value == null || value == undefined || !value.length || !value.match(regexTiempo) ) {
     return {valid: false, msg: "Invalid duration"};
   }
   else {

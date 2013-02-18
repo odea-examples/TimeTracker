@@ -10,20 +10,30 @@ public class DurationValidator implements IValidator<String>{
 	
 	private final String DURACION_PATTERN 
 	= "^([0-9]{1,2}+(,[0-9]{1,2}|:[0-5]{1}+[0-9]{1}|\\b))$";
+
+	private final String WRONG_PATTERN 
+	= "^([0]{1,2}+(,[0]{1,2}|:00|\\b))$";
 	
-	private final Pattern pattern;
+	private final Pattern duracionPattern;
+	private final Pattern wrongPattern;
 
 	public DurationValidator() {
-		pattern = Pattern.compile(DURACION_PATTERN);
+		duracionPattern = Pattern.compile(DURACION_PATTERN);
+		wrongPattern = Pattern.compile(WRONG_PATTERN);
 	}
 
 	@Override
 	public void validate(IValidatable<String> validatable) {
 		final String duracion = validatable.getValue();
 		 	
-		if (pattern.matcher(duracion).matches() == false) {	
+		if (duracionPattern.matcher(duracion).matches() == false) {	
 			error(validatable, "Duración con formato equivocado");
+		} 
+		
+		if (wrongPattern.matcher(duracion).matches() == true) {
+			error(validatable, "Duración no puede ser cero.");
 		}
+		
 		
 	}
 	
