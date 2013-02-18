@@ -7,7 +7,7 @@ public class NoAutorizadoPage extends BasePage {
 
 	public NoAutorizadoPage() {
 		
-		Label mensaje = new Label("mensaje", "Usted no esta autorizado para ver esta pagina.");
+		Label mensaje = new Label("mensaje", "Usted no esta autorizado para ver esta página.");
 		BookmarkablePageLink<EntradasPage> linkEntradasPage = new BookmarkablePageLink<EntradasPage>("linkEntradasPage", EntradasPage.class);
 
 		add(mensaje);

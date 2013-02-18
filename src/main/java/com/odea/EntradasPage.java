@@ -443,7 +443,7 @@ public class EntradasPage extends BasePage {
 
 			
 			this.ticketBZ = new TextField<String>("ticketBZ");
-			this.ticketBZ.setRequired(false);
+			this.ticketBZ.setRequired(true);
 			this.ticketBZ.setOutputMarkupId(true);
 			this.ticketBZ.setLabel(Model.of("Ticket Bugzilla"));
 			this.ticketBZ.add(new OnlyNumberBehavior(ticketBZ.getMarkupId()));
@@ -596,6 +596,12 @@ public class EntradasPage extends BasePage {
 				@Override
 				protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 					EntradaForm.this.setModelObject(new Entrada());
+					
+					mensajeProyecto.add(new AttributeModifier("style", Model.of("display:none")));
+					mensajeActividad.add(new AttributeModifier("style", Model.of("display:none")));
+					ticketExt.add(new AttributeModifier("style", Model.of("border-color:none")));
+					duracion.add(new AttributeModifier("style", Model.of("border-color:none")));
+					
 					target.add(form);
 					target.add(feedBackPanel);
 				}
