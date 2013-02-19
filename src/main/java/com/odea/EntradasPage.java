@@ -1,6 +1,5 @@
 package com.odea;
 
-import java.awt.font.NumericShaper;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -32,9 +31,6 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.apache.wicket.util.parse.metapattern.parsers.IntegerVariableAssignmentParser;
-import org.apache.wicket.validation.validator.PatternValidator;
-import org.apache.wicket.validation.validator.RangeValidator;
 import org.apache.wicket.validation.validator.StringValidator;
 import org.joda.time.LocalDate;
 
@@ -48,6 +44,7 @@ import com.odea.components.slickGrid.SlickGrid;
 import com.odea.components.yuidatepicker.YuiDatePicker;
 import com.odea.domain.Actividad;
 import com.odea.domain.Entrada;
+import com.odea.domain.Feriado;
 import com.odea.domain.Proyecto;
 import com.odea.domain.Usuario;
 import com.odea.services.DAOService;
@@ -485,6 +482,8 @@ public class EntradasPage extends BasePage {
 					dto.setUsuario(usuario.getNombre());
 					Collection<HorasCargadasPorDia> c = daoService.getHorasDiaras(usuario);
 					dto.setHorasDia(c);
+					List<Feriado> feriados = daoService.getFeriados(EntradasPage.this.fechaActual);
+					dto.setFeriados(feriados);
 					return dto;
 				}
 			};

@@ -73,9 +73,20 @@ initYUI = function() {
     var data = getRemote();
 
     for(var i in data.horasDia){
-       //alert(data.horasDia[i].dia);
-       YAHOO.example.calendar.cal1.addRenderer(data.horasDia[i].dia, YAHOO.example.calendar.cal1.renderCellStyleHighlight1);
+    	
+    	var horasHoy = data.horasDia[i].horasCargadas/10000;
+    	
+    	if (horasHoy < data.dedicacion) {
+    		YAHOO.example.calendar.cal1.addRenderer(data.horasDia[i].dia, YAHOO.example.calendar.cal1.renderCellStyleHighlight3);
+		} else {
+			YAHOO.example.calendar.cal1.addRenderer(data.horasDia[i].dia, YAHOO.example.calendar.cal1.renderCellStyleHighlight1);			
+		}
+    	
     }
+    
+    for(var j in data.feriados) {
+    	YAHOO.example.calendar.cal1.addRenderer(data.feriados[j].fechaFormateada, YAHOO.example.calendar.cal1.renderCellStyleHighlight4);
+	}
 
 
 
