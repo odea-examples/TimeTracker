@@ -237,7 +237,7 @@ public class EntradaDAO extends AbstractDAO {
 	}
 	
 	public List<HorasCargadasPorDia> horasPorDia(Usuario usuario){
-		return jdbcTemplate.query("select al_date as fecha , sum(al_duration) as duracion from  activity_log where al_user_id=? group by fecha order by fecha desc ",
+		return jdbcTemplate.query("select al_date as fecha , (sum(al_duration)/10000) as duracion from  activity_log where al_user_id=? group by fecha order by fecha desc ",
 				new RowMapper() {
 
 					@Override

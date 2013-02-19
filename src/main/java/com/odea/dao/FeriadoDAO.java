@@ -72,7 +72,7 @@ public class FeriadoDAO extends AbstractDAO {
 
 					@Override
 					public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
-						return new HorasCargadasPorDia(rs.getDate(1), 1);
+						return new HorasCargadasPorDia(rs.getDate(1), 0);
 					}
 				}, desdeSQL, hastaSQL);
 		
