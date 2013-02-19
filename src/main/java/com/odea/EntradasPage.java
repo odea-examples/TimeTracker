@@ -483,8 +483,7 @@ public class EntradasPage extends BasePage {
 					//dto.setDedicacion(daoService.getDedicacion(usuario, new Date()));
 					dto.setDedicacion(8);
 					dto.setUsuario(usuario.getNombre());
-					Collection<HorasCargadasPorDia> c = daoService
-							.getHorasDiaras(usuario);
+					Collection<HorasCargadasPorDia> c = daoService.getHorasDiaras(usuario);
 					dto.setHorasDia(c);
 					return dto;
 				}

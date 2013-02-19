@@ -339,38 +339,6 @@ public class EntradaDAO extends AbstractDAO {
 		}
 		
 		
-		public Date getFeriados(LocalDate now){
-			LocalDate primeroDelMes = now.withDayOfMonth(1);
-			LocalDate ultimoDelMes = now.plusMonths(1).withDayOfMonth(1).minusDays(1);
-			
-			Date primero = primeroDelMes.toDateTimeAtStartOfDay().toDate();
-			Date ultimo = ultimoDelMes.toDateTimeAtStartOfDay().toDate();
-			
-			Timestamp desdeSQL = new Timestamp(primero.getTime());
-			Timestamp hastaSQL = new Timestamp(ultimo.getTime());
-			
-			
-			return jdbcTemplate.queryForObject("SELECT fecha FROM feriados WHERE fecha BETWEEN ? AND ?", Date.class,desdeSQL, hastaSQL);
-			
-		}
-		public void insertarFeriado(LocalDate fecha,String desc ){
-			jdbcTemplate.update("REPLACE INTO feriados VALUES(?,?)",fecha,desc);
-		}
-		public void borrarFeriado(LocalDate fecha){
-			jdbcTemplate.update("DELETE FROM feriados WHERE fecha = ?",fecha);
-		}
-		
-		public List<Feriado> buscarFeriados(){
-			return jdbcTemplate.query("",new RowMapper<Feriado>(){
-
-				@Override
-				public Feriado mapRow(ResultSet rs, int rowNum)
-						throws SQLException {
-					return new Feriado(rs.getDate(1),rs.getString(2));
-				}
-				
-			});
-		}
 		public List<String> getSistemasExternos() {
 			ArrayList<String> sistemasExternos = new ArrayList<String>();
 			sistemasExternos.add("Sistema de Incidencias de YPF");
@@ -380,23 +348,21 @@ public class EntradaDAO extends AbstractDAO {
 			return sistemasExternos;
 		}
 		
+
 		
-	}
-
-	
-	
-
-	
-
-	
-	class RowMapperEntradas implements RowMapper<Entrada>{
-		@Override
-		public Entrada mapRow(ResultSet rs, int rowNum) throws SQLException {
+		private class RowMapperEntradas implements RowMapper<Entrada>{
+			@Override
+			public Entrada mapRow(ResultSet rs, int rowNum) throws SQLException {
+				
+				Proyecto proyecto = new Proyecto(rs.getInt(2), rs.getString(11));
+				Actividad actividad = new Actividad(rs.getInt(3), rs.getString(14));
+				Usuario usuario = new Usuario(rs.getInt(9), rs.getString(12), rs.getString(13));
+				return new Entrada(rs.getTimestamp(1), proyecto, actividad, String.valueOf(rs.getTime(4).getTime()), rs.getString(5), rs.getInt(6), rs.getString(7), rs.getString(8), usuario, rs.getDate(10));
+			}
 			
-			Proyecto proyecto = new Proyecto(rs.getInt(2), rs.getString(11));
-			Actividad actividad = new Actividad(rs.getInt(3), rs.getString(14));
-			Usuario usuario = new Usuario(rs.getInt(9), rs.getString(12), rs.getString(13));
-			return new Entrada(rs.getTimestamp(1), proyecto, actividad, String.valueOf(rs.getTime(4).getTime()), rs.getString(5), rs.getInt(6), rs.getString(7), rs.getString(8), usuario, rs.getDate(10));
 		}
 		
 	}
+
+	
+	

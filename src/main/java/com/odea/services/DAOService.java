@@ -11,15 +11,15 @@ import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
 import com.odea.components.datepicker.HorasCargadasPorDia;
-import com.odea.components.slickGrid.Columna;
 import com.odea.components.slickGrid.Data;
-import com.odea.components.yuidatepicker.YuiDatePicker;
 import com.odea.dao.ActividadDAO;
 import com.odea.dao.EntradaDAO;
+import com.odea.dao.FeriadoDAO;
 import com.odea.dao.ProyectoDAO;
 import com.odea.dao.UsuarioDAO;
 import com.odea.domain.Actividad;
 import com.odea.domain.Entrada;
+import com.odea.domain.Feriado;
 import com.odea.domain.Proyecto;
 import com.odea.domain.Usuario;
 
@@ -34,6 +34,8 @@ public class DAOService {
 	private transient ActividadDAO actividadDAO;
 	@Autowired
 	private transient ProyectoDAO proyectoDAO;
+	@Autowired
+	private transient FeriadoDAO feriadosDAO;
 	
 	private Gson gson= new Gson();
 	
@@ -215,6 +217,20 @@ public class DAOService {
 		return gson.toJson(o);
 	}
 
+	public List<HorasCargadasPorDia> getFeriadosData(LocalDate now) {
+		return feriadosDAO.getFeriadosData(now);
+	}
 	
+	public void insertarFeriado(Feriado feriado) {
+		feriadosDAO.insertarFeriado(feriado);
+	}
+	
+	public Feriado getFeriadoHoy(LocalDate hoy) {
+		return feriadosDAO.getFeriadoHoy(hoy);
+	}
+	
+	public void borrarFeriado(Feriado feriado) {
+		feriadosDAO.borrarFeriado(feriado);
+	}
 
 }

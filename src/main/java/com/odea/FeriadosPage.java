@@ -1,21 +1,29 @@
 package com.odea;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.joda.time.LocalDate;
 
 import com.odea.components.datepicker.DatePickerDTO;
+import com.odea.components.datepicker.HorasCargadasPorDia;
 import com.odea.components.yuidatepicker.YuiDatePicker;
 import com.odea.domain.Feriado;
+import com.odea.services.DAOService;
 
 
 public class FeriadosPage extends BasePage {
 	
-//	@SpringBean
-//	public DAOService daoService;
+	@SpringBean
+	public DAOService daoService;
 	
 		
 	public FeriadosPage() {
@@ -28,6 +36,10 @@ public class FeriadosPage extends BasePage {
 	public class FeriadosForm extends Form<Feriado> {
 		
 		public IModel<Feriado> feriadoModel = new CompoundPropertyModel<Feriado>(new Feriado());
+		public LocalDate fechaActual = new LocalDate();
+		public TextArea<String> descripcion;
+		public YuiDatePicker datePicker;
+		
 		
 		public FeriadosForm(String id) {
 			super(id);
@@ -35,23 +47,40 @@ public class FeriadosPage extends BasePage {
 			this.setOutputMarkupId(true);
 			
 			
-			YuiDatePicker datePicker = new YuiDatePicker("fecha") {
+			datePicker = new YuiDatePicker("fecha") {
 				
 				@Override
 				protected void onDateSelect(AjaxRequestTarget target, String selectedDate) {
-					//TODO
+					String json = selectedDate;
+					List<String> campos = Arrays.asList(json.split("/"));
+					int dia = Integer.parseInt(campos.get(0));
+					int mes = Integer.parseInt(campos.get(1));
+					int anio = Integer.parseInt(campos.get(2));
+
+					FeriadosForm.this.fechaActual = new LocalDate(anio, mes, dia);
+					FeriadosForm.this.setModelObject(daoService.getFeriadoHoy(FeriadosForm.this.fechaActual));
+					
+					
+					target.add(FeriadosForm.this.descripcion);						
+					
 				}
 				
 				@Override
 				public DatePickerDTO getDatePickerData() {
-					return new DatePickerDTO();
+					DatePickerDTO dto = new DatePickerDTO();
+					dto.setDedicacion(1);
+					dto.setUsuario("admin");
+					Collection<HorasCargadasPorDia> horas = daoService.getFeriadosData(FeriadosForm.this.fechaActual);
+					dto.setHorasDia(horas);
+					return dto;				
 				}
+				
 			};
 			
 			datePicker.setOutputMarkupId(true);
 			datePicker.setRequired(true);
 
-			TextArea<String> descripcion = new TextArea<String>("descripcion");
+			descripcion = new TextArea<String>("descripcion");
 			descripcion.setRequired(true);
 			descripcion.setOutputMarkupId(true);
 			
@@ -59,16 +88,32 @@ public class FeriadosPage extends BasePage {
 			AjaxButton submit = new AjaxButton("submit", this) {
 				@Override
 				protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-					//TODO: enviar entrada de Feriado a BD
+					daoService.insertarFeriado(FeriadosForm.this.getModelObject());
+					target.add(FeriadosForm.this.datePicker);
+					target.add(FeriadosForm.this.descripcion);						
+
 				}
 			};
 			
 			submit.setOutputMarkupId(true);
 			
+			AjaxButton borrar = new AjaxButton("borrar", this) {
+				@Override
+				protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+					daoService.borrarFeriado(FeriadosForm.this.getModelObject());
+					FeriadosForm.this.setModelObject(new Feriado());
+					target.add(FeriadosForm.this.datePicker);
+					target.add(FeriadosForm.this.descripcion);
+				}
+			};
+			
+			borrar.setOutputMarkupId(true);
+
 			
 			add(datePicker);
 			add(descripcion);
 			add(submit);
+			add(borrar);
 		}
 		
 	}
