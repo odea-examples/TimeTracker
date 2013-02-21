@@ -88,6 +88,7 @@ public abstract class YuiDatePicker extends FormComponentPanel<Date> implements 
                 if (getRequest().getRequestParameters().getParameterNames().contains("updateF")) {
                     YuiDatePicker.this.respondHorasOcupacion();
                 }
+                
             }
         };
         

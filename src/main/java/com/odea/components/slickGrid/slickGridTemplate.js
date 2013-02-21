@@ -60,8 +60,8 @@ function ticketExternoValidator(value) {
 }
 
 function descripcionValidator(value) {
-	var regexVal = (/((^$)|(^(.{1,50})$))/);
-  if (value == null || value == undefined || !value.length || !value.match(regexVal)) {
+	var regexVal = (/(^(.{0,5000})$)/);
+  if (!value.match(regexVal)) {
     return {valid: false, msg: "Invalid value"};
   }
   else {

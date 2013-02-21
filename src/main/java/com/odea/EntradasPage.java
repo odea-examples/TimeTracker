@@ -140,6 +140,19 @@ public class EntradasPage extends BasePage {
 		this.selectorUsuarioContainer = new WebMarkupContainer("selectorUsuarioContainer");
 		this.selectorUsuarioContainer.setOutputMarkupId(true);
 		
+		
+		this.form = new EntradaForm("form") {
+			@Override
+			protected void onSubmit(AjaxRequestTarget target, EntradaForm form) {
+				daoService.agregarEntrada(form.getModelObject(), usuario);
+				EntradasPage.this.lstDataModel.detach();
+				
+				target.add(listViewContainer);
+				target.add(labelContainer);
+			}
+		};
+		
+		
 		final SlickGrid slickGrid = new SlickGrid("slickGrid", this.lstDataModel, this.slickGridJsonCols) {
 
 			@Override
@@ -151,7 +164,6 @@ public class EntradasPage extends BasePage {
 						Date parsedDate = dateFormat.parse(data.getId());
 						Timestamp timestamp = new Timestamp(parsedDate.getTime());
 						daoService.borrarEntrada(timestamp);
-						
 					} else {
 
 						SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
@@ -194,32 +206,21 @@ public class EntradasPage extends BasePage {
 					}
 					EntradasPage.this.lstDataModel.detach();
 					
+					
 					target.add(listViewContainer);
 					target.add(labelContainer);
-					
 					//target.add(form);
 					// poner target.add separados, o no ponerlos directamente
 					
 				} catch (Exception e) {
 					throw new RuntimeException(e);
 				}
-				
-			}
 
+			}
+			
 		};
 
 		slickGrid.setOutputMarkupId(true);
-
-		this.form = new EntradaForm("form") {
-			@Override
-			protected void onSubmit(AjaxRequestTarget target, EntradaForm form) {
-				daoService.agregarEntrada(form.getModelObject(), usuario);
-				EntradasPage.this.lstDataModel.detach();
-				
-				target.add(listViewContainer);
-				target.add(labelContainer);
-			}
-		};
 
 		
 		
@@ -359,7 +360,7 @@ public class EntradasPage extends BasePage {
 			this.setDefaultModel(this.entradaModel);
 			this.setOutputMarkupId(true);
 
-			
+			//this.delegateSubmit(this.findSubmittingButton());
 			
 			this.comboProyecto = new DropDownChoice<Proyecto>("proyecto",
 					daoService.getProyectos(), new IChoiceRenderer<Proyecto>() {
@@ -432,7 +433,7 @@ public class EntradasPage extends BasePage {
 
 			
 			this.nota = new TextArea<String>("nota");
-			this.nota.add(new StringValidator(0, 10000));
+			this.nota.add(new StringValidator(0, 5000));
 			this.nota.setLabel(Model.of("Nota"));
 			this.nota.setOutputMarkupId(true);
 
@@ -502,13 +503,15 @@ public class EntradasPage extends BasePage {
 				
 				@Override
 				protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+					
 					EntradaForm.this.onSubmit(target, (EntradaForm) form);
-
-					target.add(feedBackPanel);
+					EntradaForm.this.setModelObject(new Entrada());
+					
 					EntradasPage.this.lstDataModel.detach();
+					target.add(feedBackPanel);
 					target.add(EntradasPage.this.listViewContainer);
 					target.add(EntradasPage.this.labelContainer);
-					EntradaForm.this.setModelObject(new Entrada());
+					
 
 					if (duracion.isValid()) {
 						duracion.add(new AttributeModifier("style", Model.of("border-color:none")));
@@ -536,7 +539,6 @@ public class EntradasPage extends BasePage {
 						mensajeActividad.add(new AttributeModifier("style", Model.of("display:none")));
 					}
 
-					
 					
 					target.add(comboProyecto);
 					target.add(comboActividad);
@@ -664,7 +666,7 @@ public class EntradasPage extends BasePage {
 		Columna columna6 = new Columna("ticket", "Ticket", 50, 50, 50, "cell-title", "ticket", null, "Slick.Editors.Text", "ticketBugzillaValidator", null);
 		Columna columna7 = new Columna("ticketExt", "Ticket Externo", 80, 80, 100, "cell-title", "ticketExt", null, "Slick.Editors.TextTicketExt", "ticketExternoValidator", null);
 		Columna columna8 = new Columna("sistExt", "Sistema Externo", 80, 80, 80, "cell-title", "sistExt", null, "Slick.Editors.SelectEditor", null, sistemasExternos);
-		Columna columna9 = new Columna("descripcion", "Descripcion", 80, 80, 80, null, "descripcion", null, "Slick.Editors.LongText", null, null);
+		Columna columna9 = new Columna("descripcion", "Descripcion", 80, 80, 80, null, "descripcion", null, "Slick.Editors.LongText", "descripcionValidator", null);
 		
 		ArrayList<Columna> columnas = new ArrayList<Columna>();
 		columnas.add(columna);
