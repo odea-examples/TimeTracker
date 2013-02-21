@@ -233,7 +233,7 @@ public class DAOService {
 		feriadosDAO.borrarFeriado(feriado);
 	}
 
-	public List<Feriado> getFeriados(LocalDate now){
-		return feriadosDAO.getFeriados(now);
+	public List<Feriado> getFeriados(){
+		return feriadosDAO.getFeriados();
 	}
 }

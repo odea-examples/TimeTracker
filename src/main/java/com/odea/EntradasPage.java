@@ -483,7 +483,7 @@ public class EntradasPage extends BasePage {
 					dto.setUsuario(usuario.getNombre());
 					Collection<HorasCargadasPorDia> c = daoService.getHorasDiaras(usuario);
 					dto.setHorasDia(c);
-					List<Feriado> feriados = daoService.getFeriados(EntradasPage.this.fechaActual);
+					List<Feriado> feriados = daoService.getFeriados();
 					dto.setFeriados(feriados);
 					return dto;
 				}
