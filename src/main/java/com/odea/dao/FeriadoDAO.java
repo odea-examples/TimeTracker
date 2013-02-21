@@ -55,26 +55,15 @@ public class FeriadoDAO extends AbstractDAO {
 		jdbcTemplate.update("DELETE FROM feriados WHERE fecha = ?", feriado.getFecha());
 	}
 	
-	public List<HorasCargadasPorDia> getFeriadosData(LocalDate now) {
+	public List<HorasCargadasPorDia> getFeriadosData() {
 		
-		LocalDate primeroDelMes = now.withDayOfMonth(1);
-		LocalDate ultimoDelMes = now.plusMonths(1).withDayOfMonth(1).minusDays(1);
-		
-		Date primero = primeroDelMes.toDateTimeAtStartOfDay().toDate();
-		Date ultimo = ultimoDelMes.toDateTimeAtStartOfDay().toDate();
-		
-		Timestamp desdeSQL = new Timestamp(primero.getTime());
-		Timestamp hastaSQL = new Timestamp(ultimo.getTime());
-		
-		
-		return jdbcTemplate.query("SELECT fecha FROM feriados WHERE fecha BETWEEN ? AND ?",
+		return jdbcTemplate.query("SELECT fecha FROM feriados",
 				new RowMapper() {
-
 					@Override
 					public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
 						return new HorasCargadasPorDia(rs.getDate(1), 0);
 					}
-				}, desdeSQL, hastaSQL);
+				});
 		
 	}
 	

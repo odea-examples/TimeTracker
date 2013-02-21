@@ -217,8 +217,8 @@ public class DAOService {
 		return gson.toJson(o);
 	}
 
-	public List<HorasCargadasPorDia> getFeriadosData(LocalDate now) {
-		return feriadosDAO.getFeriadosData(now);
+	public List<HorasCargadasPorDia> getFeriadosData() {
+		return feriadosDAO.getFeriadosData();
 	}
 	
 	public void insertarFeriado(Feriado feriado) {
