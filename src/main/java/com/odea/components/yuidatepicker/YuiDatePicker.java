@@ -176,6 +176,7 @@ public abstract class YuiDatePicker extends FormComponentPanel<Date> implements 
     }
     
     
+    
     protected abstract void onDateSelect(AjaxRequestTarget target, String selectedDate);
 
 }

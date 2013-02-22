@@ -88,11 +88,13 @@ initYUI = function() {
     	YAHOO.example.calendar.cal1.addRenderer(data.feriados[j].fechaFormateada, YAHOO.example.calendar.cal1.renderCellStyleHighlight4);
 	}
 
-
+    //Sabados y domingos
+    YAHOO.example.calendar.cal1.addWeekdayRenderer(1, YAHOO.example.calendar.cal1.renderCellStyleHighlight4);
+    YAHOO.example.calendar.cal1.addWeekdayRenderer(7, YAHOO.example.calendar.cal1.renderCellStyleHighlight4);
 
     YAHOO.example.calendar.cal1.render();
-    //YAHOO.example.calendar.cal1.hide();
     
+    //YAHOO.example.calendar.cal1.hide();
     //YAHOO.util.Event.addListener("${selector}", "click", YAHOO.example.calendar.cal1.show, YAHOO.example.calendar.cal1, true); 
     
     YAHOO.util.Event.addListener("update", "click", updateCal);
