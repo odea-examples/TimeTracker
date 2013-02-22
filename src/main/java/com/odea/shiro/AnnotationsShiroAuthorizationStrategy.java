@@ -27,6 +27,7 @@ public class AnnotationsShiroAuthorizationStrategy implements IAuthorizationStra
 	}
 
 	
+	//Siempre pasa por este metodo, por cada componente o pagina que tenga que renderizar.
 	
 	@Override
 	public boolean isActionAuthorized(Component component, Action action) {
@@ -34,6 +35,10 @@ public class AnnotationsShiroAuthorizationStrategy implements IAuthorizationStra
 		boolean loggedIn = SecurityUtils.getSubject().getPrincipal() != null;
 		String paginaActual = component.getPage().getClass().toString();
 		
+		/*
+		 * Si el usuario no se logueo, lo manda a la LoginPage
+		 * (a menos de que ya esté ahi porque sino entra en loop infinito)
+		 */
 		
 		if (loggedIn) {
 			return this.verificarComponente(component, action);
@@ -45,13 +50,16 @@ public class AnnotationsShiroAuthorizationStrategy implements IAuthorizationStra
 	}
 	
 	
-	
+	//Verifica si el componente se renderiza.
+	//Si devuelve true se renderiza, sino no.
 	private boolean verificarComponente(Component component, Action action) {
 		
 		this.usuario = SecurityUtils.getSubject().getPrincipal().toString();
 		String idComponent = component.getId();
 		String page = component.getPage().getClass().toString();
 		String accion = action.toString();
+		
+		
 		
 		ArrayList<String> paginasNoAceptadas = new ArrayList<String>();
 		paginasNoAceptadas.add("class com.odea.FeriadosPage");
@@ -64,20 +72,18 @@ public class AnnotationsShiroAuthorizationStrategy implements IAuthorizationStra
 		componentesNoAceptados.add("link");
 		componentesNoAceptados.add("tituloModificar");
 		componentesNoAceptados.add("tituloBorrar");
+		componentesNoAceptados.add("dedicacion");
+		componentesNoAceptados.add("tituloDedicacion");
 		
 		
 		ArrayList<String> paginasAccesoLimitado = new ArrayList<String>();
 		paginasAccesoLimitado.add("class com.odea.EntradasPage");
 		paginasAccesoLimitado.add("class com.odea.ProyectosPage");
 		paginasAccesoLimitado.add("class com.odea.ActividadesPage");
-		
-		//Hasta que la pagina no este con completa funcionalidad, no estará disponible para ningún usuario
-//		if (page.equals("class com.odea.FeriadosPage")) {
-//			throw new RestartResponseAtInterceptPageException(new NoAutorizadoPage());
-//		}
+		paginasAccesoLimitado.add("class com.odea.UsuariosPage");
 		
 		
-		//Dice invitado pero debería ser admin, pero como lo usamos para hacer pruebas por ahora lo dejamos como invitado
+		//Dice invitado pero debería ser admin. Como lo usamos para hacer pruebas por ahora lo dejamos como invitado.
 		if (!usuario.equals("invitado")) {
 			
 			if (paginasAccesoLimitado.contains(page)) {

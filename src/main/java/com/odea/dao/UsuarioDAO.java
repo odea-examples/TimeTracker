@@ -68,9 +68,20 @@ public class UsuarioDAO extends AbstractDAO {
 		return usuario;
 	}
 	
-	public Integer getDedicacion(Usuario usuario, Date fechaAct){
-		return jdbcTemplate.queryForInt("SELECT dedicacion FROM dedicacion_usuario WHERE usuario_id=? AND fecha_desde<? and fecha_hasta<>'2000-1-1'",usuario.getIdUsuario(),fechaAct);
+	public Integer getDedicacion(Usuario usuario){
+		return jdbcTemplate.queryForInt("SELECT dedicacion FROM dedicacion_usuario WHERE usuario_id=? AND fecha_hasta is NULL", usuario.getIdUsuario());
 	}
+	
+	
+	  public void setDedicacion(Usuario usuario, int dedicacion){
+		Date fechaActual = new Date();	
+		try {
+			  jdbcTemplate.update("UPDATE dedicacion_usuario SET fecha_hasta=? WHERE fecha_hasta is NULL AND usuario_id=?", fechaActual, usuario.getIdUsuario());
+			  jdbcTemplate.update("INSERT INTO dedicacion_usuario (usuario_id, fecha_desde, dedicacion) VALUES (?,?,?)", usuario.getIdUsuario(), fechaActual, dedicacion);			
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	 }
 	
 	
 	public class RowMapperUsuario implements RowMapper<Usuario>{
