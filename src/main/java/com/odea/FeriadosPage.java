@@ -69,20 +69,11 @@ public class FeriadosPage extends BasePage {
 				@Override
 				public DatePickerDTO getDatePickerData() {
 					DatePickerDTO dto = new DatePickerDTO();
-					
 					dto.setDedicacion(0);
 					dto.setUsuario("admin");
-					
 					Collection<HorasCargadasPorDia> horas = daoService.getFeriadosData();
 					dto.setHorasDia(horas);
-					
-					dto.setFeriados(new ArrayList<Feriado>());
-					
-					ArrayList<Integer> fechaSeleccionada = new ArrayList<Integer>();
-					fechaSeleccionada.add(0, FeriadosForm.this.fechaActual.getMonthOfYear());
-					fechaSeleccionada.add(1, FeriadosForm.this.fechaActual.getYear());
-					dto.setFecha(fechaSeleccionada);
-										
+															
 					return dto;				
 				}
 				

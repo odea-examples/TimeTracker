@@ -84,18 +84,18 @@ initYUI = function() {
     	if (horasHoy < data.dedicacion) {
     		YAHOO.example.calendar.cal1.addRenderer(data.horasDia[i].dia, YAHOO.example.calendar.cal1.renderCellStyleHighlight3);
 		} else {
-			YAHOO.example.calendar.cal1.addRenderer(data.horasDia[i].dia, YAHOO.example.calendar.cal1.renderCellStyleHighlight1);			
+			YAHOO.example.calendar.cal1.addRenderer(data.horasDia[i].dia, YAHOO.example.calendar.cal1.renderCellStyleHighlight4);			
 		}
     	
     }
     
     for(var j in data.feriados) {
-    	YAHOO.example.calendar.cal1.addRenderer(data.feriados[j].fechaFormateada, YAHOO.example.calendar.cal1.renderCellStyleHighlight4);
+    	YAHOO.example.calendar.cal1.addRenderer(data.feriados[j].fechaFormateada, YAHOO.example.calendar.cal1.renderCellStyleHighlight1);
 	}
 
     //Sabados y domingos
-    YAHOO.example.calendar.cal1.addWeekdayRenderer(1, YAHOO.example.calendar.cal1.renderCellStyleHighlight4);
-    YAHOO.example.calendar.cal1.addWeekdayRenderer(7, YAHOO.example.calendar.cal1.renderCellStyleHighlight4);
+    YAHOO.example.calendar.cal1.addWeekdayRenderer(1, YAHOO.example.calendar.cal1.renderCellStyleHighlight1);
+    YAHOO.example.calendar.cal1.addWeekdayRenderer(7, YAHOO.example.calendar.cal1.renderCellStyleHighlight1);
 
     
     

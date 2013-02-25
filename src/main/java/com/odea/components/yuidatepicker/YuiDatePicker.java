@@ -1,6 +1,7 @@
 package com.odea.components.yuidatepicker;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -29,6 +30,7 @@ import org.apache.wicket.util.template.PackageTextTemplate;
 import org.joda.time.LocalDate;
 
 import com.google.gson.Gson;
+import com.odea.EntradasPage;
 import com.odea.behavior.noInput.NoInputBehavior;
 import com.odea.components.ajax.AbstractInitializableComponentBehavior;
 import com.odea.components.datepicker.DatePickerDTO;
@@ -41,7 +43,7 @@ public abstract class YuiDatePicker extends FormComponentPanel<Date> implements 
     private TextField<Date> datePicker;
     private WebMarkupContainer calContainer;
     private AbstractDefaultAjaxBehavior ajaxBehavior;
-    protected Date ultimaFecha = new LocalDate().toDate();
+    protected LocalDate ultimaFecha = new LocalDate();
     
     
     public YuiDatePicker(String id) {
@@ -80,7 +82,7 @@ public abstract class YuiDatePicker extends FormComponentPanel<Date> implements 
 					int dia = Integer.parseInt(campos.get(0));
 					int mes = Integer.parseInt(campos.get(1));
 					int anio = Integer.parseInt(campos.get(2));
-                    Date nuevaFecha = new LocalDate(anio, mes, dia).toDate();
+                    LocalDate nuevaFecha = new LocalDate(anio, mes, dia);
                     YuiDatePicker.this.ultimaFecha = nuevaFecha;
                     
                 }
@@ -102,7 +104,7 @@ public abstract class YuiDatePicker extends FormComponentPanel<Date> implements 
 				LocalDate fecha = new LocalDate();
 				String strFecha = fecha.getDayOfMonth() + "/" + fecha.getMonthOfYear() + "/" + fecha.getYear();
 			    YuiDatePicker.this.onDateSelect(target, strFecha);
-			    YuiDatePicker.this.ultimaFecha = fecha.toDate();
+			    YuiDatePicker.this.ultimaFecha = fecha;
 			    YuiDatePicker.this.datePicker.setModelObject(fecha.toDate());
 			    target.add(YuiDatePicker.this);
 			}
@@ -157,7 +159,7 @@ public abstract class YuiDatePicker extends FormComponentPanel<Date> implements 
 
     @Override
     protected void onBeforeRender() {
-    	this.setModelObject(this.ultimaFecha);
+    	this.setModelObject(this.ultimaFecha.toDate());
         this.datePicker.setModel(getModel());
         super.onBeforeRender();
     }
@@ -170,7 +172,13 @@ public abstract class YuiDatePicker extends FormComponentPanel<Date> implements 
     }
 
     protected void respondHorasOcupacion() {
-        String jsonResultList = this.toJson(this.getDatePickerData());
+    	DatePickerDTO dto = this.getDatePickerData();
+    	ArrayList<Integer> fechaSeleccionada = new ArrayList<Integer>();
+		fechaSeleccionada.add(0, this.ultimaFecha.getMonthOfYear());
+		fechaSeleccionada.add(1, this.ultimaFecha.getYear());
+		dto.setFecha(fechaSeleccionada);
+    	
+        String jsonResultList = this.toJson(dto);
         TextRequestHandler jsonHandler = new TextRequestHandler(JSON_CONTENT_TYPE, ENCODING, jsonResultList);
         getRequestCycle().scheduleRequestHandlerAfterCurrent(jsonHandler);
     }
