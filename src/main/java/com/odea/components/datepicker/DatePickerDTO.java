@@ -7,11 +7,12 @@ import com.odea.domain.Feriado;
 
 
 public class DatePickerDTO {
-	
-    private String usuario;
+
+	private String usuario;
 	private int dedicacion;
     private Collection<HorasCargadasPorDia> horasDia;
     private List<Feriado> feriados;
+    private List<Integer> fecha;
 
     public DatePickerDTO() {
     	
@@ -53,5 +54,13 @@ public class DatePickerDTO {
 
 	public void setFeriados(List<Feriado> feriados) {
 		this.feriados = feriados;
+	}
+	
+    public List<Integer> getFecha() {
+		return fecha;
+	}
+
+	public void setFecha(List<Integer> fecha) {
+		this.fecha = fecha;
 	}
 }

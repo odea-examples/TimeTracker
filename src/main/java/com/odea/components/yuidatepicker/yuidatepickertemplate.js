@@ -72,6 +72,11 @@ initYUI = function() {
 
     var data = getRemote();
 
+    
+    YAHOO.example.calendar.cal1.setMonth(data.fecha[0]-1);
+    YAHOO.example.calendar.cal1.setYear(data.fecha[1]);
+    
+    
     for(var i in data.horasDia){
     	
     	var horasHoy = data.horasDia[i].horasCargadas;
@@ -92,6 +97,8 @@ initYUI = function() {
     YAHOO.example.calendar.cal1.addWeekdayRenderer(1, YAHOO.example.calendar.cal1.renderCellStyleHighlight4);
     YAHOO.example.calendar.cal1.addWeekdayRenderer(7, YAHOO.example.calendar.cal1.renderCellStyleHighlight4);
 
+    
+    
     YAHOO.example.calendar.cal1.render();
     
     //YAHOO.example.calendar.cal1.hide();

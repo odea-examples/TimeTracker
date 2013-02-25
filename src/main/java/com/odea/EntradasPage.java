@@ -478,12 +478,22 @@ public class EntradasPage extends BasePage {
 				@Override
 				public DatePickerDTO getDatePickerData() {
 					DatePickerDTO dto = new DatePickerDTO();
+					
 					dto.setDedicacion(daoService.getDedicacion(usuario));
 					dto.setUsuario(usuario.getNombre());
+					
 					Collection<HorasCargadasPorDia> c = daoService.getHorasDiaras(usuario);
 					dto.setHorasDia(c);
+					
 					List<Feriado> feriados = daoService.getFeriados();
 					dto.setFeriados(feriados);
+					
+					ArrayList<Integer> fechaSeleccionada = new ArrayList<Integer>();
+					fechaSeleccionada.add(0, EntradasPage.this.fechaActual.getMonthOfYear());
+					fechaSeleccionada.add(1, EntradasPage.this.fechaActual.getYear());
+					dto.setFecha(fechaSeleccionada);
+					
+					
 					return dto;
 				}
 			};
