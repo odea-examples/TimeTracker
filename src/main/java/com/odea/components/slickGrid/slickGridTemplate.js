@@ -126,7 +126,7 @@ function init(dataSecundaria) {
   grid.onClick.subscribe(function(e, args) {
 	  objeto = dataView.getItem(args.row);
 //	  alert(JSON.stringify(objeto, null, 2));
-	  if (grid.getColumns()[args.cell].name=='Delete' && objeto!=undefined && confirm(' ¿Está seguro de que desea borrar la entrada? ')){
+	  if (grid.getColumns()[args.cell].name=='Delete' && objeto!=undefined && confirm(' \u00BFEst\xE1 seguro de que desea borrar la entrada? ')){
 	    objeto = dataView.getItem(args.row);
         dataView.deleteItem(objeto.id);
 	    Wicket.Ajax.ajax({"u":"${url}","c":"${gridId}","ep":{'borrar':JSON.stringify(objeto.id, null, 2)}});

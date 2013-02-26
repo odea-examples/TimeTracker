@@ -60,7 +60,7 @@ public class ActividadesPage extends BasePage{
             	item.add(new Label("nombre_actividad", new Model<String>(actividad.getNombre())));
             	
             	
-                item.add(new ConfirmationLink<Actividad>("deleteLink","¿Está seguro de que desea borrar la actividad?",new Model<Actividad>(actividad)) {
+                item.add(new ConfirmationLink<Actividad>("deleteLink","\\u00BFEst\\xE1 seguro de que desea borrar la actividad?",new Model<Actividad>(actividad)) {
                     @Override
                     public void onClick(AjaxRequestTarget ajaxRequestTarget) {
                         daoService.borrarActividad(getModelObject());

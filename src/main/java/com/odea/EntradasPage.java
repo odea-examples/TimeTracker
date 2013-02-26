@@ -209,7 +209,10 @@ public class EntradasPage extends BasePage {
 					
 					target.add(listViewContainer);
 					target.add(labelContainer);
-					//target.add(form);
+					
+					EntradasPage.this.form.setModelObject(new Entrada());
+					target.add(form);
+					
 					// poner target.add separados, o no ponerlos directamente
 					
 				} catch (Exception e) {

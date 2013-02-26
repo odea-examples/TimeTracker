@@ -204,11 +204,11 @@ public class EntradaDAO extends AbstractDAO {
 	public int getHorasSemanales(Usuario usuario, LocalDate now) 
 	{
 		LocalDate lu = now.withDayOfWeek(DateTimeConstants.MONDAY);
-		LocalDate vie = now.withDayOfWeek(DateTimeConstants.FRIDAY+1);
+		LocalDate dom = now.withDayOfWeek(DateTimeConstants.SUNDAY);
 		Date lunes = lu.toDateTimeAtStartOfDay().toDate();
-		Date viernes = vie.toDateTimeAtStartOfDay().toDate();
+		Date domingo = dom.toDateTimeAtStartOfDay().toDate();
 		
-		return this.getHorasDesdeHasta(usuario, lunes, viernes);
+		return this.getHorasDesdeHasta(usuario, lunes, domingo);
 	}
 	public int getHorasDiarias(Usuario usuario, LocalDate hoy) 
 	{
@@ -270,13 +270,13 @@ public class EntradaDAO extends AbstractDAO {
 	
 	public List<Data> getEntradasSemanales(Usuario usuario, LocalDate now){
 		LocalDate lu = now.withDayOfWeek(DateTimeConstants.MONDAY);
-		LocalDate vie = now.withDayOfWeek(DateTimeConstants.FRIDAY);
+		LocalDate dom = now.withDayOfWeek(DateTimeConstants.SUNDAY);
 		
 		Date lunes = lu.toDateTimeAtStartOfDay().toDate();
-		Date viernes = vie.toDateTimeAtStartOfDay().toDate();
+		Date domingo = dom.toDateTimeAtStartOfDay().toDate();
 		
 		Timestamp desdeSQL = new Timestamp(lunes.getTime());
-		Timestamp hastaSQL = new Timestamp(viernes.getTime());
+		Timestamp hastaSQL = new Timestamp(domingo.getTime());
 				
 		return this.getData(usuario, desdeSQL, hastaSQL); 
 	}
