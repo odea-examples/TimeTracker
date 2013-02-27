@@ -37,7 +37,7 @@ public class EditarActividadesPage extends BasePage{
         this.actividadModel = new CompoundPropertyModel<Actividad>(new LoadableDetachableModel<Actividad>() {
             @Override
             protected Actividad load() {
-                return new Actividad(0,"");
+                return new Actividad(0,"", true);
             }
         });
         this.preparePage();    
@@ -47,7 +47,7 @@ public class EditarActividadesPage extends BasePage{
         this.actividadModel = new CompoundPropertyModel<Actividad>(new LoadableDetachableModel<Actividad>() {
             @Override
             protected Actividad load() {
-                return new Actividad(parameters.get("id").toInt(),parameters.get("nombre").toString());
+                return new Actividad(parameters.get("id").toInt(), parameters.get("nombre").toString(), parameters.get("status").toBoolean());
             }
         });
         this.preparePage();

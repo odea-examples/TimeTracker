@@ -23,6 +23,7 @@
 				<th scope="col">Actividades</th>
 				<th scope="col"><div wicket:id="tituloBorrar"/></th>
 				<th scope="col"><div wicket:id="tituloModificar"/></th>
+				<th scope="col"><div wicket:id="tituloHabilitado"/></th>
 			</tr>
 			</thead>
 			<tbody>
@@ -30,6 +31,7 @@
 					<td wicket:id="nombre_actividad"/>
 					<td><a wicket:id="deleteLink" class="more" href="#"><img src="images/delete.png" alt="delete"/></a></td>
 					<td><a wicket:id="modifyLink" class="more" href="#"><img src="images/modificarIcon.gif" alt="modificarIcon"/></a></td>
+					<td><input type="checkbox" wicket:id="checkBoxActividad"/></td>
 				</tr>
 			</tbody>	
 		</table>

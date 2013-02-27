@@ -42,6 +42,8 @@ public class ActividadesPage extends BasePage{
 		
 		Label tituloModificar = new Label("tituloModificar", "Modificar");
 		Label tituloBorrar = new Label("tituloBorrar", "Borrar");
+    	Label tituloHabilitado = new Label("tituloHabilitado", "Habilitado");
+
 		
 		this.lstActividadesModel = new LoadableDetachableModel<List<Actividad>>() { 
             @Override
@@ -66,13 +68,12 @@ public class ActividadesPage extends BasePage{
 
 			@Override
             protected void populateItem(ListItem<Actividad> item) {
-            	Actividad actividad = item.getModel().getObject();   
+            	final Actividad actividad = item.getModel().getObject();   
             	if((item.getIndex() % 2) == 0){
             		item.add(new AttributeModifier("class","odd"));
             	}
             	
             	item.add(new Label("nombre_actividad", new Model<String>(actividad.getNombre())));
-            	
             	
                 item.add(new ConfirmationLink<Actividad>("deleteLink","\\u00BFEst\\xE1 seguro de que desea borrar la actividad?",new Model<Actividad>(actividad)) {
                     @Override
@@ -82,7 +83,18 @@ public class ActividadesPage extends BasePage{
                     }
                     
                 });
-                item.add(new BookmarkablePageLink<EditarActividadesPage>("modifyLink",EditarActividadesPage.class,new PageParameters().add("id",actividad.getIdActividad()).add("nombre",actividad.getNombre())));
+                item.add(new BookmarkablePageLink<EditarActividadesPage>("modifyLink",EditarActividadesPage.class,new PageParameters().add("id",actividad.getIdActividad()).add("nombre",actividad.getNombre()).add("status",actividad.isHabilitado())));
+                
+                CheckBox checkBox = new CheckBox("checkBoxActividad", new Model<Boolean>(actividad.isHabilitado()));
+                checkBox.add(new AjaxEventBehavior("onchange") {
+           
+		            protected void onEvent(AjaxRequestTarget target) {
+		               daoService.cambiarStatus(actividad);
+		            }
+		           
+		        });
+                
+                item.add(checkBox);
                 
             };
             
@@ -91,6 +103,7 @@ public class ActividadesPage extends BasePage{
 		listViewContainer.add(actividadListView);
 		listViewContainer.add(tituloModificar);
 		listViewContainer.add(tituloBorrar);
+		listViewContainer.add(tituloHabilitado);
 
 		radioContainer = new WebMarkupContainer("radioContainerActividades");
 		radioContainer.setOutputMarkupId(true);

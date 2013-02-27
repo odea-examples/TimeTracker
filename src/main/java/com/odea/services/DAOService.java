@@ -84,6 +84,10 @@ public class DAOService {
 		return actividadDAO.buscarPorNombre(nombre);
 	}
 	
+	public void cambiarStatus(Actividad actividad) {
+		actividadDAO.cambiarStatus(actividad);
+	}
+	
 	
 	public void agregarEntrada(Entrada entrada){
 		entradaDAO.agregarEntrada(entrada);

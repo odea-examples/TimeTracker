@@ -33,7 +33,7 @@ public class ActividadDAOTest extends AbstractTestCase {
 	
 	@Test
 	public void insertarActividadTest(){
-		Actividad actividad = new Actividad(0, "ActividadDePrueba");
+		Actividad actividad = new Actividad(0, "ActividadDePrueba", true);
 		daoService.insertarActividad(actividad, new ArrayList<Proyecto>());
 		
 		Actividad actividadBuscada = daoService.buscarActividadPorNombre(actividad.getNombre());

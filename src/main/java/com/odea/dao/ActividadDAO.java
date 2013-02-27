@@ -25,7 +25,7 @@ public class ActividadDAO extends AbstractDAO {
 	{
 		logger.debug("Buscando actividades por proyecto - Proyecto: " + proyecto.getNombre());
 		
-		List<Actividad> actividades = jdbcTemplate.query("SELECT pa.ab_id_a, a.a_name FROM activities a, activity_bind pa WHERE pa.ab_id_a = a.a_id AND pa.ab_id_p = ?", new RowMapperActividad(), proyecto.getIdProyecto());
+		List<Actividad> actividades = jdbcTemplate.query("SELECT pa.ab_id_a, a.a_name, a.a_status FROM activities a, activity_bind pa WHERE pa.ab_id_a = a.a_id AND pa.ab_id_p = ?", new RowMapperActividad(), proyecto.getIdProyecto());
 		
 		logger.debug("Busqueda exitosa");
 		
@@ -38,7 +38,7 @@ public class ActividadDAO extends AbstractDAO {
 	{
 		logger.debug("Buscando actividades por proyecto - Proyecto: " + proyecto.getNombre());
 		
-		List<Actividad> actividades = jdbcTemplate.query("SELECT pa.ab_id_a, a.a_name FROM activities a, activity_bind pa WHERE pa.ab_id_a = a.a_id AND pa.ab_id_p = ? AND a.a_status=1", new RowMapperActividad(), proyecto.getIdProyecto());
+		List<Actividad> actividades = jdbcTemplate.query("SELECT pa.ab_id_a, a.a_name, a.a_status FROM activities a, activity_bind pa WHERE pa.ab_id_a = a.a_id AND pa.ab_id_p = ? AND a.a_status=1", new RowMapperActividad(), proyecto.getIdProyecto());
 		
 		logger.debug("Busqueda exitosa");
 		
@@ -51,7 +51,7 @@ public class ActividadDAO extends AbstractDAO {
 	
 	public List<Actividad> getActividades()
 	{
-		List<Actividad> actividades = jdbcTemplate.query("SELECT a.a_id, a.a_name FROM activities a", new RowMapperActividad());
+		List<Actividad> actividades = jdbcTemplate.query("SELECT a.a_id, a.a_name, a.a_status FROM activities a", new RowMapperActividad());
 		
 		Collections.sort(actividades);
 		
@@ -60,7 +60,7 @@ public class ActividadDAO extends AbstractDAO {
 	
 	public List<Actividad> getActividadesHabilitadas()
 	{
-		List<Actividad> actividades = jdbcTemplate.query("SELECT a.a_id, a.a_name FROM activities a WHERE a.a_status=1", new RowMapperActividad());
+		List<Actividad> actividades = jdbcTemplate.query("SELECT a.a_id, a.a_name, a.a_status FROM activities a WHERE a.a_status=1", new RowMapperActividad());
 		
 		Collections.sort(actividades);
 		
@@ -89,7 +89,9 @@ public class ActividadDAO extends AbstractDAO {
 			nombre = nombre.replaceAll("ó","Ã³").replaceAll("é","Ã©").replaceAll("ñ","Ã±").replaceAll("á","Ã¡").replaceAll("í","Ã­") ;		
 			id = jdbcTemplate.queryForInt("SELECT a_id FROM activities where a_name=?", nombre);
 		}
-		return new Actividad(id, nombre);
+		boolean habilitado = jdbcTemplate.queryForInt("SELECT a_status FROM activities where a_name=?", nombre) == 1;
+		
+		return new Actividad(id, nombre, habilitado);
 	}
 	
 
@@ -104,7 +106,7 @@ public class ActividadDAO extends AbstractDAO {
 	
 	public List<Actividad> actividadesOrigen(Proyecto proyecto){
 		
-		String sql = "SELECT DISTINCT pa.ab_id_a, a.a_name FROM activities a, activity_bind pa ";
+		String sql = "SELECT DISTINCT pa.ab_id_a, a.a_name, a.a_status FROM activities a, activity_bind pa ";
 		sql += "WHERE pa.ab_id_a = a.a_id AND pa.ab_id_p <> ? ";
 		sql += "AND a.a_id NOT IN (SELECT DISTINCT a.a_id FROM activities a, activity_bind pa WHERE pa.ab_id_a = a.a_id AND pa.ab_id_p = ?)";
 		
@@ -155,11 +157,23 @@ public class ActividadDAO extends AbstractDAO {
 		
 	}
 	
+	public void cambiarStatus(Actividad actividad) {
+		int status;
+		actividad.setHabilitado(!actividad.isHabilitado());
+		if (actividad.isHabilitado()) {
+			status = 1;
+		} else {
+			status = 0;
+		}
+		
+		jdbcTemplate.update("UPDATE activities SET a_status=? WHERE a_id=?", status, actividad.getIdActividad());
+	}
+	
 	
 	private class RowMapperActividad implements RowMapper<Actividad>{
 		@Override
 		public Actividad mapRow(ResultSet rs, int rowNum) throws SQLException {
-			return new Actividad(rs.getInt(1), rs.getString(2));
+			return new Actividad(rs.getInt(1), rs.getString(2), (rs.getInt(3) == 1));
 		}
 	}
 	

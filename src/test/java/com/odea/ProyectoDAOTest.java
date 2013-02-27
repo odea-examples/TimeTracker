@@ -29,7 +29,7 @@ public class ProyectoDAOTest extends AbstractTestCase {
 	
 	@Test
 	public void obtenerProyectosDeUnaActividadTest(){
-		Actividad actividad = new Actividad(10, "Testing");
+		Actividad actividad = new Actividad(10, "Testing", true);
 		List<Proyecto> proyectos = daoService.getProyectos(actividad);
 		Assert.notEmpty(proyectos, "No se obtuvieron proyectos de la actividad. La coleccion es nula o esta vacia.");
 	}
