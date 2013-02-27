@@ -366,7 +366,7 @@ public class EntradasPage extends BasePage {
 			//this.delegateSubmit(this.findSubmittingButton());
 			
 			this.comboProyecto = new DropDownChoice<Proyecto>("proyecto",
-					daoService.getProyectos(), new IChoiceRenderer<Proyecto>() {
+					daoService.getProyectosHabilitados(), new IChoiceRenderer<Proyecto>() {
 						@Override
 						public Object getDisplayValue(Proyecto object) {
 							return object.getNombre();
@@ -388,7 +388,7 @@ public class EntradasPage extends BasePage {
 				@Override
 				protected void onUpdate(AjaxRequestTarget target) {
 					EntradaForm.this.comboActividad.setChoices(daoService
-							.getActividades(EntradaForm.this.comboProyecto
+							.getActividadesHabilitadas(EntradaForm.this.comboProyecto
 									.getModelObject()));
 					target.add(EntradaForm.this.comboActividad);
 				}

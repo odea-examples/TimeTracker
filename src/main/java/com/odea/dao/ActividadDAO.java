@@ -34,11 +34,33 @@ public class ActividadDAO extends AbstractDAO {
 		return actividades;
 	}
 	
+	public List<Actividad> getActividadesHabilitadas(Proyecto proyecto)
+	{
+		logger.debug("Buscando actividades por proyecto - Proyecto: " + proyecto.getNombre());
+		
+		List<Actividad> actividades = jdbcTemplate.query("SELECT pa.ab_id_a, a.a_name FROM activities a, activity_bind pa WHERE pa.ab_id_a = a.a_id AND pa.ab_id_p = ? AND a.a_status=1", new RowMapperActividad(), proyecto.getIdProyecto());
+		
+		logger.debug("Busqueda exitosa");
+		
+		Collections.sort(actividades);
+		
+		return actividades;
+	}
+	
 	
 	
 	public List<Actividad> getActividades()
 	{
 		List<Actividad> actividades = jdbcTemplate.query("SELECT a.a_id, a.a_name FROM activities a", new RowMapperActividad());
+		
+		Collections.sort(actividades);
+		
+		return actividades;
+	}
+	
+	public List<Actividad> getActividadesHabilitadas()
+	{
+		List<Actividad> actividades = jdbcTemplate.query("SELECT a.a_id, a.a_name FROM activities a WHERE a.a_status=1", new RowMapperActividad());
 		
 		Collections.sort(actividades);
 		

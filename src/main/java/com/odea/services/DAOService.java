@@ -47,8 +47,16 @@ public class DAOService {
 		return actividadDAO.getActividades(proyecto);
 	}
 	
+	public List<Actividad> getActividadesHabilitadas(Proyecto proyecto){
+		return actividadDAO.getActividadesHabilitadas(proyecto);
+	}
+	
 	public List<Actividad> getActividades(){
 		return actividadDAO.getActividades();
+	}
+	
+	public List<Actividad> getActividadesHabilitadas(){
+		return actividadDAO.getActividadesHabilitadas();
 	}
 	
 	public void insertarNuevaActividad(Actividad actividad)
@@ -159,6 +167,10 @@ public class DAOService {
 		return proyectoDAO.getProyectos();
 	}
 	
+	public List<Proyecto> getProyectosHabilitados(){
+		return proyectoDAO.getProyectosHabilitados();
+	}
+	
 	public void actualizarRelaciones(int idProyecto, List<Actividad> borrar, List<Actividad> añadir){
 		proyectoDAO.actualizarRelaciones(idProyecto, borrar, añadir);
 	}
@@ -178,6 +190,10 @@ public class DAOService {
 	
 	public List<Proyecto> getProyectos(Actividad actividad) {
 		return proyectoDAO.getProyectos(actividad);
+	}
+	
+	public List<Proyecto> getProyectosHabilitados(Actividad actividad) {
+		return proyectoDAO.getProyectosHabilitados(actividad);
 	}
 	
 	public Proyecto buscarProyectoPorNombre(String nombre) {

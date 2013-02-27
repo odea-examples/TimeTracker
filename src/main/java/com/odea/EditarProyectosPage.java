@@ -119,7 +119,7 @@ public class EditarProyectosPage extends BasePage {
 					return EditForm.this.obtenerListaDestino();
 				}							
 	        };
-	        final Palette<Actividad> pal = new Palette<Actividad>("dual",seleccionadosModel,todosModel, new IChoiceRenderer<Actividad>() {
+	        final Palette<Actividad> pal = new Palette<Actividad>("dual", seleccionadosModel, todosModel, new IChoiceRenderer<Actividad>() {
 	        	
 				@Override
 				public Object getDisplayValue(Actividad object) {

@@ -57,7 +57,7 @@ public class EditarActividadesPage extends BasePage{
         add(new BookmarkablePageLink<ActividadesPage>("link",ActividadesPage.class));
         add(new FeedbackPanel("feedback"));
         
-        ActividadForm form = new ActividadForm("form",actividadModel){
+        ActividadForm form = new ActividadForm("form", actividadModel){
         	
         	@Override
             protected void onSubmit(AjaxRequestTarget target, ActividadForm form) {
@@ -111,7 +111,7 @@ public class EditarActividadesPage extends BasePage{
 			};
 	        
 	        
-	        final Palette<Proyecto> palette = new Palette<Proyecto>("dual",seleccionadosModel,todosModel, choiceRenderer, 8, false) {
+	        final Palette<Proyecto> palette = new Palette<Proyecto>("dual", seleccionadosModel, todosModel, choiceRenderer, 8, false) {
 	        	
 	        	@Override
 	        	protected Component newAvailableHeader(final String componentId)
@@ -144,18 +144,15 @@ public class EditarActividadesPage extends BasePage{
 		}
 		
 		public List<Proyecto> obtenerListaDestino() {
-			System.out.println("se obtiene la lista destino");
 			if (actividadModel.getObject().getIdActividad() > 0) {
 				return daoService.getProyectos(actividadModel.getObject());
-			}
-			else{
+			} else {
 				return new ArrayList<Proyecto>();
 			}
 		}
 
 
 		public List<Proyecto> obtenerListaOrigen() {
-			System.out.println("se obtiene la lista orgine");
 			if (actividadModel.getObject().getIdActividad() > 0) {
 				return daoService.obtenerOrigen(actividadModel.getObject());
 			} else {

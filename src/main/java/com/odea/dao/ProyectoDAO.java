@@ -30,9 +30,37 @@ public class ProyectoDAO extends AbstractDAO {
 		return proyectos;
 	}
 	
+	public List<Proyecto> getProyectosHabilitados()
+	{
+		List<Proyecto> proyectos = jdbcTemplate.query("SELECT * FROM projects WHERE p_status=1", new RowMapper<Proyecto>() {
+			@Override
+			public Proyecto mapRow(ResultSet rs, int rowNum) throws SQLException {
+				return new Proyecto(rs.getInt(1), rs.getString(3));
+			}
+		});
+		
+		Collections.sort(proyectos);
+		
+		return proyectos;
+	}
+	
 	public List<Proyecto> getProyectos(Actividad actividad)
 	{
 		List<Proyecto> proyectos = jdbcTemplate.query("SELECT ab.ab_id_p, p.p_name FROM projects p, activity_bind ab WHERE p.p_id = ab.ab_id_p AND ab.ab_id_a = ?", new RowMapper<Proyecto>() {
+			@Override
+			public Proyecto mapRow(ResultSet rs, int rowNum) throws SQLException {
+				return new Proyecto(rs.getInt(1), rs.getString(2));
+			}
+		}, actividad.getIdActividad());
+		
+		Collections.sort(proyectos);
+		
+		return proyectos;
+	}
+	
+	public List<Proyecto> getProyectosHabilitados(Actividad actividad)
+	{
+		List<Proyecto> proyectos = jdbcTemplate.query("SELECT ab.ab_id_p, p.p_name FROM projects p, activity_bind ab WHERE p.p_id = ab.ab_id_p AND ab.ab_id_a = ? AND p.p_status=1", new RowMapper<Proyecto>() {
 			@Override
 			public Proyecto mapRow(ResultSet rs, int rowNum) throws SQLException {
 				return new Proyecto(rs.getInt(1), rs.getString(2));
