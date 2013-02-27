@@ -6,6 +6,15 @@
 	
 	<h4><a wicket:id="link" href="#" class="nav">Agregar una nueva Actividad</a></h4>
 	
+	<div wicket:id="radioContainerActividades" style="position: absolute; left: 700px; top: 115px;">
+                <span wicket:id="radioGroup">
+                    Solo Habilitadas<input wicket:id="mostrarHabilitadas" type="radio" checked />
+                    Todas<input wicket:id="mostrarTodas" type="radio"/>
+                  </span>
+   
+    </div>    
+	
+	
 	<div wicket:id="listViewContainer">
 		<br/>
 		<table>

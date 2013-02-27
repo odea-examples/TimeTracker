@@ -5,10 +5,13 @@ import java.util.List;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.Radio;
+import org.apache.wicket.markup.html.form.RadioGroup;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
@@ -29,9 +32,12 @@ public class ProyectosPage extends BasePage {
 	private transient DAOService daoService;
 	
 	public IModel<List<Proyecto>>lstProyectosModel;
+	public IModel<List<Proyecto>>lstProyectosHabilitadosModel;
 	public WebMarkupContainer listViewContainer;
+	public WebMarkupContainer radioContainer;
 	
 	public ProyectosPage() {
+		
 		
 		this.lstProyectosModel = new LoadableDetachableModel<List<Proyecto>>() { 
             @Override
@@ -40,12 +46,19 @@ public class ProyectosPage extends BasePage {
             }
         };
         
+        this.lstProyectosHabilitadosModel = new LoadableDetachableModel<List<Proyecto>>() { 
+            @Override
+            protected List<Proyecto> load() {
+            	return daoService.getProyectosHabilitados();
+            }
+        };
+        
 
         Label tituloModificar = new Label("tituloModificar", "Modificar");
         Label tituloBorrar = new Label("tituloBorrar", "Borrar");
         
         
-        ListView<Proyecto> proyectoListView = new ListView<Proyecto>("proyectos", this.lstProyectosModel) {
+        final ListView<Proyecto> proyectoListView = new ListView<Proyecto>("proyectos", this.lstProyectosHabilitadosModel) {
 
 			private static final long serialVersionUID = 1L;
 
@@ -77,7 +90,45 @@ public class ProyectosPage extends BasePage {
 		this.listViewContainer.add(tituloBorrar);
 		this.listViewContainer.add(tituloModificar);
 		
+		
+		
+		
+		
+		
+		radioContainer = new WebMarkupContainer("radioContainerProyectos");
+		radioContainer.setOutputMarkupId(true);
+		
+		RadioGroup<String> radiog = new RadioGroup<String>("radioGroup", new Model<String>());
+		
+		Radio<String> mostrarTodos = new Radio<String>("mostrarTodos", Model.of("Todos"));
+		Radio<String> mostrarHabilitados = new Radio<String>("mostrarHabilitados", Model.of("Solo Habilitados"));
+		
+		mostrarTodos.add(new AjaxEventBehavior("onchange") {
+           
+            protected void onEvent(AjaxRequestTarget target) {
+                proyectoListView.setModel(ProyectosPage.this.lstProyectosModel);
+                target.add(listViewContainer);
+            }
+           
+        });
+		
+		mostrarHabilitados.add(new AjaxEventBehavior("onchange") {
+	           
+            protected void onEvent(AjaxRequestTarget target) {
+                proyectoListView.setModel(ProyectosPage.this.lstProyectosHabilitadosModel);
+                target.add(listViewContainer);
+            }
+           
+        });
+		
+		radiog.add(mostrarTodos);
+		radiog.add(mostrarHabilitados);
+		
+		radioContainer.add(radiog);
+		
+		add(radioContainer);
 		add(new BookmarkablePageLink<EditarProyectosPage>("link", EditarProyectosPage.class, new PageParameters().add("proyectoId", 0).add("proyectoNombre", "")));
+
 		add(listViewContainer);        
 		
 	}

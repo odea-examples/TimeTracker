@@ -5,6 +5,16 @@
 
 	<h4><a wicket:id="link" href="#" class="nav">Agregar un nuevo Proyecto</a></h4>
 
+
+	<div wicket:id="radioContainerProyectos" style="position: absolute; left: 700px; top: 115px;">
+    	<span wicket:id="radioGroup">
+        	Solo Habilitados<input wicket:id="mostrarHabilitados" type="radio" checked />
+            Todos<input wicket:id="mostrarTodos" type="radio"/>
+        </span>
+    </div>    
+	
+
+
 	<div wicket:id="listViewContainer">
 		<br/>
 		<table>
