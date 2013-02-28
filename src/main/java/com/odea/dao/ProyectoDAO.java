@@ -21,7 +21,8 @@ public class ProyectoDAO extends AbstractDAO {
 		List<Proyecto> proyectos = jdbcTemplate.query("SELECT * FROM projects", new RowMapper<Proyecto>() {
 			@Override
 			public Proyecto mapRow(ResultSet rs, int rowNum) throws SQLException {
-				return new Proyecto(rs.getInt(1), rs.getString(3));
+				boolean habilitado = rs.getInt(5) == 1;
+				return new Proyecto(rs.getInt(1), rs.getString(3),habilitado);
 			}
 		});
 		
@@ -35,7 +36,8 @@ public class ProyectoDAO extends AbstractDAO {
 		List<Proyecto> proyectos = jdbcTemplate.query("SELECT * FROM projects WHERE p_status=1", new RowMapper<Proyecto>() {
 			@Override
 			public Proyecto mapRow(ResultSet rs, int rowNum) throws SQLException {
-				return new Proyecto(rs.getInt(1), rs.getString(3));
+				boolean habilitado = rs.getInt(5) == 1;
+				return new Proyecto(rs.getInt(1), rs.getString(3),habilitado);
 			}
 		});
 		
@@ -46,10 +48,10 @@ public class ProyectoDAO extends AbstractDAO {
 	
 	public List<Proyecto> getProyectos(Actividad actividad)
 	{
-		List<Proyecto> proyectos = jdbcTemplate.query("SELECT ab.ab_id_p, p.p_name FROM projects p, activity_bind ab WHERE p.p_id = ab.ab_id_p AND ab.ab_id_a = ?", new RowMapper<Proyecto>() {
+		List<Proyecto> proyectos = jdbcTemplate.query("SELECT ab.ab_id_p, p.p_name, p_p_status FROM projects p, activity_bind ab WHERE p.p_id = ab.ab_id_p AND ab.ab_id_a = ?", new RowMapper<Proyecto>() {
 			@Override
 			public Proyecto mapRow(ResultSet rs, int rowNum) throws SQLException {
-				return new Proyecto(rs.getInt(1), rs.getString(2));
+				return new Proyecto(rs.getInt(1), rs.getString(2),rs.getInt(3)==1);
 			}
 		}, actividad.getIdActividad());
 		
@@ -60,10 +62,10 @@ public class ProyectoDAO extends AbstractDAO {
 	
 	public List<Proyecto> getProyectosHabilitados(Actividad actividad)
 	{
-		List<Proyecto> proyectos = jdbcTemplate.query("SELECT ab.ab_id_p, p.p_name FROM projects p, activity_bind ab WHERE p.p_id = ab.ab_id_p AND ab.ab_id_a = ? AND p.p_status=1", new RowMapper<Proyecto>() {
+		List<Proyecto> proyectos = jdbcTemplate.query("SELECT ab.ab_id_p, p.p_name p.p_status FROM projects p, activity_bind ab WHERE p.p_id = ab.ab_id_p AND ab.ab_id_a = ? AND p.p_status=1", new RowMapper<Proyecto>() {
 			@Override
 			public Proyecto mapRow(ResultSet rs, int rowNum) throws SQLException {
-				return new Proyecto(rs.getInt(1), rs.getString(2));
+				return new Proyecto(rs.getInt(1), rs.getString(2),rs.getInt(3)==1);
 			}
 		}, actividad.getIdActividad());
 		
@@ -85,7 +87,7 @@ public class ProyectoDAO extends AbstractDAO {
 			nombre = nombre.replaceAll("ó","Ã³").replaceAll("é","Ã©").replaceAll("ñ","Ã±").replaceAll("á","Ã¡").replaceAll("í","Ã­") ;		
 			id = jdbcTemplate.queryForInt("SELECT p_id FROM projects where p_name=?", nombre);
 		}
-		return new Proyecto(id, nombre);
+		return new Proyecto(id, nombre,true);
 	}
 	
 	public void cambiarNombreProyecto(Proyecto proyecto){
@@ -163,14 +165,14 @@ public class ProyectoDAO extends AbstractDAO {
 	
 	public List<Proyecto> obtenerOrigen(Actividad actividad)
 	{
-		String sql = "SELECT DISTINCT pa.ab_id_p, p.p_name FROM projects p, activity_bind pa ";
+		String sql = "SELECT DISTINCT pa.ab_id_p, p.p_name p.p_status FROM projects p, activity_bind pa ";
 		sql += "WHERE pa.ab_id_p = p.p_id AND pa.ab_id_a <> ? ";
 		sql += "AND p.p_id NOT IN (SELECT DISTINCT p.p_id FROM projects p, activity_bind pa WHERE pa.ab_id_p = p.p_id AND pa.ab_id_a = ?)";
 		
 		List<Proyecto> proyectos = jdbcTemplate.query(sql, new RowMapper<Proyecto>() {
 			@Override
 			public Proyecto mapRow(ResultSet rs, int rowNum) throws SQLException {
-				return new Proyecto(rs.getInt(1), rs.getString(2));
+				return new Proyecto(rs.getInt(1), rs.getString(2),rs.getInt(3)==1);
 			}
 		}, actividad.getIdActividad(), actividad.getIdActividad());
 		
@@ -180,12 +182,24 @@ public class ProyectoDAO extends AbstractDAO {
 		
 	}
 	
+	public void cambiarStatus(Proyecto proyecto) {
+			int status;
+			proyecto.setHabilitado(!proyecto.isHabilitado());
+			if (proyecto.isHabilitado()) {
+				status = 1;
+			} else {
+				status = 0;
+			}
+			
+			jdbcTemplate.update("UPDATE projects SET p_status=? WHERE p_id=?", status, proyecto.getIdProyecto());
+		}
 	
 	public void relacionarProyecto(Proyecto proyecto, List<Integer> actividad){
 		for (int i = 0; i < actividad.size(); i++) {
 			jdbcTemplate.update("INSERT INTO activity_bind(ab_id_a,ab_id_p) VALUES (?,?)",i,proyecto.getIdProyecto());
 		}
 	}
+
 	
 	
 	

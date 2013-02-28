@@ -649,15 +649,15 @@ public class EntradasPage extends BasePage {
 
 	private String getColumns() {
 		
-		List<Proyecto> list = this.daoService.getProyectos();
+		List<Proyecto> list = this.daoService.getProyectosHabilitados();
 		String actividades = "";
 		for (Proyecto proyecto : list) {
 			actividades += proyecto.toString();
-			actividades += this.daoService.getActividades(proyecto).toString();
+			actividades += this.daoService.getActividadesHabilitadas(proyecto).toString();
 		}
 
 		
-		String listaProyectos = daoService.getProyectos().toString();
+		String listaProyectos = daoService.getProyectosHabilitados().toString();
 		String proyectos = listaProyectos.subSequence(1, listaProyectos.length() - 1).toString();
 		
 		String listaSistemaExterno = daoService.getSistemasExternos().toString();

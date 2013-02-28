@@ -7,7 +7,7 @@ public class Actividad implements Serializable, Comparable<Actividad> {
 	
 	private int idActividad;
 	private String nombre;
-	private boolean Habilitado;
+	private boolean habilitado;
 	
 
 	public Actividad() {
@@ -17,7 +17,7 @@ public class Actividad implements Serializable, Comparable<Actividad> {
 	public Actividad(int idActividad, String nombre, boolean habilitado) {
 		this.idActividad = idActividad;
 		this.nombre = nombre;
-		this.Habilitado = habilitado;
+		this.habilitado = habilitado;
 	}
 	
 	
@@ -47,11 +47,11 @@ public class Actividad implements Serializable, Comparable<Actividad> {
     }
 
 	public boolean isHabilitado() {
-		return Habilitado;
+		return habilitado;
 	}
 
 	public void setHabilitado(boolean habilitado) {
-		Habilitado = habilitado;
+		this.habilitado = habilitado;
 	}
 
 

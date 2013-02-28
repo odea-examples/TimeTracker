@@ -35,7 +35,7 @@ public class EntradaDAO extends AbstractDAO {
 
 	
 	
-	private String sqlEntradas = "SELECT e.al_timestamp, e.al_project_id, e.al_activity_id, e.al_duration, e.al_comment, e.ticket_bz, e.ite_id, e.issue_tracker_externo, e.al_user_id, e.al_date, p.p_name , u.u_login, u.u_password, a.a_name, a.a_status FROM activity_log e, projects p, activities a, users u";
+	private String sqlEntradas = "SELECT e.al_timestamp, e.al_project_id, e.al_activity_id, e.al_duration, e.al_comment, e.ticket_bz, e.ite_id, e.issue_tracker_externo, e.al_user_id, e.al_date, p.p_name , u.u_login, u.u_password, a.a_name, a.a_status, p.p_status FROM activity_log e, projects p, activities a, users u";
 
 	public void agregarEntrada(Entrada entrada){
 
@@ -120,10 +120,11 @@ public class EntradaDAO extends AbstractDAO {
 			@Override
 			public Entrada mapRow(ResultSet rs, int rowNum) throws SQLException {
 				
-				boolean habilitado = rs.getInt(15) == 1;
+				boolean actividadHabilitada = rs.getInt(15) == 1;
+				boolean proyectoHabilitado = rs.getInt(16) == 1;
 				
-				Proyecto proyecto = new Proyecto(rs.getInt(2), rs.getString(11));
-				Actividad actividad = new Actividad(rs.getInt(3), rs.getString(14), habilitado);
+				Proyecto proyecto = new Proyecto(rs.getInt(2), rs.getString(11),proyectoHabilitado);
+				Actividad actividad = new Actividad(rs.getInt(3), rs.getString(14), actividadHabilitada);
 				Usuario usuario = new Usuario(rs.getInt(9), rs.getString(12), rs.getString(13));
 				SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 				String t = rs.getTime(4).toString();
@@ -359,10 +360,11 @@ public class EntradaDAO extends AbstractDAO {
 			@Override
 			public Entrada mapRow(ResultSet rs, int rowNum) throws SQLException {
 				
-				boolean habilitado = rs.getInt(15) == 1;
+				boolean actividadHabilitada = rs.getInt(15) == 1;
+				boolean proyectoHabilitado = rs.getInt(16) == 1;
 				
-				Proyecto proyecto = new Proyecto(rs.getInt(2), rs.getString(11));
-				Actividad actividad = new Actividad(rs.getInt(3), rs.getString(14), habilitado);
+				Proyecto proyecto = new Proyecto(rs.getInt(2), rs.getString(11),proyectoHabilitado);
+				Actividad actividad = new Actividad(rs.getInt(3), rs.getString(14), actividadHabilitada);
 				Usuario usuario = new Usuario(rs.getInt(9), rs.getString(12), rs.getString(13));
 				return new Entrada(rs.getTimestamp(1), proyecto, actividad, String.valueOf(rs.getTime(4).getTime()), rs.getString(5), rs.getInt(6), rs.getString(7), rs.getString(8), usuario, rs.getDate(10));
 			}

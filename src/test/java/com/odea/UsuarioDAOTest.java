@@ -18,7 +18,7 @@ public class UsuarioDAOTest extends AbstractTestCase {
 	
 	@Test
 	public void getUsuariosDeProyectoTest() {
-		Proyecto proyecto = new Proyecto(1, "Proyecto");
+		Proyecto proyecto = new Proyecto(1, "Proyecto",true);
 		
 		Collection<Usuario> usuarios = usuarioDAO.getUsuarios(proyecto);
 		Assert.assertTrue("No se encontro la cantidad de usuarios esperada", usuarios.size() == 53);

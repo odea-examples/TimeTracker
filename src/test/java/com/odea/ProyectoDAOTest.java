@@ -37,7 +37,7 @@ public class ProyectoDAOTest extends AbstractTestCase {
 	
 	@Test
 	public void insertarProyectoTest(){
-		Proyecto proyecto = new Proyecto(0, "proyectoDePrueba");
+		Proyecto proyecto = new Proyecto(0, "proyectoDePrueba",true);
 		daoService.agregarProyecto(proyecto, new ArrayList<Actividad>());
 		
 		Proyecto proyectoBuscado = daoService.buscarProyectoPorNombre(proyecto.getNombre());

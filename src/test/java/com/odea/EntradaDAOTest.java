@@ -23,7 +23,7 @@ public class EntradaDAOTest extends AbstractTestCase {
 		Usuario usuario = new Usuario(57, "Invitado", "invitado");
 		LocalDate fechaHoy = new LocalDate();
 		
-		Entrada entrada = new Entrada(new Timestamp(fechaHoy.toDate().getTime()), new Proyecto(10, "YPF-DBU"), new Actividad(10, "Testing", true), "1", "Nota", 1, "1", "sistemaExterno", usuario, fechaHoy.toDate());
+		Entrada entrada = new Entrada(new Timestamp(fechaHoy.toDate().getTime()), new Proyecto(10, "YPF-DBU",true), new Actividad(10, "Testing", true), "1", "Nota", 1, "1", "sistemaExterno", usuario, fechaHoy.toDate());
 		daoService.agregarEntrada(entrada);
 		daoService.borrarEntrada(entrada);
 	}
@@ -33,7 +33,7 @@ public class EntradaDAOTest extends AbstractTestCase {
 		Usuario usuario = new Usuario(57, "Invitado", "invitado");
 		LocalDate fecha = new LocalDate().minusYears(3);
 		
-		Entrada entrada = new Entrada(new Timestamp(fecha.toDate().getTime()), new Proyecto(10, "YPF-DBU"), new Actividad(10, "Testing", true), "1", "Nota", 1, "1", "SIY", usuario, fecha.toDate());
+		Entrada entrada = new Entrada(new Timestamp(fecha.toDate().getTime()), new Proyecto(10, "YPF-DBU",true), new Actividad(10, "Testing", true), "1", "Nota", 1, "1", "SIY", usuario, fecha.toDate());
 		
 		//TODO: Completar test.
 		

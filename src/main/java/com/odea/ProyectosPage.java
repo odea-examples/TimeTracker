@@ -10,6 +10,7 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.Radio;
 import org.apache.wicket.markup.html.form.RadioGroup;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -56,6 +57,7 @@ public class ProyectosPage extends BasePage {
 
         Label tituloModificar = new Label("tituloModificar", "Modificar");
         Label tituloBorrar = new Label("tituloBorrar", "Borrar");
+        Label tituloHabilitado = new Label("tituloHabilitado", "Habilitado");
         
         
         final ListView<Proyecto> proyectoListView = new ListView<Proyecto>("proyectos", this.lstProyectosHabilitadosModel) {
@@ -64,7 +66,7 @@ public class ProyectosPage extends BasePage {
 
 			@Override
             protected void populateItem(ListItem<Proyecto> item) {
-            	Proyecto proyecto = item.getModel().getObject();   
+            	final Proyecto proyecto = item.getModel().getObject();   
             	if((item.getIndex() % 2) == 0){
             		item.add(new AttributeModifier("class","odd"));
             	}
@@ -79,8 +81,18 @@ public class ProyectosPage extends BasePage {
                     }
 
                 });
-                item.add(new BookmarkablePageLink<EditarProyectosPage>("modifyLink",EditarProyectosPage.class,new PageParameters().add("proyectoId",proyecto.getIdProyecto()).add("proyectoNombre",proyecto.getNombre())));
+                item.add(new BookmarkablePageLink<EditarProyectosPage>("modifyLink",EditarProyectosPage.class,new PageParameters().add("proyectoId",proyecto.getIdProyecto()).add("proyectoNombre",proyecto.getNombre()).add("proyectoHabilitado",proyecto.isHabilitado())));
                 
+                CheckBox checkBox = new CheckBox("checkBoxProyecto", new Model<Boolean>(proyecto.isHabilitado()));
+                checkBox.add(new AjaxEventBehavior("onchange") {
+           
+		            protected void onEvent(AjaxRequestTarget target) {
+		               daoService.cambiarStatus(proyecto);
+		            }
+		           
+		        });
+                
+                item.add(checkBox);
             };
 		};
 		
@@ -89,6 +101,7 @@ public class ProyectosPage extends BasePage {
 		this.listViewContainer.add(proyectoListView);
 		this.listViewContainer.add(tituloBorrar);
 		this.listViewContainer.add(tituloModificar);
+		this.listViewContainer.add(tituloHabilitado);
 		
 		
 		

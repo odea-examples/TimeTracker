@@ -7,14 +7,16 @@ public class Proyecto implements Serializable, Comparable<Proyecto> {
 	
 	private String nombre;
 	private int idProyecto;
+	private boolean habilitado;
 	
 	public Proyecto() {
 		
 	}
 	
-	public Proyecto(int idProyecto, String nombre) {
+	public Proyecto(int idProyecto, String nombre, boolean habilitado) {
 		this.nombre = nombre;
 		this.idProyecto = idProyecto;
+		this.habilitado = habilitado;
 	}
 	
 	
@@ -30,6 +32,12 @@ public class Proyecto implements Serializable, Comparable<Proyecto> {
 	}
 	public void setIdProyecto(int idProyecto) {
 		this.idProyecto = idProyecto;
+	}
+	public boolean isHabilitado() {
+		return habilitado;
+	}
+	public void setHabilitado(boolean habilitado) {
+		this.habilitado = habilitado;
 	}
 
 	@Override

@@ -203,6 +203,9 @@ public class DAOService {
 	public Proyecto buscarProyectoPorNombre(String nombre) {
 		return proyectoDAO.buscarPorNombre(nombre);
 	}
+	public void cambiarStatus(Proyecto proyecto) {
+		proyectoDAO.cambiarStatus(proyecto);
+	}
 	
 	public Usuario getUsuario(String nombre){
 		System.out.println("Aca esta el otro: " + nombre);

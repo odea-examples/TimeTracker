@@ -40,7 +40,7 @@ public class EditarProyectosPage extends BasePage {
 				new LoadableDetachableModel<Proyecto>() {
 					@Override
 					protected Proyecto load() {
-						return new Proyecto(0, "");
+						return new Proyecto(0, "",true);
 					}
 				});
 
@@ -59,9 +59,9 @@ public class EditarProyectosPage extends BasePage {
 				new LoadableDetachableModel<Proyecto>() {
 					@Override
 					protected Proyecto load() {
-						return new Proyecto(parameters.get("proyectoId")
-								.toInt(), parameters.get("proyectoNombre")
-								.toString());
+						return new Proyecto(parameters.get("proyectoId").toInt(),
+								parameters.get("proyectoNombre").toString(),
+								parameters.get("proyectoHabilitado").toBoolean());
 					}
 				});
 
