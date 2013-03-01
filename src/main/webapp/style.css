@@ -520,9 +520,11 @@
 	margin-bottom: 5px;
 }
 #footer {
+	position:relative;
 	background-image: url(images/graybg.png);
 	background-repeat: repeat-x;
 	padding: 10px;
+	margin-top:50px;
 }
 #footer a {
 	color: #000000;

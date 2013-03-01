@@ -151,6 +151,8 @@ public class EntradasPage extends BasePage {
 				target.add(labelContainer);
 			}
 		};
+		form.setMarkupId("formEntradas");
+		
 		
 		
 		final SlickGrid slickGrid = new SlickGrid("slickGrid", this.lstDataModel, this.slickGridJsonCols) {
@@ -248,6 +250,7 @@ public class EntradasPage extends BasePage {
 		this.radioContainer = new WebMarkupContainer("radioContainer");
 		this.radioContainer.setOutputMarkupId(true);
 		this.radioContainer.add(radiog);
+		this.radioContainer.setMarkupId("radioSelector");
 
 		radiog.add(dia.add(new AjaxEventBehavior("onchange") {
 			
@@ -288,6 +291,7 @@ public class EntradasPage extends BasePage {
 		}));
 
 		this.listViewContainer.add(slickGrid);
+		this.listViewContainer.setMarkupId("containerSlickGrid");
 
 
 		this.labelContainer = new WebMarkupContainer("labelContainer");
@@ -295,6 +299,7 @@ public class EntradasPage extends BasePage {
 		this.labelContainer.add(horasAcumuladasSemana);
 		this.labelContainer.add(horasAcumuladasMes);
 		this.labelContainer.setOutputMarkupId(true);
+		this.labelContainer.setMarkupId("labelHoras");
 		
 		
 		final DropDownChoice<Usuario> selectorUsuario = new DropDownChoice<Usuario>("selectorUsuario",daoService.getUsuarios(),new IChoiceRenderer<Usuario>() {
@@ -331,6 +336,7 @@ public class EntradasPage extends BasePage {
 		});
 		
 		this.selectorUsuarioContainer.add(selectorUsuario);
+		this.selectorUsuarioContainer.setMarkupId("selectorUsuario");
 		
 		
 		
@@ -496,9 +502,11 @@ public class EntradasPage extends BasePage {
 
 			fecha.setRequired(true);
 			fecha.setLabel(Model.of("Fecha"));
+			fecha.setMarkupId("fechaDatepicker");
 
 			final FeedbackPanel feedBackPanel = new FeedbackPanel("feedBackPanel");
 			feedBackPanel.setOutputMarkupId(true);
+			feedBackPanel.setMarkupId("feedBackPanel");
 
 			
 			
