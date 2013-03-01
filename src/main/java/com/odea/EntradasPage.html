@@ -21,9 +21,9 @@
 				<br/>
 				<br/>
 				
-					<div wicket:id="fecha" style="display: inline;"></div> 	
+					<div wicket:id="fecha"></div> 	
 				
-				<div style="position: absolute; left: 230px;">
+				<div id="formImputs">
 					<div id="proyecto">
 						<b><label for="proyecto">Proyecto *</label> </b> 
 						<select wicket:id="proyecto" name="proyecto"/> <span wicket:id="mensajeProyecto">Mensaje de campo necesario</span>
@@ -55,18 +55,18 @@
 					</div>
 				</div>
 				
-				<div id="nota" style= "position: absolute; top: 50px; right: 65px; left: auto;">
+				<div id="nota">
 					<b><label for="nota">Nota</label></b> <br> 
 					<b><textarea wicket:id="nota" name="nota" maxlength=5000 rows="10" cols="40" scrolling="yes"/></b>
 				</div>
 	
 				<br/>
 				
-				<div id="aceptarSubmit" style="position: absolute; left: 227px; top: 200px;">
+				<div id="aceptarSubmit">
 					<input wicket:id="submit" value="Confirmar" type="submit"/>
 				</div>
 				
-				<div id="limpiarSubmit" style="position: absolute; left: 302px; top: 200px;">
+				<div id="limpiarSubmit">
 					<input wicket:id="limpiar" value="Limpiar" type="submit"/>
 				</div>
 		
@@ -75,7 +75,7 @@
 	
 
 	
-		<div wicket:id="labelContainer" style="position: absolute; left: 400px; top: 190px;">
+		<div wicket:id="labelContainer">
 				<label for="horasAcumuladasDia">Horas Diarias</label>
 				<span wicket:id="horasAcumuladasDia" name="horasAcumuladasDia">[[horas acumuladas]]</span>
 				<br>
@@ -87,7 +87,7 @@
 	    </div>
 		
 		
-		<div wicket:id="radioContainer" style="position: absolute; left: 110px; top: 313px;">
+		<div wicket:id="radioContainer">
 			<span wicket:id="selectorTiempo" style="position:absolute;top:330px;right:560px;width:200px;">
 	    		D<input wicket:id="dia" type="radio" checked />
 	    		S<input wicket:id="semana" type="radio"/>
@@ -97,14 +97,14 @@
 		</div>
 		
 		
-		<div wicket:id="selectorUsuarioContainer" style="position: absolute; left: 750px; top: 0px;">
+		<div wicket:id="selectorUsuarioContainer">
 			<b><label for="selectorUsuario" >Usuario: </label> </b> 
 		<FONT FACE="monospace" SIZE="2">
 		<select wicket:id="selectorUsuario" name="selectorUsuario" style=" <!--font-family : monospace -->; font-size : 10pt; height: 23px"/>
 		</FONT>
 		</div>
 			
-		<div wicket:id="listViewContainer" style="position:absolute;top:348px;left: 100px;">	
+		<div wicket:id="listViewContainer">	
 
 			<div wicket:id="slickGrid" style="width:900px;height:125px;border-style:dotted"></div>
 			
