@@ -1,0 +1,70 @@
+
+
+#left {
+	float:left;
+}
+
+#paginaEntradas form {
+	position: relative;
+	width: 100%;
+	float: left;
+}
+
+#paginaEntradas form #fechaDatepicker{
+	display: inline;
+	float: left;
+	width: 25%;
+	height: 100%;	
+}
+
+#paginaEntradas form #formImputs{
+	float:left;
+	width: 45%;
+}
+
+#paginaEntradas form #nota{
+	float: left;
+	width: 25%;
+	height: 190px;
+}
+
+#paginaEntradas form #aceptarSubmit{
+	float: left;
+	margin-left: 10%;
+}
+
+#paginaEntradas form #limpiarSubmit{
+	float: left;
+	margin-left: 5%;
+}
+
+#paginaEntradas #labelHoras{
+	position: relative;
+	float: left;
+	margin: 3%;
+	margin-left: 15%;
+}
+
+
+#paginaEntradas #radioSelector{
+	position: relative;
+	float: left;
+	margin: 3%;
+}
+
+#paginaEntradas #selectorUsuario{
+	position: relative;
+	float: left;
+	margin: 3%;
+	width: 30%;
+}
+
+#paginaEntradas #containerSlickGrid{
+	position: relative;
+	float: left;
+	width: 100%;
+	margin-left: 10%;
+}
+
+
+
