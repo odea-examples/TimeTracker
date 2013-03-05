@@ -73,7 +73,7 @@ public class ProyectosPage extends BasePage {
             	
             	item.add(new Label("nombre_proyecto", new Model<String>(proyecto.getNombre())));
             	
-                item.add(new ConfirmationLink<Proyecto>("deleteLink","\\u00BFEst\\xE1 seguro de que desea borrar el proyecto?",new Model<Proyecto>(proyecto)) {
+                item.add(new ConfirmationLink<Proyecto>("deleteLink","\\u00BFEst\\xE1 seguro de que desea borrar el proyecto? \\nAdvertencia: Se eliminar\\xE1n todas las entradas relacionadas.", new Model<Proyecto>(proyecto)) {
                     @Override
                     public void onClick(AjaxRequestTarget ajaxRequestTarget) {
                         daoService.borrarProyecto(getModelObject());
