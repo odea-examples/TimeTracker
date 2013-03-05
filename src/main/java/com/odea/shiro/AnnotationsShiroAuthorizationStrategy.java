@@ -78,6 +78,7 @@ public class AnnotationsShiroAuthorizationStrategy implements IAuthorizationStra
 		componentesNoAceptados.add("radioContainerActividades");
 		componentesNoAceptados.add("tituloHabilitado");
 		componentesNoAceptados.add("checkBoxActividad");
+		componentesNoAceptados.add("checkBoxProyecto");
 		
 		
 		ArrayList<String> paginasAccesoLimitado = new ArrayList<String>();
