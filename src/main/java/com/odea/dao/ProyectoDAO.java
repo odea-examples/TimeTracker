@@ -48,7 +48,7 @@ public class ProyectoDAO extends AbstractDAO {
 	
 	public List<Proyecto> getProyectos(Actividad actividad)
 	{
-		List<Proyecto> proyectos = jdbcTemplate.query("SELECT ab.ab_id_p, p.p_name, p_p_status FROM projects p, activity_bind ab WHERE p.p_id = ab.ab_id_p AND ab.ab_id_a = ?", new RowMapper<Proyecto>() {
+		List<Proyecto> proyectos = jdbcTemplate.query("SELECT ab.ab_id_p, p.p_name, p.p_status FROM projects p, activity_bind ab WHERE p.p_id = ab.ab_id_p AND ab.ab_id_a = ?", new RowMapper<Proyecto>() {
 			@Override
 			public Proyecto mapRow(ResultSet rs, int rowNum) throws SQLException {
 				return new Proyecto(rs.getInt(1), rs.getString(2),rs.getInt(3)==1);
