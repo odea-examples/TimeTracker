@@ -183,16 +183,17 @@ public class ProyectoDAO extends AbstractDAO {
 	}
 	
 	public void cambiarStatus(Proyecto proyecto) {
-			int status;
-			proyecto.setHabilitado(!proyecto.isHabilitado());
-			if (proyecto.isHabilitado()) {
-				status = 1;
-			} else {
-				status = 0;
-			}
-			
-			jdbcTemplate.update("UPDATE projects SET p_status=? WHERE p_id=?", status, proyecto.getIdProyecto());
+		int status;
+		proyecto.setHabilitado(!proyecto.isHabilitado());
+		
+		if (proyecto.isHabilitado()) {
+			status = 1;
+		} else {
+			status = 0;
 		}
+			
+		jdbcTemplate.update("UPDATE projects SET p_status=? WHERE p_id=?", status, proyecto.getIdProyecto());
+	}
 	
 	public void relacionarProyecto(Proyecto proyecto, List<Integer> actividad){
 		for (int i = 0; i < actividad.size(); i++) {

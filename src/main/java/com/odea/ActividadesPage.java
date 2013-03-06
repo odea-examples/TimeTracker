@@ -110,8 +110,8 @@ public class ActividadesPage extends BasePage{
 		
 		RadioGroup<String> radiog = new RadioGroup<String>("radioGroup", new Model<String>());
 		
-		Radio<String> mostrarTodas = new Radio<String>("mostrarTodas", Model.of("Mostrar todas"));
-		Radio<String> mostrarHabilitadas = new Radio<String>("mostrarHabilitadas", Model.of("Mostrar solo habilitadas"));
+		Radio<String> mostrarTodas = new Radio<String>("mostrarTodas", Model.of("Todas"));
+		Radio<String> mostrarHabilitadas = new Radio<String>("mostrarHabilitadas", Model.of("Solo habilitadas"));
 		
 		mostrarTodas.add(new AjaxEventBehavior("onchange") {
            

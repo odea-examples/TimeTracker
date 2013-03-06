@@ -1,6 +1,8 @@
 package com.odea;
 
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.PasswordTextField;
@@ -14,9 +16,11 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.IValidatable;
 import org.apache.wicket.validation.IValidator;
 import org.apache.wicket.validation.ValidationError;
+import org.springframework.dao.EmptyResultDataAccessException;
 
 import com.odea.components.confirmPanel.ConfirmationButton;
 import com.odea.components.modalWindow.SelectModalWindow;
+import com.odea.components.slickGrid.Enumeraciones.formatos;
 import com.odea.domain.Usuario;
 import com.odea.services.DAOService;
 
@@ -29,7 +33,7 @@ public class EditarUsuarioPage extends BasePage {
 	public DAOService daoService;
 	
 	public CompoundPropertyModel<Usuario> usuarioModel;	
-	
+	public EditUsuarioForm form;
 	
 	public EditarUsuarioPage() {
 		
@@ -42,9 +46,7 @@ public class EditarUsuarioPage extends BasePage {
 						return daoService.getUsuario(SecurityUtils.getSubject().getPrincipal().toString());
 					}
 				});
-		
-		
-		
+			
 		
 		final SelectModalWindow selectModalWindow = new SelectModalWindow("modalwindow"){
             
@@ -54,13 +56,16 @@ public class EditarUsuarioPage extends BasePage {
         };
         
 		
-		EditUsuarioForm form = new EditUsuarioForm("form", usuarioModel) {
+		this.form = new EditUsuarioForm("form", usuarioModel) {
 
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, EditUsuarioForm form) {
 				daoService.modificarUsuario(getModelObject());
+                UsernamePasswordToken token = new UsernamePasswordToken(getModelObject().getNombre(), getModelObject().getPassword());
+                Subject currentUser = SecurityUtils.getSubject();
+                currentUser.login(token);
 				selectModalWindow.show(target);
 			}
 
@@ -77,6 +82,7 @@ public class EditarUsuarioPage extends BasePage {
 
 		private static final long serialVersionUID = 1L;
 		
+		RequiredTextField<String> login;
 		public PasswordTextField password;
 		public PasswordTextField confirmPassword;
 		
@@ -86,7 +92,7 @@ public class EditarUsuarioPage extends BasePage {
 			final FeedbackPanel feedback = new FeedbackPanel("feedback");
 			feedback.setOutputMarkupId(true);
 			
-			RequiredTextField<String> login = new RequiredTextField<String>("nombre");
+			login = new RequiredTextField<String>("nombre");
 			
 			password = new PasswordTextField("password");
 			
@@ -117,6 +123,44 @@ public class EditarUsuarioPage extends BasePage {
 			
 			confirmPassword.add(passwordValidator);
 
+			
+			
+			IValidator<String> nombreValidator = new IValidator<String>() {
+
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				public void validate(IValidatable<String> validatable) {
+					
+					Usuario usuarioEncontrado = null;
+					
+					try {
+						usuarioEncontrado = daoService.getUsuario(login.getConvertedInput());						
+					} catch (EmptyResultDataAccessException e) {
+						//Si no encuentra ninguno está bien, porque es que no hay usuario existente con el
+						//mismo nombre de usuario.
+					}
+					
+					if (usuarioEncontrado != null) {
+						if (usuarioEncontrado.getIdUsuario() != EditUsuarioForm.this.getModelObject().getIdUsuario()) {
+							error(validatable, "El nombre de usuario se encuentra en uso");
+						}						
+					}
+					
+					
+				}
+				
+				private void error(IValidatable<String> validatable, String errorKey) {
+					ValidationError error = new ValidationError();
+					error.addKey(getClass().getSimpleName() + "." + errorKey);
+					error.setMessage(errorKey);
+					validatable.error(error);
+				}
+				
+			};
+			
+			login.add(nombreValidator);
+			
 			
 			ConfirmationButton submit = new ConfirmationButton("submit","\\u00BFEst\\xE1 seguro de que desea realizar los cambios?", new Model<String>("Confirmar")) {
 	
