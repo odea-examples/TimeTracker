@@ -8,6 +8,7 @@ import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.ajax.markup.html.navigation.paging.AjaxPagingNavigator;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.CheckBox;
@@ -16,6 +17,7 @@ import org.apache.wicket.markup.html.form.RadioGroup;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.markup.html.list.PageableListView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
@@ -60,7 +62,7 @@ public class ProyectosPage extends BasePage {
         Label tituloHabilitado = new Label("tituloHabilitado", "Habilitado");
         
         
-        final ListView<Proyecto> proyectoListView = new ListView<Proyecto>("proyectos", this.lstProyectosHabilitadosModel) {
+        final PageableListView<Proyecto> proyectoListView = new PageableListView<Proyecto>("proyectos", this.lstProyectosHabilitadosModel, 10) {
 
 			private static final long serialVersionUID = 1L;
 
@@ -102,7 +104,7 @@ public class ProyectosPage extends BasePage {
 		this.listViewContainer.add(tituloBorrar);
 		this.listViewContainer.add(tituloModificar);
 		this.listViewContainer.add(tituloHabilitado);
-		
+		this.listViewContainer.add(new AjaxPagingNavigator("navigator", proyectoListView));
 		
 		
 		

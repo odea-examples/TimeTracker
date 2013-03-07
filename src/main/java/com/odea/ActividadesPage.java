@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.navigation.paging.AjaxPagingNavigator;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.CheckBox;
@@ -13,6 +14,7 @@ import org.apache.wicket.markup.html.form.RadioGroup;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.markup.html.list.PageableListView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
@@ -62,7 +64,7 @@ public class ActividadesPage extends BasePage{
 		this.listViewContainer = new WebMarkupContainer("listViewContainer");
 		this.listViewContainer.setOutputMarkupId(true);
         
-        final ListView<Actividad> actividadListView = new ListView<Actividad>("actividades", this.lstActividadesHabilitadasModel) {
+        final PageableListView<Actividad> actividadListView = new PageableListView<Actividad>("actividades", this.lstActividadesHabilitadasModel, 10) {
 
 			private static final long serialVersionUID = 1L;
 
@@ -104,6 +106,8 @@ public class ActividadesPage extends BasePage{
 		listViewContainer.add(tituloModificar);
 		listViewContainer.add(tituloBorrar);
 		listViewContainer.add(tituloHabilitado);
+		this.listViewContainer.add(new AjaxPagingNavigator("navigator", actividadListView));
+
 
 		radioContainer = new WebMarkupContainer("radioContainerActividades");
 		radioContainer.setOutputMarkupId(true);
