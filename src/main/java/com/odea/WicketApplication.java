@@ -34,9 +34,10 @@ public class WicketApplication extends WebApplication
         mountPage("miCuenta", EditarUsuarioPage.class);
         mountPage("usuarios", UsuariosPage.class);
         mountPage("noAutorizado", NoAutorizadoPage.class);
-        mountPage("pp", PruebaPage.class);
         mountPage("yui", YuiPage.class);
         mountPage("feriados", FeriadosPage.class);
+        mountPage("pdf", PDFViewer.class);
+//      mountPage("pp", PruebaPage.class);
         getComponentInstantiationListeners().add(new SpringComponentInjector(this));
         
 	}
