@@ -10,6 +10,6 @@ public class MyPdfPanel extends Panel {
 		super(id);
 		
 		setRenderBodyOnly(true);
-		add(new DocumentInlineFrame("mypdf", new MyPdfResource("prueba")));
+		add(new DocumentInlineFrame("mypdf", new MyPdfResource()));
 	}
 }

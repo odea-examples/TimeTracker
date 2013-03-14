@@ -7,18 +7,30 @@ import java.io.OutputStream;
 
 import org.apache.wicket.IResourceListener;
 import org.apache.wicket.request.resource.ByteArrayResource;
+import org.apache.wicket.request.resource.IResource.Attributes;
 
 public class MyPdfResource extends ByteArrayResource implements IResourceListener {
-
-	public MyPdfResource(String contentType) {
-		super(contentType);
-	}
-
 
 	private static final long serialVersionUID = 1L;
 
 	static int BUFFER_SIZE = 10*1024;
+
 	
+	public MyPdfResource() {
+		super("application/pdf");
+	}
+	
+	
+	
+	@Override
+	protected byte[] getData(Attributes attributes) {
+		try {
+			return bytes(MyPdfResource.class.getResourceAsStream("test.pdf"));
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+//			return null;
+		}
+	}
 	
 	public static  byte[] bytes(InputStream is) throws IOException {
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -41,6 +53,7 @@ public class MyPdfResource extends ByteArrayResource implements IResourceListene
 	public void onResourceRequested() {
 		
 	}
+
 	
 }
 

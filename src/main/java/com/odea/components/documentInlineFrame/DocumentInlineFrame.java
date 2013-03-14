@@ -3,14 +3,10 @@ package com.odea.components.documentInlineFrame;
 import org.apache.wicket.IResourceListener;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.string.Strings;
 
-/**
- * Implementation of an <a href="http://www.w3.org/TR/REC-html40/present/frames.html#h-16.5">inline
- * frame</a> component. Must be used with an iframe (&lt;iframe src...) element. The src attribute
- * will be generated. Its is suitable for displaying <em>generated contend</em> like PDF, EXCEL, WORD, 
- * etc.
- */
+
 
 public class DocumentInlineFrame extends WebMarkupContainer implements IResourceListener 
 {
@@ -26,15 +22,10 @@ public class DocumentInlineFrame extends WebMarkupContainer implements IResource
 		this.resourceListener = resourceListener;
 	}
 
-	/**
-	 * Gets the url to use for this link.
-	 * 
-	 * @return The URL that this link links to
-	 */
 	protected CharSequence getURL()
 	{
-		return this.urlFor(IResourceListener.INTERFACE, null);
-		//return urlFor();
+		return this.urlFor(IResourceListener.INTERFACE, new PageParameters());
+		//return urlFor(IResourceListener.INTERFACE);
 	}
 
 
