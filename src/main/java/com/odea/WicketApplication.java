@@ -36,7 +36,7 @@ public class WicketApplication extends WebApplication
         mountPage("noAutorizado", NoAutorizadoPage.class);
         mountPage("yui", YuiPage.class);
         mountPage("feriados", FeriadosPage.class);
-        mountPage("pdf", PDFViewer.class);
+        mountPage("pdf", pruebaPDF.class);
 //        mountPage("news", News.class);
 //      mountPage("pp", PruebaPage.class);
         getComponentInstantiationListeners().add(new SpringComponentInjector(this));

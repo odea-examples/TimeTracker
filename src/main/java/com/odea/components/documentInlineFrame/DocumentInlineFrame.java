@@ -1,57 +1,33 @@
 package com.odea.components.documentInlineFrame;
 
-import org.apache.wicket.IResourceListener;
-import org.apache.wicket.markup.ComponentTag;
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.request.resource.ByteArrayResource;
+import org.apache.wicket.request.resource.IResource;
+import org.apache.wicket.request.resource.ResourceReference;
 
-
-
-public class DocumentInlineFrame extends WebMarkupContainer implements IResourceListener 
-{
+public abstract class DocumentInlineFrame extends Panel {
+	
 	private static final long serialVersionUID = 1L;
-	
-	
-	private IResourceListener resourceListener;
 
-
-	public DocumentInlineFrame(final String id, IResourceListener resourceListener)
-	{
+	public DocumentInlineFrame(String id){
 		super(id);
-		this.resourceListener = resourceListener;
-	}
-
-	protected CharSequence getURL()
-	{
-		return this.urlFor(IResourceListener.INTERFACE, new PageParameters());
-	}
-
-
-	@Override
-	protected final void onComponentTag(final ComponentTag tag)
-	{
-		checkComponentTag(tag, "iframe");
-
-		// Set href to link to this frame's frameRequested method
-		CharSequence url = getURL();
-		
-		// generate the src attribute
-//		tag.put("src", Strings.replaceAll(url, "&", "&amp;"));
-		tag.put("src","/latin9.pdf");
-		super.onComponentTag(tag);
-	}
-
-	
-
-	@Override
-	protected boolean getStatelessHint()
-	{	
-		return false;
+		ResourceReference pdfResource = new ResourceReference("pdfResource") {
+	        private static final long serialVersionUID = 1L;
+	        
+	        @Override
+	        public IResource getResource() {
+	            return new ByteArrayResource("pdf", DocumentInlineFrame.this.getPdfBytes());
+	        }
+	        
+	    };
+	    
+		WebMarkupContainer wmc = new WebMarkupContainer("myPdfPanel");
+		wmc.add(new AttributeModifier("src", (String) urlFor(pdfResource, null)));
+		wmc.setOutputMarkupId(true);
+		add(wmc);
 	}
 	
-	public void onResourceRequested() {
-		this.resourceListener.onResourceRequested();
-	}
-	
+	public abstract byte[] getPdfBytes();
 }
-

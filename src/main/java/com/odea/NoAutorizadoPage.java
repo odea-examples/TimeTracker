@@ -3,8 +3,6 @@ package com.odea;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 
-import com.odea.components.documentInlineFrame.MyPdfPanel;
-
 public class NoAutorizadoPage extends BasePage {
 
 	public NoAutorizadoPage() {
