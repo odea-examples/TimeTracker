@@ -4,7 +4,6 @@ import org.apache.wicket.IResourceListener;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.util.string.Strings;
 
 
 
@@ -25,7 +24,6 @@ public class DocumentInlineFrame extends WebMarkupContainer implements IResource
 	protected CharSequence getURL()
 	{
 		return this.urlFor(IResourceListener.INTERFACE, new PageParameters());
-		//return urlFor(IResourceListener.INTERFACE);
 	}
 
 
