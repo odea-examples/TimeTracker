@@ -36,10 +36,10 @@ public class DocumentInlineFrame extends WebMarkupContainer implements IResource
 
 		// Set href to link to this frame's frameRequested method
 		CharSequence url = getURL();
-
+		
 		// generate the src attribute
-		tag.put("src", Strings.replaceAll(url, "&", "&amp;"));
-
+//		tag.put("src", Strings.replaceAll(url, "&", "&amp;"));
+		tag.put("src","/latin9.pdf");
 		super.onComponentTag(tag);
 	}
 
