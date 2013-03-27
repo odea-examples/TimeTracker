@@ -37,7 +37,30 @@
             <artifactId>gson</artifactId>
             <version>2.2.2</version>
         </dependency>
-
+		
+		<dependency>
+			<groupId>com.lowagie</groupId>
+			<artifactId>itext</artifactId>
+			<version>4.2.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.itextpdf</groupId>
+			<artifactId>itextpdf</artifactId>
+			<version>5.2.0</version>
+		</dependency>
+            
+	   <dependency>
+	     <groupId>org.bouncycastle</groupId>
+	     <artifactId>bcprov-jdk15</artifactId>
+	     <version>1.44</version>
+	   </dependency>
+	   <dependency>
+	     <groupId>org.bouncycastle</groupId>
+	     <artifactId>bcmail-jdk15</artifactId>
+	     <version>1.44</version>
+	   </dependency>
+            
+            
         <!-- SHIRO -->
         <dependency>
             <groupId>org.apache.shiro</groupId>
@@ -71,6 +94,19 @@
               <version>${wicket.version}</version>
           </dependency>
           -->
+		
+		<dependency>
+			<groupId>org.bouncycastle</groupId>
+			<artifactId>bcprov-jdk16</artifactId>
+			<version>1.45</version>
+		</dependency>
+		
+	
+		<dependency>
+	<groupId>org.apache.pdfbox</groupId>
+	<artifactId>pdfbox</artifactId>
+	<version>1.7.1</version>
+</dependency>
 
         <!-- VISURAL WICKET DEPS -->
         <dependency>

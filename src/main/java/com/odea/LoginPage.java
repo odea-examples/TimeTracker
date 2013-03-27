@@ -34,7 +34,6 @@ public class LoginPage extends BasePage {
     public LoginPage() {
         LoginForm loginForm = new LoginForm("loginForm");
         add(loginForm);
-        
     }
 
     public void login() {
