@@ -679,7 +679,7 @@ public class EntradasPage extends BasePage {
 		Columna columna6 = new Columna("ticket", "Ticket", 50, 50, 50, "cell-title", "ticket", null, "Slick.Editors.Text", "ticketBugzillaValidator", null);
 		Columna columna7 = new Columna("ticketExt", "Ticket Externo", 80, 80, 100, "cell-title", "ticketExt", null, "Slick.Editors.TextTicketExt", "ticketExternoValidator", null);
 		Columna columna8 = new Columna("sistExt", "Sistema Externo", 80, 80, 80, "cell-title", "sistExt", null, "Slick.Editors.SelectEditor", null, sistemasExternos);
-		Columna columna9 = new Columna("descripcion", "Descripcion", 80, 80, 80, null, "descripcion", null, "Slick.Editors.LongText", "descripcionValidator", null);
+		Columna columna9 = new Columna("descripcion", "Nota", 80, 80, 80, null, "descripcion", null, "Slick.Editors.LongText", "descripcionValidator", null);
 		
 		ArrayList<Columna> columnas = new ArrayList<Columna>();
 		columnas.add(columna);

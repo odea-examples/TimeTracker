@@ -93,7 +93,30 @@ function ticketBugzillaValidator(value) {
     	item.actividad = "";
     	grid.updateRow(editCommand.row);
     }
+    else if (JSON.stringify(column.name, null, 2) == JSON.stringify("Sistema Externo", null, 2)&& (editCommand.serializedValue==" Ninguno") ){
+    	item.ticketExt="";
+    	alert("El ticket externo ha sido borrado junto con su sistema externo.")
+    	Wicket.Ajax.ajax({"u":"${url}","c":"${gridId}","ep":{'modificar':JSON.stringify(item, null, 2)}});
+    	}
+    else if (JSON.stringify(column.name, null, 2) == JSON.stringify("Sistema Externo", null, 2) && (item.ticketExt == null || item.ticketExt=="" ) ){
+    	alert("Ingrese un ticket externo o no se validara su cambio")
+//    	alert(JSON.stringify(item, null, 2));
+    	grid.updateRow(editCommand.row);
+    	}
+    else if (JSON.stringify(column.name, null, 2) == JSON.stringify("Ticket Externo", null, 2) && item.sistExt == null){
+    	alert("Ingrese un sistema externo o no se validara su cambio")
+//    	alert(JSON.stringify(item, null, 2));
+    	grid.updateRow(editCommand.row);
+    	}
+    else if (JSON.stringify(column.name, null, 2) == JSON.stringify("Ticket Externo", null, 2) && (item.ticketExt == null || item.ticketExt=="")){
+    	alert("Ingrese algun ticket acompañado a este sistema externo, o eliga la opcion Ninguno en los sistemas externos para eliminar el sistema y el ticket.")
+//    	alert(JSON.stringify(item, null, 2));
+    	grid.updateRow(editCommand.row);
+    	}
     else{
+//    	alert(JSON.stringify(column.name, null, 2))
+//    	alert(JSON.stringify(item, null, 2));
+//    	alert(item.ticketExt == null)
 //        var entrada = document.getElementById("${selector}");
 //        entrada.value=item;
     	Wicket.Ajax.ajax({"u":"${url}","c":"${gridId}","ep":{'modificar':JSON.stringify(item, null, 2)}});
