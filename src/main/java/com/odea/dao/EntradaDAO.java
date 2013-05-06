@@ -113,6 +113,21 @@ public class EntradaDAO extends AbstractDAO {
 //	}
 //	
 	
+	public String parsearSistemaExternoParaGrid(String iniciales) {
+		String resultado = "Ninguno";
+		if (iniciales != null) {			
+			if (iniciales.equals("SIY")) {
+				resultado = "Sistema de Incidencias de YPF";
+			} else if (iniciales.equals("SGY")) {
+				resultado = "Sistema Geminis de YPF";
+			} else {
+				throw new RuntimeException("Iniciales de sistema externo desconocidas");
+			}
+		}
+		
+		return resultado;
+	}
+	
 	
 	public List<Data> getData(Usuario usuario, Timestamp desdeSQL, Timestamp hastaSQL){
 		
@@ -139,7 +154,10 @@ public class EntradaDAO extends AbstractDAO {
 				//System.out.println(cal.get(Calendar.HOUR_OF_DAY));
 				//System.out.println(cal.get(Calendar.MINUTE));
 				
-				Entrada e = new Entrada(rs.getTimestamp(1), proyecto, actividad, cal.get(Calendar.HOUR_OF_DAY)+","+((cal.get(Calendar.MINUTE))*10/6)  /* String.valueOf(((Time.valueOf(rs.getTime(4)).getMilliseconds() /3600)-3000))*/, rs.getString(5), rs.getInt(6), rs.getString(7), rs.getString(8), usuario, rs.getDate(10));
+				String sistemaExternoCompleto = EntradaDAO.this.parsearSistemaExternoParaGrid(rs.getString(8));
+				
+				
+				Entrada e = new Entrada(rs.getTimestamp(1), proyecto, actividad, cal.get(Calendar.HOUR_OF_DAY)+","+((cal.get(Calendar.MINUTE))*10/6)  /* String.valueOf(((Time.valueOf(rs.getTime(4)).getMilliseconds() /3600)-3000))*/, rs.getString(5), rs.getInt(6), rs.getString(7), sistemaExternoCompleto, usuario, rs.getDate(10));
 				return e;
 				
 			}}, usuario.getIdUsuario(), desdeSQL, hastaSQL);
@@ -255,7 +273,7 @@ public class EntradaDAO extends AbstractDAO {
 	}
 	
 	private String parsearSistemaExterno(String sistemaExterno) {
-		String resultado = null;
+		String resultado = sistemaExterno;
 		
 		if (sistemaExterno != null) {
 			if (sistemaExterno.equals("Sistema de Incidencias de YPF")) {
@@ -327,9 +345,10 @@ public class EntradaDAO extends AbstractDAO {
 		
 		
 		public void modificarEntrada(Entrada entrada) {
-			String sistemaExterno=null;
-			if (entrada.getSistemaExterno()!="Ninguno"){
-				sistemaExterno=entrada.getSistemaExterno();
+			String sistemaExterno = null;			
+			if (entrada.getSistemaExterno() != null && !entrada.getSistemaExterno().equals("Ninguno") ){
+//				sistemaExterno = entrada.getSistemaExterno();
+				sistemaExterno = parsearSistemaExterno(entrada.getSistemaExterno());
 			}
 			//System.out.println(new java.sql.Time((long) ((this.parsearDuracion(entrada.getDuracion())*3600000))-(3600000*21)));
 			java.sql.Date fechaSQL = new java.sql.Date(entrada.getFecha().getTime());
