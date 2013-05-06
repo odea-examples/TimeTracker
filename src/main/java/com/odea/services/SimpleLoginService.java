@@ -1,6 +1,7 @@
 package com.odea.services;
 
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +21,7 @@ public class SimpleLoginService implements LoginService {
     @Override
     public void login(String user, String passwd) {
         logger.debug("Login attempt user: " + user);
-        com.odea.shiro.UsernamePasswordToken token = new com.odea.shiro.UsernamePasswordToken(user, passwd);
+        UsernamePasswordToken token = new UsernamePasswordToken(user, passwd);
         Subject currentUser = SecurityUtils.getSubject();
         currentUser.login(token);  	
     }
