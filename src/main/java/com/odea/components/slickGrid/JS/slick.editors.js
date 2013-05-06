@@ -365,10 +365,12 @@
       var $select;
       var defaultValue;
       var scope = this;
+      var proyectoDeVerdad;
 
       this.init = function() {
 //    	  alert(args.item.ticket);
-
+//    	  alert(JSON.stringify(args, null, 2));
+//    	  alert(JSON.stringify(args.item.proyecto, null, 2));
           if(args.column.options){
             opt_values = args.column.options.split(',');
           }else{
@@ -377,9 +379,22 @@
           option_str = ""
           for( i in opt_values ){
             v = opt_values[i];
-            option_str += "<OPTION value='"+v+"'>"+v+"</OPTION>";
+//            alert(JSON.stringify(v, null, 2));
+            proyecto_seleccionado = JSON.stringify(args.item.proyecto, null, 2);
+            proyecto_seleccionado = proyecto_seleccionado.substring(1);
+            proyecto_seleccionado = "\" "+proyecto_seleccionado
+//            alert(JSON.stringify(v, null, 2)==proyecto_seleccionado);
+            if(JSON.stringify(v, null, 2)==proyecto_seleccionado){
+            	option_str += "<OPTION selected='selected' value='"+v+"'>"+v+"</OPTION>";
+            	proyectoDeVerdad = proyecto_seleccionado;
+            	//selected='selected'
+            }
+            else{            	
+            	option_str += "<OPTION value='"+v+"'>"+v+"</OPTION>";
+            }
+//            alert(v==args.item.proyecto || JSON.stringify(args.item.proyecto, null, 2)==" "+JSON.stringify(args.item.proyecto, null, 2))
           }
-          $select = $("<SELECT tabIndex='0' class='editor-select' style='width:300px'>"+ option_str +"</SELECT>");
+          $select = $("<SELECT tabIndex='0' class='editor-select' style='width:300px'  >"+ option_str +"</SELECT>");
           $select.appendTo(args.container);
           $select.focus();
       };
@@ -393,15 +408,15 @@
       };
 
       this.loadValue = function(item) {
-          defaultValue = item[args.column.field];
-          $select.val(defaultValue);
+    	  defaultValue = item[args.column.field];
+//          $select.val(defaultValue);
       };
 
       this.serializeValue = function() {
           if(args.column.options){
             return $select.val();
           }else{
-            return ($select.val() == "yes");
+            return $select.val()
           }
       };
 
@@ -464,7 +479,20 @@
           option_str = ""
           for( i in opt_values ){
             v = opt_values[i];
-            option_str += "<OPTION value='"+v+"'>"+v+"</OPTION>";
+      	  actividad_seleccionado = JSON.stringify(args.item.actividad, null, 2);
+          actividad_seleccionado = actividad_seleccionado.substring(1);
+          actividad_seleccionado = "\" "+actividad_seleccionado
+//          alert(JSON.stringify(v, null, 2));
+//          alert(actividad_seleccionado);
+    	  if(JSON.stringify(v, null, 2)==actividad_seleccionado){
+          	option_str += "<OPTION selected='selected' value='"+v+"'>"+v+"</OPTION>";
+          	alert("entra")
+          	proyectoDeVerdad = actividad_seleccionado;
+          	//selected='selected'
+          	}
+          else{            	
+          	option_str += "<OPTION value='"+v+"'>"+v+"</OPTION>";
+          	}
           }
           $select = $("<SELECT tabIndex='0' class='editor-select' style='width:300px'>"+ option_str +"</SELECT>");
           $select.appendTo(args.container);
@@ -481,14 +509,14 @@
 
       this.loadValue = function(item) {
           defaultValue = item[args.column.field];
-          $select.val(defaultValue);
+//          $select.val();
       };
 
       this.serializeValue = function() {
           if(args.column.options){
             return $select.val();
           }else{
-            return ($select.val() == "yes");
+            return ($select.val())
           }
       };
 

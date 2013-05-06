@@ -117,8 +117,8 @@ function ticketBugzillaValidator(value) {
 //    	alert(JSON.stringify(item, null, 2));    	
     }
     else if(item.sistExt!=null || item.ticketExt!=null || item.ticketExt!=""){
-    	alert("el ticket externo y el sistema externo deben estar los dos completados, o deben estar los dos vacios.")
-    	alert(JSON.stringify(item, null, 2));
+    	alert("el ticket externo y el sistema externo deben estar los dos completados, o deben estar los dos vacios. Esto para que sus cambios puedan ser guardados.")
+//    	alert(JSON.stringify(item, null, 2));
     }
     else{
     	alert("Arregle la actividad o el sistema y el ticket externo");
@@ -147,6 +147,10 @@ function init(dataSecundaria) {
   grid.onCellChange.subscribe(function (e, args) {
     dataView.updateItem(args.item.id, args.item);
   });
+  
+  function funcc(){
+	  alert("holaaaa!!")
+  }
 
   grid.onClick.subscribe(function(e, args) {
 	  objeto = dataView.getItem(args.row);
