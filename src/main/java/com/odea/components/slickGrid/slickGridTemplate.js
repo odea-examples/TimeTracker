@@ -107,17 +107,17 @@ function ticketBugzillaValidator(value) {
     else if (false){
     	alert(JSON.stringify(item, null, 2));
     }
-    else if(actividadChecker && sistemaChecker && (item.sistExt==null && (item.ticketExt==null || item.ticketExt=="") || item.sistExt!=null && item.ticketExt!=null && item.ticketExt!="")){
+    else if(actividadChecker && sistemaChecker && ((item.sistExt==null || item.sistExt=="Ninguno") && (item.ticketExt==null || item.ticketExt=="") || item.sistExt!="Ninguno" && item.sistExt!=null && item.ticketExt!=null && item.ticketExt!="")){
 //    	alert(JSON.stringify(column.name, null, 2))
-//    	alert(JSON.stringify(item, null, 2));
+    	alert(JSON.stringify(item, null, 2));
 //    	alert(item.ticketExt == null)
 //        var entrada = document.getElementById("${selector}");
 //        entrada.value=item;
     	Wicket.Ajax.ajax({"u":"${url}","c":"${gridId}","ep":{'modificar':JSON.stringify(item, null, 2)}});
 //    	alert(JSON.stringify(item, null, 2));    	
     }
-    else if(item.sistExt!=null || item.ticketExt!=null || item.ticketExt!=""){
-    	alert("el ticket externo y el sistema externo deben estar los dos completados, o deben estar los dos vacios. Esto para que sus cambios puedan ser guardados.")
+    else if(item.sistExt!=null || item.ticketExt!=null || item.ticketExt!="" || item.sistExt!="Ninguno"){
+    	alert("El ticket externo y el sistema externo deben estar los dos completados, o deben estar los dos vacios. Esto para que sus cambios puedan ser guardados.")
 //    	alert(JSON.stringify(item, null, 2));
     }
     else{
