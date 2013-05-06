@@ -11,6 +11,9 @@ var columns =
 var data = [];
 var cantidadVeces = 0;
 var idBorrada ="";
+var ticketCheker= true;
+var sistemaChecker= true;
+var actividadChecker= true;
 
 
 var options = {
@@ -86,34 +89,25 @@ function ticketBugzillaValidator(value) {
 //Now define your buttonFormatter function
   function queueAndExecuteCommand(item, column, editCommand) {
     editCommand.execute();
-    if (JSON.stringify(column.name, null, 2) == JSON.stringify("Proyecto", null, 2)){
+    if (!sistemaChecker && !actividadChecker){
+    	alert("Arregle los errores antes de continuar");
+    }
+    else if ((JSON.stringify(column.name, null, 2) == JSON.stringify("Proyecto", null, 2))){
     	alert("Ingrese una Actividad o no se guardara su cambio.");
 //    	alert(JSON.stringify(editCommand, null, 2));
 //    	grid.gotoCell(editCommand.row, editCommand.cell+1);
     	item.actividad = "";
     	grid.updateRow(editCommand.row);
     }
-    else if (JSON.stringify(column.name, null, 2) == JSON.stringify("Sistema Externo", null, 2)&& (editCommand.serializedValue==" Ninguno") ){
+    else if ((JSON.stringify(column.name, null, 2) == JSON.stringify("Sistema Externo", null, 2)&& (editCommand.serializedValue==" Ninguno") )){
     	item.ticketExt="";
     	alert("El ticket externo ha sido borrado junto con su sistema externo.")
     	Wicket.Ajax.ajax({"u":"${url}","c":"${gridId}","ep":{'modificar':JSON.stringify(item, null, 2)}});
     	}
-    else if (JSON.stringify(column.name, null, 2) == JSON.stringify("Sistema Externo", null, 2) && (item.ticketExt == null || item.ticketExt=="" ) ){
-    	alert("Ingrese un ticket externo o no se validara su cambio")
-//    	alert(JSON.stringify(item, null, 2));
-    	grid.updateRow(editCommand.row);
-    	}
-    else if (JSON.stringify(column.name, null, 2) == JSON.stringify("Ticket Externo", null, 2) && item.sistExt == null){
-    	alert("Ingrese un sistema externo o no se validara su cambio")
-//    	alert(JSON.stringify(item, null, 2));
-    	grid.updateRow(editCommand.row);
-    	}
-    else if (JSON.stringify(column.name, null, 2) == JSON.stringify("Ticket Externo", null, 2) && (item.ticketExt == null || item.ticketExt=="")){
-    	alert("Ingrese algun ticket acompañado a este sistema externo, o eliga la opcion Ninguno en los sistemas externos para eliminar el sistema y el ticket.")
-//    	alert(JSON.stringify(item, null, 2));
-    	grid.updateRow(editCommand.row);
-    	}
-    else{
+    else if (false){
+    	alert(JSON.stringify(item, null, 2));
+    }
+    else if(actividadChecker && sistemaChecker && (item.sistExt==null && (item.ticketExt==null || item.ticketExt=="") || item.sistExt!=null && item.ticketExt!=null && item.ticketExt!="")){
 //    	alert(JSON.stringify(column.name, null, 2))
 //    	alert(JSON.stringify(item, null, 2));
 //    	alert(item.ticketExt == null)
@@ -121,6 +115,14 @@ function ticketBugzillaValidator(value) {
 //        entrada.value=item;
     	Wicket.Ajax.ajax({"u":"${url}","c":"${gridId}","ep":{'modificar':JSON.stringify(item, null, 2)}});
 //    	alert(JSON.stringify(item, null, 2));    	
+    }
+    else if(item.sistExt!=null || item.ticketExt!=null || item.ticketExt!=""){
+    	alert("el ticket externo y el sistema externo deben estar los dos completados, o deben estar los dos vacios.")
+    	alert(JSON.stringify(item, null, 2));
+    }
+    else{
+    	alert("Arregle la actividad o el sistema y el ticket externo");
+    	grid.updateRow(row);
     }
     
   }
