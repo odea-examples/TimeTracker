@@ -486,7 +486,7 @@
 //          alert(actividad_seleccionado);
     	  if(JSON.stringify(v, null, 2)==actividad_seleccionado){
           	option_str += "<OPTION selected='selected' value='"+v+"'>"+v+"</OPTION>";
-          	alert("entra")
+//          	alert("entra")
           	proyectoDeVerdad = actividad_seleccionado;
           	//selected='selected'
           	}
