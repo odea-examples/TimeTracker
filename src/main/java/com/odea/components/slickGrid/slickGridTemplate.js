@@ -104,9 +104,6 @@ function ticketBugzillaValidator(value) {
     	alert("El ticket externo ha sido borrado junto con su sistema externo.")
     	Wicket.Ajax.ajax({"u":"${url}","c":"${gridId}","ep":{'modificar':JSON.stringify(item, null, 2)}});
     	}
-    else if (false){
-    	alert(JSON.stringify(item, null, 2));
-    }
     else if(actividadChecker && sistemaChecker && ((item.sistExt==null || item.sistExt=="Ninguno") && (item.ticketExt==null || item.ticketExt=="") || item.sistExt!="Ninguno" && item.sistExt!=null && item.ticketExt!=null && item.ticketExt!="")){
     	alert(JSON.stringify(item, null, 2));
     	Wicket.Ajax.ajax({"u":"${url}","c":"${gridId}","ep":{'modificar':JSON.stringify(item, null, 2)}});
@@ -142,9 +139,6 @@ function init(dataSecundaria) {
     dataView.updateItem(args.item.id, args.item);
   });
   
-  function funcc(){
-	  alert("holaaaa!!")
-  }
 
   grid.onClick.subscribe(function(e, args) {
 	  objeto = dataView.getItem(args.row);
