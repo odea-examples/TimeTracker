@@ -43,10 +43,24 @@ function requiredFieldValidator(value) {
 
 function requiredDurationValidator(value) {
 	var regexTiempo = (/^([0-9]{1,2}(,[0-9]{1,2}|:[0-5]{1}[0-9]{1}|\b))$/);
-  if (value == null || value == undefined || !value.length || !value.match(regexTiempo) ) {
+	var regexHora = (/^([0-9]{1,2}:[0-5]{1}[0-9]{1})$/)
+	var regexDecimal = (/^([0-9]{1,2}(,[0-9]{1,2}|\b))$/)
+	
+	var horas;
+	
+	if (value.match(regexHora)) {
+		var pos = value.indexOf(":");
+		var strHoras = value.substring(0, pos);
+		horas = parseFloat(strHoras);
+	}
+	
+	if (value.match(regexDecimal)) {
+		horas = parseFloat(value);
+	}
+	
+  if (value == null || value == undefined || !value.length || !value.match(regexTiempo) || ((value.match(regexHora) || value.match(regexDecimal)) && horas >= 24)) {
     return {valid: false, msg: "Invalid duration"};
-  }
-  else {
+  } else {
     return {valid: true, msg: null};
   }
 }
@@ -105,7 +119,7 @@ function ticketBugzillaValidator(value) {
     	Wicket.Ajax.ajax({"u":"${url}","c":"${gridId}","ep":{'modificar':JSON.stringify(item, null, 2)}});
     	}
     else if(actividadChecker && sistemaChecker && ((item.sistExt==null || item.sistExt=="Ninguno") && (item.ticketExt==null || item.ticketExt=="") || item.sistExt!="Ninguno" && item.sistExt!=null && item.ticketExt!=null && item.ticketExt!="")){
-    	alert(JSON.stringify(item, null, 2));
+    	//alert(JSON.stringify(item, null, 2));
     	Wicket.Ajax.ajax({"u":"${url}","c":"${gridId}","ep":{'modificar':JSON.stringify(item, null, 2)}});
     }
     else if(item.sistExt!=null || item.ticketExt!=null || item.ticketExt!="" || item.sistExt!="Ninguno"){
