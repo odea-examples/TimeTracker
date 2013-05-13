@@ -743,7 +743,7 @@
       $input = $("<TEXTAREA hidefocus rows=5 maxlength=10000 style='backround:white;width:250px;height:80px;border:0;outline:0'>")
           .appendTo($wrapper);
 
-      $("<DIV style='text-align:right'><BUTTON>Save</BUTTON><BUTTON>Cancel</BUTTON></DIV>")
+      $("<DIV style='text-align:right'><BUTTON>Grabar</BUTTON><BUTTON>Cancelar</BUTTON></DIV>")
           .appendTo($wrapper);
 
       $wrapper.find("button:first").bind("click", this.save);
