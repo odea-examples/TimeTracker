@@ -671,7 +671,7 @@ public class EntradasPage extends BasePage {
 		String listaSistemaExterno = daoService.getSistemasExternos().toString();
 		String sistemasExternos = listaSistemaExterno.subSequence(1, listaSistemaExterno.length() - 1).toString();
 		// columna:id,nombre,widht,minwidht,maxwidth,cssclass,field,formater,editor,validator,options
-		Columna columna = new Columna("delCol", "Delete", 60, 60, 60, null, "del", "Slick.Formatters.DeleteButton", null, null, null);
+		Columna columna = new Columna("delCol", " ", 20, 20, 60, null, "del", "Slick.Formatters.DeleteButton", null, null, null);
 		Columna columna2 = new Columna("duration", "Duracion", 60, 60, 60, "cell-title", "duration", null, "Slick.Editors.Text", "requiredDurationValidator", null);
 		//"Slick.Editors.SelectRelatedEditor" agregar justo despues del primer null, cambia el tipo de editor de la columna
 		Columna columna3 = new Columna("actividad", "Actividad", 125, 100, 200, "cell-title", "actividad", null, null, "requiredFieldValidator",	actividades);
