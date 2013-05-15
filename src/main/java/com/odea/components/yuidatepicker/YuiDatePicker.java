@@ -1,6 +1,5 @@
 package com.odea.components.yuidatepicker;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -22,7 +21,6 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.FormComponentPanel;
 import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.request.handler.TextRequestHandler;
 import org.apache.wicket.request.resource.CssResourceReference;
 import org.apache.wicket.request.resource.JavaScriptResourceReference;
@@ -30,7 +28,6 @@ import org.apache.wicket.util.template.PackageTextTemplate;
 import org.joda.time.LocalDate;
 
 import com.google.gson.Gson;
-import com.odea.EntradasPage;
 import com.odea.behavior.noInput.NoInputBehavior;
 import com.odea.components.ajax.AbstractInitializableComponentBehavior;
 import com.odea.components.datepicker.DatePickerDTO;
@@ -78,6 +75,7 @@ public abstract class YuiDatePicker extends FormComponentPanel<Date> implements 
                 	String strFecha = getRequest().getRequestParameters().getParameterValue("selectedDate").toString();
                     YuiDatePicker.this.onDateSelect(target, strFecha);
                     
+                    System.out.println("PASEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE\n\n\n\n\n\n\n\n\n");
                     List<String> campos = Arrays.asList(strFecha.split("/"));
 					int dia = Integer.parseInt(campos.get(0));
 					int mes = Integer.parseInt(campos.get(1));
@@ -160,8 +158,8 @@ public abstract class YuiDatePicker extends FormComponentPanel<Date> implements 
     @Override
     protected void onBeforeRender() {
     	this.setModelObject(this.ultimaFecha.toDate());
-        this.datePicker.setModel(getModel());
-        super.onBeforeRender();
+    	this.datePicker.setModel(getModel());
+    	super.onBeforeRender();
     }
 
     public abstract DatePickerDTO getDatePickerData();

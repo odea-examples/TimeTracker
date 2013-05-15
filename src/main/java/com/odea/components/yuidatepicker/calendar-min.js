@@ -2232,6 +2232,7 @@ YAHOO.widget.DateMath = {
 		},
 		getSelectedDates : function() {
 			var i = [], h = this.cfg.getProperty(b.SELECTED.key);
+			
 			for ( var k = 0; k < h.length; ++k) {
 				var j = h[k];
 				var g = d.getDate(j[0], j[1] - 1, j[2]);

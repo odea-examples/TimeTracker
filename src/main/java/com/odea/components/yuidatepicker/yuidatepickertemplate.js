@@ -20,10 +20,11 @@ initYUI = function() {
         var date = dates[0];
         var year = date[0], month = date[1], day = date[2];
 
+        
         var txtDate1 = document.getElementById("${selector}");
         txtDate1.value = day + "/" + month + "/" + year;
         Wicket.Ajax.ajax({"u":"${url}","c":"${datePickerId}","ep":{'selectedDate':txtDate1.value}});
-
+        
         //var p = Wicket.Ajax.ajax({"u":"${url}","c":"${datePickerId}","ep":{'updateF':"true"},"async":"false","dt":"json"});
         //getRemote();
     }
@@ -33,6 +34,7 @@ initYUI = function() {
 
         if (txtDate1.value != "") {
             YAHOO.example.calendar.cal1.select(txtDate1.value);
+
             var selectedDates = YAHOO.example.calendar.cal1.getSelectedDates();
             if (selectedDates.length > 0) {
                 var firstDate = selectedDates[0];
@@ -63,7 +65,8 @@ initYUI = function() {
         }).responseText;
         return  $.parseJSON(jsonString);
     }
-
+    
+    
     YAHOO.example.calendar.cal1 = new YAHOO.widget.Calendar("cal1","${calContainer}");
     YAHOO.example.calendar.cal1.selectEvent.subscribe(handleSelect, YAHOO.example.calendar.cal1, true);
     YAHOO.example.calendar.cal1.cfg.setProperty("MDY_YEAR_POSITION", 3);
