@@ -29,11 +29,13 @@
 }
 
 #paginaEntradas form #aceptarSubmit{
+	position:relative;
 	float: left;
 	margin-left: 10%;
 }
 
 #paginaEntradas form #limpiarSubmit{
+	position:relative;
 	float: left;
 	margin-left: 5%;
 }
