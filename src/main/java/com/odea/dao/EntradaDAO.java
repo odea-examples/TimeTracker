@@ -372,6 +372,13 @@ public class EntradaDAO extends AbstractDAO {
 			
 			return sistemasExternos;
 		}
+		public boolean puedeEntrar(String duracion, Date fecha, Usuario usuario) {
+			LocalDate diaBuscado = new LocalDate(fecha.getTime());
+			// TODO Auto-generated method stub
+			Boolean resultado;
+			resultado= getHorasDiarias(usuario, diaBuscado)+this.parsearDuracion(duracion)<24;
+			return resultado;
+		}
 		
 
 		

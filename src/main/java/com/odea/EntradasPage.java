@@ -153,7 +153,7 @@ public class EntradasPage extends BasePage {
 		};
 		form.setMarkupId("formEntradas");
 		
-		
+		final Label cualquiera = new Label("cualca", "  ");
 		
 		final SlickGrid slickGrid = new SlickGrid("slickGrid", this.lstDataModel, this.slickGridJsonCols) {
 
@@ -203,8 +203,14 @@ public class EntradasPage extends BasePage {
 						Entrada entrada = new Entrada(timestamp, proyecto, actividad, data.getDuration(),
 								data.getDescripcion(), ticket, data.getTicketExt(), sistemaExterno,
 								EntradasPage.this.usuario, fecha);
-						
+						//
+						if(daoService.puedeEntrar(entrada.getDuracion(),entrada.getFecha(),EntradasPage.this.usuario)){
 						daoService.modificarEntrada(entrada);
+						cualquiera.setDefaultModelObject(" ");
+						}
+						else{
+							cualquiera.setDefaultModelObject("Ha superado las 24 horas y no se ha grabado la entrada.");
+						}
 					}
 					EntradasPage.this.lstDataModel.detach();
 					
@@ -237,6 +243,8 @@ public class EntradasPage extends BasePage {
 
 		this.horasAcumuladasMes = new Label("horasAcumuladasMes", this.horasMesModel);
 		this.horasAcumuladasMes.setOutputMarkupId(true);
+		
+
 
 		
 		
@@ -291,6 +299,7 @@ public class EntradasPage extends BasePage {
 		}));
 
 		this.listViewContainer.add(slickGrid);
+		this.listViewContainer.add(cualquiera);
 		this.listViewContainer.setMarkupId("containerSlickGrid");
 
 
@@ -525,7 +534,7 @@ public class EntradasPage extends BasePage {
 					target.add(EntradasPage.this.listViewContainer);
 					target.add(EntradasPage.this.labelContainer);
 					
-
+ 
 					if (duracion.isValid()) {
 						duracion.add(new AttributeModifier("style", Model.of("border-color:none")));
 					} else {
