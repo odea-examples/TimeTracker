@@ -49,6 +49,7 @@ import com.odea.domain.Proyecto;
 import com.odea.domain.Usuario;
 import com.odea.services.DAOService;
 import com.odea.validators.duracion.DurationValidator;
+import com.odea.validators.duracion.FullDurationValidator;
 import com.odea.validators.ticketExterno.OnRelatedFieldsNullValidator;
 
 public class EntradasPage extends BasePage {
@@ -533,7 +534,7 @@ public class EntradasPage extends BasePage {
 					target.add(feedBackPanel);
 					target.add(EntradasPage.this.listViewContainer);
 					target.add(EntradasPage.this.labelContainer);
-					
+
  
 					if (duracion.isValid()) {
 						duracion.add(new AttributeModifier("style", Model.of("border-color:none")));
@@ -654,6 +655,7 @@ public class EntradasPage extends BasePage {
 			add(limpiar);
 			add(new OnRelatedFieldsNullValidator(sistemaExterno, ticketExt, "Debe seleccionar un Sistema Externo si quiere elegir un ID Ticket Externo"));
 			add(new OnRelatedFieldsNullValidator(ticketExt, sistemaExterno, "Debe ingresar un ID Ticket Externo con el Sistema Externo elegido"));
+			add(new FullDurationValidator(duracion, fechaActual.toDate(), usuario, "No se pueden superar las 24 horas en el mismo dia"));
 		}
 
 		
