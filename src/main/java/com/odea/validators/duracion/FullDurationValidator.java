@@ -19,20 +19,18 @@ public class FullDurationValidator extends AbstractFormValidator{
 	
 	private FormComponent<?>[] components;
 	private String mensaje;
-	private Date fecha;
 	private Usuario usuario;
 	
 	
 	public FullDurationValidator(FormComponent<?> formComponent1,
-			Date fecha, Usuario usuario, String error) {
+			FormComponent<?> fecha, Usuario usuario, String error) {
 		if (formComponent1 == null) {
 			throw new IllegalArgumentException(
 					"argument formComponent1 cannot be null");
 		}
-		components = new FormComponent[] { formComponent1};
+		components = new FormComponent[] { formComponent1, fecha};
 		mensaje= error;
 		this.usuario = usuario;
-		this.fecha=fecha;
 	}
 	
 	@Override
@@ -46,7 +44,8 @@ public class FullDurationValidator extends AbstractFormValidator{
 	@Override
 	public void validate(Form<?> form) {
 		final FormComponent<?> formComponent1 = components[0];
-		if(!(daoService.puedeEntrar(formComponent1.getInput(), fecha, usuario))){
+		final FormComponent<?> fecha = components[1];
+		if(!(daoService.puedeEntrar(formComponent1.getInput(), (Date) fecha.getConvertedInput(), usuario,"10800000"))){
 		error(formComponent1,"a key", mensaje);
 		}
 	}

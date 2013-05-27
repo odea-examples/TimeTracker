@@ -264,7 +264,7 @@ public class DAOService {
 		return feriadosDAO.getFeriados();
 	}
 
-	public boolean puedeEntrar(String duracion, Date fecha, Usuario usuario) {
-		return entradaDAO.puedeEntrar(duracion,fecha,usuario);
+	public boolean puedeEntrar(String duracion, Date fecha, Usuario usuario, String duracionVieja) {
+		return entradaDAO.puedeEntrar(duracion,fecha,usuario,duracionVieja);
 	}
 }

@@ -205,7 +205,8 @@ public class EntradasPage extends BasePage {
 								data.getDescripcion(), ticket, data.getTicketExt(), sistemaExterno,
 								EntradasPage.this.usuario, fecha);
 						//
-						if(daoService.puedeEntrar(entrada.getDuracion(),entrada.getFecha(),EntradasPage.this.usuario)){
+						Entrada entradaVieja = daoService.buscarEntrada(entrada.getIdEntrada().getTime());
+						if(daoService.puedeEntrar(entrada.getDuracion(),entrada.getFecha(),EntradasPage.this.usuario, entradaVieja.getDuracion())){
 						daoService.modificarEntrada(entrada);
 						cualquiera.setDefaultModelObject(" ");
 						}
@@ -655,7 +656,7 @@ public class EntradasPage extends BasePage {
 			add(limpiar);
 			add(new OnRelatedFieldsNullValidator(sistemaExterno, ticketExt, "Debe seleccionar un Sistema Externo si quiere elegir un ID Ticket Externo"));
 			add(new OnRelatedFieldsNullValidator(ticketExt, sistemaExterno, "Debe ingresar un ID Ticket Externo con el Sistema Externo elegido"));
-			add(new FullDurationValidator(duracion, fechaActual.toDate(), usuario, "No se pueden superar las 24 horas en el mismo dia"));
+			add(new FullDurationValidator(duracion, fecha, usuario, "No se pueden superar las 24 horas en el mismo dia"));
 		}
 
 		
