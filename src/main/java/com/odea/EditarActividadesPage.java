@@ -113,16 +113,18 @@ public class EditarActividadesPage extends BasePage{
 	        
 	        final Palette<Proyecto> palette = new Palette<Proyecto>("dual", seleccionadosModel, todosModel, choiceRenderer, 8, false) {
 	        	
+	        	
+	        	
 	        	@Override
 	        	protected Component newAvailableHeader(final String componentId)
 	        	{
-	        		return new Label(componentId, new ResourceModel("palette.available", "Disponibles"));
+	        		return new Label(componentId, new ResourceModel("palette.available", "Proyectos Disponibles"));
 	        	}
 	        	
 	        	@Override
 	        	protected Component newSelectedHeader(final String componentId)
 	        	{
-	        		return new Label(componentId, new ResourceModel("palette.selected", "Elegidos"));
+	        		return new Label(componentId, new ResourceModel("palette.selected", "Proyectos Elegidos"));
 	        	}
 	        	
 	        };

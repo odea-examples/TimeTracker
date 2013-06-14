@@ -6,9 +6,11 @@ import java.util.List;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
+import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.extensions.markup.html.form.palette.Palette;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.IChoiceRenderer;
 import org.apache.wicket.markup.html.form.ListMultipleChoice;
@@ -18,6 +20,7 @@ import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -121,6 +124,8 @@ public class EditarProyectosPage extends BasePage {
 	        };
 	        final Palette<Actividad> pal = new Palette<Actividad>("dual", seleccionadosModel, todosModel, new IChoiceRenderer<Actividad>() {
 	        	
+	        	
+	        	
 				@Override
 				public Object getDisplayValue(Actividad object) {
 					return object.getNombre();
@@ -130,7 +135,20 @@ public class EditarProyectosPage extends BasePage {
 				public String getIdValue(Actividad object, int index) {
 					return Integer.toString(object.getIdActividad());
 				}
-			}, 8, false);
+			}, 8, false){
+	        	
+	        	@Override
+	        	protected Component newAvailableHeader(final String componentId)
+	        	{
+	        		return new Label(componentId, new ResourceModel("palette.available", "Actividades Disponibles"));
+	        	}
+	        	
+	        	@Override
+	        	protected Component newSelectedHeader(final String componentId)
+	        	{
+	        		return new Label(componentId, new ResourceModel("palette.selected", "Actividades Elegidas"));
+	        	}
+	        };
 	        						
 			
 			AjaxButton submit = new AjaxButton("submit") {

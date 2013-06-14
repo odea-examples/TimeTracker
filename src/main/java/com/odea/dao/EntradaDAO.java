@@ -373,6 +373,7 @@ public class EntradaDAO extends AbstractDAO {
 			return sistemasExternos;
 		}
 		public boolean puedeEntrar(String duracion, Date fecha, Usuario usuario, String duracionVieja) {
+			//la duracion vieja recibida sera la cantidad de horas en milisegundos.
 			LocalDate diaBuscado = new LocalDate(fecha.getTime());
 			// TODO Auto-generated method stub
 			Boolean resultado;

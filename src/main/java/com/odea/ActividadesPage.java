@@ -120,6 +120,7 @@ public class ActividadesPage extends BasePage{
 		mostrarTodas.add(new AjaxEventBehavior("onchange") {
            
             protected void onEvent(AjaxRequestTarget target) {
+            	ActividadesPage.this.lstActividadesModel.setObject(ActividadesPage.this.lstActividadesModel.getObject());
                 actividadListView.setModel(ActividadesPage.this.lstActividadesModel);
                 target.add(listViewContainer);
             }

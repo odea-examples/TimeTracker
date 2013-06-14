@@ -9,6 +9,7 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextArea;
+import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -86,14 +87,26 @@ public class FeriadosPage extends BasePage {
 			descripcion.setRequired(true);
 			descripcion.setOutputMarkupId(true);
 			
+			final FeedbackPanel feedBackPanel = new FeedbackPanel("feedBackPanel");
+			feedBackPanel.setOutputMarkupId(true);
+			feedBackPanel.setMarkupId("feedBackPanel");
+			
 			
 			AjaxButton submit = new AjaxButton("submit", this) {
 				@Override
 				protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 					daoService.insertarFeriado(FeriadosForm.this.getModelObject());
 					target.add(FeriadosForm.this.datePicker);
-					target.add(FeriadosForm.this.descripcion);						
+					target.add(FeriadosForm.this.descripcion);
+					target.add(feedBackPanel);
 
+				}
+				
+				@Override
+				protected void onError(AjaxRequestTarget target, Form<?> form) {
+					target.add(FeriadosForm.this.datePicker);
+					target.add(FeriadosForm.this.descripcion);
+					target.add(feedBackPanel);
 				}
 			};
 			
@@ -106,12 +119,16 @@ public class FeriadosPage extends BasePage {
 					FeriadosForm.this.setModelObject(new Feriado());
 					target.add(FeriadosForm.this.datePicker);
 					target.add(FeriadosForm.this.descripcion);
+					target.add(feedBackPanel);
 				}
+				
+				
 			};
 			
 			borrar.setOutputMarkupId(true);
-
 			
+
+			add(feedBackPanel);
 			add(datePicker);
 			add(descripcion);
 			add(submit);

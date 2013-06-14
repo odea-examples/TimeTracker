@@ -686,18 +686,17 @@ public class EntradasPage extends BasePage {
 		Columna columna = new Columna("delCol", " ", 20, 20, 60, null, "del", "Slick.Formatters.DeleteButton", null, null, null);
 		Columna columna2 = new Columna("duration", "Duracion", 60, 60, 60, "cell-title", "duration", null, "Slick.Editors.Text", "requiredDurationValidator", null);
 		//"Slick.Editors.SelectRelatedEditor" agregar justo despues del primer null, cambia el tipo de editor de la columna
-		Columna columna3 = new Columna("actividad", "Actividad", 125, 100, 200, "cell-title", "actividad", null, null, "requiredFieldValidator",	actividades);
+		Columna columna3 = new Columna("actividad", "Actividad", 150, 100, 300, "cell-title", "actividad", null, null, "requiredFieldValidator",	actividades);
 		//"Slick.Editors.SelectEditor" agregar justo despues del primer null, cambia el tipo de editor de la columna
-		Columna columna4 = new Columna("proyecto", "Proyecto", 135, 100, 200, "cell-title", "proyecto", null, null,	"requiredFieldValidator", proyectos);
+		Columna columna4 = new Columna("proyecto", "Proyecto", 150, 100, 300, "cell-title", "proyecto", null, null,	"requiredFieldValidator", proyectos);
 		Columna columna5 = new Columna("fecha", "Fecha", 60, 60, 60, null, "fecha", null, "Slick.Editors.Date", "requiredFieldValidator", null);
 		Columna columna6 = new Columna("ticket", "Ticket", 50, 50, 50, "cell-title", "ticket", null, "Slick.Editors.Text", "ticketBugzillaValidator", null);
 		Columna columna7 = new Columna("ticketExt", "Ticket Externo", 80, 80, 100, "cell-title", "ticketExt", null, "Slick.Editors.TextTicketExt", "ticketExternoValidator", null);
 		//"Slick.Editors.SelectEditor" agregar justo despues del primer null, cambia el tipo de editor de la columna
 		Columna columna8 = new Columna("sistExt", "Sistema Externo", 80, 170, 170, "cell-title", "sistExt", null, null, null, sistemasExternos);
-		Columna columna9 = new Columna("descripcion", "Nota", 80, 80, 80, null, "descripcion", null, "Slick.Editors.LongText", "descripcionValidator", null);
+		Columna columna9 = new Columna("descripcion", "Nota", 150, 80, 300, null, "descripcion", null, "Slick.Editors.LongText", "descripcionValidator", null);
 		
 		ArrayList<Columna> columnas = new ArrayList<Columna>();
-		columnas.add(columna);
 		columnas.add(columna5);
 		columnas.add(columna4);
 		columnas.add(columna3);
@@ -706,6 +705,7 @@ public class EntradasPage extends BasePage {
 		columnas.add(columna6);
 		columnas.add(columna8);
 		columnas.add(columna7);
+		columnas.add(columna);
 		
 		String texto = "[";
 		for (Columna col : columnas) {
