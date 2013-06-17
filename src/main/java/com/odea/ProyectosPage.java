@@ -75,14 +75,7 @@ public class ProyectosPage extends BasePage {
             	
             	item.add(new Label("nombre_proyecto", new Model<String>(proyecto.getNombre())));
             	
-                item.add(new ConfirmationLink<Proyecto>("deleteLink","\\u00BFEst\\xE1 seguro de que desea borrar el proyecto? \\nAdvertencia: Se eliminar\\xE1n todas las entradas relacionadas.", new Model<Proyecto>(proyecto)) {
-                    @Override
-                    public void onClick(AjaxRequestTarget ajaxRequestTarget) {
-                        daoService.borrarProyecto(getModelObject());
-                        ajaxRequestTarget.add(listViewContainer);
-                    }
-
-                });
+                
                 item.add(new BookmarkablePageLink<EditarProyectosPage>("modifyLink",EditarProyectosPage.class,new PageParameters().add("proyectoId",proyecto.getIdProyecto()).add("proyectoNombre",proyecto.getNombre()).add("proyectoHabilitado",proyecto.isHabilitado())));
                 
                 CheckBox checkBox = new CheckBox("checkBoxProyecto", new Model<Boolean>(proyecto.isHabilitado()));
@@ -95,6 +88,15 @@ public class ProyectosPage extends BasePage {
 		        });
                 
                 item.add(checkBox);
+                
+                item.add(new ConfirmationLink<Proyecto>("deleteLink","\\u00BFEst\\xE1 seguro de que desea borrar el proyecto? \\nAdvertencia: Se eliminar\\xE1n todas las entradas relacionadas.", new Model<Proyecto>(proyecto)) {
+                    @Override
+                    public void onClick(AjaxRequestTarget ajaxRequestTarget) {
+                        daoService.borrarProyecto(getModelObject());
+                        ajaxRequestTarget.add(listViewContainer);
+                    }
+
+                });
             };
 		};
 		

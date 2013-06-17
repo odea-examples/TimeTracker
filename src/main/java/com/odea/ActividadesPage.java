@@ -77,14 +77,7 @@ public class ActividadesPage extends BasePage{
             	
             	item.add(new Label("nombre_actividad", new Model<String>(actividad.getNombre())));
             	
-                item.add(new ConfirmationLink<Actividad>("deleteLink","\\u00BFEst\\xE1 seguro de que desea borrar la actividad? \\nAdvertencia: Se eliminar\\xE1n todas las entradas relacionadas.", new Model<Actividad>(actividad)) {
-                    @Override
-                    public void onClick(AjaxRequestTarget ajaxRequestTarget) {
-                        daoService.borrarActividad(getModelObject());
-                        ajaxRequestTarget.add(getPage().get("listViewContainer"));
-                    }
-                    
-                });
+                
                 item.add(new BookmarkablePageLink<EditarActividadesPage>("modifyLink",EditarActividadesPage.class,new PageParameters().add("id",actividad.getIdActividad()).add("nombre",actividad.getNombre()).add("status",actividad.isHabilitado())));
                 
                 CheckBox checkBox = new CheckBox("checkBoxActividad", new Model<Boolean>(actividad.isHabilitado()));
@@ -97,7 +90,14 @@ public class ActividadesPage extends BasePage{
 		        });
                 
                 item.add(checkBox);
-                
+                item.add(new ConfirmationLink<Actividad>("deleteLink","\\u00BFEst\\xE1 seguro de que desea borrar la actividad? \\nAdvertencia: Se eliminar\\xE1n todas las entradas relacionadas.", new Model<Actividad>(actividad)) {
+                    @Override
+                    public void onClick(AjaxRequestTarget ajaxRequestTarget) {
+                        daoService.borrarActividad(getModelObject());
+                        ajaxRequestTarget.add(getPage().get("listViewContainer"));
+                    }
+                    
+                });
             };
             
             	
