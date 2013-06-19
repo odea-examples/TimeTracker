@@ -11,7 +11,9 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.joda.time.DateTimeConstants;
 import org.joda.time.LocalDate;
@@ -20,6 +22,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import com.odea.components.datepicker.DatePickerDTO;
 import com.odea.components.datepicker.HorasCargadasPorDia;
 import com.odea.components.slickGrid.Data;
 import com.odea.domain.Actividad;
@@ -27,6 +30,7 @@ import com.odea.domain.Entrada;
 import com.odea.domain.Proyecto;
 import com.odea.domain.Usuario;
 import com.odea.domain.Feriado;
+import com.odea.services.DAOService;
 
 @Repository
 public class EntradaDAO extends AbstractDAO {
@@ -397,6 +401,25 @@ public class EntradaDAO extends AbstractDAO {
 				return new Entrada(rs.getTimestamp(1), proyecto, actividad, String.valueOf(rs.getTime(4).getTime()), rs.getString(5), rs.getInt(6), rs.getString(7), rs.getString(8), usuario, rs.getDate(10));
 			}
 			
+		}
+
+		public List<DatePickerDTO> getHorasUsuarios(List<Usuario> usuarios) {
+			List<DatePickerDTO> listaDPdto = new ArrayList<DatePickerDTO>();
+			for (Usuario usuario : usuarios) {
+				List<HorasCargadasPorDia> horasDia = EntradaDAO.this.horasPorDia(usuario);
+				DatePickerDTO dto= new DatePickerDTO(usuario.getNombre(), 8, horasDia);
+				listaDPdto.add(dto);
+			}
+			return listaDPdto;
+		}
+
+		public Map<Date, Integer> getHorasDia(Usuario usuario) {
+			List<HorasCargadasPorDia> horasPorDia = this.horasPorDia(usuario);
+			Map<Date,Integer> mapa = new HashMap<Date, Integer>();
+			for (HorasCargadasPorDia horasCargadas : horasPorDia) {
+				mapa.put(horasCargadas.getDiaDate(), horasCargadas.getHorasCargadas());
+			}
+			return mapa;
 		}
 		
 	}

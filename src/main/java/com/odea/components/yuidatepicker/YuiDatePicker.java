@@ -75,7 +75,6 @@ public abstract class YuiDatePicker extends FormComponentPanel<Date> implements 
                 	String strFecha = getRequest().getRequestParameters().getParameterValue("selectedDate").toString();
                     YuiDatePicker.this.onDateSelect(target, strFecha);
                     
-                    System.out.println("PASEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE\n\n\n\n\n\n\n\n\n");
                     List<String> campos = Arrays.asList(strFecha.split("/"));
 					int dia = Integer.parseInt(campos.get(0));
 					int mes = Integer.parseInt(campos.get(1));

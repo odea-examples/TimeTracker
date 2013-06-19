@@ -1,0 +1,54 @@
+<wicket:head>
+	<link href="styles/tables.css" rel="stylesheet" type="text/css" />
+</wicket:head>
+
+<wicket:extend> 
+	
+	
+	<div wicket:id="listViewContainer">
+		<br/>
+		<table>
+		<thead>
+			<tr class="odd">
+				<tr wicket:id="tabla">
+					<td wicket:id="apellidoNombre" style="display:none;">nombre</td>
+					<td wicket:id="1" style="display:none;">1</td>
+					<td wicket:id="2" style="display:none;">2</td>
+					<td wicket:id="3" style="display:none;">3</td>
+					<td wicket:id="4" style="display:none;">4</td>
+					<td wicket:id="5" style="display:none;">5</td>
+					<td wicket:id="6" style="display:none;">6</td>
+					<td wicket:id="7" style="display:none;">7</td>
+					<td wicket:id="8" style="display:none;">8</td>
+					<td wicket:id="9" style="display:none;">9</td>
+				</tr>
+			</tr>
+		</thead>
+			<tfoot>
+	            <tr>
+	                <td wicket:id="navigator" align="center" colspan="4" ></td>
+	            </tr>
+        	</tfoot>				
+		</table>
+	</div>
+	
+	<div>
+	<form wicket:id="form">
+        <ul>
+        <br>
+        <br>
+        <br><br>
+        	<select wicket:id="sector"></select>        
+        	<div wicket:id="fechaDesde" name="fechaDesde"/>
+        	<br><br><br><br>
+        	<br>
+        	<br>
+        	<div wicket:id="fechaHasta" name="fechaHasta"/>
+            <input wicket:id="submit" value="Guardar" type="submit">
+        </ul>
+
+    </form>
+    </div>
+	
+
+</wicket:extend>

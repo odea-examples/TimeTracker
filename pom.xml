@@ -38,6 +38,15 @@
             <version>2.2.2</version>
         </dependency>
 		
+		
+		<!-- odea components basicdatatable -->
+		<dependency>
+            <groupId>com.odea.components</groupId>
+            <artifactId>Odea-Components</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+		
 		<dependency>
 			<groupId>com.lowagie</groupId>
 			<artifactId>itext</artifactId>

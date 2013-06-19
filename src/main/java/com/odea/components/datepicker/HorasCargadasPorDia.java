@@ -1,5 +1,6 @@
 package com.odea.components.datepicker;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -15,6 +16,16 @@ public class HorasCargadasPorDia {
 
     public String getDia() {
         return dia;
+    }
+    public Date getDiaDate(){
+    	SimpleDateFormat DATE_FMT = new SimpleDateFormat("dd/MM/yyyy");
+    	try {
+			return DATE_FMT.parse(dia);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	return null;
     }
 
     public int getHorasCargadas() {

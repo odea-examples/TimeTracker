@@ -1,0 +1,53 @@
+package com.odea.domain;
+
+import java.util.Date;
+import java.util.Map;
+
+public class UsuarioListaHoras {
+	private Usuario usuario;
+	private int dedicacion;
+	private Map<Date,Integer> diaHoras;
+	
+	/**
+	 * @return the usuario
+	 */
+	public Usuario getUsuario() {
+		return usuario;
+	}
+	/**
+	 * @param usuario the usuario to set
+	 */
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
+	/**
+	 * @return the dedicacion
+	 */
+	public int getDedicacion() {
+		return dedicacion;
+	}
+	/**
+	 * @param dedicacion the dedicacion to set
+	 */
+	public void setDedicacion(int dedicacion) {
+		this.dedicacion = dedicacion;
+	}
+	/**
+	 * @return the diaHoras
+	 */
+	public Map<Date, Integer> getDiaHoras() {
+		return diaHoras;
+	}
+	/**
+	 * @param diaHoras the diaHoras to set
+	 */
+	public void setDiaHoras(Map<Date, Integer> diaHoras) {
+		this.diaHoras = diaHoras;
+	}
+	public void agregarTodosDiaHoras(Map<Date, Integer> diaHoras){
+		this.diaHoras.putAll(diaHoras);
+	}
+	public void agregarDiaHoras(Date key, Integer value){
+		this.diaHoras.put(key, value);
+	}
+}

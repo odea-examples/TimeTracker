@@ -4,17 +4,20 @@ import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
+import com.odea.components.datepicker.DatePickerDTO;
 import com.odea.components.datepicker.HorasCargadasPorDia;
 import com.odea.components.slickGrid.Data;
 import com.odea.dao.ActividadDAO;
 import com.odea.dao.EntradaDAO;
 import com.odea.dao.FeriadoDAO;
+import com.odea.dao.ListaHorasDAO;
 import com.odea.dao.ProyectoDAO;
 import com.odea.dao.UsuarioDAO;
 import com.odea.domain.Actividad;
@@ -22,6 +25,7 @@ import com.odea.domain.Entrada;
 import com.odea.domain.Feriado;
 import com.odea.domain.Proyecto;
 import com.odea.domain.Usuario;
+import com.odea.domain.UsuarioListaHoras;
 
 @Service
 public class DAOService {
@@ -36,6 +40,8 @@ public class DAOService {
 	private transient ProyectoDAO proyectoDAO;
 	@Autowired
 	private transient FeriadoDAO feriadosDAO;
+	@Autowired
+	private transient ListaHorasDAO listaHorasDAO;
 	
 	private Gson gson= new Gson();
 	
@@ -266,5 +272,19 @@ public class DAOService {
 
 	public boolean puedeEntrar(String duracion, Date fecha, Usuario usuario, String duracionVieja) {
 		return entradaDAO.puedeEntrar(duracion,fecha,usuario,duracionVieja);
+	}
+	
+	public List<DatePickerDTO> sacarHorasUsuarios(List<Usuario> usuarios){
+		return entradaDAO.getHorasUsuarios(usuarios);
+	}
+
+	public Map<Date, Integer> getHorasDia(Usuario usuario) {
+		// TODO Auto-generated method stub
+		return entradaDAO.getHorasDia(usuario);
+	}
+
+	public List<UsuarioListaHoras> obtenerHorasUsuarios() {
+		// TODO Auto-generated method stub
+		return listaHorasDAO.obtenerHorasUsuarios();
 	}
 }

@@ -1,7 +1,9 @@
 package com.odea.components.datepicker;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import com.odea.domain.Feriado;
 
@@ -13,7 +15,7 @@ public class DatePickerDTO {
     private Collection<HorasCargadasPorDia> horasDia;
     private List<Feriado> feriados;
     private List<Integer> fecha;
-
+    
     public DatePickerDTO() {
     	
     }
@@ -43,6 +45,11 @@ public class DatePickerDTO {
     public Collection<HorasCargadasPorDia> getHorasDia() {
         return horasDia;
     }
+    
+    public int getHorasDia(String dia){
+    	
+    	return 0;
+    }
 
     public void setHorasDia(Collection<HorasCargadasPorDia> horasDia) {
         this.horasDia = horasDia;
@@ -63,4 +70,15 @@ public class DatePickerDTO {
 	public void setFecha(List<Integer> fecha) {
 		this.fecha = fecha;
 	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "DatePickerDTO [usuario=" + usuario + ", dedicacion="
+				+ dedicacion + ", horasDia=" + horasDia + ", feriados="
+				+ feriados + ", fecha=" + fecha + "]";
+	}
+	
 }
