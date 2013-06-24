@@ -3,6 +3,7 @@ package com.odea.dao;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -27,14 +28,14 @@ public class ListaHorasDAO extends AbstractDAO {
 	
 	private static final Logger logger = LoggerFactory.getLogger(ListaHorasDAO.class);
 	
-	public List<UsuarioListaHoras> obtenerHorasUsuarios(){
+	public List<UsuarioListaHoras> obtenerHorasUsuarios(Date desde, Date hasta){
 		List<UsuarioListaHoras> horasDeLosUsuarios = new ArrayList<UsuarioListaHoras>();
 		List<Usuario> usuarios= usuarioDAO.getUsuarios();
 		for (Usuario usuario : usuarios) {
 			UsuarioListaHoras usuarioConHoras = new UsuarioListaHoras();
 			usuarioConHoras.setUsuario(usuario);
 			usuarioConHoras.setDedicacion(usuarioDAO.getDedicacion(usuario));
-			usuarioConHoras.setDiaHoras(entradaDAO.getHorasDia(usuario));
+			usuarioConHoras.setDiaHoras(entradaDAO.getHorasDia(usuario,desde,hasta));
 			horasDeLosUsuarios.add(usuarioConHoras);
 		}
 		return horasDeLosUsuarios;

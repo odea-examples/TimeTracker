@@ -50,4 +50,13 @@ public class UsuarioListaHoras {
 	public void agregarDiaHoras(Date key, Integer value){
 		this.diaHoras.put(key, value);
 	}
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "UsuarioListaHoras [usuario=" + usuario + ", dedicacion="
+				+ dedicacion + ", diaHoras=" + diaHoras + "]";
+	}
+	
 }

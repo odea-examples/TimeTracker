@@ -278,13 +278,13 @@ public class DAOService {
 		return entradaDAO.getHorasUsuarios(usuarios);
 	}
 
-	public Map<Date, Integer> getHorasDia(Usuario usuario) {
+	public Map<Date, Integer> getHorasDia(Usuario usuario,Date desde, Date hasta) {
 		// TODO Auto-generated method stub
-		return entradaDAO.getHorasDia(usuario);
+		return entradaDAO.getHorasDia(usuario,desde,hasta);
 	}
 
-	public List<UsuarioListaHoras> obtenerHorasUsuarios() {
+	public List<UsuarioListaHoras> obtenerHorasUsuarios(Date desde, Date hasta) {
 		// TODO Auto-generated method stub
-		return listaHorasDAO.obtenerHorasUsuarios();
+		return listaHorasDAO.obtenerHorasUsuarios(desde,hasta);
 	}
 }

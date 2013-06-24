@@ -276,6 +276,18 @@ public class EntradaDAO extends AbstractDAO {
 				},usuario.getIdUsuario());
 	}
 	
+	public List<HorasCargadasPorDia> horasPorDiaLimitado(Usuario usuario, Date desde, Date hasta){
+		return jdbcTemplate.query("select al_date as fecha , (sum(al_duration)/10000) as duracion from  activity_log where al_user_id=? and al_date BETWEEN ? AND ? group by fecha order by fecha asc ",
+				new RowMapper() {
+
+					@Override
+					public Object mapRow(ResultSet rs, int rowNum)
+							throws SQLException {
+						return new HorasCargadasPorDia(rs.getTimestamp(1),rs.getInt(2));
+					}
+				},usuario.getIdUsuario(),desde, hasta);
+	}
+	
 	private String parsearSistemaExterno(String sistemaExterno) {
 		String resultado = sistemaExterno;
 		
@@ -413,8 +425,8 @@ public class EntradaDAO extends AbstractDAO {
 			return listaDPdto;
 		}
 
-		public Map<Date, Integer> getHorasDia(Usuario usuario) {
-			List<HorasCargadasPorDia> horasPorDia = this.horasPorDia(usuario);
+		public Map<Date, Integer> getHorasDia(Usuario usuario,Date desde, Date hasta) {
+			List<HorasCargadasPorDia> horasPorDia = this.horasPorDiaLimitado(usuario, desde, hasta);
 			Map<Date,Integer> mapa = new HashMap<Date, Integer>();
 			for (HorasCargadasPorDia horasCargadas : horasPorDia) {
 				mapa.put(horasCargadas.getDiaDate(), horasCargadas.getHorasCargadas());
