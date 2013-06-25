@@ -3,27 +3,101 @@
 </wicket:head>
 
 <wicket:extend> 
+
+
+	<div>
+	<form wicket:id="form">
+        <ul>
+        	<div>
+        		<select wicket:id="sector"></select>
+        	</div>        
+        	<div wicket:id="fechaDesde" name="fechaDesde"/>
+        	
+        	<div wicket:id="fechaHasta" name="fechaHasta" style="display: none"/>
+        	<div>
+	            <input wicket:id="submit" value="Guardar" type="submit">
+        	</div>
+        </ul>
+    </form>
+    </div>
 	
+	<br><br><br><br><br><br><br><br>
 	
 	<div wicket:id="listViewContainer">
 		<br/>
 		<table>
 		<thead>
-			<tr class="odd">
-				<tr wicket:id="tabla">
-					<td wicket:id="apellidoNombre" style="display:none;">nombre</td>
-					<td wicket:id="1" style="display:none;">1</td>
-					<td wicket:id="2" style="display:none;">2</td>
-					<td wicket:id="3" style="display:none;">3</td>
-					<td wicket:id="4" style="display:none;">4</td>
-					<td wicket:id="5" style="display:none;">5</td>
-					<td wicket:id="6" style="display:none;">6</td>
-					<td wicket:id="7" style="display:none;">7</td>
-					<td wicket:id="8" style="display:none;">8</td>
-					<td wicket:id="9" style="display:none;">9</td>
+				<tr>
+					<th scope="col">Usuarios</th>
+					<th scope="col" style="display: none" wicket:id="dia1"></th>
+					<th scope="col" ><div wicket:id="dia2"/></th>
+					<th scope="col" ><div wicket:id="dia3"/></th>
+					<th scope="col" ><div wicket:id="dia4"/></th>
+					<th scope="col" ><div wicket:id="dia5"/></th>
+					<th scope="col" ><div wicket:id="dia6"/></th>
+					<th scope="col" ><div wicket:id="dia7"/></th>
+					<th scope="col" ><div wicket:id="dia8"/></th>
+					<th scope="col" ><div wicket:id="dia9"/></th>
+					<th scope="col" ><div wicket:id="dia10"/></th>
+					<th scope="col" ><div wicket:id="dia11"/></th>
+					<th scope="col" ><div wicket:id="dia12"/></th>
+					<th scope="col" ><div wicket:id="dia13"/></th>
+					<th scope="col" ><div wicket:id="dia14"/></th>
+					<th scope="col" ><div wicket:id="dia15"/></th>
+					<th scope="col" ><div wicket:id="dia16"/></th>
+					<th scope="col" ><div wicket:id="dia17"/></th>
+					<th scope="col" ><div wicket:id="dia18"/></th>
+					<th scope="col" ><div wicket:id="dia19"/></th>
+					<th scope="col" ><div wicket:id="dia20"/></th>
+					<th scope="col" ><div wicket:id="dia21"/></th>
+					<th scope="col" ><div wicket:id="dia22"/></th>
+					<th scope="col" ><div wicket:id="dia23"/></th>
+					<th scope="col" ><div wicket:id="dia24"/></th>
+					<th scope="col" ><div wicket:id="dia25"/></th>
+					<th scope="col" ><div wicket:id="dia26"/></th>
+					<th scope="col" ><div wicket:id="dia27"/></th>
+					<th scope="col" ><div wicket:id="dia28"/></th>
+					<th scope="col" ><div wicket:id="dia29"/></th>
+					<th scope="col" ><div wicket:id="dia30"/></th>
+					<th scope="col" ><div wicket:id="dia31"/></th>
 				</tr>
-			</tr>
 		</thead>
+		<tbody>
+			<tr wicket:id="tabla">
+					<td><div wicket:id="apellidoNombre"></div></td>
+					<td><div wicket:id="contenidoDia1" style="display: none"></div></td>
+					<td><div wicket:id="contenidoDia2" style="display: none"></div></td>
+					<td><div wicket:id="contenidoDia3" style="display: none"></div></td>
+					<td><div wicket:id="contenidoDia4" style="display: none"></div></td>
+					<td><div wicket:id="contenidoDia5" style="display: none"></div></td>
+					<td><div wicket:id="contenidoDia6" style="display: none"></div></td>
+					<td><div wicket:id="contenidoDia7" style="display: none"></div></td>
+					<td><div wicket:id="contenidoDia8" style="display: none"></div></td>
+					<td><div wicket:id="contenidoDia9" style="display: none"></div></td>
+					<td><div wicket:id="contenidoDia10" style="display: none"></div></td>
+					<td><div wicket:id="contenidoDia11" style="display: none"></div></td>
+					<td><div wicket:id="contenidoDia12" style="display: none"></div></td>
+					<td><div wicket:id="contenidoDia13" style="display: none"></div></td>
+					<td><div wicket:id="contenidoDia14" style="display: none"></div></td>
+					<td><div wicket:id="contenidoDia15" style="display: none"></div></td>
+					<td><div wicket:id="contenidoDia16" style="display: none"></div></td>
+					<td><div wicket:id="contenidoDia17" style="display: none"></div></td>
+					<td><div wicket:id="contenidoDia18" style="display: none"></div></td>
+					<td><div wicket:id="contenidoDia19" style="display: none"></div></td>
+					<td><div wicket:id="contenidoDia20" style="display: none"></div></td>
+					<td><div wicket:id="contenidoDia21" style="display: none"></div></td>
+					<td><div wicket:id="contenidoDia22" style="display: none"></div></td>
+					<td><div wicket:id="contenidoDia23" style="display: none"></div></td>
+					<td><div wicket:id="contenidoDia24" style="display: none"></div></td>
+					<td><div wicket:id="contenidoDia25" style="display: none"></div></td>
+					<td><div wicket:id="contenidoDia26" style="display: none"></div></td>
+					<td><div wicket:id="contenidoDia27" style="display: none"></div></td>
+					<td><div wicket:id="contenidoDia28" style="display: none"></div></td>
+					<td><div wicket:id="contenidoDia29" style="display: none"></div></td>
+					<td><div wicket:id="contenidoDia30" style="display: none"></div></td>
+					<td><div wicket:id="contenidoDia31" style="display: none"></div></td>
+			</tr>
+		</tbody>
 			<tfoot>
 	            <tr>
 	                <td wicket:id="navigator" align="center" colspan="4" ></td>
@@ -31,24 +105,6 @@
         	</tfoot>				
 		</table>
 	</div>
-	
-	<div>
-	<form wicket:id="form">
-        <ul>
-        <br>
-        <br>
-        <br><br>
-        	<select wicket:id="sector"></select>        
-        	<div wicket:id="fechaDesde" name="fechaDesde"/>
-        	<br><br><br><br>
-        	<br>
-        	<br>
-        	<div wicket:id="fechaHasta" name="fechaHasta"/>
-            <input wicket:id="submit" value="Guardar" type="submit">
-        </ul>
-
-    </form>
-    </div>
 	
 
 </wicket:extend>
