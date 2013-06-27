@@ -44,6 +44,6 @@ public class WicketApplication extends WebApplication
 //      mountPage("pp", PruebaPage.class);
         getComponentInstantiationListeners().add(new SpringComponentInjector(this));
         
-        setRootRequestMapper(new CryptoMapper(getRootRequestMapper(), this));
+//        setRootRequestMapper(new CryptoMapper(getRootRequestMapper(), this));
 	}
 }
