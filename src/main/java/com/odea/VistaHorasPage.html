@@ -9,13 +9,13 @@
 	<form wicket:id="form">
         <ul>
         	<div>
-        		<select wicket:id="sector"></select>
+        		<select wicket:id="sector" style="position:absolute; top:100px"></select>
         	</div>        
-        	<div wicket:id="fechaDesde" name="fechaDesde"/>
+        	<div wicket:id="fechaDesde" name="fechaDesde" style="position:absolute; top:100px"/>
         	
         	<div wicket:id="fechaHasta" name="fechaHasta" style="display: none"/>
         	<div>
-	            <input wicket:id="submit" value="Guardar" type="submit">
+	            <input wicket:id="submit" value="Buscar" type="submit" style="position:absolute; top:100px; left:200px;">
         	</div>
         </ul>
     </form>
@@ -23,13 +23,13 @@
 	
 	<br><br><br><br><br><br><br><br>
 	
-	<div wicket:id="listViewContainer">
+	<div wicket:id="listViewContainer" style="position:absolute; top:390px">
 		<br/>
-		<table>
+		<table style="border-collapse:collapse;">
 		<thead>
 				<tr>
 					<th scope="col">Usuarios</th>
-					<th scope="col" style="display: none" wicket:id="dia1"></th>
+					<th scope="col" wicket:id="dia1"></th>
 					<th scope="col" ><div wicket:id="dia2"/></th>
 					<th scope="col" ><div wicket:id="dia3"/></th>
 					<th scope="col" ><div wicket:id="dia4"/></th>
@@ -63,7 +63,7 @@
 				</tr>
 		</thead>
 		<tbody>
-			<tr wicket:id="tabla">
+			<tr wicket:id="tabla" style="border-collapse:collapse;">
 					<td><div wicket:id="apellidoNombre"></div></td>
 					<td><div wicket:id="contenidoDia1" style="display: none"></div></td>
 					<td><div wicket:id="contenidoDia2" style="display: none"></div></td>

@@ -2,6 +2,7 @@ package com.odea.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.sql.Types;
 import java.text.ParseException;
@@ -97,6 +98,21 @@ public class EntradaDAO extends AbstractDAO {
 		return resultado;
 		
 	}
+	
+	public Double parsearDuracionViene(Time tiempo){
+		SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+		String t = tiempo.toString();
+		Date fechasdf= null;
+		try {
+			fechasdf= dateFormat.parse(t);
+		} catch (ParseException e1) {
+			throw new RuntimeException(e1);
+		}
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(fechasdf);
+		String tiempoString = cal.get(Calendar.HOUR_OF_DAY)+","+((cal.get(Calendar.MINUTE)));
+		return this.parsearDuracion(tiempoString);
+	}
 
 
 
@@ -119,13 +135,13 @@ public class EntradaDAO extends AbstractDAO {
 	
 	public String parsearSistemaExternoParaGrid(String iniciales) {
 		String resultado = "Ninguno";
-		if (iniciales != null) {			
+		if (iniciales != null && iniciales!="") {			
 			if (iniciales.equals("SIY")) {
 				resultado = "Sistema de Incidencias de YPF";
 			} else if (iniciales.equals("SGY")) {
 				resultado = "Sistema Geminis de YPF";
 			} else {
-				throw new RuntimeException("Iniciales de sistema externo desconocidas");
+				throw new RuntimeException("Iniciales de sistema externo desconocidas:"+iniciales);
 			}
 		}
 		
@@ -145,6 +161,8 @@ public class EntradaDAO extends AbstractDAO {
 				Proyecto proyecto = new Proyecto(rs.getInt(2), rs.getString(11),proyectoHabilitado);
 				Actividad actividad = new Actividad(rs.getInt(3), rs.getString(14), actividadHabilitada);
 				Usuario usuario = new Usuario(rs.getInt(9), rs.getString(12), rs.getString(13));
+				
+				//string to double
 				SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 				String t = rs.getTime(4).toString();
 				Date fechasdf= null;
@@ -155,6 +173,8 @@ public class EntradaDAO extends AbstractDAO {
 				}
 				Calendar cal = Calendar.getInstance();
 				cal.setTime(fechasdf);
+				
+				
 				//System.out.println(cal.get(Calendar.HOUR_OF_DAY));
 				//System.out.println(cal.get(Calendar.MINUTE));
 				
@@ -229,7 +249,7 @@ public class EntradaDAO extends AbstractDAO {
 		return entradas;
 	}
 	
-	public int getHorasSemanales(Usuario usuario, LocalDate now) 
+	public Double getHorasSemanales(Usuario usuario, LocalDate now) 
 	{
 		LocalDate lu = now.withDayOfWeek(DateTimeConstants.MONDAY);
 		LocalDate dom = now.withDayOfWeek(DateTimeConstants.SUNDAY);
@@ -238,7 +258,7 @@ public class EntradaDAO extends AbstractDAO {
 		
 		return this.getHorasDesdeHasta(usuario, lunes, domingo);
 	}
-	public int getHorasDiarias(Usuario usuario, LocalDate hoy) 
+	public Double getHorasDiarias(Usuario usuario, LocalDate hoy) 
 	{
 		LocalDate maniana = new LocalDate(hoy.toDate().getTime()+1);
 		
@@ -248,7 +268,7 @@ public class EntradaDAO extends AbstractDAO {
 		return this.getHorasDesdeHasta(usuario, diaHoy, diaManiana);
 	}
 	
-	public int getHorasMensuales(Usuario usuario, LocalDate now) 
+	public Double getHorasMensuales(Usuario usuario, LocalDate now) 
 	{
 		LocalDate primeroDelMes = now.withDayOfMonth(1);
 		LocalDate ultimoDelMes = now.plusMonths(1).withDayOfMonth(1).minusDays(1);
@@ -259,19 +279,19 @@ public class EntradaDAO extends AbstractDAO {
 		return this.getHorasDesdeHasta(usuario, primero, ultimo);
 	}
 	
-	public int getHorasDesdeHasta(Usuario usuario, Date desde, Date hasta){
-		int num = jdbcTemplate.queryForInt("SELECT HOUR(SEC_TO_TIME(SUM(TIME_TO_SEC(al_duration)))) FROM activity_log WHERE al_user_id=? and al_date BETWEEN ? AND ?",usuario.getIdUsuario(),desde, hasta);
-		return num;
+	public Double getHorasDesdeHasta(Usuario usuario, Date desde, Date hasta){
+		Double horas = jdbcTemplate.queryForObject("SELECT IFNULL(SUM(TIME_TO_SEC(al_duration))/3600, 0) FROM activity_log WHERE al_user_id=? and al_date BETWEEN ? AND ?",Double.class,usuario.getIdUsuario(),desde, hasta);
+		return horas;
 	}
 	
 	public List<HorasCargadasPorDia> horasPorDia(Usuario usuario){
-		return jdbcTemplate.query("select al_date as fecha , (sum(al_duration)/10000) as duracion from  activity_log where al_user_id=? group by fecha order by fecha desc ",
+		return jdbcTemplate.query("select al_date as fecha, IFNULL(SUM(TIME_TO_SEC(al_duration))/3600, 0) as duracion from activity_log where al_user_id=? group by fecha order by fecha desc ",
 				new RowMapper() {
 
 					@Override
 					public Object mapRow(ResultSet rs, int rowNum)
 							throws SQLException {
-						return new HorasCargadasPorDia(rs.getTimestamp(1),rs.getInt(2));
+						return new HorasCargadasPorDia(rs.getTimestamp(1),rs.getDouble(2));
 					}
 				},usuario.getIdUsuario());
 	}
@@ -388,6 +408,8 @@ public class EntradaDAO extends AbstractDAO {
 			
 			return sistemasExternos;
 		}
+		
+		
 		public boolean puedeEntrar(String duracion, Date fecha, Usuario usuario, String duracionVieja) {
 			//la duracion vieja recibida sera la cantidad de horas en milisegundos.
 			LocalDate diaBuscado = new LocalDate(fecha.getTime());
@@ -425,9 +447,9 @@ public class EntradaDAO extends AbstractDAO {
 			return listaDPdto;
 		}
 
-		public Map<Date, Integer> getHorasDia(Usuario usuario,Date desde, Date hasta) {
+		public Map<Date, Double> getHorasDia(Usuario usuario,Date desde, Date hasta) {
 			List<HorasCargadasPorDia> horasPorDia = this.horasPorDiaLimitado(usuario, desde, hasta);
-			Map<Date,Integer> mapa = new HashMap<Date, Integer>();
+			Map<Date,Double> mapa = new HashMap<Date, Double>();
 			for (HorasCargadasPorDia horasCargadas : horasPorDia) {
 				mapa.put(horasCargadas.getDiaDate(), horasCargadas.getHorasCargadas());
 			}

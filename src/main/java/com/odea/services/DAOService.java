@@ -141,15 +141,15 @@ public class DAOService {
 	}
 	
 	
-	public int getHorasSemanales(Usuario usuario, LocalDate now){
+	public Double getHorasSemanales(Usuario usuario, LocalDate now){
 		return entradaDAO.getHorasSemanales(usuario, now);
 	}
 	
-	public int getHorasDiarias(Usuario usuario, LocalDate now){
+	public Double getHorasDiarias(Usuario usuario, LocalDate now){
 		return entradaDAO.getHorasDiarias(usuario, now);
 	}
 
-	public int getHorasMensuales(Usuario usuario, LocalDate now){
+	public Double getHorasMensuales(Usuario usuario, LocalDate now){
 		return entradaDAO.getHorasMensuales(usuario, now);
 	}
 	
@@ -278,7 +278,7 @@ public class DAOService {
 		return entradaDAO.getHorasUsuarios(usuarios);
 	}
 
-	public Map<Date, Integer> getHorasDia(Usuario usuario,Date desde, Date hasta) {
+	public Map<Date, Double> getHorasDia(Usuario usuario,Date desde, Date hasta) {
 		// TODO Auto-generated method stub
 		return entradaDAO.getHorasDia(usuario,desde,hasta);
 	}

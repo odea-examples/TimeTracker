@@ -89,7 +89,7 @@ public class AnnotationsShiroAuthorizationStrategy implements IAuthorizationStra
 		
 		
 		//Dice invitado pero debería ser admin. Como lo usamos para hacer pruebas por ahora lo dejamos como invitado.
-		if (!usuario.equals("invitado")) {
+		if (!usuario.equals("admin")) {
 			
 			if (paginasAccesoLimitado.contains(page)) {
 				if (componentesNoAceptados.contains(idComponent)) {

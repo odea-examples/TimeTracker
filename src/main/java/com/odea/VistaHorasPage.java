@@ -1,5 +1,6 @@
 package com.odea;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
@@ -24,10 +25,12 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.joda.time.DateTimeConstants;
 import org.joda.time.LocalDate;
 
 import com.odea.components.datepicker.DatePickerDTO;
 import com.odea.components.yuidatepicker.YuiDatePicker;
+import com.odea.domain.Feriado;
 import com.odea.domain.FormHoras;
 import com.odea.domain.Usuario;
 import com.odea.domain.UsuarioListaHoras;
@@ -66,7 +69,7 @@ public class VistaHorasPage extends BasePage{
         
 		this.listViewContainer = new WebMarkupContainer("listViewContainer");
 		this.listViewContainer.setOutputMarkupId(true);
-	    final PageableListView<UsuarioListaHoras> usuariosHorasListView = new PageableListView<UsuarioListaHoras>("tabla", this.lstUsuariosModel, 10) {
+	    final PageableListView<UsuarioListaHoras> usuariosHorasListView = new PageableListView<UsuarioListaHoras>("tabla", this.lstUsuariosModel, 1000) {
 
 			private static final long serialVersionUID = 1L;
 	
@@ -82,24 +85,36 @@ public class VistaHorasPage extends BasePage{
             	Label nombre = new Label("apellidoNombre",usuarioHoras.getUsuario().getNombre());
             	item.add(nombre);
             	
-            	Map<Date, Integer> colHoras = new HashMap<Date, Integer>();
+            	Map<Date, Double> colHoras = new HashMap<Date, Double>();
             	colHoras.putAll(usuarioHoras.getDiaHoras());
             	
+            	List<Feriado> feriados = daoService.getFeriados();
+            	List<Date> fechaFeriados = new ArrayList<Date>();
+				for (Feriado feriado : feriados) {
+					fechaFeriados.add(feriado.getFecha());
+				}
             	LocalDate diaActual = new LocalDate(VistaHorasPage.this.desde).withDayOfMonth(1);
             	
             	for (int j = 1; j <= 31; j++) {
             		Label lbHoras;
-            		Integer horasDia = new Integer(0);
+            		Double horasDia = new Double(0);
             		
             		horasDia = colHoras.get(diaActual.toDate());
             		
             		if(horasDia != null) {    			
-            			lbHoras = new Label("contenidoDia" + j, Integer.toString(horasDia));
+            			lbHoras = new Label("contenidoDia" + j, Double.toString(horasDia));
             			lbHoras.add(new AttributeModifier("style", Model.of("display: block; ")));
+            			if(fechaFeriados.contains(diaActual.toDate()) || diaActual.getDayOfWeek()==DateTimeConstants.SATURDAY || diaActual.getDayOfWeek()==DateTimeConstants.SUNDAY ){
+//            				lbHoras.add(new AttributeAppender("style", Model.of("background-color:gray;")));
+            				//background-clip: border-box; background-color: blue; color: white; border: 5px solid blue; border-radius: 5px;
+            			}
             			if (horasDia < usuarioHoras.getDedicacion()) {
             				lbHoras.add(new AttributeAppender("style", Model.of("color:red;")));
             			}
-            		} else {
+            		}else if(fechaFeriados.contains(diaActual.toDate()) || diaActual.getDayOfWeek()==DateTimeConstants.SATURDAY || diaActual.getDayOfWeek()==DateTimeConstants.SUNDAY ){
+            			lbHoras = new Label("contenidoDia" + j, "0");
+//            			lbHoras.add(new AttributeModifier("style", Model.of("background-color:gray;")));
+            		}else{
             			lbHoras = new Label("contenidoDia" + j, "0");
             		}
             		

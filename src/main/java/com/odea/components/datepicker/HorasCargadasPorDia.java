@@ -6,9 +6,9 @@ import java.util.Date;
 
 public class HorasCargadasPorDia {
     private String dia;
-    private int horasCargadas;
+    private double horasCargadas;
 
-    public HorasCargadasPorDia(Date dia, int horasCargadas) {
+    public HorasCargadasPorDia(Date dia, double horasCargadas) {
         SimpleDateFormat DATE_FMT = new SimpleDateFormat("dd/MM/yyyy");
         this.dia = DATE_FMT.format(dia);
         this.horasCargadas = horasCargadas;
@@ -28,7 +28,7 @@ public class HorasCargadasPorDia {
     	return null;
     }
 
-    public int getHorasCargadas() {
+    public double getHorasCargadas() {
         return horasCargadas;
     }
 
