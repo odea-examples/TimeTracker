@@ -685,9 +685,10 @@ public class EntradasPage extends BasePage {
 		String listaSistemaExterno = daoService.getSistemasExternos().toString();
 		String sistemasExternos = listaSistemaExterno.subSequence(1, listaSistemaExterno.length() - 1).toString();
 		// columna:id,nombre,widht,minwidht,maxwidth,cssclass,field,formater,editor,validator,options
+		Columna columna10 = new Columna("checkbox","check",40,20,120,"cell-effort-driven","effortDriven","Slick.Formatters.Checkmark","Slick.Editors.Checkbox",null,null);
 		Columna columna = new Columna("delCol", " ", 20, 20, 60, null, "del", "Slick.Formatters.DeleteButton", null, null, null);
-//		Columna columna10 = new Columna("columna10", "col10guacho", 20, 20, 60, null, "del", "Slick.Formatters.DeleteButton", null, null, null);
-		Columna columna2 = new Columna("duration", "Duracion", 60, 60, 60, "cell-title", "duration", null, "Slick.Editors.Text", "requiredDurationValidator", null);
+//		Columna columna10 = new Columna("columna10", "col10guacho", 20, 20, 60, null, "delete", null, "Slick.Editors.Text", null, null);
+		Columna columna2 = new Columna("duration", "Duración", 60, 60, 60, "cell-title", "duration", null, "Slick.Editors.Text", "requiredDurationValidator", null);
 		//"Slick.Editors.SelectRelatedEditor" agregar justo despues del primer null, cambia el tipo de editor de la columna
 		Columna columna3 = new Columna("actividad", "Actividad", 150, 100, 300, "cell-title", "actividad", null, null, "requiredFieldValidator",	actividades);
 		//"Slick.Editors.SelectEditor" agregar justo despues del primer null, cambia el tipo de editor de la columna
@@ -709,7 +710,7 @@ public class EntradasPage extends BasePage {
 		columnas.add(columna8);
 		columnas.add(columna7);
 		columnas.add(columna);
-//		columnas.add(columna10);
+		columnas.add(columna10);
 		
 		String texto = "[";
 		for (Columna col : columnas) {

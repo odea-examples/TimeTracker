@@ -72,14 +72,15 @@ public class VistaHorasPage extends BasePage{
 	    final PageableListView<UsuarioListaHoras> usuariosHorasListView = new PageableListView<UsuarioListaHoras>("tabla", this.lstUsuariosModel, 1000) {
 
 			private static final long serialVersionUID = 1L;
+			
 	
 			@Override
 	        protected void populateItem(ListItem<UsuarioListaHoras> item) {
 	           	final UsuarioListaHoras usuarioHoras = item.getModel().getObject();   
-	           	
-	           	if((item.getIndex() % 2) == 0){
-	           		item.add(new AttributeModifier("class","odd"));
-	           	}
+//	           	
+//	           	if((item.getIndex() % 2) == 0){
+//	           		item.add(new AttributeModifier("class","odd"));
+//	           	}
             	
 	           	
             	Label nombre = new Label("apellidoNombre",usuarioHoras.getUsuario().getNombre());
