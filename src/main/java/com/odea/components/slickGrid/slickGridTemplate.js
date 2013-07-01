@@ -103,6 +103,7 @@ function ticketBugzillaValidator(value) {
 //Now define your buttonFormatter function
   function queueAndExecuteCommand(item, column, editCommand) {
     editCommand.execute();
+    alert(JSON.stringify(item, null, 2));
     if (!sistemaChecker && !actividadChecker){
     	alert("Arregle los errores antes de continuar");
     }

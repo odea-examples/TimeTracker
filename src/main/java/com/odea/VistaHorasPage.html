@@ -23,46 +23,22 @@
     </form>
     </div>
 	
+	<div wicket:id="radioContainerUsuarios" style="position: absolute; left: 700px; top: 115px;">
+                <span wicket:id="radioGroup">
+                    Solo En Rojo<input wicket:id="mostrarEnRojo" type="radio"/>
+                    Todas<input wicket:id="mostrarTodas" type="radio" checked/>
+                  </span>
+   
+    </div>  
+	
 	<br><br><br><br><br><br><br><br>
+	
 	
 	<div wicket:id="listViewContainer" style="position:absolute; top:390px ;width:800px">
 		<br/>
 		<table style="border-collapse:collapse; width:800px">
 		<thead>
-				<tr class="skinnyTable">
-					<th class="skinnyTable" scope="col">Usuarios</th>
-					<th class="skinnyTable" scope="col" wicket:id="dia1"></th>
-					<th class="skinnyTable" scope="col" wicket:id="dia2"></th>
-					<th class="skinnyTable" scope="col" wicket:id="dia3"></th>
-					<th class="skinnyTable" scope="col" wicket:id="dia4"></th>
-					<th class="skinnyTable" scope="col" wicket:id="dia5"></th>
-					<th class="skinnyTable" scope="col" wicket:id="dia6"></th>
-					<th class="skinnyTable" scope="col" wicket:id="dia7"></th>
-					<th class="skinnyTable" scope="col" wicket:id="dia8"></th>
-					<th class="skinnyTable" scope="col" wicket:id="dia9"></th>
-					<th class="skinnyTable" scope="col" wicket:id="dia10"></th>
-					<th class="skinnyTable" scope="col" wicket:id="dia11"></th>
-					<th class="skinnyTable" scope="col" wicket:id="dia12"></th>
-					<th class="skinnyTable" scope="col" wicket:id="dia13"></th>
-					<th class="skinnyTable" scope="col" wicket:id="dia14"></th>
-					<th class="skinnyTable" scope="col" wicket:id="dia15"></th>
-					<th class="skinnyTable" scope="col" wicket:id="dia16"></th>
-					<th class="skinnyTable" scope="col" wicket:id="dia17"></th>
-					<th class="skinnyTable" scope="col" wicket:id="dia18"></th>
-					<th class="skinnyTable" scope="col" wicket:id="dia19"></th>
-					<th class="skinnyTable" scope="col" wicket:id="dia20"></th>
-					<th class="skinnyTable" scope="col" wicket:id="dia21"></th>
-					<th class="skinnyTable" scope="col" wicket:id="dia22"></th>
-					<th class="skinnyTable" scope="col" wicket:id="dia23"></th>
-					<th class="skinnyTable" scope="col" wicket:id="dia24"></th>
-					<th class="skinnyTable" scope="col" wicket:id="dia25"></th>
-					<th class="skinnyTable" scope="col" wicket:id="dia26"></th>
-					<th class="skinnyTable" scope="col" wicket:id="dia27"></th>
-					<th class="skinnyTable" scope="col" wicket:id="dia28"></th>
-					<th class="skinnyTable" scope="col" wicket:id="dia29"></th>
-					<th class="skinnyTable" scope="col" wicket:id="dia30"></th>
-					<th class="skinnyTable" scope="col" wicket:id="dia31"></th>
-				</tr>
+				<tr class="skinnyTable" wicket:id="tituloHtml"/>
 		</thead>
 		<tbody>
 			<tr wicket:id="tabla" class="skinnyTable">
@@ -107,6 +83,5 @@
         	</tfoot>				
 		</table>
 	</div>
-	
 
 </wicket:extend>

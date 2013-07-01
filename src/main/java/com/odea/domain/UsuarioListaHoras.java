@@ -50,6 +50,15 @@ public class UsuarioListaHoras {
 	public void agregarDiaHoras(Date key, Double value){
 		this.diaHoras.put(key, value);
 	}
+	public boolean tieneDiaMenorDedicacion(){
+		Boolean devuelve= true;
+		for (Double hora : diaHoras.values()) {
+			if (hora<dedicacion){
+				devuelve=false;
+			}
+		}
+		return devuelve;
+	}
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
