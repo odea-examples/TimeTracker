@@ -72,6 +72,10 @@ public class UsuarioDAO extends AbstractDAO {
 		return jdbcTemplate.queryForInt("SELECT dedicacion FROM dedicacion_usuario WHERE usuario_id=? AND fecha_hasta is NULL", usuario.getIdUsuario());
 	}
 	
+	public String getNombreYApellido(Usuario usuario){
+		return jdbcTemplate.queryForObject("SELECT u_name FROM users WHERE u_id=?", String.class ,usuario.getIdUsuario());
+	}
+	
 	
 	  public void setDedicacion(Usuario usuario, int dedicacion){
 		Date fechaActual = new Date();	

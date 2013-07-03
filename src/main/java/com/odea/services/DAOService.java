@@ -287,4 +287,9 @@ public class DAOService {
 		// TODO Auto-generated method stub
 		return listaHorasDAO.obtenerHorasUsuarios(desde,hasta);
 	}
+
+	public String getNombreApellido(Usuario usuario) {
+		// TODO Auto-generated method stub
+		return usuarioDAO.getNombreYApellido(usuario);
+	}
 }

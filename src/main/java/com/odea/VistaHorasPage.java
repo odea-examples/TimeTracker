@@ -108,11 +108,10 @@ public class VistaHorasPage extends BasePage{
 //	           	if((item.getIndex() % 2) == 0){
 //	           		item.add(new AttributeModifier("class","odd"));
 //	           	}
-            	
+            	String nombreCorregido= daoService.getNombreApellido(usuarioHoras.getUsuario()).replaceAll("Ã³","ó").replaceAll("Ã©","é").replaceAll("Ã±","ñ").replaceAll("Ã¡","á").replaceAll("Ã­","í");
 	           	
-            	Label nombre = new Label("apellidoNombre",usuarioHoras.getUsuario().getNombre());
+            	Label nombre = new Label("apellidoNombre",nombreCorregido);
             	item.add(nombre);
-            	
             	Map<Date, Double> colHoras = new HashMap<Date, Double>();
             	colHoras.putAll(usuarioHoras.getDiaHoras());
             	
