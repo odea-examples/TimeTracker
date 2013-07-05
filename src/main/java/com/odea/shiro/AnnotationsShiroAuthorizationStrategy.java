@@ -3,22 +3,34 @@ package com.odea.shiro;
 import java.util.ArrayList;
 
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.apache.wicket.Component;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.authorization.Action;
 import org.apache.wicket.authorization.IAuthorizationStrategy;
 import org.apache.wicket.request.component.IRequestableComponent;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.odea.LoginPage;
 import com.odea.NoAutorizadoPage;
+import com.odea.dao.UsuarioDAO;
+import com.odea.domain.Usuario;
+import com.odea.services.DAOService;
 
 public class AnnotationsShiroAuthorizationStrategy implements IAuthorizationStrategy
 {
 	private static final Logger LOG = LoggerFactory.getLogger(AnnotationsShiroAuthorizationStrategy.class);
-
+	
+	
 	public String usuario;
+	@SpringBean
+	private transient DAOService daoService;
+	
+	@Autowired
+	private transient UsuarioDAO usuarioDAO;
 	
 	
 	@Override
@@ -31,6 +43,8 @@ public class AnnotationsShiroAuthorizationStrategy implements IAuthorizationStra
 	
 	@Override
 	public boolean isActionAuthorized(Component component, Action action) {
+		
+		
 		
 		boolean loggedIn = SecurityUtils.getSubject().getPrincipal() != null;
 		String paginaActual = component.getPage().getClass().toString();
@@ -54,7 +68,9 @@ public class AnnotationsShiroAuthorizationStrategy implements IAuthorizationStra
 	//Si devuelve true se renderiza, sino no.
 	private boolean verificarComponente(Component component, Action action) {
 		
-		this.usuario = SecurityUtils.getSubject().getPrincipal().toString();
+		final Subject subject = SecurityUtils.getSubject();
+		this.usuario=subject.getPrincipal().toString();
+//		this.usuario = usuarioDAO.getUsuario(subject.getPrincipal().toString());
 		String idComponent = component.getId();
 		String page = component.getPage().getClass().toString();
 		String accion = action.toString();
@@ -89,7 +105,7 @@ public class AnnotationsShiroAuthorizationStrategy implements IAuthorizationStra
 		
 		
 		//Dice invitado pero debería ser admin. Como lo usamos para hacer pruebas por ahora lo dejamos como invitado.
-		if (!usuario.equals("admin")) {
+		if (!subject.hasRole("admin")) {
 			
 			if (paginasAccesoLimitado.contains(page)) {
 				if (componentesNoAceptados.contains(idComponent)) {

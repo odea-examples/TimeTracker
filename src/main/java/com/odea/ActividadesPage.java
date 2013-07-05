@@ -78,7 +78,7 @@ public class ActividadesPage extends BasePage{
             	item.add(new Label("nombre_actividad", new Model<String>(actividad.getNombre())));
             	
                 
-                item.add(new BookmarkablePageLink<EditarActividadesPage>("modifyLink",EditarActividadesPage.class,new PageParameters().add("id",actividad.getIdActividad()).add("nombre",actividad.getNombre()).add("status",actividad.isHabilitado())));
+                item.add(new BookmarkablePageLink<EditarActividadesPage>("modifyLink",EditarActividadesPage.class,new PageParameters().add("id",actividad.getIdActividad()).add("nombreLogin",actividad.getNombre()).add("status",actividad.isHabilitado())));
                 
                 CheckBox checkBox = new CheckBox("checkBoxActividad", new Model<Boolean>(actividad.isHabilitado()));
                 checkBox.add(new AjaxEventBehavior("onchange") {

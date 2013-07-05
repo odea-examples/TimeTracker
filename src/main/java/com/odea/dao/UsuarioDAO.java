@@ -28,15 +28,15 @@ public class UsuarioDAO extends AbstractDAO {
 	
 	
 	public Usuario getUsuario(String nombre){
-		Usuario usuario = jdbcTemplate.queryForObject("SELECT u.u_id, u.u_login, u.u_password FROM users u WHERE u_login=?", 
-				new RowMapperUsuario(), nombre);
+		Usuario usuario = jdbcTemplate.queryForObject("SELECT u.u_id, u.u_login, u.u_password, u.u_name, u.u_comanager FROM users u WHERE u_login=?", 
+				new RowMapperUsuario2(), nombre);
 		
 		return usuario;
 	}
 	
 	public void modificarUsuario(Usuario usuario)
 	{
-		jdbcTemplate.update("UPDATE users SET u_login=?, u_password=password(?) WHERE u_id=?", usuario.getNombre(), usuario.getPassword(), usuario.getIdUsuario());
+		jdbcTemplate.update("UPDATE users SET u_login=?, u_password=password(?) WHERE u_id=?", usuario.getNombreLogin(), usuario.getPassword(), usuario.getIdUsuario());
 	}
 	
 	
@@ -49,7 +49,7 @@ public class UsuarioDAO extends AbstractDAO {
 	
 	public void agregarUsuario(Usuario usuario){
 		
-		jdbcTemplate.update("INSERT INTO users(u_id,u_login,u_password) VALUES (?,?,?)", usuario.getIdUsuario(), usuario.getNombre(), usuario.getPassword());
+		jdbcTemplate.update("INSERT INTO users(u_id,u_login,u_password) VALUES (?,?,?)", usuario.getIdUsuario(), usuario.getNombreLogin(), usuario.getPassword());
 	}
 	
 	public Collection<Usuario> getUsuarios(Proyecto proyecto){
@@ -93,6 +93,14 @@ public class UsuarioDAO extends AbstractDAO {
 		@Override
 		public Usuario mapRow(ResultSet rs, int rowNum) throws SQLException {
 			return new Usuario(rs.getInt(1),rs.getString(2),rs.getString(3));
+		}
+		
+	}
+	public class RowMapperUsuario2 implements RowMapper<Usuario>{
+
+		@Override
+		public Usuario mapRow(ResultSet rs, int rowNum) throws SQLException {
+			return new Usuario(rs.getInt(1),rs.getString(2),rs.getString(3),rs.getString(4),(rs.getInt(5)==1));
 		}
 		
 	}

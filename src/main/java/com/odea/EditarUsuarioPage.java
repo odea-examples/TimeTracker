@@ -63,7 +63,7 @@ public class EditarUsuarioPage extends BasePage {
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, EditUsuarioForm form) {
 				daoService.modificarUsuario(getModelObject());
-                UsernamePasswordToken token = new UsernamePasswordToken(getModelObject().getNombre(), getModelObject().getPassword());
+                UsernamePasswordToken token = new UsernamePasswordToken(getModelObject().getNombreLogin(), getModelObject().getPassword());
                 Subject currentUser = SecurityUtils.getSubject();
                 currentUser.login(token);
 				selectModalWindow.show(target);
@@ -92,7 +92,7 @@ public class EditarUsuarioPage extends BasePage {
 			final FeedbackPanel feedback = new FeedbackPanel("feedback");
 			feedback.setOutputMarkupId(true);
 			
-			login = new RequiredTextField<String>("nombre");
+			login = new RequiredTextField<String>("nombreLogin");
 			
 			password = new PasswordTextField("password");
 			

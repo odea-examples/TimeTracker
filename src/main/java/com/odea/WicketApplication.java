@@ -42,6 +42,7 @@ public class WicketApplication extends WebApplication
         mountPage("reportHoras", VistaHorasPage.class);
 //        mountPage("news", News.class);
 //      mountPage("pp", PruebaPage.class);
+        mountPage("pp",PermisosPage.class);
         getComponentInstantiationListeners().add(new SpringComponentInjector(this));
         
 //        setRootRequestMapper(new CryptoMapper(getRootRequestMapper(), this));

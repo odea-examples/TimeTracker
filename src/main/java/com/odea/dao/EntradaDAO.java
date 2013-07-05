@@ -441,7 +441,7 @@ public class EntradaDAO extends AbstractDAO {
 			List<DatePickerDTO> listaDPdto = new ArrayList<DatePickerDTO>();
 			for (Usuario usuario : usuarios) {
 				List<HorasCargadasPorDia> horasDia = EntradaDAO.this.horasPorDia(usuario);
-				DatePickerDTO dto= new DatePickerDTO(usuario.getNombre(), 8, horasDia);
+				DatePickerDTO dto= new DatePickerDTO(usuario.getNombreLogin(), 8, horasDia);
 				listaDPdto.add(dto);
 			}
 			return listaDPdto;

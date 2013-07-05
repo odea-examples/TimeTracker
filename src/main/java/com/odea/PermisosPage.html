@@ -1,9 +1,42 @@
+<wicket:head>
+	<link href="styles/tables.css" rel="stylesheet" type="text/css" />
+	
+	<style type='text/css'>
+		label { float: left; width: 120px; }
+		input[type=text] {width: 100px; }
+		select {width: 300px;}		
+	</style>
+	
+</wicket:head>
 <wicket:extend>
 
-	<div style="position: relative; min-width: 1024px; min-height: 270px;;">
-
-		<div wicket:id="slickgrid"></div>
-	
+	<div wicket:id="listaContainer" style="position: relative; min-width: 1024px; min-height: 270px;">
+		<table>
+			<thead>
+			<tr class="odd">
+				<th scope="col">Actividades</th>
+				<th scope="col">permiso1</th>
+				<th scope="col">permiso2</th>
+				<th scope="col">permiso3</th>
+				<th scope="col">permiso4</th>
+				<th scope="col">permiso5</th>
+			</tr>
+			</thead>
+			<tbody>
+				<tr wicket:id="lista">
+					<td wicket:id="nombre_usuario"/>
+					<td><input type="checkbox" wicket:id="check1"/></td>
+					<td><input type="checkbox" wicket:id="check2"/></td>
+					<td><input type="checkbox" wicket:id="check3"/></td>
+					<td><input type="checkbox" wicket:id="check4"/></td>
+					<td><input type="checkbox" wicket:id="check5"/></td>
+				</tr>
+			</tbody>	
+			<tfoot>
+	            <tr>
+	            </tr>
+        	</tfoot>				
+		</table>
 	</div>
 	
 </wicket:extend>

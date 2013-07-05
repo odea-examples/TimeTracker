@@ -47,7 +47,7 @@ public class EditarActividadesPage extends BasePage{
         this.actividadModel = new CompoundPropertyModel<Actividad>(new LoadableDetachableModel<Actividad>() {
             @Override
             protected Actividad load() {
-                return new Actividad(parameters.get("id").toInt(), parameters.get("nombre").toString(), parameters.get("status").toBoolean());
+                return new Actividad(parameters.get("id").toInt(), parameters.get("nombreLogin").toString(), parameters.get("status").toBoolean());
             }
         });
         this.preparePage();
@@ -77,7 +77,7 @@ public class EditarActividadesPage extends BasePage{
 		public ActividadForm(String id, IModel<Actividad> model) {
 			super(id, model);
 			
-	        RequiredTextField<String> nombre = new RequiredTextField<String>("nombre");
+	        RequiredTextField<String> nombre = new RequiredTextField<String>("nombreLogin");
 	        nombre.add(new FocusOnLoadBehavior());
 		
 	        LoadableDetachableModel todosModel = new LoadableDetachableModel() {

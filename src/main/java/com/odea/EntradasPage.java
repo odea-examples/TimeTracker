@@ -84,9 +84,13 @@ public class EntradasPage extends BasePage {
 
 		final Subject subject = SecurityUtils.getSubject();
 		this.slickGridJsonCols = Model.of(this.getColumns());
+		
 
 		this.usuario = this.daoService.getUsuario(subject.getPrincipal()
 				.toString());
+		
+		System.out.println("/n/n/n/n/n/n/n/n/n/n/n/n/n/n/n/n/n/n/n/n/n/n/n/n/n/n/n/n/n/n/n");
+		System.out.println(this.usuario.getEsCoManager());
 
 		this.lstDataModel = new LoadableDetachableModel<String>() {
 			@Override
@@ -318,7 +322,7 @@ public class EntradasPage extends BasePage {
 		final DropDownChoice<Usuario> selectorUsuario = new DropDownChoice<Usuario>("selectorUsuario",daoService.getUsuarios(),new IChoiceRenderer<Usuario>() {
 			@Override
 			public Object getDisplayValue(Usuario object) {
-				return object.getNombre();
+				return object.getNombreLogin();
 			}
 
 			@Override
@@ -501,7 +505,7 @@ public class EntradasPage extends BasePage {
 				public DatePickerDTO getDatePickerData() {
 					DatePickerDTO dto = new DatePickerDTO();
 					dto.setDedicacion(daoService.getDedicacion(usuario));
-					dto.setUsuario(usuario.getNombre());
+					dto.setUsuario(usuario.getNombreLogin());
 					
 					Collection<HorasCargadasPorDia> c = daoService.getHorasDiaras(usuario);
 					dto.setHorasDia(c);
