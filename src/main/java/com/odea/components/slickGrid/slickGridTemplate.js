@@ -103,6 +103,7 @@ function ticketBugzillaValidator(value) {
 //Now define your buttonFormatter function
   function queueAndExecuteCommand(item, column, editCommand) {
     editCommand.execute();
+    alert(JSON.stringify(item, null, 2));
     if (!sistemaChecker && !actividadChecker){
     	alert("Arregle los errores antes de continuar");
     }
@@ -136,14 +137,17 @@ function ticketBugzillaValidator(value) {
 function init(dataSecundaria) {
 	if ((dataSecundaria == null || dataSecundaria == undefined || !dataSecundaria.length) && ${data}!=null) {
 		data= ${data};
+//		alert("si");
 	  }
 	  else if(dataSecundaria != "vacio" && !(dataSecundaria == null || dataSecundaria == undefined || !dataSecundaria.length)){
 		data= dataSecundaria;
+//		alert("si2");
 	  }
 	  else{
 		  data = [];
 	  }
   dataView = new Slick.Data.DataView({ inlineFilters: true });
+//  alert(JSON.stringify(dataView, null, 2));
   grid = new Slick.Grid("${selector}", dataView, columns, options);
   grid.setSelectionModel(new Slick.RowSelectionModel());
 
@@ -206,6 +210,7 @@ function init(dataSecundaria) {
 
   // initialize the model after all the events have been hooked up
   dataView.beginUpdate();
+//  alert(JSON.stringify(data, null, 2));
   dataView.setItems(data);
   dataView.endUpdate();
 

@@ -54,7 +54,7 @@ public class UsuariosPage extends BasePage {
             		item.add(new AttributeModifier("class","odd"));
             	}
             	
-            	item.add(new Label("nombre", new Model<String>(usuario.getNombre())));
+            	item.add(new Label("nombreLogin", new Model<String>(usuario.getNombreLogin())));
             	
             	
             	final TextField<Integer> dedicacion = new TextField<Integer>("dedicacion", new Model<Integer>(daoService.getDedicacion(usuario)));

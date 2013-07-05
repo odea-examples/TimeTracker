@@ -65,9 +65,9 @@ public class EntradasPage extends BasePage {
 	private LocalDate fechaActual = new LocalDate();
 	private String radioSeleccionado = "dia";
 	private IModel<String> lstDataModel;
-	private IModel<Integer> horasSemanalesModel;
-	private IModel<Integer> horasMesModel;
-	private IModel<Integer> horasDiaModel;
+	private IModel<Double> horasSemanalesModel;
+	private IModel<Double> horasMesModel;
+	private IModel<Double> horasDiaModel;
 	private IModel<String> slickGridJsonCols;
 	private Label mensajeProyecto;
 	private Label mensajeActividad;
@@ -84,9 +84,13 @@ public class EntradasPage extends BasePage {
 
 		final Subject subject = SecurityUtils.getSubject();
 		this.slickGridJsonCols = Model.of(this.getColumns());
+		
 
 		this.usuario = this.daoService.getUsuario(subject.getPrincipal()
 				.toString());
+		
+		System.out.println("/n/n/n/n/n/n/n/n/n/n/n/n/n/n/n/n/n/n/n/n/n/n/n/n/n/n/n/n/n/n/n");
+		System.out.println(this.usuario.getEsCoManager());
 
 		this.lstDataModel = new LoadableDetachableModel<String>() {
 			@Override
@@ -112,25 +116,27 @@ public class EntradasPage extends BasePage {
 			}
 		};
 
-		this.horasSemanalesModel = new LoadableDetachableModel<Integer>() {
+		this.horasSemanalesModel = new LoadableDetachableModel<Double>() {
 			@Override
-			protected Integer load() {
+			protected Double load() {
 				return daoService.getHorasSemanales(usuario, fechaActual);
 			}
 
 		};
-		this.horasMesModel = new LoadableDetachableModel<Integer>() {
+		this.horasMesModel = new LoadableDetachableModel<Double>() {
 			@Override
-			protected Integer load() {
+			protected Double load() {
 				return daoService.getHorasMensuales(usuario, fechaActual);
 			}
 
 		};
 
-		this.horasDiaModel = new LoadableDetachableModel<Integer>() {
+		this.horasDiaModel = new LoadableDetachableModel<Double>() {
 			@Override
-			protected Integer load() {
-				return daoService.getHorasDiarias(usuario, fechaActual);
+			protected Double load() {
+				Double devolver = daoService.getHorasDiarias(usuario, fechaActual);
+				System.out.println(devolver);
+				return devolver;
 			}
 
 		};
@@ -316,7 +322,7 @@ public class EntradasPage extends BasePage {
 		final DropDownChoice<Usuario> selectorUsuario = new DropDownChoice<Usuario>("selectorUsuario",daoService.getUsuarios(),new IChoiceRenderer<Usuario>() {
 			@Override
 			public Object getDisplayValue(Usuario object) {
-				return object.getNombre();
+				return object.getNombreLogin();
 			}
 
 			@Override
@@ -499,7 +505,7 @@ public class EntradasPage extends BasePage {
 				public DatePickerDTO getDatePickerData() {
 					DatePickerDTO dto = new DatePickerDTO();
 					dto.setDedicacion(daoService.getDedicacion(usuario));
-					dto.setUsuario(usuario.getNombre());
+					dto.setUsuario(usuario.getNombreLogin());
 					
 					Collection<HorasCargadasPorDia> c = daoService.getHorasDiaras(usuario);
 					dto.setHorasDia(c);
@@ -683,8 +689,10 @@ public class EntradasPage extends BasePage {
 		String listaSistemaExterno = daoService.getSistemasExternos().toString();
 		String sistemasExternos = listaSistemaExterno.subSequence(1, listaSistemaExterno.length() - 1).toString();
 		// columna:id,nombre,widht,minwidht,maxwidth,cssclass,field,formater,editor,validator,options
+		Columna columna10 = new Columna("checkbox","check",40,20,120,"cell-effort-driven","effortDriven","Slick.Formatters.Checkmark","Slick.Editors.Checkbox",null,null);
 		Columna columna = new Columna("delCol", " ", 20, 20, 60, null, "del", "Slick.Formatters.DeleteButton", null, null, null);
-		Columna columna2 = new Columna("duration", "Duracion", 60, 60, 60, "cell-title", "duration", null, "Slick.Editors.Text", "requiredDurationValidator", null);
+//		Columna columna10 = new Columna("columna10", "col10guacho", 20, 20, 60, null, "delete", null, "Slick.Editors.Text", null, null);
+		Columna columna2 = new Columna("duration", "Duración", 60, 60, 60, "cell-title", "duration", null, "Slick.Editors.Text", "requiredDurationValidator", null);
 		//"Slick.Editors.SelectRelatedEditor" agregar justo despues del primer null, cambia el tipo de editor de la columna
 		Columna columna3 = new Columna("actividad", "Actividad", 150, 100, 300, "cell-title", "actividad", null, null, "requiredFieldValidator",	actividades);
 		//"Slick.Editors.SelectEditor" agregar justo despues del primer null, cambia el tipo de editor de la columna
@@ -706,6 +714,7 @@ public class EntradasPage extends BasePage {
 		columnas.add(columna8);
 		columnas.add(columna7);
 		columnas.add(columna);
+		columnas.add(columna10);
 		
 		String texto = "[";
 		for (Columna col : columnas) {

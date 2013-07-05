@@ -6,7 +6,7 @@ import java.util.Map;
 public class UsuarioListaHoras {
 	private Usuario usuario;
 	private int dedicacion;
-	private Map<Date,Integer> diaHoras;
+	private Map<Date,Double> diaHoras;
 	
 	/**
 	 * @return the usuario
@@ -35,20 +35,29 @@ public class UsuarioListaHoras {
 	/**
 	 * @return the diaHoras
 	 */
-	public Map<Date, Integer> getDiaHoras() {
+	public Map<Date, Double> getDiaHoras() {
 		return diaHoras;
 	}
 	/**
 	 * @param diaHoras the diaHoras to set
 	 */
-	public void setDiaHoras(Map<Date, Integer> diaHoras) {
+	public void setDiaHoras(Map<Date, Double> diaHoras) {
 		this.diaHoras = diaHoras;
 	}
-	public void agregarTodosDiaHoras(Map<Date, Integer> diaHoras){
+	public void agregarTodosDiaHoras(Map<Date, Double> diaHoras){
 		this.diaHoras.putAll(diaHoras);
 	}
-	public void agregarDiaHoras(Date key, Integer value){
+	public void agregarDiaHoras(Date key, Double value){
 		this.diaHoras.put(key, value);
+	}
+	public boolean tieneDiaMenorDedicacion(){
+		Boolean devuelve= true;
+		for (Double hora : diaHoras.values()) {
+			if (hora<dedicacion){
+				devuelve=false;
+			}
+		}
+		return devuelve;
 	}
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()

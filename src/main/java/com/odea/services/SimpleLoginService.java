@@ -23,6 +23,7 @@ public class SimpleLoginService implements LoginService {
         logger.debug("Login attempt user: " + user);
         UsernamePasswordToken token = new UsernamePasswordToken(user, passwd);
         Subject currentUser = SecurityUtils.getSubject();
+        currentUser.hasRole("admin");
         currentUser.login(token);  	
     }
     

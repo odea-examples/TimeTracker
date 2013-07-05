@@ -5,16 +5,33 @@ import java.io.Serializable;
 public class Usuario implements Serializable, Comparable<Usuario> {
 	
 	private int idUsuario;
-	private String nombre;
+	private String nombreLogin;
 	private String password;
+	private String nombre;
+	private Boolean esCoManager;
 	
-	
+	public Usuario(int id, String nombreLogin, String password,String nombre,Boolean coManage) {
+		this.idUsuario = id;
+		this.nombreLogin = nombreLogin;
+		this.password = password;
+		this.nombre = nombre;
+		this.esCoManager = coManage;
+	}
+
 	public Usuario(int id, String nombre, String password) {
 		this.idUsuario = id;
-		this.nombre = nombre;
+		this.nombreLogin = nombre;
 		this.password = password;
+		this.nombre="default";
+		this.esCoManager = false;
 	}
 	
+	public Boolean getEsCoManager() {
+		return esCoManager;
+	}
+	public void setEsCoManager(Boolean esCoManager) {
+		this.esCoManager = esCoManager;
+	}
 	
 	
 	public Usuario(int id){
@@ -29,6 +46,12 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 		this.idUsuario = idUsuario;
 	}
 
+	public String getNombreLogin() {
+		return nombreLogin;
+	}
+	public void setNombreLogin(String nombre) {
+		this.nombreLogin = nombre;
+	}
 	public String getNombre() {
 		return nombre;
 	}
@@ -48,14 +71,14 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 
 	@Override
 	public String toString() {
-		return this.nombre;
+		return this.nombreLogin;
 	}
 
 	
 	
 	@Override
 	public int compareTo(Usuario otroUsuario) {
-		return this.getNombre().compareTo(otroUsuario.getNombre());
+		return this.getNombreLogin().compareTo(otroUsuario.getNombreLogin());
 	}
 
 	

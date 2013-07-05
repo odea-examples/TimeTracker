@@ -83,7 +83,6 @@ initYUI = function() {
     for(var i in data.horasDia){
     	
     	var horasHoy = data.horasDia[i].horasCargadas;
-    	
     	if (horasHoy < data.dedicacion) {
     		YAHOO.example.calendar.cal1.addRenderer(data.horasDia[i].dia, YAHOO.example.calendar.cal1.renderCellStyleHighlight3);
 		} else {

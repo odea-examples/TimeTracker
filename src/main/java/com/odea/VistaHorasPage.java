@@ -1,5 +1,6 @@
 package com.odea;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
@@ -9,25 +10,34 @@ import java.util.Map;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.ajax.markup.html.navigation.paging.AjaxPagingNavigator;
 import org.apache.wicket.behavior.AttributeAppender;
+import org.apache.wicket.markup.ComponentTag;
+import org.apache.wicket.markup.MarkupStream;
+import org.apache.wicket.markup.html.WebComponent;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.Radio;
+import org.apache.wicket.markup.html.form.RadioGroup;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.PageableListView;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.request.Response;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.joda.time.DateTimeConstants;
 import org.joda.time.LocalDate;
 
 import com.odea.components.datepicker.DatePickerDTO;
 import com.odea.components.yuidatepicker.YuiDatePicker;
+import com.odea.domain.Feriado;
 import com.odea.domain.FormHoras;
 import com.odea.domain.Usuario;
 import com.odea.domain.UsuarioListaHoras;
@@ -42,7 +52,10 @@ public class VistaHorasPage extends BasePage{
 	
 	public Usuario usuario;
 	public IModel<List<UsuarioListaHoras>> lstUsuariosModel;
+	public IModel<List<UsuarioListaHoras>> lstUsuariosEnRojoModel;
+	public WebComponent titulos;
 	public WebMarkupContainer listViewContainer;
+	public WebMarkupContainer radioContainer;
 	public IModel<FormHoras> horasUsuarioModel;
 	public LocalDate fechaActual = new LocalDate();
 	public Date desde = fechaActual.withDayOfMonth(1).toDateTimeAtStartOfDay().toDate();
@@ -63,43 +76,72 @@ public class VistaHorasPage extends BasePage{
 	          	return daoService.obtenerHorasUsuarios(desde, hasta);
 	        }
 	    };
+	    
+	    this.lstUsuariosEnRojoModel = new LoadableDetachableModel<List<UsuarioListaHoras>>() {
+
+			@Override
+			protected List<UsuarioListaHoras> load() {
+				List<UsuarioListaHoras> devolver = daoService.obtenerHorasUsuarios(desde, hasta);
+				List<UsuarioListaHoras> itemsToRemove = new ArrayList<UsuarioListaHoras>();
+				for (UsuarioListaHoras usuarioHoras : devolver) {
+					if(usuarioHoras.tieneDiaMenorDedicacion()){
+						itemsToRemove.add(usuarioHoras);
+					}
+				}
+				devolver.removeAll(itemsToRemove);
+				return devolver;
+			}
+	    	
+		};
         
 		this.listViewContainer = new WebMarkupContainer("listViewContainer");
 		this.listViewContainer.setOutputMarkupId(true);
-	    final PageableListView<UsuarioListaHoras> usuariosHorasListView = new PageableListView<UsuarioListaHoras>("tabla", this.lstUsuariosModel, 10) {
+	    final PageableListView<UsuarioListaHoras> usuariosHorasListView = new PageableListView<UsuarioListaHoras>("tabla", this.lstUsuariosModel, 1000) {
 
 			private static final long serialVersionUID = 1L;
+			
 	
 			@Override
 	        protected void populateItem(ListItem<UsuarioListaHoras> item) {
 	           	final UsuarioListaHoras usuarioHoras = item.getModel().getObject();   
+//	           	
+//	           	if((item.getIndex() % 2) == 0){
+//	           		item.add(new AttributeModifier("class","odd"));
+//	           	}
+            	String nombreCorregido= daoService.getNombreApellido(usuarioHoras.getUsuario()).replaceAll("Ã³","ó").replaceAll("Ã©","é").replaceAll("Ã±","ñ").replaceAll("Ã¡","á").replaceAll("Ã­","í");
 	           	
-	           	if((item.getIndex() % 2) == 0){
-	           		item.add(new AttributeModifier("class","odd"));
-	           	}
-            	
-	           	
-            	Label nombre = new Label("apellidoNombre",usuarioHoras.getUsuario().getNombre());
+            	Label nombre = new Label("apellidoNombre",nombreCorregido);
             	item.add(nombre);
-            	
-            	Map<Date, Integer> colHoras = new HashMap<Date, Integer>();
+            	Map<Date, Double> colHoras = new HashMap<Date, Double>();
             	colHoras.putAll(usuarioHoras.getDiaHoras());
             	
-            	LocalDate diaActual = new LocalDate(VistaHorasPage.this.desde).withDayOfMonth(1);
+            	List<Feriado> feriados = daoService.getFeriados();
+            	List<Date> fechaFeriados = new ArrayList<Date>();
+				for (Feriado feriado : feriados) {
+					fechaFeriados.add(feriado.getFecha());
+				}
+            	LocalDate diaActual = new LocalDate(VistaHorasPage.this.desde);
             	
             	for (int j = 1; j <= 31; j++) {
             		Label lbHoras;
-            		Integer horasDia = new Integer(0);
+            		Double horasDia = new Double(0);
             		
             		horasDia = colHoras.get(diaActual.toDate());
             		
             		if(horasDia != null) {    			
-            			lbHoras = new Label("contenidoDia" + j, Integer.toString(horasDia));
+            			lbHoras = new Label("contenidoDia" + j, Double.toString(horasDia));
             			lbHoras.add(new AttributeModifier("style", Model.of("display: block; ")));
+            			if(fechaFeriados.contains(diaActual.toDate()) || diaActual.getDayOfWeek()==DateTimeConstants.SATURDAY || diaActual.getDayOfWeek()==DateTimeConstants.SUNDAY ){
+//            				lbHoras.add(new AttributeAppender("style", Model.of("background-color:gray;")));
+            				//background-clip: border-box; background-color: blue; color: white; border: 5px solid blue; border-radius: 5px;
+            			}
             			if (horasDia < usuarioHoras.getDedicacion()) {
             				lbHoras.add(new AttributeAppender("style", Model.of("color:red;")));
             			}
-            		} else {
+            		}else if(fechaFeriados.contains(diaActual.toDate()) || diaActual.getDayOfWeek()==DateTimeConstants.SATURDAY || diaActual.getDayOfWeek()==DateTimeConstants.SUNDAY ){
+            			lbHoras = new Label("contenidoDia" + j, "0");
+//            			lbHoras.add(new AttributeModifier("style", Model.of("background-color:gray;")));
+            		}else{
             			lbHoras = new Label("contenidoDia" + j, "0");
             		}
             		
@@ -107,55 +149,64 @@ public class VistaHorasPage extends BasePage{
             		diaActual = diaActual.plusDays(1);
             	}
             	
-            	
-            	/*
-            	int i = 1;
-            	while (i < 10) {
-            		Label dia = new Label(Integer.toString(i),"lalalalalal");
-            		dia.add(new AttributeModifier("style",Model.of("display:block")));
-            		item.add(dia);
-					i++;
-				}
-            	*/
-            	
-//            	Day asd = new Day(24,6,2013);
-//            	Date asd2 = new Date(asd.getFirstMillisecond());
-//            	
-//            	if(usuarioHoras.getDiaHoras().containsKey(asd2)){
-//            	Label dia1 = new Label("1",usuarioHoras.getDiaHoras().get(asd2).toString());
-//            	item.add(dia1);
-//            	dia1.add(new AttributeModifier("style", Model.of("display:block")));
-//            	}else{
-//            		Label dia1 = new Label("1","lalalallalalala");
-//                	item.add(dia1);
-//                	dia1.add(new AttributeModifier("style", Model.of("display:block")));
-//            	}
-//            	item.add(new Label("2","lalalala"));
-//            	item.add(new Label("3","lalalala"));
-//            	item.add(new Label("4","lalalala"));
-//            	item.add(new Label("5","lalalala"));
-//            	item.add(new Label("6","lalalala"));
-//            	item.add(new Label("7","lalalala"));
-//            	item.add(new Label("8","lalalala"));
-//            	//aca esta, todos como el 9
-//            	Label dia9 = new Label("9",Integer.toString(usuarioHoras.getDedicacion()));
-//            	item.add(dia9);
-//            	dia9.add(new AttributeModifier("style", Model.of("display:block")));
-            	
             };
             
             	
 		};
+		//html dinamico
+	    this.titulos = new WebComponent("tituloHtml"){
+			@Override
+			public void onComponentTagBody(MarkupStream markupStream,ComponentTag openTag) {
+				Response response = getRequestCycle().getResponse();
+				String respuesta= "";
+				respuesta+="<th class='skinnyTable' scope='col'>Usuarios</th>";
+				LocalDate diaActual = new LocalDate(VistaHorasPage.this.desde);
+				for(int i = 1;i<32;i++){
+					
+					respuesta+="<th class='skinnyTable' scope='col' wicket:id='dia1'>"+ diaActual.getDayOfMonth()+"/"+diaActual.getMonthOfYear() +"</th>";
+					diaActual = diaActual.plusDays(1);
+				}
+                response.write(respuesta);
+			}
+	    	
+        };
+        this.listViewContainer.add(titulos);
 		this.listViewContainer.add(usuariosHorasListView);
-		
-		for(int i = 1; i <= 31; i++)
-		{
-			this.listViewContainer.add(new Label("dia" + i, Integer.toString(i)));
-		}
-		
-		
 		this.listViewContainer.add(new AjaxPagingNavigator("navigator", usuariosHorasListView));
 		add(listViewContainer);
+		
+		radioContainer = new WebMarkupContainer("radioContainerUsuarios");
+		radioContainer.setOutputMarkupId(true);
+		
+		RadioGroup<String> radiog = new RadioGroup<String>("radioGroup", new Model<String>());
+		
+		Radio<String> mostrarTodas = new Radio<String>("mostrarTodas", Model.of("Todos"));
+		Radio<String> mostrarEnRojo = new Radio<String>("mostrarEnRojo", Model.of("Menor que dedicación"));
+		
+		mostrarTodas.add(new AjaxEventBehavior("onchange") {
+           
+            protected void onEvent(AjaxRequestTarget target) {
+            	VistaHorasPage.this.lstUsuariosModel.setObject(VistaHorasPage.this.lstUsuariosModel.getObject());
+                usuariosHorasListView.setModel(VistaHorasPage.this.lstUsuariosModel);
+                target.add(listViewContainer);
+            }
+           
+        });
+		
+		mostrarEnRojo.add(new AjaxEventBehavior("onchange") {
+	           
+            protected void onEvent(AjaxRequestTarget target) {
+                usuariosHorasListView.setModel(VistaHorasPage.this.lstUsuariosEnRojoModel);
+                target.add(listViewContainer);
+            }
+           
+        });
+		
+		radiog.add(mostrarTodas);
+		radiog.add(mostrarEnRojo);
+		radioContainer.add(radiog);
+		
+		add(radioContainer);
 		
 	}
 	
@@ -172,7 +223,6 @@ public class VistaHorasPage extends BasePage{
 			super(id);
 			this.setDefaultModel(modeloHoras);
 			this.setOutputMarkupId(true);
-			// TODO Auto-generated constructor stub
 			fechaDesde= new YuiDatePicker("fechaDesde") {
 				
 				@Override
@@ -183,12 +233,12 @@ public class VistaHorasPage extends BasePage{
 					int mes = Integer.parseInt(campos.get(1));
 					int anio = Integer.parseInt(campos.get(2));
 					desde = new LocalDate(anio,mes,dia).toDate();
+					target.add(listViewContainer);
 					
 				}
 				
 				@Override
 				public DatePickerDTO getDatePickerData() {
-					// TODO Auto-generated method stub
 					return new DatePickerDTO();
 				}
 			};
@@ -209,7 +259,6 @@ public class VistaHorasPage extends BasePage{
 				
 				@Override
 				public DatePickerDTO getDatePickerData() {
-					// TODO Auto-generated method stub
 					return new DatePickerDTO();
 				}
 			};
