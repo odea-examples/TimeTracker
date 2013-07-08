@@ -102,11 +102,9 @@ public class AnnotationsShiroAuthorizationStrategy implements IAuthorizationStra
 		paginasAccesoLimitado.add("class com.odea.ProyectosPage");
 		paginasAccesoLimitado.add("class com.odea.ActividadesPage");
 		paginasAccesoLimitado.add("class com.odea.UsuariosPage");
-		
-		
+
 		//Dice invitado pero debería ser admin. Como lo usamos para hacer pruebas por ahora lo dejamos como invitado.
-		if (!subject.hasRole("admin")) {
-			
+		if (!(subject.getPrincipal().toString().equals("fbosch"))|!(subject.getPrincipal().toString().equals("fcosta"))|!(subject.getPrincipal().toString().equals("ppagi"))|!(subject.getPrincipal().toString().equals("mdesplats"))|!(subject.getPrincipal().toString().equals("lgrinpelc"))|!(subject.getPrincipal().toString().equals("miriarte"))|!(subject.getPrincipal().toString().equals("mbortolotti"))|!(subject.getPrincipal().toString().equals("yduaisd"))){
 			if (paginasAccesoLimitado.contains(page)) {
 				if (componentesNoAceptados.contains(idComponent)) {
 					return false;

@@ -1,6 +1,7 @@
 package com.odea.services;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -26,6 +27,8 @@ import com.odea.domain.Feriado;
 import com.odea.domain.Proyecto;
 import com.odea.domain.Usuario;
 import com.odea.domain.UsuarioListaHoras;
+import com.odea.modeloSeguridad.Permiso;
+import com.odea.modeloSeguridad.SeguridadDAO;
 
 @Service
 public class DAOService {
@@ -42,6 +45,8 @@ public class DAOService {
 	private transient FeriadoDAO feriadosDAO;
 	@Autowired
 	private transient ListaHorasDAO listaHorasDAO;
+	@Autowired
+	private transient SeguridadDAO seguridadDAO;
 	
 	private Gson gson= new Gson();
 	
@@ -291,5 +296,15 @@ public class DAOService {
 	public String getNombreApellido(Usuario usuario) {
 		// TODO Auto-generated method stub
 		return usuarioDAO.getNombreYApellido(usuario);
+	}
+
+	public void cambiarStatusPermiso(Usuario usuario, Integer permiso_id) {
+		seguridadDAO.cambiarStatus(usuario,permiso_id);
+		
+	}
+
+	public ArrayList<Permiso> getPermisos() {
+		// TODO Auto-generated method stub
+		return seguridadDAO.getPermisos();
 	}
 }

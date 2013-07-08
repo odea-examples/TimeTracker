@@ -13,23 +13,13 @@
 	<div wicket:id="listaContainer" style="position: relative; min-width: 1024px; min-height: 270px;">
 		<table>
 			<thead>
-			<tr class="odd">
-				<th scope="col">Actividades</th>
-				<th scope="col">permiso1</th>
-				<th scope="col">permiso2</th>
-				<th scope="col">permiso3</th>
-				<th scope="col">permiso4</th>
-				<th scope="col">permiso5</th>
-			</tr>
+			<tr wicket:id="tituloHtml"/>
 			</thead>
 			<tbody>
 				<tr wicket:id="lista">
 					<td wicket:id="nombre_usuario"/>
-					<td><input type="checkbox" wicket:id="check1"/></td>
-					<td><input type="checkbox" wicket:id="check2"/></td>
-					<td><input type="checkbox" wicket:id="check3"/></td>
-					<td><input type="checkbox" wicket:id="check4"/></td>
-					<td><input type="checkbox" wicket:id="check5"/></td>
+					<td wicket:id="listaPermisos"><input type="checkbox" wicket:id="check"/></td>
+
 				</tr>
 			</tbody>	
 			<tfoot>
