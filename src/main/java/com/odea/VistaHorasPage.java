@@ -239,6 +239,7 @@ public class VistaHorasPage extends BasePage{
 					int mes = Integer.parseInt(campos.get(1));
 					int anio = Integer.parseInt(campos.get(2));
 					desde = new LocalDate(anio,mes,dia).toDate();
+					System.out.println("hola");
 					target.add(listViewContainer);
 					
 				}
@@ -260,6 +261,7 @@ public class VistaHorasPage extends BasePage{
 
 				@Override
 				protected void onUpdate(AjaxRequestTarget target) {
+					System.out.println("changed!");
 					VistaHorasPage.this.sectorGlobal= sector.getModelObject();
 					target.add(listViewContainer);
 				}
@@ -269,6 +271,7 @@ public class VistaHorasPage extends BasePage{
 			AjaxButton submit = new AjaxButton("submit") {
 				@Override
 				protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+					System.out.println("llega");
 					lstUsuariosModel.setObject(daoService.obtenerHorasUsuarios(fechaDesde.getModelObject(),fechaHasta.getModelObject(),sector.getModelObject()));
 					target.add(listViewContainer);
 				}
@@ -278,7 +281,7 @@ public class VistaHorasPage extends BasePage{
 			add(fechaDesde);
 			add(sector);
 			add(submit);
-			LocalDate ld = new LocalDate(hasta);
+			LocalDate ld = new LocalDate(VistaHorasPage.this.desde).plusDays(30);
 			add(new Label("fechaHasta",ld.getDayOfMonth()+"/"+ld.getMonthOfYear()+"/"+ld.getYear()));
 		}
 		
