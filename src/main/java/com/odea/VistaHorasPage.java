@@ -90,7 +90,7 @@ public class VistaHorasPage extends BasePage{
 				List<UsuarioListaHoras> devolver = daoService.obtenerHorasUsuarios(desde, hasta,VistaHorasPage.this.sectorGlobal);
 				List<UsuarioListaHoras> itemsToRemove = new ArrayList<UsuarioListaHoras>();
 				for (UsuarioListaHoras usuarioHoras : devolver) {
-					if(usuarioHoras.tieneDiaMenorDedicacion()){
+					if(usuarioHoras.tieneDiaMenorDedicacion(VistaHorasPage.this.desde)){
 						itemsToRemove.add(usuarioHoras);
 					}
 				}

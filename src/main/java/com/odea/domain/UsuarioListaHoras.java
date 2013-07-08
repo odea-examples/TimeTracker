@@ -3,6 +3,8 @@ package com.odea.domain;
 import java.util.Date;
 import java.util.Map;
 
+import org.joda.time.LocalDate;
+
 public class UsuarioListaHoras {
 	private Usuario usuario;
 	private int dedicacion;
@@ -63,13 +65,26 @@ public class UsuarioListaHoras {
 	public void agregarDiaHoras(Date key, Double value){
 		this.diaHoras.put(key, value);
 	}
-	public boolean tieneDiaMenorDedicacion(){
+	public boolean tieneDiaMenorDedicacion(Date desde){
+		int contador=0;
 		Boolean devuelve= true;
-		for (Double hora : diaHoras.values()) {
-			if (hora<dedicacion){
-				devuelve=false;
+		LocalDate diaTomado = new LocalDate(desde);
+		for (int i = 1; i < 32; i++) {
+			if(diaHoras.containsKey(diaTomado.toDate())){
+				if(diaHoras.get(diaTomado.toDate())<dedicacion){
+					devuelve=false;
+				}
+			}else{
+				contador=contador+1;
 			}
+			diaTomado=diaTomado.plusDays(1);			
 		}
+		
+//		for (Double hora : diaHoras.values()) {
+//			if (hora<dedicacion){
+//				devuelve=false;
+//			}
+//		}
 		return devuelve;
 	}
 	/* (non-Javadoc)
