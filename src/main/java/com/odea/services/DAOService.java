@@ -283,9 +283,9 @@ public class DAOService {
 		return entradaDAO.getHorasDia(usuario,desde,hasta);
 	}
 
-	public List<UsuarioListaHoras> obtenerHorasUsuarios(Date desde, Date hasta) {
+	public List<UsuarioListaHoras> obtenerHorasUsuarios(Date desde, Date hasta,String sector) {
 		// TODO Auto-generated method stub
-		return listaHorasDAO.obtenerHorasUsuarios(desde,hasta);
+		return listaHorasDAO.obtenerHorasUsuarios(desde,hasta,sector);
 	}
 
 	public String getNombreApellido(Usuario usuario) {

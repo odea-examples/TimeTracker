@@ -631,7 +631,8 @@ public class EntradasPage extends BasePage {
 				@Override
 				protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 					EntradaForm.this.setModelObject(new Entrada());
-					
+//					EntradaForm.this.setModelObject(new Entrada(new Timestamp(123),new Proyecto(),new Actividad(),"2","hola",2,null,"",new Usuario(23), new Date()));
+					//se puede hacer lo de arriba para modificar entradas, tendriamos que modificar un poco el form
 					mensajeProyecto.add(new AttributeModifier("style", Model.of("display:none")));
 					mensajeActividad.add(new AttributeModifier("style", Model.of("display:none")));
 					ticketExt.add(new AttributeModifier("style", Model.of("border-color:none")));

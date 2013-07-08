@@ -1,5 +1,6 @@
 package com.odea;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -7,11 +8,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.text.DateFormatter;
+
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.ajax.markup.html.navigation.paging.AjaxPagingNavigator;
 import org.apache.wicket.behavior.AttributeAppender;
@@ -34,6 +38,7 @@ import org.apache.wicket.request.Response;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.joda.time.DateTimeConstants;
 import org.joda.time.LocalDate;
+import org.joda.time.format.DateTimeFormatter;
 
 import com.odea.components.datepicker.DatePickerDTO;
 import com.odea.components.yuidatepicker.YuiDatePicker;
@@ -50,6 +55,7 @@ public class VistaHorasPage extends BasePage{
 	@SpringBean
 	private transient DAOService daoService;
 	
+	public String sectorGlobal= "Todos";
 	public Usuario usuario;
 	public IModel<List<UsuarioListaHoras>> lstUsuariosModel;
 	public IModel<List<UsuarioListaHoras>> lstUsuariosEnRojoModel;
@@ -73,7 +79,7 @@ public class VistaHorasPage extends BasePage{
 		this.lstUsuariosModel = new LoadableDetachableModel<List<UsuarioListaHoras>>() { 
 	        @Override
 	        protected List<UsuarioListaHoras> load() {
-	          	return daoService.obtenerHorasUsuarios(desde, hasta);
+	          	return daoService.obtenerHorasUsuarios(desde, hasta, VistaHorasPage.this.sectorGlobal);
 	        }
 	    };
 	    
@@ -81,7 +87,7 @@ public class VistaHorasPage extends BasePage{
 
 			@Override
 			protected List<UsuarioListaHoras> load() {
-				List<UsuarioListaHoras> devolver = daoService.obtenerHorasUsuarios(desde, hasta);
+				List<UsuarioListaHoras> devolver = daoService.obtenerHorasUsuarios(desde, hasta,VistaHorasPage.this.sectorGlobal);
 				List<UsuarioListaHoras> itemsToRemove = new ArrayList<UsuarioListaHoras>();
 				for (UsuarioListaHoras usuarioHoras : devolver) {
 					if(usuarioHoras.tieneDiaMenorDedicacion()){
@@ -129,7 +135,7 @@ public class VistaHorasPage extends BasePage{
             		horasDia = colHoras.get(diaActual.toDate());
             		
             		if(horasDia != null) {    			
-            			lbHoras = new Label("contenidoDia" + j, Double.toString(horasDia));
+            			lbHoras = new Label("contenidoDia" + j, Model.of(horasDia));
             			lbHoras.add(new AttributeModifier("style", Model.of("display: block; ")));
             			if(fechaFeriados.contains(diaActual.toDate()) || diaActual.getDayOfWeek()==DateTimeConstants.SATURDAY || diaActual.getDayOfWeek()==DateTimeConstants.SUNDAY ){
 //            				lbHoras.add(new AttributeAppender("style", Model.of("background-color:gray;")));
@@ -243,42 +249,37 @@ public class VistaHorasPage extends BasePage{
 				}
 			};
 			fechaDesde.setOutputMarkupId(true);
-			
-			fechaHasta = new YuiDatePicker("fechaHasta") {
-				
+			List<String> sectores = new ArrayList<String>();
+			sectores.add("TI");
+			sectores.add("E&P");
+			sectores.add("Administracion");
+			sectores.add("ExOdea");
+			sectores.add("Todos");
+			sector = new DropDownChoice<String>("sector",Model.of("Todos"),sectores);
+			sector.add(new AjaxFormComponentUpdatingBehavior("onchange"){
+
 				@Override
-				protected void onDateSelect(AjaxRequestTarget target, String selectedDate) {
-					String json = selectedDate;
-					List<String> campos = Arrays.asList(json.split("/"));
-					int dia = Integer.parseInt(campos.get(0));
-					int mes = Integer.parseInt(campos.get(1));
-					int anio = Integer.parseInt(campos.get(2));
-					hasta = new LocalDate(anio,mes,dia).toDate();
-					
+				protected void onUpdate(AjaxRequestTarget target) {
+					VistaHorasPage.this.sectorGlobal= sector.getModelObject();
+					target.add(listViewContainer);
 				}
 				
-				@Override
-				public DatePickerDTO getDatePickerData() {
-					return new DatePickerDTO();
-				}
-			};
-			fechaHasta.setOutputMarkupId(true);
-			
-			sector = new DropDownChoice<String>("sector");
+			});
 			
 			AjaxButton submit = new AjaxButton("submit") {
 				@Override
 				protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-					lstUsuariosModel.setObject(daoService.obtenerHorasUsuarios(fechaDesde.getModelObject(),fechaHasta.getModelObject()));
+					lstUsuariosModel.setObject(daoService.obtenerHorasUsuarios(fechaDesde.getModelObject(),fechaHasta.getModelObject(),sector.getModelObject()));
 					target.add(listViewContainer);
 				}
 				
 			};
 			submit.setOutputMarkupId(true);
 			add(fechaDesde);
-			add(fechaHasta);
 			add(sector);
 			add(submit);
+			LocalDate ld = new LocalDate(hasta);
+			add(new Label("fechaHasta",ld.getDayOfMonth()+"/"+ld.getMonthOfYear()+"/"+ld.getYear()));
 		}
 		
 		

@@ -67,12 +67,12 @@ public class OdeaRealm extends AuthorizingRealm{
 //			throw new AuthorizationException("Empty principals list!");
 //		}
 		
-		for (Object prin : principals) {
-			Usuario usuario = usuarioDAO.getUsuario(prin.toString());
-			if(usuario.getEsCoManager()){
-				roles.add("admin");
-			}
-		}
+//		for (Object prin : principals) {
+//			Usuario usuario = usuarioDAO.getUsuario(prin.toString());
+//			if(usuario.getEsCoManager()){
+//				roles.add("admin");
+//			}
+//		}
 		
 		
 		//LOADING STUFF FOR PRINCIPAL 
@@ -99,8 +99,8 @@ public class OdeaRealm extends AuthorizingRealm{
 //		}
 		
 		SimpleAuthorizationInfo info = new SimpleAuthorizationInfo(roles);
-//		info.addRole("admin");
-		info.setRoles(roles);
+		info.addRole("admin");
+//		info.setRoles(roles);
 		return info;
 	}
 }

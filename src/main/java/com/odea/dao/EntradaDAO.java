@@ -297,13 +297,13 @@ public class EntradaDAO extends AbstractDAO {
 	}
 	
 	public List<HorasCargadasPorDia> horasPorDiaLimitado(Usuario usuario, Date desde, Date hasta){
-		return jdbcTemplate.query("select al_date as fecha , (sum(al_duration)/10000) as duracion from  activity_log where al_user_id=? and al_date BETWEEN ? AND ? group by fecha order by fecha asc ",
+		return jdbcTemplate.query("select al_date as fecha , IFNULL(SUM(TIME_TO_SEC(al_duration))/3600, 0) as duracion from  activity_log where al_user_id=? and al_date BETWEEN ? AND ? group by fecha order by fecha asc ",
 				new RowMapper() {
 
 					@Override
 					public Object mapRow(ResultSet rs, int rowNum)
 							throws SQLException {
-						return new HorasCargadasPorDia(rs.getTimestamp(1),rs.getInt(2));
+						return new HorasCargadasPorDia(rs.getTimestamp(1),rs.getDouble(2));
 					}
 				},usuario.getIdUsuario(),desde, hasta);
 	}

@@ -6,6 +6,7 @@ import java.util.Map;
 public class UsuarioListaHoras {
 	private Usuario usuario;
 	private int dedicacion;
+	private String sector;
 	private Map<Date,Double> diaHoras;
 	
 	/**
@@ -43,6 +44,18 @@ public class UsuarioListaHoras {
 	 */
 	public void setDiaHoras(Map<Date, Double> diaHoras) {
 		this.diaHoras = diaHoras;
+	}
+	/**
+	 * @return the sector
+	 */
+	public String getSector() {
+		return sector;
+	}
+	/**
+	 * @param sector the sector to set
+	 */
+	public void setSector(String sector) {
+		this.sector = sector;
 	}
 	public void agregarTodosDiaHoras(Map<Date, Double> diaHoras){
 		this.diaHoras.putAll(diaHoras);

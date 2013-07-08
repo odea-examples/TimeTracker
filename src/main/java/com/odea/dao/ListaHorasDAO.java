@@ -28,14 +28,20 @@ public class ListaHorasDAO extends AbstractDAO {
 	
 	private static final Logger logger = LoggerFactory.getLogger(ListaHorasDAO.class);
 	
-	public List<UsuarioListaHoras> obtenerHorasUsuarios(Date desde, Date hasta){
+	public List<UsuarioListaHoras> obtenerHorasUsuarios(Date desde, Date hasta,String sector){
 		List<UsuarioListaHoras> horasDeLosUsuarios = new ArrayList<UsuarioListaHoras>();
-		List<Usuario> usuarios= usuarioDAO.getUsuarios();
+		List<Usuario> usuarios;
+		if(sector=="Todos"){
+			usuarios= usuarioDAO.getUsuarios();
+		}else{
+		usuarios= usuarioDAO.getUsuarios(sector);
+		}
 		for (Usuario usuario : usuarios) {
 			UsuarioListaHoras usuarioConHoras = new UsuarioListaHoras();
 			usuarioConHoras.setUsuario(usuario);
 			usuarioConHoras.setDedicacion(usuarioDAO.getDedicacion(usuario));
 			usuarioConHoras.setDiaHoras(entradaDAO.getHorasDia(usuario,desde,hasta));
+			usuarioConHoras.setSector(usuarioDAO.getSector(usuario));
 			horasDeLosUsuarios.add(usuarioConHoras);
 		}
 		return horasDeLosUsuarios;

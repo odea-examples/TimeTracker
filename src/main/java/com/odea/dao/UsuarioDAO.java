@@ -104,6 +104,17 @@ public class UsuarioDAO extends AbstractDAO {
 		}
 		
 	}
+	public String getSector(Usuario usuario) {
+		return jdbcTemplate.queryForObject("SELECT u_grupo FROM users WHERE u_id=?", String.class ,usuario.getIdUsuario());
+	}
+
+
+	public List<Usuario> getUsuarios(String sector) {
+		List<Usuario> usuarios = jdbcTemplate.query("SELECT u.u_id, u.u_login, u.u_password FROM users u WHERE u.u_grupo = ?", 
+				new RowMapperUsuario(), sector);
+		
+		return usuarios;
+	}
 	
 	
 }
