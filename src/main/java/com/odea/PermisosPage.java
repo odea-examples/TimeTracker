@@ -23,28 +23,26 @@ import com.odea.domain.Usuario;
 import com.odea.modeloSeguridad.Permiso;
 import com.odea.services.DAOService;
 
+/* 
+ *  Los perfiles estan modelados como objetos de clase Usuario.
+ *  Esto es para seguir el modelo de datos
+ */
+
+
 
 public class PermisosPage extends BasePage {
 	
 	@SpringBean
 	public DAOService daoService;
 	
-	public IModel<List<Usuario>> lstUsuariosModel;
-//	public IModel<List<Usuario>> lstPermisosModel;
-	public IModel<ArrayList<Permiso>> lstPermisosModel;
 	public WebComponent titulos;
+	public IModel<ArrayList<Permiso>> lstPermisosModel;
+	public IModel<List<Usuario>> lstPerfilesModel;
 	
 	
 		
 	public PermisosPage() {
-		this.lstUsuariosModel = new LoadableDetachableModel<List<Usuario>>() {
 
-			@Override
-			protected List<Usuario> load() {
-				return daoService.getUsuarios();
-				//TODO return daoservice OBTENER TODOS LOS USUARIOSPERFIL;
-			}
-		};
 		
 		this.lstPermisosModel = new LoadableDetachableModel<ArrayList<Permiso>>() {
 			@Override
@@ -53,129 +51,111 @@ public class PermisosPage extends BasePage {
 			}
 		};
 		
-		ListView<Usuario> listaPermisos = new ListView<Usuario>("lista",this.lstUsuariosModel) {
-
+		this.lstPerfilesModel = new LoadableDetachableModel<List<Usuario>>() {
 			@Override
-			protected void populateItem(ListItem<Usuario> item) {
-				final Usuario usuario = item.getModel().getObject();
-				
-				ListView<Permiso> listaDatos = new ListView<Permiso>("listaPermisos",lstPermisosModel) {
-
-					@Override
-					protected void populateItem(ListItem<Permiso> item) {
-						Boolean checkeado = false;
-						final CheckBox check = new CheckBox("check", new Model<Boolean>(false));
-						check.setMarkupId(usuario.getNombreLogin()+"_"+item.getModelObject().getID());
-						check.add(new AjaxEventBehavior("onChange") {
-							
-							@Override
-							protected void onEvent(AjaxRequestTarget target) {
-								System.out.println("changed!"+check.getMarkupId().toString());
-								String[] datos = check.getMarkupId().split("_");
-								CambiarPermiso(Integer.parseInt(datos[1]),datos[0]);
-							}
-						});
-						item.add(check);
-						
-					}
-				};
-				
-				item.add(listaDatos);
-				
-//				final CheckBox check = new CheckBox("check1");
-//				check.setMarkupId(usuario.getLogin()+"_"+"1");
-//				check.add(new AjaxEventBehavior("onChange") {
-//					
-//					@Override
-//					protected void onEvent(AjaxRequestTarget target) {
-//						System.out.println("changed!"+check.getMarkupId().toString());
-//						String[] datos = check.getMarkupId().split("_");
-//						CambiarPermiso(Integer.parseInt(datos[1]),datos[0]);
-//					}
-//				});
-//				
-////				item.add(check);
-////				item.add(new Label("asd2","texto"));
-//				
-//				final CheckBox check2 = new CheckBox("check2");
-//				check2.setMarkupId(usuario.getLogin()+"_"+"2");
-//				check2.add(new AjaxEventBehavior("onChange") {
-//					
-//					@Override
-//					protected void onEvent(AjaxRequestTarget target) {
-//						System.out.println("changed!"+check2.getMarkupId().toString());
-//						String[] datos = check2.getMarkupId().split("_");
-//						CambiarPermiso(Integer.parseInt(datos[1]),datos[0]);
-//					}
-//				});
-//				final CheckBox check3 = new CheckBox("check3");
-//				check3.setMarkupId(usuario.getLogin()+"_"+"3");
-//				check3.add(new AjaxEventBehavior("onChange") {
-//					
-//					@Override
-//					protected void onEvent(AjaxRequestTarget target) {
-//						System.out.println("changed!"+check3.getMarkupId().toString());
-//						String[] datos = check3.getMarkupId().split("_");
-//						CambiarPermiso(Integer.parseInt(datos[1]),datos[0]);
-//					}
-//				});
-//				final CheckBox check4 = new CheckBox("check4");
-//				check4.setMarkupId(usuario.getLogin()+"_"+"4");
-//				check4.add(new AjaxEventBehavior("onChange") {
-//					
-//					@Override
-//					protected void onEvent(AjaxRequestTarget target) {
-//						System.out.println("changed!"+check4.getMarkupId().toString());
-//						String[] datos = check4.getMarkupId().split("_");
-//						CambiarPermiso(Integer.parseInt(datos[1]),datos[0]);
-//					}
-//				});
-//				final CheckBox check5 = new CheckBox("check5");
-//				check5.setMarkupId(usuario.getLogin()+"_"+"5");
-//				check5.add(new AjaxEventBehavior("onChange") {
-//					
-//					@Override
-//					protected void onEvent(AjaxRequestTarget target) {
-//						System.out.println("changed!"+check5.getMarkupId().toString());
-//						String[] datos = check5.getMarkupId().split("_");
-//						CambiarPermiso(Integer.parseInt(datos[1]),datos[0]);
-//					}
-//				});
-				item.add(new Label("nombre_usuario",usuario.getNombreLogin()));
-//				item.add(check);
-//				item.add(check2);
-//				item.add(check3);
-//				item.add(check4);
-//				item.add(check5);
+			protected List<Usuario> load() {
+				return daoService.getPerfiles();
 			}
 		};
-		WebMarkupContainer listconContainer = new WebMarkupContainer("listaContainer");
-		listconContainer.setOutputMarkupId(true);
-		listconContainer.add(listaPermisos);
+		
+		
+		
+		//List View
+		
+		WebMarkupContainer listContainer = new WebMarkupContainer("listaContainer");
+		listContainer.setOutputMarkupId(true);
+		
+		
 		this.titulos = new WebComponent("tituloHtml"){
 			@Override
 			public void onComponentTagBody(MarkupStream markupStream,ComponentTag openTag) {
 				Response response = getRequestCycle().getResponse();
-				String respuesta= "";
-				respuesta+="<th class='skinnyTable' scope='col'>Usuarios</th>";
-				for (Permiso permiso : lstPermisosModel.getObject()) {
+				
+				String respuesta ="<th class='skinnyTable' scope='col'>Usuarios</th>";
+				
+				for (Usuario unUsuario : lstPerfilesModel.getObject()) {
 					
-					respuesta+="<th class='skinnyTable' scope='col' >"+ permiso.getID() +"</th>";
+					respuesta += "<th class='skinnyTable' scope='col' >"+ unUsuario.getNombre() +"</th>";
 				}
+				
                 response.write(respuesta);
 			}
 	    	
         };
-        listconContainer.add(titulos);
-		add(listconContainer);
+        
+        listContainer.add(titulos);
+        
+		
+		
+		
+		ListView<Permiso> listaPermisos = new ListView<Permiso>("listaPermisos", this.lstPermisosModel) {
+
+			@Override
+			protected void populateItem(ListItem<Permiso> item) {
+
+				final Permiso permiso = item.getModel().getObject();
+				final List<Usuario> usuariosConPermiso = PermisosPage.this.daoService.getUsuariosQueTienenUnPermiso(permiso);
+				
+				item.add(new Label("nombre_permiso", "Permiso ID: " + permiso.getID()));
+				
+				
+				ListView<Usuario> listaInterna = new ListView<Usuario>("listaUsuarios",lstPerfilesModel) {
+					
+					
+					@Override
+					protected void populateItem(ListItem<Usuario> item) {
+						
+						final Usuario usuario = item.getModelObject();
+						final CheckBox checkBox = new CheckBox("check", new Model<Boolean>());
+					
+						Boolean habilitado = this.usuarioEstaHabilitado(usuariosConPermiso, usuario);
+						checkBox.getModel().setObject(habilitado);
+						
+						checkBox.add(new AjaxEventBehavior("onChange") {
+							
+							@Override
+							protected void onEvent(AjaxRequestTarget target) {
+								
+								//Cambio el estado del Checkbox manualmente
+								Boolean estado = checkBox.getModelObject();
+								checkBox.setModelObject(!estado);
+								
+								PermisosPage.this.daoService.cambiarStatusPermiso(usuario, permiso, checkBox.getModelObject());
+							}
+						});
+						
+						item.add(checkBox);
+			
+					}
+					
+					
+					//Veo si el usuario esta habilitado (para marcar el CheckBox)
+					private Boolean usuarioEstaHabilitado(List<Usuario> usuariosConPermiso, Usuario usuario) {
+						
+						for (Usuario usuarioConPermiso : usuariosConPermiso) {
+							if(usuario.getIdUsuario() == usuarioConPermiso.getIdUsuario()) {
+								return true;
+							}
+						}
+						
+						return false;
+					}
+					
+					
+				};
+				
+				item.add(listaInterna);
+			}	
+			
+		};
+		
+		
+		listContainer.add(listaPermisos);
+		
+        
+		add(listContainer);
 	}
 
-
-
-	private void CambiarPermiso(Integer check,String nombreUsuario) {
-		Usuario usuario= daoService.getUsuario(nombreUsuario);
-		daoService.cambiarStatusPermiso(usuario,check);
-	}
 	
 }
 

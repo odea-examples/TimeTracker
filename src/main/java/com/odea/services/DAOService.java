@@ -48,7 +48,7 @@ public class DAOService {
 	@Autowired
 	private transient SeguridadDAO seguridadDAO;
 	
-	private Gson gson= new Gson();
+	private Gson gson = new Gson();
 	
 	public Actividad getActividad(String nombre){
 		return actividadDAO.buscarPorNombre(nombre);
@@ -298,13 +298,25 @@ public class DAOService {
 		return usuarioDAO.getNombreYApellido(usuario);
 	}
 
-	public void cambiarStatusPermiso(Usuario usuario, Integer permiso_id) {
-		seguridadDAO.cambiarStatus(usuario,permiso_id);
-		
+	public void cambiarStatusPermiso(Usuario usuario, Permiso permiso, Boolean habilitado) {
+		seguridadDAO.cambiarStatus(usuario, permiso, habilitado);	
+	}
+	
+	public List<Usuario> getPerfiles() {
+		return seguridadDAO.getPerfiles();
 	}
 
 	public ArrayList<Permiso> getPermisos() {
 		// TODO Auto-generated method stub
 		return seguridadDAO.getPermisos();
 	}
+	
+	public List<Permiso> getPermisos(Usuario usuario) {
+		return seguridadDAO.getPermisos(usuario);
+	}
+	
+	public List<Usuario> getUsuariosQueTienenUnPermiso(Permiso permiso) {
+		return seguridadDAO.getUsuariosQueTienenPermiso(permiso);
+	}
+
 }

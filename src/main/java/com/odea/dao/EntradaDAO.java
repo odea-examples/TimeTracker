@@ -30,8 +30,6 @@ import com.odea.domain.Actividad;
 import com.odea.domain.Entrada;
 import com.odea.domain.Proyecto;
 import com.odea.domain.Usuario;
-import com.odea.domain.Feriado;
-import com.odea.services.DAOService;
 
 @Repository
 public class EntradaDAO extends AbstractDAO {

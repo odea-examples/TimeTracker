@@ -13,19 +13,14 @@
 	<div wicket:id="listaContainer" style="position: relative; min-width: 1024px; min-height: 270px;">
 		<table>
 			<thead>
-			<tr wicket:id="tituloHtml"/>
+				<tr wicket:id="tituloHtml"/>
 			</thead>
 			<tbody>
-				<tr wicket:id="lista">
-					<td wicket:id="nombre_usuario"/>
-					<td wicket:id="listaPermisos"><input type="checkbox" wicket:id="check"/></td>
-
+				<tr wicket:id="listaPermisos">
+					<td wicket:id="nombre_permiso"/>
+					<td wicket:id="listaUsuarios"><input type="checkbox" wicket:id="check"/></td>
 				</tr>
-			</tbody>	
-			<tfoot>
-	            <tr>
-	            </tr>
-        	</tfoot>				
+			</tbody>				
 		</table>
 	</div>
 	

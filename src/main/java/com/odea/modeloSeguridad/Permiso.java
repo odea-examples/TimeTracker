@@ -1,6 +1,8 @@
 package com.odea.modeloSeguridad;
 
-public class Permiso {
+import java.io.Serializable;
+
+public class Permiso implements Serializable {
 	
 	private int ID;
 	private Funcionalidad funcionalidad;

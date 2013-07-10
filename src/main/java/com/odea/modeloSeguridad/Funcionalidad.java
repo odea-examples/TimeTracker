@@ -1,6 +1,8 @@
 package com.odea.modeloSeguridad;
 
-public class Funcionalidad {
+import java.io.Serializable;
+
+public class Funcionalidad implements Serializable {
 	
 	private int ID;
 	private String grupo;
