@@ -8,6 +8,7 @@ import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.navigation.paging.AjaxPagingNavigator;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.PageableListView;
@@ -25,7 +26,8 @@ public class UsuariosPage extends BasePage {
 	@SpringBean
 	public DAOService daoService;
 	
-	public IModel<List<Usuario>> lstUsuariosModel;	
+	public IModel<List<Usuario>> lstUsuariosModel;
+	public IModel<List<String>> lstPerfilesModel;	
 	public WebMarkupContainer listViewContainer;
 	public PageableListView<Usuario> usuariosListView;
 
@@ -36,6 +38,13 @@ public class UsuariosPage extends BasePage {
             @Override
             protected List<Usuario> load() {
             	return daoService.getUsuarios();
+            }
+        };
+        
+        this.lstPerfilesModel = new LoadableDetachableModel<List<String>>() { 
+            @Override
+            protected List<String> load() {
+            	return daoService.getPerfilesTodos();
             }
         };
         
@@ -72,9 +81,26 @@ public class UsuariosPage extends BasePage {
 					}
     				
     			});
+            	
             	dedicacion.setOutputMarkupId(true);
             	
             	item.add(dedicacion);
+            	
+            	final DropDownChoice<String> dropDownPerfil = new DropDownChoice<String>("dropDownPerfil", lstPerfilesModel);
+            	dropDownPerfil.setDefaultModel(lstPerfilesModel);
+            	
+            	
+            	dropDownPerfil.add(new AjaxFormComponentUpdatingBehavior("onchange") {
+
+					@Override
+					protected void onUpdate(AjaxRequestTarget target) {
+						daoService.cambiarPerfil(usuario, dropDownPerfil.getModelObject());
+					}
+            		
+            	});
+            	
+            	item.add(dropDownPerfil);
+            	
             }
         };
         usuariosListView.setOutputMarkupId(true);

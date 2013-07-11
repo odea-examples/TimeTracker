@@ -48,6 +48,7 @@ public class DAOService {
 	@Autowired
 	private transient SeguridadDAO seguridadDAO;
 	
+	
 	private Gson gson = new Gson();
 	
 	public Actividad getActividad(String nombre){
@@ -317,5 +318,19 @@ public class DAOService {
 	public List<Usuario> getUsuariosQueTienenUnPermiso(Permiso permiso) {
 		return seguridadDAO.getUsuariosQueTienenPermiso(permiso);
 	}
-
+	
+	public List<String> getPerfilesTodos()
+	{
+		ArrayList<String> lista = new ArrayList<String>();
+		
+		lista.add("Administrador");
+		lista.add("Empleado");
+		
+		return lista;
+	}
+	
+	public void cambiarPerfil(Usuario usuario, String perfil) {
+		usuarioDAO.cambiarPerfil(usuario, perfil);
+	}
+	
 }

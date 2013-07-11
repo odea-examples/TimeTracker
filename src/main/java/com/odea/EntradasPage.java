@@ -89,8 +89,6 @@ public class EntradasPage extends BasePage {
 		this.usuario = this.daoService.getUsuario(subject.getPrincipal()
 				.toString());
 		
-		System.out.println("/n/n/n/n/n/n/n/n/n/n/n/n/n/n/n/n/n/n/n/n/n/n/n/n/n/n/n/n/n/n/n");
-		System.out.println(this.usuario.getEsCoManager());
 
 		this.lstDataModel = new LoadableDetachableModel<String>() {
 			@Override
@@ -319,7 +317,7 @@ public class EntradasPage extends BasePage {
 		this.labelContainer.setMarkupId("labelHoras");
 		
 		
-		final DropDownChoice<Usuario> selectorUsuario = new DropDownChoice<Usuario>("selectorUsuario",daoService.getUsuarios(),new IChoiceRenderer<Usuario>() {
+		final DropDownChoice<Usuario> selectorUsuario = new DropDownChoice<Usuario>("selectorUsuario", daoService.getUsuarios(), new IChoiceRenderer<Usuario>() {
 			@Override
 			public Object getDisplayValue(Usuario object) {
 				return object.getNombreLogin();
