@@ -71,7 +71,7 @@ public class PermisosPage extends BasePage {
 			public void onComponentTagBody(MarkupStream markupStream,ComponentTag openTag) {
 				Response response = getRequestCycle().getResponse();
 				
-				String respuesta ="<th class='skinnyTable' scope='col'>Usuarios</th>";
+				String respuesta ="<th class='skinnyTable' scope='col'>Permisos</th>";
 				
 				for (Usuario unUsuario : lstPerfilesModel.getObject()) {
 					

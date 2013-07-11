@@ -7,6 +7,8 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
@@ -18,6 +20,8 @@ import com.odea.domain.Usuario;
 @Repository
 public class UsuarioDAO extends AbstractDAO {
 	
+    private static final Logger logger = LoggerFactory.getLogger(UsuarioDAO.class);
+	
 	public List<Usuario> getUsuarios() {
 		List<Usuario> usuarios = jdbcTemplate.query("SELECT u.u_id, u.u_login, u.u_password FROM users u", new RowMapperUsuario());
 		
@@ -27,11 +31,15 @@ public class UsuarioDAO extends AbstractDAO {
 	}
 	
 	
-	public Usuario getUsuario(String nombre){
-		Usuario usuario = jdbcTemplate.queryForObject("SELECT u.u_id, u.u_login, u.u_password, u.u_name, u.u_comanager FROM users u WHERE u_login=?", 
+	public Usuario getUsuario(String nombre){		
+		
+		logger.debug("Buscando usuario con nombre de login: " + nombre);
+		
+		Usuario usuario = jdbcTemplate.queryForObject("SELECT u.u_id, u.u_login, u.u_password, u.u_name, u.u_comanager, p.u_name FROM users u, SEC_ASIG_PERFIL ap, users p WHERE u.u_id = ap.SEC_USUARIO_ID AND ap.SEC_PERFIL_ID = p.u_id AND u.u_login = ?", 
 				new RowMapperUsuario2(), nombre);
 		
 		return usuario;
+		//SELECT u.u_id, u.u_login, u.u_password, u.u_name, u.u_comanager FROM users u WHERE u_login = ?
 	}
 	
 	public void modificarUsuario(Usuario usuario)
@@ -41,7 +49,7 @@ public class UsuarioDAO extends AbstractDAO {
 	
 	
 	public Usuario getUsuario(int id){
-		Usuario usuario = jdbcTemplate.queryForObject("SELECT u.u_id, u.u_login, u.u_password FROM users u WHERE u_id=?", 
+		Usuario usuario = jdbcTemplate.queryForObject("SELECT u.u_id, u.u_login, u.u_password FROM users u WHERE u_id = ?", 
 				new RowMapperUsuario(), id);
 		
 		return usuario;
@@ -88,22 +96,7 @@ public class UsuarioDAO extends AbstractDAO {
 	 }
 	
 	
-	public class RowMapperUsuario implements RowMapper<Usuario>{
 
-		@Override
-		public Usuario mapRow(ResultSet rs, int rowNum) throws SQLException {
-			return new Usuario(rs.getInt(1),rs.getString(2),rs.getString(3));
-		}
-		
-	}
-	public class RowMapperUsuario2 implements RowMapper<Usuario>{
-
-		@Override
-		public Usuario mapRow(ResultSet rs, int rowNum) throws SQLException {
-			return new Usuario(rs.getInt(1),rs.getString(2),rs.getString(3),rs.getString(4),(rs.getInt(5)==1));
-		}
-		
-	}
 	public String getSector(Usuario usuario) {
 		return jdbcTemplate.queryForObject("SELECT u_grupo FROM users WHERE u_id=?", String.class ,usuario.getIdUsuario());
 	}
@@ -116,5 +109,58 @@ public class UsuarioDAO extends AbstractDAO {
 		return usuarios;
 	}
 	
+	
+	//Alta usuarios
+	public void guardarNuevoUsuario(Usuario usuario) {
+		
+		String sqlUsuario = "INSERT INTO users (u_login, u_password, u_name, u_grupo) VALUES (?, password(?), ?, ?)";
+		
+		jdbcTemplate.update(sqlUsuario, usuario.getNombreLogin(), usuario.getPassword(), usuario.getNombre(), usuario.getGrupo());
+		
+		
+		Integer ID = jdbcTemplate.queryForInt("SELECT u_id FROM users WHERE u_login = ?", usuario.getNombreLogin());
+		
+		
+		String sqlPerfil = "INSERT INTO SEC_ASIG_PERFIL (SEC_USUARIO_ID, SEC_PERFIL_ID) VALUES (?,?)";
+		
+		jdbcTemplate.update(sqlPerfil, usuario.getIdUsuario(), usuario.getPerfil().getIdUsuario());
+	}
+	
+	//Modificacion usuarios
+	public void modificacionUsuario(Usuario usuario) {
+			
+			String sqlUsuario = "UPDATE users SET u_login = ?, u_name = ?, u_password = password(?), u_grupo = ? WHERE u_id = ?";
+			
+			jdbcTemplate.update(sqlUsuario, usuario.getNombreLogin(), usuario.getNombre(), usuario.getPassword(), usuario.getGrupo(), usuario.getIdUsuario());
+			
+			String sqlPerfil = "UPDATE SEC_ASIG_PERFIL SET SEC_PERFIL_ID = ? WHERE SEC_USUARIO_ID = ?";
+			
+			jdbcTemplate.update(sqlPerfil, usuario.getPerfil().getIdUsuario(), usuario.getIdUsuario());
+			
+	}
+	
+	
+	
+	
+	//RowMappers
+	
+	private class RowMapperUsuario implements RowMapper<Usuario>{
+
+		@Override
+		public Usuario mapRow(ResultSet rs, int rowNum) throws SQLException {
+			return new Usuario(rs.getInt(1),rs.getString(2),rs.getString(3));
+		}
+		
+	}
+	
+	private class RowMapperUsuario2 implements RowMapper<Usuario>{
+
+		@Override
+		public Usuario mapRow(ResultSet rs, int rowNum) throws SQLException {
+			Usuario perfil = new Usuario(0, rs.getString(6), "");
+			return new Usuario(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), (rs.getInt(5) == 1), perfil);
+		}
+		
+	}
 	
 }

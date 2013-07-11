@@ -9,13 +9,24 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	private String password;
 	private String nombre;
 	private Boolean esCoManager;
+	private Usuario perfil;
+	private String grupo;
 	
-	public Usuario(int id, String nombreLogin, String password,String nombre,Boolean coManage) {
+	public Usuario(int id, String nombreLogin, String password, String nombre, Boolean coManager, Usuario perfil) {
 		this.idUsuario = id;
 		this.nombreLogin = nombreLogin;
 		this.password = password;
 		this.nombre = nombre;
-		this.esCoManager = coManage;
+		this.esCoManager = coManager;
+		this.perfil = perfil;
+	}
+	
+	public Usuario(int id, String nombreLogin, String password,String nombre,Boolean coManager) {
+		this.idUsuario = id;
+		this.nombreLogin = nombreLogin;
+		this.password = password;
+		this.nombre = nombre;
+		this.esCoManager = coManager;
 	}
 
 	public Usuario(int id, String nombre, String password) {
@@ -65,9 +76,23 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}	
+	
+	public Usuario getPerfil() {
+		return perfil;
 	}
 
+	public void setPerfil(Usuario perfil) {
+		this.perfil = perfil;
+	}
 
+	public String getGrupo() {
+		return grupo;
+	}
+
+	public void setGrupo(String grupo) {
+		this.grupo = grupo;
+	}
 
 	@Override
 	public String toString() {

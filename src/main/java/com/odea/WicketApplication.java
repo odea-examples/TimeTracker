@@ -1,6 +1,5 @@
 package com.odea;
 
-import org.apache.wicket.core.request.mapper.CryptoMapper;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 
@@ -40,11 +39,9 @@ public class WicketApplication extends WebApplication
         mountPage("feriados", FeriadosPage.class);
         mountPage("pdf", pruebaPDF.class);
         mountPage("reportHoras", VistaHorasPage.class);
-//      mountPage("news", News.class);
-//      mountPage("pp", PruebaPage.class);
         mountPage("pp",PermisosPage.class);
         getComponentInstantiationListeners().add(new SpringComponentInjector(this));
         
-//        setRootRequestMapper(new CryptoMapper(getRootRequestMapper(), this));
+        //setRootRequestMapper(new CryptoMapper(getRootRequestMapper(), this));
 	}
 }

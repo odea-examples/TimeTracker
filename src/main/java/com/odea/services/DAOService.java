@@ -219,7 +219,6 @@ public class DAOService {
 	}
 	
 	public Usuario getUsuario(String nombre){
-		System.out.println("Aca esta el otro: " + nombre);
 		return usuarioDAO.getUsuario(nombre);
 	}
 		
