@@ -46,6 +46,7 @@ public class SeguridadDAO extends AbstractDAO {
 	}
 	
 	
+	
 	public List<Usuario> getPerfiles()
 	{
 		List<Usuario> listaUsuarios = jdbcTemplate.query("SELECT u_id, u_login, u_password, u_name FROM users WHERE u_tipo = 'P'", new RowMapperUsuario());
@@ -85,6 +86,14 @@ public class SeguridadDAO extends AbstractDAO {
 		return usuarios;
 	}
 	
+	
+	public void altaPerfil(String nombre) {
+		logger.debug("Se procede a guardar nuevo Perfil con nombre: " + nombre);
+		
+		jdbcTemplate.update("INSERT INTO users (u_login, u_name, u_tipo) VALUES (?,?,'P')", nombre, nombre);
+		
+		logger.debug("Perfil guardado satisfactoriamente");
+	}
 	
 	
 	//RowMappers

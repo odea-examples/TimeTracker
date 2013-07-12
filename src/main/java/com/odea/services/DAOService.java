@@ -329,8 +329,16 @@ public class DAOService {
 		return lista;
 	}
 	
-	public void cambiarPerfil(Usuario usuario, String perfil) {
+	public void cambiarPerfil(Usuario usuario, Usuario perfil) {
 		usuarioDAO.cambiarPerfil(usuario, perfil);
+	}
+	
+	public void altaPerfil(String nombre) {
+		seguridadDAO.altaPerfil(nombre);
+	}
+	
+	public List<Usuario> getUsuariosConPerfiles() {
+		return usuarioDAO.getUsuariosConPerfiles();
 	}
 	
 }

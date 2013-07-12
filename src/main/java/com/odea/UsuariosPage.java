@@ -9,12 +9,13 @@ import org.apache.wicket.ajax.markup.html.navigation.paging.AjaxPagingNavigator;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.DropDownChoice;
-import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.PageableListView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.odea.behavior.onlyNumber.OnlyNumberBehavior;
@@ -27,24 +28,26 @@ public class UsuariosPage extends BasePage {
 	public DAOService daoService;
 	
 	public IModel<List<Usuario>> lstUsuariosModel;
-	public IModel<List<String>> lstPerfilesModel;	
+	public IModel<List<Usuario>> lstPerfilesModel;	
 	public WebMarkupContainer listViewContainer;
 	public PageableListView<Usuario> usuariosListView;
 
 	
 	public UsuariosPage() {
 
-		this.lstUsuariosModel = new LoadableDetachableModel<List<Usuario>>() { 
+		this.lstUsuariosModel = new LoadableDetachableModel<List<Usuario>>() {
+			
             @Override
             protected List<Usuario> load() {
-            	return daoService.getUsuarios();
+            	return daoService.getUsuariosConPerfiles();
             }
+            
         };
         
-        this.lstPerfilesModel = new LoadableDetachableModel<List<String>>() { 
+        this.lstPerfilesModel = new LoadableDetachableModel<List<Usuario>>() { 
             @Override
-            protected List<String> load() {
-            	return daoService.getPerfilesTodos();
+            protected List<Usuario> load() {
+            	return daoService.getPerfiles();
             }
         };
         
@@ -66,10 +69,11 @@ public class UsuariosPage extends BasePage {
             	item.add(new Label("nombreLogin", new Model<String>(usuario.getNombreLogin())));
             	
             	
-            	final TextField<Integer> dedicacion = new TextField<Integer>("dedicacion", new Model<Integer>(daoService.getDedicacion(usuario)));
+            	final RequiredTextField<Integer> dedicacion = new RequiredTextField<Integer>("dedicacion", new Model<Integer>(daoService.getDedicacion(usuario)));
             	dedicacion.add(new OnlyNumberBehavior(dedicacion.getMarkupId()));
             	
             	dedicacion.add(new AjaxFormComponentUpdatingBehavior("onchange") {
+            		
     				@Override
     				protected void onUpdate(AjaxRequestTarget target) {
     					daoService.setDedicacion(usuario, Integer.parseInt(dedicacion.getInput()));
@@ -86,9 +90,9 @@ public class UsuariosPage extends BasePage {
             	
             	item.add(dedicacion);
             	
-            	final DropDownChoice<String> dropDownPerfil = new DropDownChoice<String>("dropDownPerfil", lstPerfilesModel);
-            	dropDownPerfil.setDefaultModel(lstPerfilesModel);
+            	final DropDownChoice<Usuario> dropDownPerfil = new DropDownChoice<Usuario>("dropDownPerfil",  lstPerfilesModel);
             	
+            	dropDownPerfil.setDefaultModel(lstPerfilesModel);
             	
             	dropDownPerfil.add(new AjaxFormComponentUpdatingBehavior("onchange") {
 
@@ -98,6 +102,7 @@ public class UsuariosPage extends BasePage {
 					}
             		
             	});
+            	
             	
             	item.add(dropDownPerfil);
             	

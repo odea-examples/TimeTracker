@@ -5,8 +5,14 @@ import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+
+import com.odea.services.DAOService;
 
 public class AltaPerfilPage extends BasePage {
+	
+	@SpringBean
+	private DAOService daoService;
 	
 	public AltaPerfilPage() {
 		
@@ -17,8 +23,7 @@ public class AltaPerfilPage extends BasePage {
 			
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-				//TODO: Implementar metodo para guardar el perfil
-				//daoService.guardarNuevoPerfil(nombrePerfil.getModelObject());
+				daoService.altaPerfil(nombrePerfil.getModelObject());
 			}
 			
 		};

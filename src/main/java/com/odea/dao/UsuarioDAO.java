@@ -23,7 +23,7 @@ public class UsuarioDAO extends AbstractDAO {
     private static final Logger logger = LoggerFactory.getLogger(UsuarioDAO.class);
 	
 	public List<Usuario> getUsuarios() {
-		List<Usuario> usuarios = jdbcTemplate.query("SELECT u.u_id, u.u_login, u.u_password FROM users u", new RowMapperUsuario());
+		List<Usuario> usuarios = jdbcTemplate.query("SELECT u.u_id, u.u_login, u.u_password FROM users u WHERE u_tipo = 'U'", new RowMapperUsuario());
 		
 		Collections.sort(usuarios);
 		
@@ -139,11 +139,11 @@ public class UsuarioDAO extends AbstractDAO {
 			
 	}
 	
-	public void cambiarPerfil(Usuario usuario, String perfil) {
+	public void cambiarPerfil(Usuario usuario, Usuario perfil) {
 		
-		logger.debug("SE CAMBIA EL PERFIL DEL USUARIO: " + usuario.getNombreLogin() + " POR PERFIL: " + perfil);
+		logger.debug("SE CAMBIA EL PERFIL DEL USUARIO: " + usuario.getNombreLogin() + " POR PERFIL: " + perfil.getNombre());
 		
-		int perfilID = jdbcTemplate.queryForInt("SELECT u_id FROM users WHERE u_name = ?", perfil);
+		int perfilID = jdbcTemplate.queryForInt("SELECT u_id FROM users WHERE u_name = ?", perfil.getNombre());
 		
 		logger.debug("PERFIL ID: " + perfilID);
 		
@@ -152,6 +152,14 @@ public class UsuarioDAO extends AbstractDAO {
 		jdbcTemplate.update(sql, perfilID, usuario.getIdUsuario());
 		
 		logger.debug("CAMBIO DE ROL REALIZADO");
+	}
+	
+	
+	public List<Usuario> getUsuariosConPerfiles() {
+		
+		List<Usuario> usuarios = jdbcTemplate.query("SELECT u.u_id, u.u_login, u.u_password, u.u_name, u.u_comanager, p.u_name FROM users u, SEC_ASIG_PERFIL ap, users p WHERE u.u_id = ap.SEC_USUARIO_ID AND ap.SEC_PERFIL_ID = p.u_id", new RowMapperUsuario2());
+		
+		return usuarios;
 	}
 	
 	
