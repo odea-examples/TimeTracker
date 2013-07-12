@@ -307,7 +307,6 @@ public class DAOService {
 	}
 
 	public ArrayList<Permiso> getPermisos() {
-		// TODO Auto-generated method stub
 		return seguridadDAO.getPermisos();
 	}
 	

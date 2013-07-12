@@ -15,7 +15,6 @@ import org.apache.wicket.markup.html.list.PageableListView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.odea.behavior.onlyNumber.OnlyNumberBehavior;
@@ -90,10 +89,10 @@ public class UsuariosPage extends BasePage {
             	
             	item.add(dedicacion);
             	
-            	final DropDownChoice<Usuario> dropDownPerfil = new DropDownChoice<Usuario>("dropDownPerfil",  lstPerfilesModel);
-            	
-            	dropDownPerfil.setDefaultModel(lstPerfilesModel);
-            	
+            	final DropDownChoice<Usuario> dropDownPerfil = new DropDownChoice<Usuario>("dropDownPerfil", new Model<Usuario>(usuario.getPerfil()) , lstPerfilesModel);
+            	System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+            	System.out.println(usuario.getPerfil());
+            	            	
             	dropDownPerfil.add(new AjaxFormComponentUpdatingBehavior("onchange") {
 
 					@Override

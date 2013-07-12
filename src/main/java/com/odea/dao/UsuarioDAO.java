@@ -35,7 +35,7 @@ public class UsuarioDAO extends AbstractDAO {
 		
 		logger.debug("Buscando usuario con nombre de login: " + nombre);
 		
-		Usuario usuario = jdbcTemplate.queryForObject("SELECT u.u_id, u.u_login, u.u_password, u.u_name, u.u_comanager, p.u_name FROM users u, SEC_ASIG_PERFIL ap, users p WHERE u.u_id = ap.SEC_USUARIO_ID AND ap.SEC_PERFIL_ID = p.u_id AND u.u_login = ?", 
+		Usuario usuario = jdbcTemplate.queryForObject("SELECT u.u_id, u.u_login, u.u_password, u.u_name, u.u_comanager, p.u_name, p.u_login FROM users u, SEC_ASIG_PERFIL ap, users p WHERE u.u_id = ap.SEC_USUARIO_ID AND ap.SEC_PERFIL_ID = p.u_id AND u.u_login = ?", 
 				new RowMapperUsuario2(), nombre);
 		
 		return usuario;
@@ -157,7 +157,7 @@ public class UsuarioDAO extends AbstractDAO {
 	
 	public List<Usuario> getUsuariosConPerfiles() {
 		
-		List<Usuario> usuarios = jdbcTemplate.query("SELECT u.u_id, u.u_login, u.u_password, u.u_name, u.u_comanager, p.u_name FROM users u, SEC_ASIG_PERFIL ap, users p WHERE u.u_id = ap.SEC_USUARIO_ID AND ap.SEC_PERFIL_ID = p.u_id", new RowMapperUsuario2());
+		List<Usuario> usuarios = jdbcTemplate.query("SELECT u.u_id, u.u_login, u.u_password, u.u_name, u.u_comanager, p.u_name, p.u_login FROM users u, SEC_ASIG_PERFIL ap, users p WHERE u.u_id = ap.SEC_USUARIO_ID AND ap.SEC_PERFIL_ID = p.u_id", new RowMapperUsuario2());
 		
 		return usuarios;
 	}
@@ -169,7 +169,7 @@ public class UsuarioDAO extends AbstractDAO {
 
 		@Override
 		public Usuario mapRow(ResultSet rs, int rowNum) throws SQLException {
-			return new Usuario(rs.getInt(1),rs.getString(2),rs.getString(3));
+			return new Usuario(rs.getInt(1), rs.getString(2), rs.getString(3));
 		}
 		
 	}
@@ -178,10 +178,12 @@ public class UsuarioDAO extends AbstractDAO {
 
 		@Override
 		public Usuario mapRow(ResultSet rs, int rowNum) throws SQLException {
-			Usuario perfil = new Usuario(0, rs.getString(6), "");
+			Usuario perfil = new Usuario(0, rs.getString(6), rs.getString(7), "PasswordNula");
 			return new Usuario(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), (rs.getInt(5) == 1), perfil);
 		}
 		
 	}
+	
+
 	
 }
