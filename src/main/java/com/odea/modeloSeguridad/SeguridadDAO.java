@@ -114,6 +114,20 @@ public class SeguridadDAO extends AbstractDAO {
 		return nombrePerfil;
 	}
 	
+	public List<String> getNombresPerfiles() {
+		List<String> nombresPerfiles = jdbcTemplate.query("SELECT u_login FROM users WHERE u_tipo = 'P'", new RowMapper<String>() {
+
+			@Override
+			public String mapRow(ResultSet rs, int rowNum) throws SQLException {
+				return rs.getString(1);
+			}
+			
+		});
+		
+		return nombresPerfiles;
+	}
+	
+	
 	//RowMappers
 
 	private class RowMapperFuncionalidad implements RowMapper<Funcionalidad>{

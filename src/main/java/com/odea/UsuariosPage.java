@@ -27,10 +27,11 @@ public class UsuariosPage extends BasePage {
 	public DAOService daoService;
 	
 	public IModel<List<Usuario>> lstUsuariosModel;
-	public IModel<List<Usuario>> lstPerfilesModel;	
+	public IModel<List<Usuario>> lstPerfilesModel;
+	public IModel<List<String>> lstNombresPerfilesModel;
 	public WebMarkupContainer listViewContainer;
 	public PageableListView<Usuario> usuariosListView;
-
+	
 	
 	public UsuariosPage() {
 
@@ -50,6 +51,12 @@ public class UsuariosPage extends BasePage {
             }
         };
         
+        this.lstNombresPerfilesModel = new LoadableDetachableModel<List<String>>() { 
+            @Override
+            protected List<String> load() {
+            	return daoService.getNombresPerfiles();
+            }
+        };
         
         
 		this.listViewContainer = new WebMarkupContainer("listViewContainer");
@@ -89,15 +96,13 @@ public class UsuariosPage extends BasePage {
             	
             	item.add(dedicacion);
             	
-            	final DropDownChoice<Usuario> dropDownPerfil = new DropDownChoice<Usuario>("dropDownPerfil", new Model<Usuario>(usuario.getPerfil()) , lstPerfilesModel);
-            	System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
-            	System.out.println(usuario.getPerfil());
+            	final DropDownChoice<String> dropDownPerfil = new DropDownChoice<String>("dropDownPerfil", Model.of(usuario.getPerfil().getNombreLogin()) ,lstNombresPerfilesModel);
             	            	
             	dropDownPerfil.add(new AjaxFormComponentUpdatingBehavior("onchange") {
 
 					@Override
 					protected void onUpdate(AjaxRequestTarget target) {
-						daoService.cambiarPerfil(usuario, dropDownPerfil.getModelObject());
+						//daoService.cambiarPerfil(usuario, dropDownPerfil.getModelObject());
 					}
             		
             	});
