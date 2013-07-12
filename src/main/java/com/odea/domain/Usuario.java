@@ -33,9 +33,18 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 		this.idUsuario = id;
 		this.nombreLogin = nombre;
 		this.password = password;
-		this.nombre="default";
+		this.nombre = "default";
 		this.esCoManager = false;
 	}
+	
+	public Usuario(int id, String nombre, String login, String password) {
+		this.idUsuario = id;
+		this.nombreLogin = login;
+		this.password = password;
+		this.nombre = nombre;
+		this.esCoManager = false;
+	}
+	
 	
 	public Boolean getEsCoManager() {
 		return esCoManager;

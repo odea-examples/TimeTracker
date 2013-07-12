@@ -308,7 +308,6 @@ public class DAOService {
 	}
 
 	public ArrayList<Permiso> getPermisos() {
-		// TODO Auto-generated method stub
 		return seguridadDAO.getPermisos();
 	}
 	
@@ -334,12 +333,24 @@ public class DAOService {
 		return lista;
 	}
 	
-	public void cambiarPerfil(Usuario usuario, String perfil) {
+	public void cambiarPerfil(Usuario usuario, Usuario perfil) {
 		usuarioDAO.cambiarPerfil(usuario, perfil);
 	}
 
 	public List<Usuario> getUsuariosQueTienenUnaFuncionalidad(Funcionalidad funcionalidad) {
 		return seguridadDAO.getUsuariosQueTienenUnaFuncionalidad(funcionalidad);
+	}
+	
+	public void altaPerfil(String nombre) {
+		seguridadDAO.altaPerfil(nombre);
+	}
+	
+	public List<Usuario> getUsuariosConPerfiles() {
+		return usuarioDAO.getUsuariosConPerfiles();
+	}
+	
+	public String getPerfil(String loginUsuario) {
+		return seguridadDAO.getPerfil(loginUsuario);
 	}
 	
 }

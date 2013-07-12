@@ -23,7 +23,7 @@ public class AnnotationsShiroAuthorizationStrategy implements IAuthorizationStra
 	private static final Logger LOG = LoggerFactory.getLogger(AnnotationsShiroAuthorizationStrategy.class);
 	
 	private UsuarioDAO usuarioDAO = new UsuarioDAO();
-	private Usuario usuarioLogueado;
+	
 	
 	@Override
 	public <T extends IRequestableComponent> boolean isInstantiationAuthorized(Class<T> componentClass) {
@@ -54,13 +54,6 @@ public class AnnotationsShiroAuthorizationStrategy implements IAuthorizationStra
 	}
 	
 	
-	private Usuario getUsuarioLogueado() {
-		if(this.usuarioLogueado == null) {
-			this.usuarioLogueado = usuarioDAO.getUsuario(SecurityUtils.getSubject().getPrincipal().toString()); 
-		}
-		
-		return this.usuarioLogueado;
-	}
 	
 	
 	//Verifica si el componente se renderiza.
@@ -68,9 +61,9 @@ public class AnnotationsShiroAuthorizationStrategy implements IAuthorizationStra
 	private boolean verificarComponente(Component component, Action action) {
 		
 		final Subject subject = SecurityUtils.getSubject();
-		String loginUsuario = SecurityUtils.getSubject().getPrincipal().toString();
+		String loginUsuario = subject.getPrincipal().toString();
 		
-		//Usuario usuarioRegistrado = this.getUsuarioLogueado();
+		String perfil = (String) subject.getSession().getAttribute("Perfil");
 		
 		String idComponent = component.getId();
 		String page = component.getPage().getClass().toString();
@@ -78,6 +71,7 @@ public class AnnotationsShiroAuthorizationStrategy implements IAuthorizationStra
 		
 		ArrayList<String> paginasNoAceptadas = new ArrayList<String>();
 		paginasNoAceptadas.add("class com.odea.FeriadosPage");
+		paginasNoAceptadas.add("class com.odea.UsuariosPage");
 
 		
 		ArrayList<String> componentesNoAceptados = new ArrayList<String>();
@@ -104,7 +98,7 @@ public class AnnotationsShiroAuthorizationStrategy implements IAuthorizationStra
 
 		
 		//Dice invitado pero debería ser admin. Como lo usamos para hacer pruebas por ahora lo dejamos como invitado.
-		if (!loginUsuario.equals("invitado")){
+		if (!perfil.equals("Admin")){
 			if (paginasAccesoLimitado.contains(page)) {
 				if (componentesNoAceptados.contains(idComponent)) {
 					return false;
@@ -114,7 +108,6 @@ public class AnnotationsShiroAuthorizationStrategy implements IAuthorizationStra
 			if (paginasNoAceptadas.contains(page)) {
 				throw new RestartResponseAtInterceptPageException(new NoAutorizadoPage());
 			}
-			
 		}
 		
 		

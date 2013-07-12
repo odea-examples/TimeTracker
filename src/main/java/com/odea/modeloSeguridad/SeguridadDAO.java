@@ -46,6 +46,7 @@ public class SeguridadDAO extends AbstractDAO {
 	}
 	
 	
+	
 	public List<Usuario> getPerfiles()
 	{
 		List<Usuario> listaUsuarios = jdbcTemplate.query("SELECT u_id, u_login, u_password, u_name FROM users WHERE u_tipo = 'P'", new RowMapperUsuario());
@@ -88,6 +89,30 @@ public class SeguridadDAO extends AbstractDAO {
 	}
 	
 	
+	public void altaPerfil(String nombre) {
+		logger.debug("Se procede a guardar nuevo Perfil con nombre: " + nombre);
+		
+		jdbcTemplate.update("INSERT INTO users (u_login, u_name, u_tipo) VALUES (?,?,'P')", nombre, nombre);
+		
+		logger.debug("Perfil guardado satisfactoriamente");
+	}
+	
+	public String getPerfil(String loginUsuario) {
+		
+		logger.debug("Se busca nombre de perfil del usuario: " + loginUsuario);
+		
+		String sql = "SELECT p.u_name FROM users u, users p, SEC_ASIG_PERFIL ap WHERE u.u_id = ap.SEC_USUARIO_ID AND ap.SEC_PERFIL_ID = p.u_id AND u.u_login = ?";
+		
+		String nombrePerfil = jdbcTemplate.queryForObject(sql, String.class, loginUsuario);
+		
+		if (nombrePerfil != null){
+			logger.debug("Perfil encontrado: " + nombrePerfil);
+		} else {
+			throw new RuntimeException("No se puede encontrar el perfil del usuario: " + loginUsuario);
+		}
+		
+		return nombrePerfil;
+	}
 	
 	//RowMappers
 
