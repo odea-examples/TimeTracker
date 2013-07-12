@@ -4,23 +4,21 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authc.UsernamePasswordToken;
-import org.apache.shiro.authz.AuthorizationException;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.Permission;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
-import org.apache.shiro.realm.AuthenticatingRealm;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.odea.dao.UsuarioDAO;
-import com.odea.domain.Usuario;
-import com.odea.services.DAOService;
+import com.odea.modeloSeguridad.SeguridadDAO;
 
 /**
  * User: pbergonzi
@@ -33,6 +31,8 @@ public class OdeaRealm extends AuthorizingRealm{
 	
 	@Autowired
 	private UsuarioDAO usuarioDAO;
+	@Autowired
+	private SeguridadDAO seguridadDAO;
 	
 	
 	
@@ -43,10 +43,10 @@ public class OdeaRealm extends AuthorizingRealm{
     	
     	String userName = myToken.getUsername();
     	String password = String.valueOf(myToken.getPassword());
-    	
-    	
+
     	try {
     		usuarioDAO.getUsuario(userName, password);
+    		SecurityUtils.getSubject().getSession().setAttribute("Perfil", seguridadDAO.getPerfil(userName));
     		return new SimpleAuthenticationInfo(authenticationToken.getPrincipal(), authenticationToken.getCredentials(), getName());	
 		}
     	catch (Exception e) {

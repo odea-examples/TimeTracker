@@ -3,6 +3,7 @@ package com.odea.services;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -15,7 +16,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class SimpleLoginService implements LoginService {
-		
+	
     private static final Logger logger = LoggerFactory.getLogger(SimpleLoginService.class);
 
     @Override
@@ -25,7 +26,6 @@ public class SimpleLoginService implements LoginService {
         Subject currentUser = SecurityUtils.getSubject();
         currentUser.hasRole("admin");
         currentUser.login(token); 
-        //currentUser.getSession().setAttribute(arg0, arg1);
     }
     
 }

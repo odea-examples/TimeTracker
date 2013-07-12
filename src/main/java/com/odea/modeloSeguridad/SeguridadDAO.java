@@ -95,6 +95,22 @@ public class SeguridadDAO extends AbstractDAO {
 		logger.debug("Perfil guardado satisfactoriamente");
 	}
 	
+	public String getPerfil(String loginUsuario) {
+		
+		logger.debug("Se busca nombre de perfil del usuario: " + loginUsuario);
+		
+		String sql = "SELECT p.u_name FROM users u, users p, SEC_ASIG_PERFIL ap WHERE u.u_id = ap.SEC_USUARIO_ID AND ap.SEC_PERFIL_ID = p.u_id AND u.u_login = ?";
+		
+		String nombrePerfil = jdbcTemplate.queryForObject(sql, String.class, loginUsuario);
+		
+		if (nombrePerfil != null){
+			logger.debug("Perfil encontrado: " + nombrePerfil);
+		} else {
+			throw new RuntimeException("No se puede encontrar el perfil del usuario: " + loginUsuario);
+		}
+		
+		return nombrePerfil;
+	}
 	
 	//RowMappers
 

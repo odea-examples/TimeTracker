@@ -341,4 +341,8 @@ public class DAOService {
 		return usuarioDAO.getUsuariosConPerfiles();
 	}
 	
+	public String getPerfil(String loginUsuario) {
+		return seguridadDAO.getPerfil(loginUsuario);
+	}
+	
 }
