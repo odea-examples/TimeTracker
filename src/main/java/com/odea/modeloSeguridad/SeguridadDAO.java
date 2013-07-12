@@ -22,7 +22,7 @@ public class SeguridadDAO extends AbstractDAO {
 	
 	public List<Funcionalidad> getFuncionalidades() {
 		
-		List<Funcionalidad> funcionalidades = jdbcTemplate.query("SELECT ID, GRUPO, CONCEPTO, ESTADO FROM SEC_FUNCIONALIDAD", new RowMapperFuncionalidad());
+		List<Funcionalidad> funcionalidades = jdbcTemplate.query("SELECT SEC_FUNCIONALIDAD_ID, GRUPO, CONCEPTO, ESTADO FROM SEC_FUNCIONALIDAD", new RowMapperFuncionalidad());
 		
 		return funcionalidades;
 	}
@@ -55,17 +55,19 @@ public class SeguridadDAO extends AbstractDAO {
 	
 	
 	//Cambio de estado de permisos
-	public void cambiarStatus(Usuario usuario, Permiso permiso, Boolean habilitado) {
+	public void cambiarStatus(Usuario usuario, Funcionalidad funcionalidad, Boolean habilitado) {
 		
 		String estadoPermiso = habilitado ? "Habilitado" : "Inhabilitado";
 		
-		logger.debug("Se actualiza Permiso: " + permiso.getID() + " - Usuario: " + usuario.getNombre() + " - Estado: " + estadoPermiso);
+		logger.debug("Se actualiza Permiso: " + funcionalidad.getID() + " - Usuario: " + usuario.getNombre() + " - Estado: " + estadoPermiso);
 		
-		Integer updatedRows = jdbcTemplate.update("UPDATE SEC_PERMISO SET ESTADO = '"+ estadoPermiso +"' WHERE SEC_PERMISO_ID = ? AND SEC_USUARIO_PERFIL_ID = ? ", permiso.getID(), usuario.getIdUsuario());
+		Integer updatedRows = jdbcTemplate.update("UPDATE SEC_PERMISO SET ESTADO = '"+ estadoPermiso +"' WHERE SEC_USUARIO_PERFIL_ID = ? AND SEC_FUNCIONALIDAD_ID = ? ", usuario.getIdUsuario(),funcionalidad.getID());
 		
 		if(updatedRows.equals(0))
 		{
-			throw new RuntimeException("Permiso no encontrado en BD. INFO: PermisoID: " + permiso.getID() + " - UsuarioID: " + usuario.getIdUsuario());
+			jdbcTemplate.update("INSERT INTO SEC_PERMISO VALUES(0,?,?,'Habilitado')",funcionalidad.getID(),usuario.getIdUsuario());
+			
+//			throw new RuntimeException("Permiso no encontrado en BD. INFO: PermisoID: " + permiso.getID() + " - UsuarioID: " + usuario.getIdUsuario());
 		}
 		
 	}	
@@ -129,6 +131,12 @@ public class SeguridadDAO extends AbstractDAO {
 			
 			return unUsuario;
 		}
+	}
+
+	public List<Usuario> getUsuariosQueTienenUnaFuncionalidad(Funcionalidad funcionalidad) {
+		
+		List<Usuario> usuarios = jdbcTemplate.query("SELECT u_id, u_login, u_password, u_name FROM users WHERE u_id in (SELECT SEC_USUARIO_PERFIL_ID FROM SEC_PERMISO WHERE SEC_FUNCIONALIDAD_ID = ? AND ESTADO = 'Habilitado')", new RowMapperUsuario(), funcionalidad.getID());
+		return usuarios;
 	}
 
 

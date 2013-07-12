@@ -20,6 +20,7 @@ import org.apache.wicket.request.Response;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.odea.domain.Usuario;
+import com.odea.modeloSeguridad.Funcionalidad;
 import com.odea.modeloSeguridad.Permiso;
 import com.odea.services.DAOService;
 
@@ -36,7 +37,7 @@ public class PermisosPage extends BasePage {
 	public DAOService daoService;
 	
 	public WebComponent titulos;
-	public IModel<ArrayList<Permiso>> lstPermisosModel;
+	public IModel<ArrayList<Funcionalidad>> lstPermisosModel;
 	public IModel<List<Usuario>> lstPerfilesModel;
 	
 	
@@ -44,10 +45,10 @@ public class PermisosPage extends BasePage {
 	public PermisosPage() {
 
 		
-		this.lstPermisosModel = new LoadableDetachableModel<ArrayList<Permiso>>() {
+		this.lstPermisosModel = new LoadableDetachableModel<ArrayList<Funcionalidad>>() {
 			@Override
-			protected ArrayList<Permiso> load() {
-				return daoService.getPermisos();
+			protected ArrayList<Funcionalidad> load() {
+				return (ArrayList<Funcionalidad>) daoService.getFuncionalidades();
 			}
 		};
 		
@@ -88,15 +89,15 @@ public class PermisosPage extends BasePage {
 		
 		
 		
-		ListView<Permiso> listaPermisos = new ListView<Permiso>("listaPermisos", this.lstPermisosModel) {
+		ListView<Funcionalidad> listaPermisos = new ListView<Funcionalidad>("listaPermisos", this.lstPermisosModel) {
 
 			@Override
-			protected void populateItem(ListItem<Permiso> item) {
+			protected void populateItem(ListItem<Funcionalidad> item) {
 
-				final Permiso permiso = item.getModel().getObject();
-				final List<Usuario> usuariosConPermiso = PermisosPage.this.daoService.getUsuariosQueTienenUnPermiso(permiso);
+				final Funcionalidad funcionalidad = item.getModel().getObject();
+				final List<Usuario> usuariosConPermiso = PermisosPage.this.daoService.getUsuariosQueTienenUnaFuncionalidad(funcionalidad);
 				
-				item.add(new Label("nombre_permiso", "Permiso ID: " + permiso.getID()));
+				item.add(new Label("nombre_permiso",  funcionalidad.getConcepto()));
 				
 				
 				ListView<Usuario> listaInterna = new ListView<Usuario>("listaUsuarios",lstPerfilesModel) {
@@ -120,7 +121,7 @@ public class PermisosPage extends BasePage {
 								Boolean estado = checkBox.getModelObject();
 								checkBox.setModelObject(!estado);
 								
-								PermisosPage.this.daoService.cambiarStatusPermiso(usuario, permiso, checkBox.getModelObject());
+								PermisosPage.this.daoService.cambiarStatusPermiso(usuario, funcionalidad, checkBox.getModelObject());
 							}
 						});
 						

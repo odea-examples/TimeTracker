@@ -27,6 +27,7 @@ import com.odea.domain.Feriado;
 import com.odea.domain.Proyecto;
 import com.odea.domain.Usuario;
 import com.odea.domain.UsuarioListaHoras;
+import com.odea.modeloSeguridad.Funcionalidad;
 import com.odea.modeloSeguridad.Permiso;
 import com.odea.modeloSeguridad.SeguridadDAO;
 
@@ -298,8 +299,8 @@ public class DAOService {
 		return usuarioDAO.getNombreYApellido(usuario);
 	}
 
-	public void cambiarStatusPermiso(Usuario usuario, Permiso permiso, Boolean habilitado) {
-		seguridadDAO.cambiarStatus(usuario, permiso, habilitado);	
+	public void cambiarStatusPermiso(Usuario usuario, Funcionalidad funcionalidad, Boolean habilitado) {
+		seguridadDAO.cambiarStatus(usuario, funcionalidad, habilitado);	
 	}
 	
 	public List<Usuario> getPerfiles() {
@@ -313,6 +314,10 @@ public class DAOService {
 	
 	public List<Permiso> getPermisos(Usuario usuario) {
 		return seguridadDAO.getPermisos(usuario);
+	}
+	
+	public List<Funcionalidad> getFuncionalidades(){
+		return seguridadDAO.getFuncionalidades();
 	}
 	
 	public List<Usuario> getUsuariosQueTienenUnPermiso(Permiso permiso) {
@@ -331,6 +336,10 @@ public class DAOService {
 	
 	public void cambiarPerfil(Usuario usuario, String perfil) {
 		usuarioDAO.cambiarPerfil(usuario, perfil);
+	}
+
+	public List<Usuario> getUsuariosQueTienenUnaFuncionalidad(Funcionalidad funcionalidad) {
+		return seguridadDAO.getUsuariosQueTienenUnaFuncionalidad(funcionalidad);
 	}
 	
 }
