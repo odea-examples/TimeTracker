@@ -18,12 +18,16 @@ public class AltaPerfilPage extends BasePage {
 		
 		Form<String> form = new Form<String>("form");
 		final TextField<String> nombrePerfil = new TextField<String>("textFieldPerfil", new Model<String>());
+		nombrePerfil.setOutputMarkupId(true);
 		
 		AjaxButton submit = new AjaxButton("submitButton") {
 			
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 				daoService.altaPerfil(nombrePerfil.getModelObject());
+				nombrePerfil.setModelObject(new String());
+				target.add(nombrePerfil);
+				setResponsePage(UsuariosPage.class);
 			}
 			
 		};
