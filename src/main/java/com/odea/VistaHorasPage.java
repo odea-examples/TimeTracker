@@ -61,9 +61,9 @@ public class VistaHorasPage extends BasePage{
 	public IModel<List<UsuarioListaHoras>> lstUsuariosEnRojoModel;
 	public IModel<String> labelHastaModel;
 	public WebComponent titulos;
+	public WebComponent fechaHasta;
 	public WebMarkupContainer listViewContainer;
 	public WebMarkupContainer radioContainer;
-	public Label fechaHasta;
 	public IModel<FormHoras> horasUsuarioModel;
 	public LocalDate fechaActual = new LocalDate();
 	public Date desde = fechaActual.withDayOfMonth(1).toDateTimeAtStartOfDay().toDate();
@@ -294,12 +294,20 @@ public class VistaHorasPage extends BasePage{
 			add(fechaDesde);
 			add(sector);
 			add(submit);
-			LocalDate ld = new LocalDate(VistaHorasPage.this.desde).plusDays(30);
 //			fechaHasta= new Label("fechaHasta",ld.getDayOfMonth()+"/"+ld.getMonthOfYear()+"/"+ld.getYear());
-			fechaHasta= new Label("fechaHasta",desde.toString());
-			System.out.println("2");
-			fechaHasta.setOutputMarkupId(true);
-			add(fechaHasta);
+			VistaHorasPage.this.fechaHasta = new WebComponent("fechaHasta"){
+				@Override
+				public void onComponentTagBody(MarkupStream markupStream,ComponentTag openTag) {
+					Response response = getRequestCycle().getResponse();
+					String respuesta= "";
+					LocalDate ld = new LocalDate(VistaHorasPage.this.desde).plusDays(30);
+					respuesta+="<span> Hasta: "+ ld.getDayOfMonth()+"/"+ld.getMonthOfYear()+"/"+ld.getYear() +"</span>";
+	                response.write(respuesta);
+				}
+		    	
+	        };
+	        fechaHasta.setOutputMarkupId(true);
+	        add(fechaHasta);
 		}
 		
 		
