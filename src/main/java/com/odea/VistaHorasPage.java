@@ -301,7 +301,7 @@ public class VistaHorasPage extends BasePage{
 					Response response = getRequestCycle().getResponse();
 					String respuesta= "";
 					LocalDate ld = new LocalDate(VistaHorasPage.this.desde).plusDays(30);
-					respuesta+="<span> Hasta: "+ ld.getDayOfMonth()+"/"+ld.getMonthOfYear()+"/"+ld.getYear() +"</span>";
+					respuesta+=" Hasta: <input type='text' onkeypress='return false;'  readonly='' value='"+ ld.getDayOfMonth()+"/"+ld.getMonthOfYear()+"/"+ld.getYear() +"'>  </input>";
 	                response.write(respuesta);
 				}
 		    	
