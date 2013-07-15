@@ -105,7 +105,7 @@ public class EditarProyectosPage extends BasePage {
 			super(id, proyecto);
 
 
-			RequiredTextField<String> nombre = new RequiredTextField<String>("nombreLogin");
+			RequiredTextField<String> nombre = new RequiredTextField<String>("nombre");
 			nombre.add(new FocusOnLoadBehavior());
 			
 			
