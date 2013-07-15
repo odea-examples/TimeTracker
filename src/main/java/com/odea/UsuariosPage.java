@@ -102,7 +102,7 @@ public class UsuariosPage extends BasePage {
 
 					@Override
 					protected void onUpdate(AjaxRequestTarget target) {
-						//daoService.cambiarPerfil(usuario, dropDownPerfil.getModelObject());
+						daoService.cambiarPerfil(usuario, dropDownPerfil.getModelObject());
 					}
             		
             	});

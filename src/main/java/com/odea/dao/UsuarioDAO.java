@@ -153,6 +153,20 @@ public class UsuarioDAO extends AbstractDAO {
 		
 		logger.debug("CAMBIO DE ROL REALIZADO");
 	}
+	public void cambiarPerfil(Usuario usuario, String nombrePerfil) {
+		// TODO Auto-generated method stub
+		logger.debug("SE CAMBIA EL PERFIL DEL USUARIO: " + usuario.getNombreLogin() + " POR PERFIL: " + nombrePerfil);
+		
+		int perfilID = jdbcTemplate.queryForInt("SELECT u_id FROM users WHERE u_name = ?", nombrePerfil);
+		
+		logger.debug("PERFIL ID: " + perfilID);
+		
+		String sql = "UPDATE SEC_ASIG_PERFIL SET SEC_PERFIL_ID = ? WHERE SEC_USUARIO_ID = ?";
+		
+		jdbcTemplate.update(sql, perfilID, usuario.getIdUsuario());
+		
+		logger.debug("CAMBIO DE ROL REALIZADO");
+	}
 	
 	
 	public List<Usuario> getUsuariosConPerfiles() {
@@ -183,6 +197,8 @@ public class UsuarioDAO extends AbstractDAO {
 		}
 		
 	}
+
+
 	
 
 	

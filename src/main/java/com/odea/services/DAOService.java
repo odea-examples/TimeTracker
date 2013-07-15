@@ -337,6 +337,11 @@ public class DAOService {
 		usuarioDAO.cambiarPerfil(usuario, perfil);
 	}
 
+	public void cambiarPerfil(Usuario usuario, String nombrePerfil) {
+		usuarioDAO.cambiarPerfil(usuario, nombrePerfil);
+		
+	}
+
 	public List<Usuario> getUsuariosQueTienenUnaFuncionalidad(Funcionalidad funcionalidad) {
 		return seguridadDAO.getUsuariosQueTienenUnaFuncionalidad(funcionalidad);
 	}
@@ -356,5 +361,6 @@ public class DAOService {
 	public List<String> getNombresPerfiles() {
 		return seguridadDAO.getNombresPerfiles();
 	}
+
 	
 }

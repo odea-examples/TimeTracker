@@ -59,9 +59,11 @@ public class VistaHorasPage extends BasePage{
 	public Usuario usuario;
 	public IModel<List<UsuarioListaHoras>> lstUsuariosModel;
 	public IModel<List<UsuarioListaHoras>> lstUsuariosEnRojoModel;
+	public IModel<String> labelHastaModel;
 	public WebComponent titulos;
 	public WebMarkupContainer listViewContainer;
 	public WebMarkupContainer radioContainer;
+	public Label fechaHasta;
 	public IModel<FormHoras> horasUsuarioModel;
 	public LocalDate fechaActual = new LocalDate();
 	public Date desde = fechaActual.withDayOfMonth(1).toDateTimeAtStartOfDay().toDate();
@@ -75,6 +77,15 @@ public class VistaHorasPage extends BasePage{
 		VistaHorasForm form = new VistaHorasForm("form");
         form.setOutputMarkupId(true);
         add(form);
+        
+        this.labelHastaModel= new LoadableDetachableModel<String>() {
+
+			@Override
+			protected String load() {
+				// TODO Auto-generated method stub
+				return desde.toString();
+			}
+		};
 				
 		this.lstUsuariosModel = new LoadableDetachableModel<List<UsuarioListaHoras>>() { 
 	        @Override
@@ -194,7 +205,7 @@ public class VistaHorasPage extends BasePage{
             protected void onEvent(AjaxRequestTarget target) {
             	VistaHorasPage.this.lstUsuariosModel.setObject(VistaHorasPage.this.lstUsuariosModel.getObject());
                 usuariosHorasListView.setModel(VistaHorasPage.this.lstUsuariosModel);
-                target.add(listViewContainer);
+                target.add(listViewContainer); target.add(fechaHasta);
             }
            
         });
@@ -203,7 +214,7 @@ public class VistaHorasPage extends BasePage{
 	           
             protected void onEvent(AjaxRequestTarget target) {
                 usuariosHorasListView.setModel(VistaHorasPage.this.lstUsuariosEnRojoModel);
-                target.add(listViewContainer);
+                target.add(listViewContainer); target.add(fechaHasta);
             }
            
         });
@@ -221,7 +232,6 @@ public class VistaHorasPage extends BasePage{
 		public IModel<FormHoras> modeloHoras = new CompoundPropertyModel<FormHoras>(new FormHoras());
 		public LocalDate fechaActual = new LocalDate();
 		public YuiDatePicker fechaDesde;
-		public YuiDatePicker fechaHasta;
 		public DropDownChoice<String> sector;
 		
 		
@@ -239,8 +249,9 @@ public class VistaHorasPage extends BasePage{
 					int mes = Integer.parseInt(campos.get(1));
 					int anio = Integer.parseInt(campos.get(2));
 					desde = new LocalDate(anio,mes,dia).toDate();
-					System.out.println("hola");
+//					System.out.println("hola");
 					target.add(listViewContainer);
+					target.add(fechaHasta);
 					
 				}
 				
@@ -263,7 +274,8 @@ public class VistaHorasPage extends BasePage{
 				protected void onUpdate(AjaxRequestTarget target) {
 					System.out.println("changed!");
 					VistaHorasPage.this.sectorGlobal= sector.getModelObject();
-					target.add(listViewContainer);
+					target.add(listViewContainer); 
+					target.add(fechaHasta);
 				}
 				
 			});
@@ -271,9 +283,10 @@ public class VistaHorasPage extends BasePage{
 			AjaxButton submit = new AjaxButton("submit") {
 				@Override
 				protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-					System.out.println("llega");
-					lstUsuariosModel.setObject(daoService.obtenerHorasUsuarios(fechaDesde.getModelObject(),fechaHasta.getModelObject(),sector.getModelObject()));
-					target.add(listViewContainer);
+//					System.out.println("llega");
+//					lstUsuariosModel.setObject(daoService.obtenerHorasUsuarios(fechaDesde.getModelObject(),null,sector.getModelObject()));
+					target.add(listViewContainer); 
+					target.add(fechaHasta);
 				}
 				
 			};
@@ -282,7 +295,11 @@ public class VistaHorasPage extends BasePage{
 			add(sector);
 			add(submit);
 			LocalDate ld = new LocalDate(VistaHorasPage.this.desde).plusDays(30);
-			add(new Label("fechaHasta",ld.getDayOfMonth()+"/"+ld.getMonthOfYear()+"/"+ld.getYear()));
+//			fechaHasta= new Label("fechaHasta",ld.getDayOfMonth()+"/"+ld.getMonthOfYear()+"/"+ld.getYear());
+			fechaHasta= new Label("fechaHasta",desde.toString());
+			System.out.println("2");
+			fechaHasta.setOutputMarkupId(true);
+			add(fechaHasta);
 		}
 		
 		
