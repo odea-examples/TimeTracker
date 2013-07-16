@@ -13,7 +13,6 @@ import org.apache.wicket.markup.html.form.Radio;
 import org.apache.wicket.markup.html.form.RadioGroup;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.list.ListItem;
-import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.list.PageableListView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
@@ -78,7 +77,7 @@ public class ActividadesPage extends BasePage{
             	item.add(new Label("nombre_actividad", new Model<String>(actividad.getNombre())));
             	
                 
-                item.add(new BookmarkablePageLink<EditarActividadesPage>("modifyLink",EditarActividadesPage.class,new PageParameters().add("id",actividad.getIdActividad()).add("nombreLogin",actividad.getNombre()).add("status",actividad.isHabilitado())));
+                item.add(new BookmarkablePageLink<EditarActividadesPage>("modifyLink",EditarActividadesPage.class,new PageParameters().add("id",actividad.getIdActividad()).add("nombre",actividad.getNombre()).add("status",actividad.isHabilitado())));
                 
                 CheckBox checkBox = new CheckBox("checkBoxActividad", new Model<Boolean>(actividad.isHabilitado()));
                 checkBox.add(new AjaxEventBehavior("onchange") {
