@@ -67,12 +67,12 @@ public class UsuarioListaHoras {
 	}
 	public boolean tieneDiaMenorDedicacion(Date desde){
 		int contador=0;
-		Boolean devuelve= true;
+		Boolean devuelve= false;
 		LocalDate diaTomado = new LocalDate(desde);
 		for (int i = 1; i < 32; i++) {
 			if(diaHoras.containsKey(diaTomado.toDate())){
 				if(diaHoras.get(diaTomado.toDate())<dedicacion){
-					devuelve=false;
+					devuelve=true;
 				}
 			}else{
 				contador=contador+1;

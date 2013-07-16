@@ -59,7 +59,7 @@ public class VistaHorasPage extends BasePage{
 	public Usuario usuario;
 	public IModel<List<UsuarioListaHoras>> lstUsuariosModel;
 	public IModel<List<UsuarioListaHoras>> lstUsuariosEnRojoModel;
-	public IModel<String> labelHastaModel;
+	public IModel<String> labelDesdeModel;
 	public WebComponent titulos;
 	public WebComponent fechaHasta;
 	public WebMarkupContainer listViewContainer;
@@ -78,7 +78,7 @@ public class VistaHorasPage extends BasePage{
         form.setOutputMarkupId(true);
         add(form);
         
-        this.labelHastaModel= new LoadableDetachableModel<String>() {
+        this.labelDesdeModel= new LoadableDetachableModel<String>() {
 
 			@Override
 			protected String load() {
@@ -98,10 +98,11 @@ public class VistaHorasPage extends BasePage{
 
 			@Override
 			protected List<UsuarioListaHoras> load() {
-				List<UsuarioListaHoras> devolver = daoService.obtenerHorasUsuarios(desde, hasta,VistaHorasPage.this.sectorGlobal);
+//				List<UsuarioListaHoras> devolver = daoService.obtenerHorasUsuarios(desde, hasta,VistaHorasPage.this.sectorGlobal);
+				List<UsuarioListaHoras> devolver = lstUsuariosModel.getObject();
 				List<UsuarioListaHoras> itemsToRemove = new ArrayList<UsuarioListaHoras>();
 				for (UsuarioListaHoras usuarioHoras : devolver) {
-					if(usuarioHoras.tieneDiaMenorDedicacion(VistaHorasPage.this.desde)){
+					if(!usuarioHoras.tieneDiaMenorDedicacion(VistaHorasPage.this.desde)){
 						itemsToRemove.add(usuarioHoras);
 					}
 				}
@@ -110,7 +111,11 @@ public class VistaHorasPage extends BasePage{
 			}
 	    	
 		};
-        
+		List<Feriado> feriados = daoService.getFeriados();
+    	final List<Date> fechaFeriados = new ArrayList<Date>();
+    	for (Feriado feriado : feriados) {
+			fechaFeriados.add(feriado.getFecha());
+		}
 		this.listViewContainer = new WebMarkupContainer("listViewContainer");
 		this.listViewContainer.setOutputMarkupId(true);
 	    final PageableListView<UsuarioListaHoras> usuariosHorasListView = new PageableListView<UsuarioListaHoras>("tabla", this.lstUsuariosModel, 1000) {
@@ -132,11 +137,8 @@ public class VistaHorasPage extends BasePage{
             	Map<Date, Double> colHoras = new HashMap<Date, Double>();
             	colHoras.putAll(usuarioHoras.getDiaHoras());
             	
-            	List<Feriado> feriados = daoService.getFeriados();
-            	List<Date> fechaFeriados = new ArrayList<Date>();
-				for (Feriado feriado : feriados) {
-					fechaFeriados.add(feriado.getFecha());
-				}
+            	
+				
             	LocalDate diaActual = new LocalDate(VistaHorasPage.this.desde);
             	
             	for (int j = 1; j <= 31; j++) {
@@ -203,8 +205,11 @@ public class VistaHorasPage extends BasePage{
 		mostrarTodas.add(new AjaxEventBehavior("onchange") {
            
             protected void onEvent(AjaxRequestTarget target) {
-            	VistaHorasPage.this.lstUsuariosModel.setObject(VistaHorasPage.this.lstUsuariosModel.getObject());
+            	System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n HOLA");
+            	lstUsuariosModel.detach();
+				lstUsuariosEnRojoModel.detach();
                 usuariosHorasListView.setModel(VistaHorasPage.this.lstUsuariosModel);
+                System.out.println(VistaHorasPage.this.lstUsuariosModel);
                 target.add(listViewContainer); target.add(fechaHasta);
             }
            
@@ -213,6 +218,8 @@ public class VistaHorasPage extends BasePage{
 		mostrarEnRojo.add(new AjaxEventBehavior("onchange") {
 	           
             protected void onEvent(AjaxRequestTarget target) {
+            	lstUsuariosModel.detach();
+				lstUsuariosEnRojoModel.detach();
                 usuariosHorasListView.setModel(VistaHorasPage.this.lstUsuariosEnRojoModel);
                 target.add(listViewContainer); target.add(fechaHasta);
             }
@@ -244,6 +251,8 @@ public class VistaHorasPage extends BasePage{
 				@Override
 				protected void onDateSelect(AjaxRequestTarget target, String selectedDate) {
 					String json = selectedDate;
+					lstUsuariosModel.detach();
+					lstUsuariosEnRojoModel.detach();
 					List<String> campos = Arrays.asList(json.split("/"));
 					int dia = Integer.parseInt(campos.get(0));
 					int mes = Integer.parseInt(campos.get(1));
@@ -272,6 +281,8 @@ public class VistaHorasPage extends BasePage{
 
 				@Override
 				protected void onUpdate(AjaxRequestTarget target) {
+					lstUsuariosModel.detach();
+					lstUsuariosEnRojoModel.detach();
 					System.out.println("changed!");
 					VistaHorasPage.this.sectorGlobal= sector.getModelObject();
 					target.add(listViewContainer); 

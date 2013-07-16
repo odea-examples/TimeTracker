@@ -32,9 +32,9 @@ public class ListaHorasDAO extends AbstractDAO {
 		List<UsuarioListaHoras> horasDeLosUsuarios = new ArrayList<UsuarioListaHoras>();
 		List<Usuario> usuarios;
 		if(sector=="Todos"){
-			usuarios= usuarioDAO.getUsuarios();
+			usuarios= usuarioDAO.getUsuariosConPerfiles();
 		}else{
-		usuarios= usuarioDAO.getUsuarios(sector);
+		usuarios= usuarioDAO.getUsuariosConPerfiles(sector);
 		}
 		for (Usuario usuario : usuarios) {
 			UsuarioListaHoras usuarioConHoras = new UsuarioListaHoras();
