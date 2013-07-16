@@ -32,7 +32,7 @@ import com.odea.services.DAOService;
 public class ProyectosPage extends BasePage {
 
 	@SpringBean
-	private transient DAOService daoService;
+	private DAOService daoService;
 	
 	public IModel<List<Proyecto>>lstProyectosModel;
 	public IModel<List<Proyecto>>lstProyectosHabilitadosModel;

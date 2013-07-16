@@ -35,7 +35,7 @@ public class UsuarioDAO extends AbstractDAO {
 		
 		logger.debug("Buscando usuario con nombre de login: " + nombre);
 		
-		Usuario usuario = jdbcTemplate.queryForObject("SELECT u.u_id, u.u_login, u.u_password, u.u_name, u.u_comanager, p.u_name, p.u_login FROM users u, SEC_ASIG_PERFIL ap, users p WHERE u.u_id = ap.SEC_USUARIO_ID AND ap.SEC_PERFIL_ID = p.u_id AND u.u_login = ?", 
+		Usuario usuario = jdbcTemplate.queryForObject("SELECT u.u_id, u.u_login, u.u_password, u.u_name, u.u_comanager, u.u_grupo, p.u_name, p.u_login FROM users u, SEC_ASIG_PERFIL ap, users p WHERE u.u_id = ap.SEC_USUARIO_ID AND ap.SEC_PERFIL_ID = p.u_id AND u.u_login = ?", 
 				new RowMapperUsuario2(), nombre);
 		
 		return usuario;
@@ -139,22 +139,10 @@ public class UsuarioDAO extends AbstractDAO {
 			
 	}
 	
-	public void cambiarPerfil(Usuario usuario, Usuario perfil) {
-		
-		logger.debug("SE CAMBIA EL PERFIL DEL USUARIO: " + usuario.getNombreLogin() + " POR PERFIL: " + perfil.getNombre());
-		
-		int perfilID = jdbcTemplate.queryForInt("SELECT u_id FROM users WHERE u_name = ?", perfil.getNombre());
-		
-		logger.debug("PERFIL ID: " + perfilID);
-		
-		String sql = "UPDATE SEC_ASIG_PERFIL SET SEC_PERFIL_ID = ? WHERE SEC_USUARIO_ID = ?";
-		
-		jdbcTemplate.update(sql, perfilID, usuario.getIdUsuario());
-		
-		logger.debug("CAMBIO DE ROL REALIZADO");
-	}
+	
+	
 	public void cambiarPerfil(Usuario usuario, String nombrePerfil) {
-		// TODO Auto-generated method stub
+	
 		logger.debug("SE CAMBIA EL PERFIL DEL USUARIO: " + usuario.getNombreLogin() + " POR PERFIL: " + nombrePerfil);
 		
 		int perfilID = jdbcTemplate.queryForInt("SELECT u_id FROM users WHERE u_login = ?", nombrePerfil);
@@ -171,7 +159,7 @@ public class UsuarioDAO extends AbstractDAO {
 	
 	public List<Usuario> getUsuariosConPerfiles() {
 		
-		List<Usuario> usuarios = jdbcTemplate.query("SELECT u.u_id, u.u_login, u.u_password, u.u_name, u.u_comanager, p.u_name, p.u_login FROM users u, SEC_ASIG_PERFIL ap, users p WHERE u.u_id = ap.SEC_USUARIO_ID AND ap.SEC_PERFIL_ID = p.u_id", new RowMapperUsuario2());
+		List<Usuario> usuarios = jdbcTemplate.query("SELECT u.u_id, u.u_login, u.u_password, u.u_name, u.u_comanager, u.u_grupo, p.u_name, p.u_login FROM users u, SEC_ASIG_PERFIL ap, users p WHERE u.u_id = ap.SEC_USUARIO_ID AND ap.SEC_PERFIL_ID = p.u_id ORDER BY u.u_name ASC", new RowMapperUsuario2());
 		
 		return usuarios;
 	}
@@ -192,9 +180,22 @@ public class UsuarioDAO extends AbstractDAO {
 
 		@Override
 		public Usuario mapRow(ResultSet rs, int rowNum) throws SQLException {
-			Usuario perfil = new Usuario(0, rs.getString(6), rs.getString(7), "PasswordNula");
-			return new Usuario(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), (rs.getInt(5) == 1), perfil);
+			Usuario perfil = new Usuario(0, rs.getString(7), rs.getString(8), "PasswordNula");
+			Usuario usuario = new Usuario(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), (rs.getInt(5) == 1), perfil);
+			usuario.setGrupo(rs.getString(6));
+			
+			return usuario;
 		}
+		
+	}
+
+	public void cambiarGrupo(Usuario usuario, String grupo) {
+		
+		logger.debug("SE PROCEDE A CAMBIAR AL USUARIO - ID: "+ usuario.getIdUsuario() +" - Login: " + usuario.getNombreLogin() + " - AL GRUPO: " + grupo);
+		
+		jdbcTemplate.update("UPDATE users SET u_grupo = ? WHERE u_id = ?", grupo, usuario.getIdUsuario());
+		
+		logger.debug("SE HA CAMBIADO AL USUARIO - ID: "+ usuario.getIdUsuario() +" - Login: " + usuario.getNombreLogin() + " - AL GRUPO: " + grupo);
 		
 	}
 

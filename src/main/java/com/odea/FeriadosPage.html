@@ -3,17 +3,25 @@
 	<div style="position: relative; min-width: 1024px; min-height: 270px;;">
 
 		<form wicket:id="form">
-			<span style="background-color:lightgreen;">Verde:</span> Días feriados
+
+			<div>
+				<span style="background-color:lightgreen;">Verde:</span>
+				<span> D&iacute;as Feriados</span>
+			</div>
+			
+			<br>
+						
 			<div style="position: absolute; left: 0px;">
 				<b><label for="fecha">Fecha</label></b><br> 
 				<div wicket:id="fecha" name="fecha"/>
 			</div>
 			
 			
-			<div style="position: absolute; left: 300px;">
-				<b><label for="descripcion">Descripcion</label></b> <br> 
+			<div style="position: absolute; left: 300px; top: 35px">
+				<b><label for="descripcion">Descripci&oacute;n</label></b> <br> 
 				<textarea wicket:id="descripcion" name="descripcion" rows="10" cols="40" scrolling="yes" style="max-width:850px ;max-height:150px"/>
 			</div>
+			
 			
 			<span wicket:id="feedBackPanel" style="position: absolute; top:220px; left: 760px;" ></span>
 			

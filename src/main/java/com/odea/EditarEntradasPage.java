@@ -42,7 +42,7 @@ import com.odea.validators.ticketExterno.OnRelatedFieldsNullValidator;
 public class EditarEntradasPage extends BasePage{
 	
 	@SpringBean
-	private transient DAOService daoService;
+	private DAOService daoService;
 	
     private IModel<Entrada> entradaModel;
     

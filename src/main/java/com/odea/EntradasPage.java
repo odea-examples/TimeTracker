@@ -57,7 +57,7 @@ public class EntradasPage extends BasePage {
 	private static final long serialVersionUID = 1088210443697851501L;
 
 	@SpringBean
-	private transient DAOService daoService;
+	private DAOService daoService;
 
 	private Usuario usuario;
 	private EntradaForm form;
@@ -94,7 +94,7 @@ public class EntradasPage extends BasePage {
 			@Override
 			protected String load() {
 				if (radioSeleccionado == "dia"){
-				return daoService.toJson(daoService.getEntradasDia(
+					return daoService.toJson(daoService.getEntradasDia(
 						EntradasPage.this.usuario,
 						EntradasPage.this.fechaActual));
 				}
@@ -107,10 +107,12 @@ public class EntradasPage extends BasePage {
 					return daoService.toJson(daoService.getEntradasSemanales(
 							EntradasPage.this.usuario,
 							EntradasPage.this.fechaActual));
+				} else {
+					return daoService.toJson(daoService.getEntradasDia(
+							EntradasPage.this.usuario,
+							EntradasPage.this.fechaActual));
 				}
-				else {
-					throw new RuntimeException("radio seleccionado erroneo o loqueseaquepaso");
-				}
+				
 			}
 		};
 
@@ -133,7 +135,6 @@ public class EntradasPage extends BasePage {
 			@Override
 			protected Double load() {
 				Double devolver = daoService.getHorasDiarias(usuario, fechaActual);
-				System.out.println(devolver);
 				return devolver;
 			}
 

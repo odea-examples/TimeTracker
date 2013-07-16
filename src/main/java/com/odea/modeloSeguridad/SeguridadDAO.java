@@ -49,7 +49,7 @@ public class SeguridadDAO extends AbstractDAO {
 	
 	public List<Usuario> getPerfiles()
 	{
-		List<Usuario> listaUsuarios = jdbcTemplate.query("SELECT u_id, u_login, u_password, u_name FROM users WHERE u_tipo = 'P'", new RowMapperUsuario());
+		List<Usuario> listaUsuarios = jdbcTemplate.query("SELECT u_id, u_login, u_password, u_name FROM users WHERE u_tipo = 'P' ORDER BY u_name ASC", new RowMapperUsuario());
 		
 		return listaUsuarios;
 	}
@@ -115,7 +115,7 @@ public class SeguridadDAO extends AbstractDAO {
 	}
 	
 	public List<String> getNombresPerfiles() {
-		List<String> nombresPerfiles = jdbcTemplate.query("SELECT u_login FROM users WHERE u_tipo = 'P'", new RowMapper<String>() {
+		List<String> nombresPerfiles = jdbcTemplate.query("SELECT u_name FROM users WHERE u_tipo = 'P' ORDER BY u_name ASC", new RowMapper<String>() {
 
 			@Override
 			public String mapRow(ResultSet rs, int rowNum) throws SQLException {

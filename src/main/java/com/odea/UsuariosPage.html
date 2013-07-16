@@ -13,7 +13,8 @@
 				<tr class="odd">
 					<th scope="col">Nombre</th>
 					<th scope="col"><div wicket:id="tituloDedicacion"/></th>
-					<th scope="col">Perfil</th>
+					<th scope="col">Rol</th>
+					<th scope="col">Grupo</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -21,11 +22,12 @@
 					<td wicket:id="nombreLogin"/>
 					<td> <input wicket:id="dedicacion" maxlength=1/> </td>
 					<td><select wicket:id="dropDownPerfil"/></td>
+					<td><select wicket:id="dropDownGrupo"/></td>
 				</tr>
 			</tbody>
 			<tfoot>
 	            <tr>
-	                <td wicket:id="navigator" align="center" colspan="2" ></td>
+	                <td wicket:id="navigator" align="center" colspan="4" ></td>
 	            </tr>
         	</tfoot>
 		</table>
