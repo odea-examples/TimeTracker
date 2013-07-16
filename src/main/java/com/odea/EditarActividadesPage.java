@@ -27,7 +27,7 @@ import com.odea.services.DAOService;
 
 public class EditarActividadesPage extends BasePage{
 	@SpringBean
-	private transient DAOService daoService;
+	private DAOService daoService;
 	
     private IModel<Actividad> actividadModel;
     

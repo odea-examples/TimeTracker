@@ -53,7 +53,7 @@ public class VistaHorasPage extends BasePage{
 	private static final long serialVersionUID = 1L;
 
 	@SpringBean
-	private transient DAOService daoService;
+	private DAOService daoService;
 	
 	public String sectorGlobal= "Todos";
 	public Usuario usuario;

@@ -100,17 +100,15 @@ function ticketBugzillaValidator(value) {
 
 
 
-//Now define your buttonFormatter function
+
   function queueAndExecuteCommand(item, column, editCommand) {
     editCommand.execute();
-    alert(JSON.stringify(item, null, 2));
+    
     if (!sistemaChecker && !actividadChecker){
-    	alert("Arregle los errores antes de continuar");
+    	alert("Arregle los errores antes de continuar.");
     }
     else if ((JSON.stringify(column.name, null, 2) == JSON.stringify("Proyecto", null, 2))){
     	alert("Ingrese una Actividad o no se guardara su cambio.");
-//    	alert(JSON.stringify(editCommand, null, 2));
-//    	grid.gotoCell(editCommand.row, editCommand.cell+1);
     	item.actividad = "";
     	grid.updateRow(editCommand.row);
     }
@@ -120,7 +118,6 @@ function ticketBugzillaValidator(value) {
     	Wicket.Ajax.ajax({"u":"${url}","c":"${gridId}","ep":{'modificar':JSON.stringify(item, null, 2)}});
     	}
     else if(actividadChecker && sistemaChecker && ((item.sistExt==null || item.sistExt=="Ninguno") && (item.ticketExt==null || item.ticketExt=="") || item.sistExt!="Ninguno" && item.sistExt!=null && item.ticketExt!=null && item.ticketExt!="")){
-    	//alert(JSON.stringify(item, null, 2));
     	Wicket.Ajax.ajax({"u":"${url}","c":"${gridId}","ep":{'modificar':JSON.stringify(item, null, 2)}});
     }
     else if(item.sistExt!=null || item.ticketExt!=null || item.ticketExt!="" || item.sistExt!="Ninguno"){
@@ -137,17 +134,14 @@ function ticketBugzillaValidator(value) {
 function init(dataSecundaria) {
 	if ((dataSecundaria == null || dataSecundaria == undefined || !dataSecundaria.length) && ${data}!=null) {
 		data= ${data};
-//		alert("si");
 	  }
 	  else if(dataSecundaria != "vacio" && !(dataSecundaria == null || dataSecundaria == undefined || !dataSecundaria.length)){
 		data= dataSecundaria;
-//		alert("si2");
 	  }
 	  else{
 		  data = [];
 	  }
   dataView = new Slick.Data.DataView({ inlineFilters: true });
-//  alert(JSON.stringify(dataView, null, 2));
   grid = new Slick.Grid("${selector}", dataView, columns, options);
   grid.setSelectionModel(new Slick.RowSelectionModel());
 
@@ -160,8 +154,6 @@ function init(dataSecundaria) {
 
   grid.onClick.subscribe(function(e, args) {
 	  objeto = dataView.getItem(args.row);
-//	  alert(JSON.stringify(objeto, null, 2));
-//	  alert(JSON.stringify(grid.getColumns()[args.cell], null, 2));
 	  if (grid.getColumns()[args.cell].id=='delCol' && objeto!=undefined && confirm(' \u00BFEst\xE1 seguro de que desea borrar la entrada? ')){
 	    objeto = dataView.getItem(args.row);
         dataView.deleteItem(objeto.id);
@@ -175,21 +167,6 @@ function init(dataSecundaria) {
     grid.updateRowCount();
     grid.render();
   });
-// parece que todo lo comentado desde aca no hace falta, pero igual lo dejo por si acaso a ver si hay que volverlo a agregar.
-//  dataView.onRowsChanged.subscribe(function (e, args) {
-//    grid.invalidateRows(args.rows);
-//    grid.render();
-//  });
-//
-//  dataView.onPagingInfoChanged.subscribe(function (e, pagingInfo) {
-//    var isLastPage = pagingInfo.pageNum == pagingInfo.totalPages - 1;
-//    var enableAddRow = false;
-//    var options = grid.getOptions();
-//
-//    if (options.enableAddRow != enableAddRow) {
-//      grid.setOptions({enableAddRow: enableAddRow});
-//    }
-//  });
 
 
   var h_runfilters = null;
@@ -207,15 +184,10 @@ function init(dataSecundaria) {
     grid.setSelectedRows(rows);
   });
 
-
-  // initialize the model after all the events have been hooked up
   dataView.beginUpdate();
-//  alert(JSON.stringify(data, null, 2));
   dataView.setItems(data);
   dataView.endUpdate();
 
-  // if you don't want the items that are not visible (due to being filtered out
-  // or being on a different page) to stay selected, pass 'false' to the second arg
   dataView.syncGridSelection(grid, true);
 };
   $(document).ready(init(null));

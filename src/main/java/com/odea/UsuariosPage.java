@@ -29,6 +29,7 @@ public class UsuariosPage extends BasePage {
 	public IModel<List<Usuario>> lstUsuariosModel;
 	public IModel<List<Usuario>> lstPerfilesModel;
 	public IModel<List<String>> lstNombresPerfilesModel;
+	public IModel<List<String>> lstGruposModel;
 	public WebMarkupContainer listViewContainer;
 	public PageableListView<Usuario> usuariosListView;
 	
@@ -44,17 +45,17 @@ public class UsuariosPage extends BasePage {
             
         };
         
-        this.lstPerfilesModel = new LoadableDetachableModel<List<Usuario>>() { 
-            @Override
-            protected List<Usuario> load() {
-            	return daoService.getPerfiles();
-            }
-        };
-        
         this.lstNombresPerfilesModel = new LoadableDetachableModel<List<String>>() { 
             @Override
             protected List<String> load() {
             	return daoService.getNombresPerfiles();
+            }
+        };
+        
+        this.lstGruposModel = new LoadableDetachableModel<List<String>>() { 
+            @Override
+            protected List<String> load() {
+            	return daoService.getGrupos();
             }
         };
         
@@ -72,8 +73,13 @@ public class UsuariosPage extends BasePage {
             		item.add(new AttributeModifier("class","odd"));
             	}
             	
-            	item.add(new Label("nombreLogin", new Model<String>(usuario.getNombreLogin())));
             	
+            	/*NOMBRE*/
+            	
+            	item.add(new Label("nombreLogin", new Model<String>(usuario.getNombre())));
+            	
+            	
+            	/*DEDICACION*/
             	
             	final RequiredTextField<Integer> dedicacion = new RequiredTextField<Integer>("dedicacion", new Model<Integer>(daoService.getDedicacion(usuario)));
             	dedicacion.add(new OnlyNumberBehavior(dedicacion.getMarkupId()));
@@ -96,7 +102,10 @@ public class UsuariosPage extends BasePage {
             	
             	item.add(dedicacion);
             	
-            	final DropDownChoice<String> dropDownPerfil = new DropDownChoice<String>("dropDownPerfil", Model.of(usuario.getPerfil().getNombreLogin()) ,lstNombresPerfilesModel);
+            	
+            	/*PERFIL-ROL*/
+            	
+            	final DropDownChoice<String> dropDownPerfil = new DropDownChoice<String>("dropDownPerfil", Model.of(usuario.getPerfil().getNombreLogin()), UsuariosPage.this.lstNombresPerfilesModel);
             	            	
             	dropDownPerfil.add(new AjaxFormComponentUpdatingBehavior("onchange") {
 
@@ -110,14 +119,31 @@ public class UsuariosPage extends BasePage {
             	
             	item.add(dropDownPerfil);
             	
+            	/*GRUPO*/
+            	
+            	final DropDownChoice<String> dropDownGrupo = new DropDownChoice<String>("dropDownGrupo", Model.of(usuario.getGrupo()), UsuariosPage.this.lstGruposModel);
+            	
+            	dropDownGrupo.add(new AjaxFormComponentUpdatingBehavior("onchange") {
+
+					@Override
+					protected void onUpdate(AjaxRequestTarget target) {
+						daoService.cambiarGrupo(usuario, dropDownGrupo.getModelObject());
+					}
+            		
+            	});
+            	
+            	
+            	item.add(dropDownGrupo);
+            	
             }
         };
-        usuariosListView.setOutputMarkupId(true);
         
-        listViewContainer.add(new Label("tituloDedicacion", "Dedicacion"));
-        listViewContainer.add(usuariosListView);
-        listViewContainer.add(new AjaxPagingNavigator("navigator", usuariosListView));
-		listViewContainer.setVersioned(false);
+        this.usuariosListView.setOutputMarkupId(true);
+        
+        this.listViewContainer.add(new Label("tituloDedicacion", "Dedicación"));
+        this.listViewContainer.add(this.usuariosListView);
+        this.listViewContainer.add(new AjaxPagingNavigator("navigator", usuariosListView));
+        this.listViewContainer.setVersioned(false);
 
         add(listViewContainer);
 		

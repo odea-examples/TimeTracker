@@ -32,7 +32,7 @@ import com.odea.services.DAOService;
 public class EditarProyectosPage extends BasePage {
 
 	@SpringBean
-	public transient DAOService daoService;
+	public DAOService daoService;
 	private IModel<Proyecto> proyectoModel;
 	public ListMultipleChoice<Actividad> originals;
 	public ListMultipleChoice<Actividad> destinations;

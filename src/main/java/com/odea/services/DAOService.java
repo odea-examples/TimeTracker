@@ -332,14 +332,9 @@ public class DAOService {
 		
 		return lista;
 	}
-	
-	public void cambiarPerfil(Usuario usuario, Usuario perfil) {
-		usuarioDAO.cambiarPerfil(usuario, perfil);
-	}
 
 	public void cambiarPerfil(Usuario usuario, String nombrePerfil) {
 		usuarioDAO.cambiarPerfil(usuario, nombrePerfil);
-		
 	}
 
 	public List<Usuario> getUsuariosQueTienenUnaFuncionalidad(Funcionalidad funcionalidad) {
@@ -360,6 +355,23 @@ public class DAOService {
 
 	public List<String> getNombresPerfiles() {
 		return seguridadDAO.getNombresPerfiles();
+	}
+
+	public List<String> getGrupos() {
+		/*Temporalmente hardcodeado ya que no hay tabla de Grupos en el modelo de datos*/
+		
+		ArrayList<String> grupos = new ArrayList<String>();
+		grupos.add("Administración");
+		grupos.add("TI");
+		grupos.add("E&P");
+		grupos.add("ExOdea");
+		grupos.add("Ninguno");
+		
+		return grupos;
+	}
+
+	public void cambiarGrupo(Usuario usuario, String grupo) {
+		usuarioDAO.cambiarGrupo(usuario, grupo);
 	}
 
 	

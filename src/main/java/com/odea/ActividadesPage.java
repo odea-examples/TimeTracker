@@ -30,7 +30,7 @@ public class ActividadesPage extends BasePage{
 	private static final long serialVersionUID = 1L;
 
 	@SpringBean
-	private transient DAOService daoService;
+	private DAOService daoService;
 	
 	public IModel<List<Actividad>> lstActividadesModel;
 	public IModel<List<Actividad>> lstActividadesHabilitadasModel;
