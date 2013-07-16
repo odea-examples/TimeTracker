@@ -291,17 +291,19 @@ public class VistaHorasPage extends BasePage{
 				
 			});
 			
+			
+			
 			AjaxButton submit = new AjaxButton("submit") {
 				@Override
 				protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-//					System.out.println("llega");
-//					lstUsuariosModel.setObject(daoService.obtenerHorasUsuarios(fechaDesde.getModelObject(),null,sector.getModelObject()));
 					target.add(listViewContainer); 
 					target.add(fechaHasta);
 				}
 				
 			};
+			
 			submit.setOutputMarkupId(true);
+			submit.setVisible(false);
 			add(fechaDesde);
 			add(sector);
 			add(submit);
