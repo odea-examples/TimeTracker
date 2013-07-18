@@ -1,14 +1,11 @@
 package com.odea;
 
-import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.swing.text.DateFormatter;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -38,10 +35,7 @@ import org.apache.wicket.request.Response;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.joda.time.DateTimeConstants;
 import org.joda.time.LocalDate;
-import org.joda.time.format.DateTimeFormatter;
 
-import com.odea.components.datepicker.DatePickerDTO;
-import com.odea.components.yuidatepicker.YuiDatePicker;
 import com.odea.domain.Feriado;
 import com.odea.domain.FormHoras;
 import com.odea.domain.Usuario;
@@ -55,35 +49,47 @@ public class VistaHorasPage extends BasePage{
 	@SpringBean
 	private DAOService daoService;
 	
-	public String sectorGlobal= "Todos";
-	public Usuario usuario;
-	public IModel<List<UsuarioListaHoras>> lstUsuariosModel;
-	public IModel<List<UsuarioListaHoras>> lstUsuariosEnRojoModel;
-	public IModel<String> labelDesdeModel;
-	public WebComponent titulos;
-	public WebComponent fechaHasta;
-	public WebMarkupContainer listViewContainer;
-	public WebMarkupContainer radioContainer;
-	public IModel<FormHoras> horasUsuarioModel;
-	public LocalDate fechaActual = new LocalDate();
-	public Date desde = fechaActual.withDayOfMonth(1).toDateTimeAtStartOfDay().toDate();
-	public Date hasta = fechaActual.plusMonths(1).withDayOfMonth(1).minusDays(1).toDateTimeAtStartOfDay().toDate();
+	private String sectorGlobal= "Todos";
+	private Usuario usuario;
+	private IModel<List<UsuarioListaHoras>> lstUsuariosModel;
+	private IModel<List<UsuarioListaHoras>> lstUsuariosEnRojoModel;
+	private IModel<String> labelDesdeModel;
+	private IModel<List<String>> fechasModel;
+	private WebComponent titulos;
+	private WebMarkupContainer listViewContainer;
+	private WebMarkupContainer radioContainer;
+	private IModel<FormHoras> horasUsuarioModel;
+	private LocalDate fechaActual = new LocalDate();
+	private Date desde = fechaActual.withDayOfMonth(1).toDateTimeAtStartOfDay().toDate();
+	private Date hasta = fechaActual.plusMonths(1).withDayOfMonth(1).minusDays(1).toDateTimeAtStartOfDay().toDate();
 	
 	public VistaHorasPage(){
 		
 		final Subject subject = SecurityUtils.getSubject();
 		this.usuario = this.daoService.getUsuario(subject.getPrincipal().toString());
-
-		VistaHorasForm form = new VistaHorasForm("form");
-        form.setOutputMarkupId(true);
-        add(form);
         
         this.labelDesdeModel= new LoadableDetachableModel<String>() {
 
 			@Override
 			protected String load() {
-				// TODO Auto-generated method stub
 				return desde.toString();
+			}
+		};
+		
+		this.fechasModel = new LoadableDetachableModel<List<String>>() {
+
+			@Override
+			protected List<String> load() {
+				
+				List<String> fechas = new ArrayList<String>();
+				
+				for (int j = 2005; j < 2014; j++) {	
+					for (int i = 1; i < 13; i++) {
+						fechas.add(i+"/"+j);
+					}
+				}
+				
+				return fechas;
 			}
 		};
 				
@@ -99,7 +105,7 @@ public class VistaHorasPage extends BasePage{
 			@Override
 			protected List<UsuarioListaHoras> load() {
 //				List<UsuarioListaHoras> devolver = daoService.obtenerHorasUsuarios(desde, hasta,VistaHorasPage.this.sectorGlobal);
-				List<UsuarioListaHoras> devolver = lstUsuariosModel.getObject();
+				List<UsuarioListaHoras> devolver = VistaHorasPage.this.lstUsuariosModel.getObject();
 				List<UsuarioListaHoras> itemsToRemove = new ArrayList<UsuarioListaHoras>();
 				for (UsuarioListaHoras usuarioHoras : devolver) {
 					if(!usuarioHoras.tieneDiaMenorDedicacion(VistaHorasPage.this.desde)){
@@ -111,6 +117,11 @@ public class VistaHorasPage extends BasePage{
 			}
 	    	
 		};
+		
+		VistaHorasForm form = new VistaHorasForm("form");
+        form.setOutputMarkupId(true);
+        add(form);
+		
 		List<Feriado> feriados = daoService.getFeriados();
     	final List<Date> fechaFeriados = new ArrayList<Date>();
     	for (Feriado feriado : feriados) {
@@ -151,7 +162,7 @@ public class VistaHorasPage extends BasePage{
             			lbHoras = new Label("contenidoDia" + j, Model.of(horasDia));
             			lbHoras.add(new AttributeModifier("style", Model.of("display: block; ")));
             			if(fechaFeriados.contains(diaActual.toDate()) || diaActual.getDayOfWeek()==DateTimeConstants.SATURDAY || diaActual.getDayOfWeek()==DateTimeConstants.SUNDAY ){
-//            				lbHoras.add(new AttributeAppender("style", Model.of("background-color:gray;")));
+            				lbHoras.add(new AttributeAppender("style", Model.of("background-color: rgb(223, 223, 223); height:100%;")));
             				//background-clip: border-box; background-color: blue; color: white; border: 5px solid blue; border-radius: 5px;
             			}
             			if (horasDia < usuarioHoras.getDedicacion()) {
@@ -159,7 +170,7 @@ public class VistaHorasPage extends BasePage{
             			}
             		}else if(fechaFeriados.contains(diaActual.toDate()) || diaActual.getDayOfWeek()==DateTimeConstants.SATURDAY || diaActual.getDayOfWeek()==DateTimeConstants.SUNDAY ){
             			lbHoras = new Label("contenidoDia" + j, "0");
-//            			lbHoras.add(new AttributeModifier("style", Model.of("background-color:gray;")));
+            			lbHoras.add(new AttributeModifier("style", Model.of("background-color: rgb(223, 223, 223); height:100%;")));
             		}else{
             			lbHoras = new Label("contenidoDia" + j, "0");
             		}
@@ -182,7 +193,7 @@ public class VistaHorasPage extends BasePage{
 				LocalDate diaActual = new LocalDate(VistaHorasPage.this.desde);
 				for(int i = 1;i<32;i++){
 					
-					respuesta+="<th class='skinnyTable' scope='col' wicket:id='dia1'>"+ diaActual.getDayOfMonth()+"/"+diaActual.getMonthOfYear() +"</th>";
+					respuesta+="<th class='skinnyTable' scope='col' wicket:id='dia1'>"+ diaActual.getDayOfMonth()+"</th>";
 					diaActual = diaActual.plusDays(1);
 				}
                 response.write(respuesta);
@@ -205,12 +216,10 @@ public class VistaHorasPage extends BasePage{
 		mostrarTodas.add(new AjaxEventBehavior("onchange") {
            
             protected void onEvent(AjaxRequestTarget target) {
-            	System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n HOLA");
-            	lstUsuariosModel.detach();
-				lstUsuariosEnRojoModel.detach();
+            	VistaHorasPage.this.lstUsuariosModel.detach();
+            	VistaHorasPage.this.lstUsuariosEnRojoModel.detach();
                 usuariosHorasListView.setModel(VistaHorasPage.this.lstUsuariosModel);
-                System.out.println(VistaHorasPage.this.lstUsuariosModel);
-                target.add(listViewContainer); target.add(fechaHasta);
+                target.add(VistaHorasPage.this.listViewContainer);
             }
            
         });
@@ -218,10 +227,10 @@ public class VistaHorasPage extends BasePage{
 		mostrarEnRojo.add(new AjaxEventBehavior("onchange") {
 	           
             protected void onEvent(AjaxRequestTarget target) {
-            	lstUsuariosModel.detach();
-				lstUsuariosEnRojoModel.detach();
+            	VistaHorasPage.this.lstUsuariosModel.detach();
+            	VistaHorasPage.this.lstUsuariosEnRojoModel.detach();
                 usuariosHorasListView.setModel(VistaHorasPage.this.lstUsuariosEnRojoModel);
-                target.add(listViewContainer); target.add(fechaHasta);
+                target.add(VistaHorasPage.this.listViewContainer);
             }
            
         });
@@ -238,38 +247,36 @@ public class VistaHorasPage extends BasePage{
 		
 		public IModel<FormHoras> modeloHoras = new CompoundPropertyModel<FormHoras>(new FormHoras());
 		public LocalDate fechaActual = new LocalDate();
-		public YuiDatePicker fechaDesde;
 		public DropDownChoice<String> sector;
+		public DropDownChoice<String> fechaDesde;
 		
 		
 		public VistaHorasForm(String id) {
 			super(id);
 			this.setDefaultModel(modeloHoras);
 			this.setOutputMarkupId(true);
-			fechaDesde= new YuiDatePicker("fechaDesde") {
-				
+			
+			this.fechaDesde= new DropDownChoice<String>("fechaDesde", Model.of("7/2013") ,VistaHorasPage.this.fechasModel);
+			
+			this.fechaDesde.add(new AjaxFormComponentUpdatingBehavior("onchange"){
+
 				@Override
-				protected void onDateSelect(AjaxRequestTarget target, String selectedDate) {
-					String json = selectedDate;
-					lstUsuariosModel.detach();
-					lstUsuariosEnRojoModel.detach();
-					List<String> campos = Arrays.asList(json.split("/"));
-					int dia = Integer.parseInt(campos.get(0));
-					int mes = Integer.parseInt(campos.get(1));
-					int anio = Integer.parseInt(campos.get(2));
-					desde = new LocalDate(anio,mes,dia).toDate();
-//					System.out.println("hola");
-					target.add(listViewContainer);
-					target.add(fechaHasta);
+				protected void onUpdate(AjaxRequestTarget target) {
+
+					VistaHorasPage.this.lstUsuariosModel.detach();
+					VistaHorasPage.this.lstUsuariosEnRojoModel.detach();
+					String seleccionado = fechaDesde.getModelObject();
+					List<String> fechas = Arrays.asList(seleccionado.split("/"));
+					int dia = 1;
+					int mes = Integer.parseInt(fechas.get(0));
+					int anio = Integer.parseInt(fechas.get(1));
+					VistaHorasPage.this.desde = new LocalDate(anio,mes,dia).toDate();
+					target.add(VistaHorasPage.this.listViewContainer);
 					
 				}
 				
-				@Override
-				public DatePickerDTO getDatePickerData() {
-					return new DatePickerDTO();
-				}
-			};
-			fechaDesde.setOutputMarkupId(true);
+			});
+			this.fechaDesde.setOutputMarkupId(true);
 			List<String> sectores = new ArrayList<String>();
 			sectores.add("TI");
 			sectores.add("E&P");
@@ -281,12 +288,10 @@ public class VistaHorasPage extends BasePage{
 
 				@Override
 				protected void onUpdate(AjaxRequestTarget target) {
-					lstUsuariosModel.detach();
-					lstUsuariosEnRojoModel.detach();
-					System.out.println("changed!");
+					VistaHorasPage.this.lstUsuariosModel.detach();
+					VistaHorasPage.this.lstUsuariosEnRojoModel.detach();
 					VistaHorasPage.this.sectorGlobal= sector.getModelObject();
-					target.add(listViewContainer); 
-					target.add(fechaHasta);
+					target.add(VistaHorasPage.this.listViewContainer); 
 				}
 				
 			});
@@ -294,31 +299,15 @@ public class VistaHorasPage extends BasePage{
 			AjaxButton submit = new AjaxButton("submit") {
 				@Override
 				protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-//					System.out.println("llega");
-//					lstUsuariosModel.setObject(daoService.obtenerHorasUsuarios(fechaDesde.getModelObject(),null,sector.getModelObject()));
-					target.add(listViewContainer); 
-					target.add(fechaHasta);
+					target.add(VistaHorasPage.this.listViewContainer); 
 				}
 				
 			};
 			submit.setOutputMarkupId(true);
+//			submit.setVisible(false);
 			add(fechaDesde);
 			add(sector);
 			add(submit);
-//			fechaHasta= new Label("fechaHasta",ld.getDayOfMonth()+"/"+ld.getMonthOfYear()+"/"+ld.getYear());
-			VistaHorasPage.this.fechaHasta = new WebComponent("fechaHasta"){
-				@Override
-				public void onComponentTagBody(MarkupStream markupStream,ComponentTag openTag) {
-					Response response = getRequestCycle().getResponse();
-					String respuesta= "";
-					LocalDate ld = new LocalDate(VistaHorasPage.this.desde).plusDays(30);
-					respuesta+=" Hasta: <input type='text' onkeypress='return false;'  readonly='' value='"+ ld.getDayOfMonth()+"/"+ld.getMonthOfYear()+"/"+ld.getYear() +"'>  </input>";
-	                response.write(respuesta);
-				}
-		    	
-	        };
-	        fechaHasta.setOutputMarkupId(true);
-	        add(fechaHasta);
 		}
 		
 		
