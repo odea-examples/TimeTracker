@@ -13,7 +13,6 @@ import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
-import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.ajax.markup.html.navigation.paging.AjaxPagingNavigator;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.ComponentTag;
@@ -189,11 +188,11 @@ public class VistaHorasPage extends BasePage{
 			public void onComponentTagBody(MarkupStream markupStream,ComponentTag openTag) {
 				Response response = getRequestCycle().getResponse();
 				String respuesta= "";
-				respuesta+="<th class='skinnyTable' scope='col'>Usuarios</th>";
+				respuesta+="<th class='tablaTitulo' scope='col'>Usuarios</th>";
 				LocalDate diaActual = new LocalDate(VistaHorasPage.this.desde);
 				for(int i = 1;i<32;i++){
 					
-					respuesta+="<th class='skinnyTable' scope='col' wicket:id='dia1'>"+ diaActual.getDayOfMonth()+"</th>";
+					respuesta+="<th class='tablaTitulo' scope='col' >"+ diaActual.getDayOfMonth()+"</th>";
 					diaActual = diaActual.plusDays(1);
 				}
                 response.write(respuesta);
@@ -283,6 +282,7 @@ public class VistaHorasPage extends BasePage{
 			sectores.add("Administracion");
 			sectores.add("ExOdea");
 			sectores.add("Todos");
+			sectores.add("Ninguno");
 			sector = new DropDownChoice<String>("sector",Model.of("Todos"),sectores);
 			sector.add(new AjaxFormComponentUpdatingBehavior("onchange"){
 
@@ -295,19 +295,8 @@ public class VistaHorasPage extends BasePage{
 				}
 				
 			});
-			
-			AjaxButton submit = new AjaxButton("submit") {
-				@Override
-				protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-					target.add(VistaHorasPage.this.listViewContainer); 
-				}
-				
-			};
-			submit.setOutputMarkupId(true);
-//			submit.setVisible(false);
 			add(fechaDesde);
 			add(sector);
-			add(submit);
 		}
 		
 		

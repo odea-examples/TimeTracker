@@ -35,8 +35,10 @@ public class ListaHorasDAO extends AbstractDAO {
 		
 		if(sector.equals("Todos")) {
 			usuarios = usuarioDAO.getUsuariosConPerfiles();
-		} else {
-			usuarios = usuarioDAO.getUsuariosConPerfiles(sector);	
+		} else if(sector.equals("Ninguno")){
+			usuarios = usuarioDAO.getUsuariosConPerfilesNingunSector();	
+		}else{
+			usuarios= usuarioDAO.getUsuariosConPerfiles(sector);
 		}
 		
 		

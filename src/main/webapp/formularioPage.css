@@ -22,6 +22,14 @@
 	width: 45%;
 }
 
+#paginaEntradas form #formImputs .itemImput{
+	margin: 5px 0;
+}
+
+#paginaEntradas form #formImputs label{
+	margin: 4px 0;
+}
+
 #paginaEntradas form #nota{
 	float: left;
 	width: 25%;
