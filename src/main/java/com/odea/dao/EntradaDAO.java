@@ -141,10 +141,8 @@ public class EntradaDAO extends AbstractDAO {
 		if (iniciales != null && iniciales!="") {			
 			if (iniciales.equals("SIY")) {
 				resultado = "Sistema de Incidencias de YPF";
-			} else if (iniciales.equals("SGY")) {
+			} else if (iniciales.equals("SGY") || iniciales.equals("GEM")) {
 				resultado = "Sistema Geminis de YPF";
-			} else {
-				//throw new RuntimeException("Iniciales de sistema externo desconocidas:"+iniciales);
 			}
 		}
 		
@@ -168,6 +166,7 @@ public class EntradaDAO extends AbstractDAO {
 				//string to double
 				SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 				String t = rs.getTime(4).toString();
+				//Date fec =  new Date(rs.getTime(4).getTime());
 				Date fechasdf= null;
 				try {
 					fechasdf= dateFormat.parse(t);
@@ -177,9 +176,6 @@ public class EntradaDAO extends AbstractDAO {
 				Calendar cal = Calendar.getInstance();
 				cal.setTime(fechasdf);
 				
-				
-				//System.out.println(cal.get(Calendar.HOUR_OF_DAY));
-				//System.out.println(cal.get(Calendar.MINUTE));
 				
 				String sistemaExternoCompleto = EntradaDAO.this.parsearSistemaExternoParaGrid(rs.getString(8));
 				
@@ -191,7 +187,6 @@ public class EntradaDAO extends AbstractDAO {
 		
 		
 		Collections.sort(listaEntradas);
-		
 		
 		List<Data> listaData = new ArrayList<Data>();
 		Data data;
