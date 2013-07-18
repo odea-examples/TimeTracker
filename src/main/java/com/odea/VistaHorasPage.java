@@ -170,7 +170,7 @@ public class VistaHorasPage extends BasePage{
             			}
             		}else if(fechaFeriados.contains(diaActual.toDate()) || diaActual.getDayOfWeek()==DateTimeConstants.SATURDAY || diaActual.getDayOfWeek()==DateTimeConstants.SUNDAY ){
             			lbHoras = new Label("contenidoDia" + j, "0");
-            			lbHoras.add(new AttributeModifier("style", Model.of("background-color: rgb(223, 223, 223); height:100%;")));
+            			lbHoras.add(new AttributeModifier("style", Model.of("background-color:rgb(223, 223, 223); height:100%;")));
             		}else{
             			lbHoras = new Label("contenidoDia" + j, "0");
             		}
@@ -296,34 +296,15 @@ public class VistaHorasPage extends BasePage{
 				
 			});
 			
-			
-			
 			AjaxButton submit = new AjaxButton("submit") {
 				@Override
 				protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-<<<<<<< HEAD
-<<<<<<< HEAD
 					target.add(VistaHorasPage.this.listViewContainer); 
-=======
-=======
->>>>>>> 8561fa9b91a9feef4995ef5a8b5d33ad3cf8e98b
-					target.add(listViewContainer); 
-					target.add(fechaHasta);
->>>>>>> 8561fa9b91a9feef4995ef5a8b5d33ad3cf8e98b
 				}
 				
 			};
-			
 			submit.setOutputMarkupId(true);
-<<<<<<< HEAD
-<<<<<<< HEAD
 //			submit.setVisible(false);
-=======
-			submit.setVisible(false);
->>>>>>> 8561fa9b91a9feef4995ef5a8b5d33ad3cf8e98b
-=======
-			submit.setVisible(false);
->>>>>>> 8561fa9b91a9feef4995ef5a8b5d33ad3cf8e98b
 			add(fechaDesde);
 			add(sector);
 			add(submit);
