@@ -302,8 +302,11 @@ public class VistaHorasPage extends BasePage{
 				@Override
 				protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 <<<<<<< HEAD
+<<<<<<< HEAD
 					target.add(VistaHorasPage.this.listViewContainer); 
 =======
+=======
+>>>>>>> 8561fa9b91a9feef4995ef5a8b5d33ad3cf8e98b
 					target.add(listViewContainer); 
 					target.add(fechaHasta);
 >>>>>>> 8561fa9b91a9feef4995ef5a8b5d33ad3cf8e98b
@@ -313,7 +316,11 @@ public class VistaHorasPage extends BasePage{
 			
 			submit.setOutputMarkupId(true);
 <<<<<<< HEAD
+<<<<<<< HEAD
 //			submit.setVisible(false);
+=======
+			submit.setVisible(false);
+>>>>>>> 8561fa9b91a9feef4995ef5a8b5d33ad3cf8e98b
 =======
 			submit.setVisible(false);
 >>>>>>> 8561fa9b91a9feef4995ef5a8b5d33ad3cf8e98b
