@@ -285,17 +285,14 @@ public class DAOService {
 	}
 
 	public Map<Date, Double> getHorasDia(Usuario usuario,Date desde, Date hasta) {
-		// TODO Auto-generated method stub
 		return entradaDAO.getHorasDia(usuario,desde,hasta);
 	}
 
 	public List<UsuarioListaHoras> obtenerHorasUsuarios(Date desde, Date hasta,String sector) {
-		// TODO Auto-generated method stub
 		return listaHorasDAO.obtenerHorasUsuarios(desde,hasta,sector);
 	}
 
 	public String getNombreApellido(Usuario usuario) {
-		// TODO Auto-generated method stub
 		return usuarioDAO.getNombreYApellido(usuario);
 	}
 

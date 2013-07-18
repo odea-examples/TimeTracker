@@ -296,15 +296,27 @@ public class VistaHorasPage extends BasePage{
 				
 			});
 			
+			
+			
 			AjaxButton submit = new AjaxButton("submit") {
 				@Override
 				protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+<<<<<<< HEAD
 					target.add(VistaHorasPage.this.listViewContainer); 
+=======
+					target.add(listViewContainer); 
+					target.add(fechaHasta);
+>>>>>>> 8561fa9b91a9feef4995ef5a8b5d33ad3cf8e98b
 				}
 				
 			};
+			
 			submit.setOutputMarkupId(true);
+<<<<<<< HEAD
 //			submit.setVisible(false);
+=======
+			submit.setVisible(false);
+>>>>>>> 8561fa9b91a9feef4995ef5a8b5d33ad3cf8e98b
 			add(fechaDesde);
 			add(sector);
 			add(submit);
