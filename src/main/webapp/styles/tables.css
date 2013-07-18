@@ -37,7 +37,6 @@ td {
 	color:#678197;
 	border-bottom:1px solid #e5eff8;
 	border-left:1px solid #e5eff8;
-	padding:.3em 1em;
 	text-align:center;
 	}				
 th {
@@ -46,7 +45,6 @@ th {
 	text-align:left;
 	border-bottom: 1px solid #e5eff8;
 	border-left:1px solid #e5eff8;
-	padding:.3em 1em;
 	}							
 thead th {
 	background:#f4f9fe;

@@ -209,7 +209,6 @@ public class EntradasPage extends BasePage {
 						Entrada entrada = new Entrada(timestamp, proyecto, actividad, data.getDuration(),
 								data.getDescripcion(), ticket, data.getTicketExt(), sistemaExterno,
 								EntradasPage.this.usuario, fecha);
-						//
 						Entrada entradaVieja = daoService.buscarEntrada(entrada.getIdEntrada().getTime());
 						if(daoService.puedeEntrar(entrada.getDuracion(),entrada.getFecha(),EntradasPage.this.usuario, entradaVieja.getDuracion())){
 						daoService.modificarEntrada(entrada);

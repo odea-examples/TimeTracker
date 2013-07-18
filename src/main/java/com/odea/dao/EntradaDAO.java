@@ -1,5 +1,10 @@
 package com.odea.dao;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.StringWriter;
+import java.sql.Blob;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
@@ -38,7 +43,7 @@ public class EntradaDAO extends AbstractDAO {
 
 	
 	
-	private String sqlEntradas = "SELECT e.al_timestamp, e.al_project_id, e.al_activity_id, e.al_duration, e.al_comment, e.ticket_bz, e.ite_id, e.issue_tracker_externo, e.al_user_id, e.al_date, p.p_name , u.u_login, u.u_password, a.a_name, a.a_status, p.p_status FROM activity_log e, projects p, activities a, users u";
+	private String sqlEntradas = "SELECT e.al_timestamp, e.al_project_id, e.al_activity_id, e.al_duration, CAST(e.al_comment AS CHAR(10000) CHARACTER SET utf8), e.ticket_bz, e.ite_id, e.issue_tracker_externo, e.al_user_id, e.al_date, p.p_name , u.u_login, u.u_password, a.a_name, a.a_status, p.p_status FROM activity_log e, projects p, activities a, users u";
 
 	public void agregarEntrada(Entrada entrada){
 
@@ -381,10 +386,8 @@ public class EntradaDAO extends AbstractDAO {
 		public void modificarEntrada(Entrada entrada) {
 			String sistemaExterno = null;			
 			if (entrada.getSistemaExterno() != null && !entrada.getSistemaExterno().equals("Ninguno") ){
-//				sistemaExterno = entrada.getSistemaExterno();
 				sistemaExterno = parsearSistemaExterno(entrada.getSistemaExterno());
 			}
-			//System.out.println(new java.sql.Time((long) ((this.parsearDuracion(entrada.getDuracion())*3600000))-(3600000*21)));
 			java.sql.Date fechaSQL = new java.sql.Date(entrada.getFecha().getTime());
 			jdbcTemplate.update("UPDATE activity_log SET al_date=?, al_duration=?, al_project_id=?, al_activity_id=?, al_comment=?, ticket_bz=?, issue_tracker_externo=?, ite_id=? WHERE al_timestamp=?", 
 					new Object[]{
@@ -418,6 +421,27 @@ public class EntradaDAO extends AbstractDAO {
 			return resultado;
 		}
 		
+		public List<DatePickerDTO> getHorasUsuarios(List<Usuario> usuarios) {
+			
+			List<DatePickerDTO> listaDPdto = new ArrayList<DatePickerDTO>();
+			for (Usuario usuario : usuarios) {
+				List<HorasCargadasPorDia> horasDia = EntradaDAO.this.horasPorDia(usuario);
+				DatePickerDTO dto= new DatePickerDTO(usuario.getNombreLogin(), 8, horasDia);
+				listaDPdto.add(dto);
+			}
+			return listaDPdto;
+		}
+
+		public Map<Date, Double> getHorasDia(Usuario usuario,Date desde, Date hasta) {
+			
+			List<HorasCargadasPorDia> horasPorDia = this.horasPorDiaLimitado(usuario, desde, hasta);
+			Map<Date,Double> mapa = new HashMap<Date, Double>();
+			for (HorasCargadasPorDia horasCargadas : horasPorDia) {
+				mapa.put(horasCargadas.getDiaDate(), horasCargadas.getHorasCargadas());
+			}
+			return mapa;
+		}
+		
 
 		
 		private class RowMapperEntradas implements RowMapper<Entrada>{
@@ -434,24 +458,31 @@ public class EntradaDAO extends AbstractDAO {
 			}
 			
 		}
-
-		public List<DatePickerDTO> getHorasUsuarios(List<Usuario> usuarios) {
-			List<DatePickerDTO> listaDPdto = new ArrayList<DatePickerDTO>();
-			for (Usuario usuario : usuarios) {
-				List<HorasCargadasPorDia> horasDia = EntradaDAO.this.horasPorDia(usuario);
-				DatePickerDTO dto= new DatePickerDTO(usuario.getNombreLogin(), 8, horasDia);
-				listaDPdto.add(dto);
-			}
-			return listaDPdto;
-		}
-
-		public Map<Date, Double> getHorasDia(Usuario usuario,Date desde, Date hasta) {
-			List<HorasCargadasPorDia> horasPorDia = this.horasPorDiaLimitado(usuario, desde, hasta);
-			Map<Date,Double> mapa = new HashMap<Date, Double>();
-			for (HorasCargadasPorDia horasCargadas : horasPorDia) {
-				mapa.put(horasCargadas.getDiaDate(), horasCargadas.getHorasCargadas());
-			}
-			return mapa;
+		
+		public String blobToString(Blob blob){
+			
+			byte[] b;
+			try {
+				
+				b = blob.getBytes(1, (int) blob.length());
+				ByteArrayInputStream inputStream = new ByteArrayInputStream(b);  
+	            Reader r = new InputStreamReader(inputStream);
+	            
+	            StringWriter sw = new StringWriter();     
+	            char[] buffer = new char[20000];     
+	            
+	            for (int n; (n = r.read(buffer)) != -1; ){
+	            	sw.write(buffer, 0, n);     	            	
+	            }
+	            
+	            String str = sw.toString();
+	            
+	            return str;
+	            
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}  
+            
 		}
 		
 	}
