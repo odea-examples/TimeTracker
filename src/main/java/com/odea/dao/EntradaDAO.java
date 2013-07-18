@@ -144,7 +144,7 @@ public class EntradaDAO extends AbstractDAO {
 			} else if (iniciales.equals("SGY")) {
 				resultado = "Sistema Geminis de YPF";
 			} else {
-				throw new RuntimeException("Iniciales de sistema externo desconocidas:"+iniciales);
+				//throw new RuntimeException("Iniciales de sistema externo desconocidas:"+iniciales);
 			}
 		}
 		
