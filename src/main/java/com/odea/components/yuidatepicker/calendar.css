@@ -338,6 +338,10 @@ p#clear {
 	background-color: #b3f794
 }
 
+.yui-skin-sam .yui-calendar td.calcell.highlight5 {
+	background-color: pink;
+}
+
 .yui-skin-sam .yui-calendar a.calnav {
 	border: 1px solid #f2f2f2;
 	padding: 0 4px;

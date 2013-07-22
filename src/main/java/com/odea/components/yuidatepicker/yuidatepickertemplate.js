@@ -79,15 +79,23 @@ initYUI = function() {
     YAHOO.example.calendar.cal1.setMonth(data.fecha[0]-1);
     YAHOO.example.calendar.cal1.setYear(data.fecha[1]);
     
+    var myCustomRenderer = function(workingDate, cell) { 
+    	YAHOO.util.Dom.addClass(cell, "highlight5"); 
+    	return true;
+    } 
     
     for(var i in data.horasDia){
-    	
     	var horasHoy = data.horasDia[i].horasCargadas;
+    	if(data.dedicacion == -1){
+    		YAHOO.example.calendar.cal1.addRenderer(data.horasDia[i].dia,myCustomRenderer);
+    	}else{
     	if (horasHoy < data.dedicacion) {
     		YAHOO.example.calendar.cal1.addRenderer(data.horasDia[i].dia, YAHOO.example.calendar.cal1.renderCellStyleHighlight3);
 		} else {
 			YAHOO.example.calendar.cal1.addRenderer(data.horasDia[i].dia, YAHOO.example.calendar.cal1.renderCellStyleHighlight4);			
 		}
+    	}
+
     	
     }
     

@@ -1,5 +1,7 @@
 package com.odea;
 
+import java.lang.reflect.Array;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -48,19 +50,26 @@ public class VistaHorasPage extends BasePage{
 	@SpringBean
 	private DAOService daoService;
 	
-	private String sectorGlobal= "Todos";
 	private Usuario usuario;
+	private DecimalFormat decimal = new DecimalFormat("#0.00");
+	private double[] totales;
+	
 	private IModel<List<UsuarioListaHoras>> lstUsuariosModel;
 	private IModel<List<UsuarioListaHoras>> lstUsuariosEnRojoModel;
 	private IModel<String> labelDesdeModel;
 	private IModel<List<String>> fechasModel;
+	private IModel<FormHoras> horasUsuarioModel;
+	
 	private WebComponent titulos;
+	private WebComponent totalesHtml;
 	private WebMarkupContainer listViewContainer;
 	private WebMarkupContainer radioContainer;
-	private IModel<FormHoras> horasUsuarioModel;
+	
 	private LocalDate fechaActual = new LocalDate();
 	private Date desde = fechaActual.withDayOfMonth(1).toDateTimeAtStartOfDay().toDate();
 	private Date hasta = fechaActual.plusMonths(1).withDayOfMonth(1).minusDays(1).toDateTimeAtStartOfDay().toDate();
+	
+	private String sectorGlobal= "Todos";
 	
 	public VistaHorasPage(){
 		
@@ -128,6 +137,10 @@ public class VistaHorasPage extends BasePage{
 		}
 		this.listViewContainer = new WebMarkupContainer("listViewContainer");
 		this.listViewContainer.setOutputMarkupId(true);
+		totales = new double [31];
+//		for (int i = 0; i < 32; i++) {
+//			totales[i]= new Double(0);
+//		}
 	    final PageableListView<UsuarioListaHoras> usuariosHorasListView = new PageableListView<UsuarioListaHoras>("tabla", this.lstUsuariosModel, 1000) {
 
 			private static final long serialVersionUID = 1L;
@@ -150,15 +163,17 @@ public class VistaHorasPage extends BasePage{
             	
 				
             	LocalDate diaActual = new LocalDate(VistaHorasPage.this.desde);
-            	
+            	Double totalHoras = new Double(0);
             	for (int j = 1; j <= 31; j++) {
             		Label lbHoras;
             		Double horasDia = new Double(0);
             		
             		horasDia = colHoras.get(diaActual.toDate());
-            		
-            		if(horasDia != null) {    			
-            			lbHoras = new Label("contenidoDia" + j, Model.of(horasDia));
+            		if(horasDia != null) {    
+            			totales[j-1]=totales[j-1]+horasDia;
+            			String mensaje = decimal.format(horasDia);
+            			totalHoras = totalHoras+horasDia;
+            			lbHoras = new Label("contenidoDia" + j, Model.of(mensaje));
             			lbHoras.add(new AttributeModifier("style", Model.of("display: block; ")));
             			if(fechaFeriados.contains(diaActual.toDate()) || diaActual.getDayOfWeek()==DateTimeConstants.SATURDAY || diaActual.getDayOfWeek()==DateTimeConstants.SUNDAY ){
             				lbHoras.add(new AttributeAppender("style", Model.of("background-color: rgb(223, 223, 223); height:100%;")));
@@ -177,7 +192,9 @@ public class VistaHorasPage extends BasePage{
             		item.add(lbHoras);
             		diaActual = diaActual.plusDays(1);
             	}
-            	
+//            	System.out.println(totalHoras);
+            	//Model.of(totalHoras)
+            	item.add(new Label("totalPersona",Model.of(totalHoras)));
             };
             
             	
@@ -195,13 +212,36 @@ public class VistaHorasPage extends BasePage{
 					respuesta+="<th class='tablaTitulo' scope='col' >"+ diaActual.getDayOfMonth()+"</th>";
 					diaActual = diaActual.plusDays(1);
 				}
+				respuesta+="<th class='tablaTitulo' scope='col' > Total </th>";
                 response.write(respuesta);
 			}
 	    	
         };
+        
+        this.totalesHtml = new WebComponent("totalesHtml"){
+        	public void onComponentTagBody(MarkupStream markupStream, ComponentTag openTag) {
+        		Response response = getRequestCycle().getResponse();
+				String respuesta= "";
+				respuesta+="<td class='tablaTitulo' scope='col'>Totales:</td>";
+				LocalDate diaActual = new LocalDate(VistaHorasPage.this.desde);
+				for(int i = 1;i<32;i++){
+					
+					respuesta+="<td class='tablaTitulo' scope='col' >"+ decimal.format(VistaHorasPage.this.totales[i-1]) +"</td>";
+					diaActual = diaActual.plusDays(1);
+				}
+				respuesta+="<td class='tablaTitulo' scope='col' >  </td>";
+                response.write(respuesta);
+        		for (int i = 0; i < 31; i++) {
+        			totales[i]= new Double(0);
+        		}
+                
+        	};
+        };
+        
         this.listViewContainer.add(titulos);
+        this.listViewContainer.add(totalesHtml);
 		this.listViewContainer.add(usuariosHorasListView);
-		this.listViewContainer.add(new AjaxPagingNavigator("navigator", usuariosHorasListView));
+//		this.listViewContainer.add(new AjaxPagingNavigator("navigator", usuariosHorasListView));
 		add(listViewContainer);
 		
 		radioContainer = new WebMarkupContainer("radioContainerUsuarios");
