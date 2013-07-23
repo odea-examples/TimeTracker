@@ -321,6 +321,9 @@ p#clear {
 .yui-skin-sam .yui-calendar td.calcell.restricted {
 	text-decoration: line-through
 }
+.yui-skin-sam .yui-calendar td.calcell.highlight6 {
+	background-color: white;
+}
 
 .yui-skin-sam .yui-calendar td.calcell.highlight1 {
 	background-color: #d1d1d1
@@ -341,6 +344,8 @@ p#clear {
 .yui-skin-sam .yui-calendar td.calcell.highlight5 {
 	background-color: pink;
 }
+
+
 
 .yui-skin-sam .yui-calendar a.calnav {
 	border: 1px solid #f2f2f2;

@@ -9,6 +9,7 @@
   $.extend(true, window, {
     "Slick": {
       "Formatters": {
+    	  "Number":NumberFormatter,
         "PercentComplete": PercentCompleteFormatter,
         "PercentCompleteBar": PercentCompleteBarFormatter,
         "YesNo": YesNoFormatter,
@@ -18,6 +19,10 @@
       }
     }
   });
+  
+  function NumberFormatter(row, cell, value, columnDef, dataContext){
+	  return "<div align='right' >" + value + "</div>"
+  }
 
   function PercentCompleteFormatter(row, cell, value, columnDef, dataContext) {
     if (value == null || value === "") {

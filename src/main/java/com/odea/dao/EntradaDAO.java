@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringWriter;
+import java.io.UnsupportedEncodingException;
 import java.sql.Blob;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -49,13 +50,24 @@ public class EntradaDAO extends AbstractDAO {
 
 		String sistemaExterno = this.parsearSistemaExterno(entrada.getSistemaExterno()); 
 		double duracion = this.parsearDuracion(entrada.getDuracion());
+		
+		String s1 = entrada.getNota();
+		String s2;
+		try{
+			s2= decodificarNota(s1);			
+		}
+		catch(Exception e){
+			System.out.println("La nota ingresada no pudo ser codificada.");
+			e.printStackTrace();
+			s2 = entrada.getNota();
+		}
 
 		logger.debug("Insert attempt entrada");
 		
 		jdbcTemplate.update("INSERT INTO activity_log (al_project_id, al_activity_id, al_duration, al_comment, ticket_bz, issue_tracker_externo, ite_id, al_user_id, al_date) VALUES (?,?,?,?,?,?,?,?,?)", 
 				new Object[]{
 				entrada.getProyecto().getIdProyecto(), entrada.getActividad().getIdActividad(), new java.sql.Time((long) ((this.parsearDuracion(entrada.getDuracion())*3600000))-(3600000*21)), 
-				entrada.getNota(), entrada.getTicketBZ(), 
+				s2, entrada.getTicketBZ(), 
 				sistemaExterno, entrada.getTicketExterno(), entrada.getUsuario().getIdUsuario()
 				, entrada.getFecha()},
 				new int[]{Types.INTEGER, Types.INTEGER, Types.TIME,Types.BLOB,Types.INTEGER,Types.CHAR,Types.VARCHAR,Types.INTEGER ,Types.TIMESTAMP});
@@ -66,6 +78,13 @@ public class EntradaDAO extends AbstractDAO {
 	
 	
 	
+
+
+
+	
+
+
+
 
 
 
@@ -195,8 +214,9 @@ public class EntradaDAO extends AbstractDAO {
 			Calendar calendar = Calendar.getInstance();
 			calendar.setTime(entrada.getIdEntrada());
 			String stringTiempo="";
-			stringTiempo+=entrada.getDuracion().toString();
-			//System.out.println(stringTiempo);
+			String[] tiempos = entrada.getDuracion().split(",");
+			stringTiempo+=tiempos[0]+":"+(Integer.parseInt(tiempos[1])*60/100);
+			
 			//System.out.println(entrada.getDuracion());
 			calendar.setTime(entrada.getFecha());
 			String stringFecha ="";
@@ -383,10 +403,19 @@ public class EntradaDAO extends AbstractDAO {
 			if (entrada.getSistemaExterno() != null && !entrada.getSistemaExterno().equals("Ninguno") ){
 				sistemaExterno = parsearSistemaExterno(entrada.getSistemaExterno());
 			}
+			String s1= entrada.getNota();
+			String s2;
+			try {
+				s2= decodificarNota(s1);
+			} catch (Exception e) {
+				System.out.println("La nota ingresada no pudo ser codificada.");
+				e.printStackTrace();
+				s2 = entrada.getNota();
+			}
 			java.sql.Date fechaSQL = new java.sql.Date(entrada.getFecha().getTime());
 			jdbcTemplate.update("UPDATE activity_log SET al_date=?, al_duration=?, al_project_id=?, al_activity_id=?, al_comment=?, ticket_bz=?, issue_tracker_externo=?, ite_id=? WHERE al_timestamp=?", 
 					new Object[]{
-					fechaSQL, new java.sql.Time((long) ((this.parsearDuracion(entrada.getDuracion())*3600000))-(3600000*21)), entrada.getProyecto().getIdProyecto(), entrada.getActividad().getIdActividad(), entrada.getNota(), entrada.getTicketBZ(), sistemaExterno, entrada.getTicketExterno(), entrada.getIdEntrada()},
+					fechaSQL, new java.sql.Time((long) ((this.parsearDuracion(entrada.getDuracion())*3600000))-(3600000*21)), entrada.getProyecto().getIdProyecto(), entrada.getActividad().getIdActividad(), s2, entrada.getTicketBZ(), sistemaExterno, entrada.getTicketExterno(), entrada.getIdEntrada()},
 					new int[]{Types.DATE, Types.TIME, Types.INTEGER, Types.INTEGER, Types.BLOB, Types.INTEGER, Types.CHAR, Types.VARCHAR, Types.TIMESTAMP});
 		}
 
@@ -478,6 +507,12 @@ public class EntradaDAO extends AbstractDAO {
 				throw new RuntimeException(e);
 			}  
             
+		}
+		private String decodificarNota(String s1) throws UnsupportedEncodingException {
+			byte[] bytes;
+			bytes = s1.getBytes("UTF-8");
+			String s2= new String(bytes,"ISO-8859-1");
+			return s2;
 		}
 		
 	}

@@ -50,15 +50,12 @@ public class VistaHorasPage extends BasePage{
 	@SpringBean
 	private DAOService daoService;
 	
-	private Usuario usuario;
 	private DecimalFormat decimal = new DecimalFormat("#0.00");
 	private double[] totales;
 	
 	private IModel<List<UsuarioListaHoras>> lstUsuariosModel;
 	private IModel<List<UsuarioListaHoras>> lstUsuariosEnRojoModel;
-	private IModel<String> labelDesdeModel;
 	private IModel<List<String>> fechasModel;
-	private IModel<FormHoras> horasUsuarioModel;
 	
 	private WebComponent titulos;
 	private WebComponent totalesHtml;
@@ -72,17 +69,6 @@ public class VistaHorasPage extends BasePage{
 	private String sectorGlobal= "Todos";
 	
 	public VistaHorasPage(){
-		
-		final Subject subject = SecurityUtils.getSubject();
-		this.usuario = this.daoService.getUsuario(subject.getPrincipal().toString());
-        
-        this.labelDesdeModel= new LoadableDetachableModel<String>() {
-
-			@Override
-			protected String load() {
-				return desde.toString();
-			}
-		};
 		
 		this.fechasModel = new LoadableDetachableModel<List<String>>() {
 

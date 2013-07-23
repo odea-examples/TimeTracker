@@ -689,7 +689,7 @@ public class EntradasPage extends BasePage {
 		String sistemasExternos = listaSistemaExterno.subSequence(1, listaSistemaExterno.length() - 1).toString();
 		// columna:id,nombre,widht,minwidht,maxwidth,cssclass,field,formater,editor,validator,options
 		Columna columna = new Columna("delCol", " ", 20, 20, 60, null, "del", "Slick.Formatters.DeleteButton", null, null, null);
-		Columna columna2 = new Columna("duration", "Duración", 60, 60, 60, "cell-title", "duration", null, "Slick.Editors.Text", "requiredDurationValidator", null);
+		Columna columna2 = new Columna("duration", "Duración", 60, 60, 60, "cell-title", "duration", "Slick.Formatters.Number", "Slick.Editors.Number", "requiredDurationValidator", null);
 		Columna columna3 = new Columna("actividad", "Actividad", 150, 100, 300, "cell-title", "actividad", null, null, "requiredFieldValidator",	actividades);
 		Columna columna4 = new Columna("proyecto", "Proyecto", 150, 100, 300, "cell-title", "proyecto", null, null,	"requiredFieldValidator", proyectos);
 		Columna columna5 = new Columna("fecha", "Fecha", 60, 60, 60, null, "fecha", null, "Slick.Editors.Date", "requiredFieldValidator", null);

@@ -10,6 +10,7 @@
     "Slick": {
       "Editors": {
         "Text": TextEditor,
+        "Number": NumberEditor,
         "TextTicketExt": TextTicketExtEditor,
         "Integer": IntegerEditor,
         "Date": DateEditor,
@@ -24,81 +25,156 @@
   });
 
   function TextEditor(args) {
-    var $input;
-    var defaultValue;
-    var scope = this;
+	    var $input;
+	    var defaultValue;
+	    var scope = this;
 
-    this.init = function () {
-      $input = $("<INPUT type=text class='editor-text' />")
-          .appendTo(args.container)
-          .bind("keydown.nav", function (e) {
-            if (e.keyCode === $.ui.keyCode.LEFT || e.keyCode === $.ui.keyCode.RIGHT) {
-              e.stopImmediatePropagation();
-            }
-          })
-          .focus()
-          .select();
-    };
+	    this.init = function () {
+	      $input = $("<INPUT type=text class='editor-text' />")
+	          .appendTo(args.container)
+	          .bind("keydown.nav", function (e) {
+	            if (e.keyCode === $.ui.keyCode.LEFT || e.keyCode === $.ui.keyCode.RIGHT) {
+	              e.stopImmediatePropagation();
+	            }
+	          })
+	          .focus()
+	          .select();
+	    };
 
-    this.destroy = function () {
-      $input.remove();
-    };
+	    this.destroy = function () {
+	      $input.remove();
+	    };
 
-    this.focus = function () {
-      $input.focus();
-    };
+	    this.focus = function () {
+	      $input.focus();
+	    };
 
-    this.getValue = function () {
-      return $input.val();
-    };
+	    this.getValue = function () {
+	      return $input.val();
+	    };
 
-    this.setValue = function (val) {
-      $input.val(val);
-    };
+	    this.setValue = function (val) {
+	      $input.val(val);
+	    };
 
-    this.loadValue = function (item) {
-      defaultValue = item[args.column.field] || "";
-      $input.val(defaultValue);
-      $input[0].defaultValue = defaultValue;
-      $input.select();
-    };
+	    this.loadValue = function (item) {
+	      defaultValue = item[args.column.field] || "";
+	      $input.val(defaultValue);
+	      $input[0].defaultValue = defaultValue;
+	      $input.select();
+	    };
 
-    this.serializeValue = function () {
-      return $input.val();
-    };
+	    this.serializeValue = function () {
+	      return $input.val();
+	    };
 
-    this.applyValue = function (item, state) {
-      item[args.column.field] = state;
-    };
+	    this.applyValue = function (item, state) {
+	      item[args.column.field] = state;
+	    };
 
-    this.isValueChanged = function () {
-      return (!($input.val() == "" && defaultValue == null)) && ($input.val() != defaultValue);
-    };
+	    this.isValueChanged = function () {
+	      return (!($input.val() == "" && defaultValue == null)) && ($input.val() != defaultValue);
+	    };
 
-    this.validate = function () {
-    	//actividad no tiene que estar vacio
-    	var valor= args.item.actividad;
-        if(valor == null || valor == undefined || !valor.length){
-        	return {valid: false, msg: "This is a required field"};
-    	}
-        
-        
-      if (args.column.validator) {
-        var validationResults = args.column.validator($input.val());
-        if (!validationResults.valid) {
-          return validationResults;
-        }
-      }
+	    this.validate = function () {
+	    	//actividad no tiene que estar vacio
+	    	var valor= args.item.actividad;
+	        if(valor == null || valor == undefined || !valor.length){
+	        	return {valid: false, msg: "This is a required field"};
+	    	}
+	        
+	        
+	      if (args.column.validator) {
+	        var validationResults = args.column.validator($input.val());
+	        if (!validationResults.valid) {
+	          return validationResults;
+	        }
+	      }
 
-      return {
-        valid: true,
-        msg: null
-      };
-    };
+	      return {
+	        valid: true,
+	        msg: null
+	      };
+	    };
 
-    this.init();
-  }
+	    this.init();
+	  }
+  function NumberEditor(args) {
+	    var $input;
+	    var defaultValue;
+	    var scope = this;
 
+	    this.init = function () {
+	      $input = $("<INPUT type=text class='editor-duracion' align='right' />")
+	          .appendTo(args.container)
+	          .bind("keydown.nav", function (e) {
+	            if (e.keyCode === $.ui.keyCode.LEFT || e.keyCode === $.ui.keyCode.RIGHT) {
+	              e.stopImmediatePropagation();
+	            }
+	          })
+	          .focus()
+	          .select();
+	    };
+
+	    this.destroy = function () {
+	      $input.remove();
+	    };
+
+	    this.focus = function () {
+	      $input.focus();
+	    };
+
+	    this.getValue = function () {
+	      return $input.val();
+	    };
+
+	    this.setValue = function (val) {
+	      $input.val(val);
+	    };
+
+	    this.loadValue = function (item) {
+	      defaultValue = item[args.column.field] || "";
+	      $input.val(defaultValue);
+	      $input[0].defaultValue = defaultValue;
+	      $input.select();
+	    };
+
+	    this.serializeValue = function () {
+	      return $input.val();
+	    };
+
+	    this.applyValue = function (item, state) {
+	      item[args.column.field] = state;
+	    };
+
+	    this.isValueChanged = function () {
+	      return (!($input.val() == "" && defaultValue == null)) && ($input.val() != defaultValue);
+	    };
+
+	    this.validate = function () {
+	    	//actividad no tiene que estar vacio
+	    	var valor= args.item.actividad;
+	        if(valor == null || valor == undefined || !valor.length){
+	        	return {valid: false, msg: "This is a required field"};
+	    	}
+	        
+	        
+	      if (args.column.validator) {
+	        var validationResults = args.column.validator($input.val());
+	        if (!validationResults.valid) {
+	          return validationResults;
+	        }
+	      }
+
+	      return {
+	        valid: true,
+	        msg: null
+	      };
+	    };
+
+	    this.init();
+	  }
+  
   function IntegerEditor(args) {
     var $input;
     var defaultValue;

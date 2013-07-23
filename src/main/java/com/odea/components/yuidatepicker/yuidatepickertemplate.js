@@ -79,20 +79,30 @@ initYUI = function() {
     YAHOO.example.calendar.cal1.setMonth(data.fecha[0]-1);
     YAHOO.example.calendar.cal1.setYear(data.fecha[1]);
     
-    var myCustomRenderer = function(workingDate, cell) { 
+    var myCustomRenderer5 = function(workingDate, cell) { 
     	YAHOO.util.Dom.addClass(cell, "highlight5"); 
     	return true;
     } 
     
+    var myCustomRenderer6 = function(workingDate, cell) { 
+    	YAHOO.util.Dom.addClass(cell, "highlight6"); 
+    	return true;
+    } 
+
+
+    
     for(var i in data.horasDia){
     	var horasHoy = data.horasDia[i].horasCargadas;
+//    	YAHOO.example.calendar.cal1.addRenderer(data.horasDia[i].dia,myCustomRenderer6);
     	if(data.dedicacion == -1){
-    		YAHOO.example.calendar.cal1.addRenderer(data.horasDia[i].dia,myCustomRenderer);
+    		YAHOO.example.calendar.cal1.addRenderer(data.horasDia[i].dia,myCustomRenderer5);
     	}else{
     	if (horasHoy < data.dedicacion) {
     		YAHOO.example.calendar.cal1.addRenderer(data.horasDia[i].dia, YAHOO.example.calendar.cal1.renderCellStyleHighlight3);
+    		YAHOO.example.calendar.cal1.addRenderer(data.horasDia[i].dia, YAHOO.example.calendar.cal1.renderCellStyleHighlight3);
 		} else {
-			YAHOO.example.calendar.cal1.addRenderer(data.horasDia[i].dia, YAHOO.example.calendar.cal1.renderCellStyleHighlight4);			
+			YAHOO.example.calendar.cal1.addRenderer(data.horasDia[i].dia, YAHOO.example.calendar.cal1.renderCellStyleHighlight4);
+			YAHOO.example.calendar.cal1.addRenderer(data.horasDia[i].dia, YAHOO.example.calendar.cal1.renderCellStyleHighlight4);
 		}
     	}
 
