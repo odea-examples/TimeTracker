@@ -13,6 +13,7 @@ import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.apache.wicket.validation.validator.StringValidator;
 import org.joda.time.LocalDate;
 
 import com.odea.components.datepicker.DatePickerDTO;
@@ -85,6 +86,7 @@ public class FeriadosPage extends BasePage {
 
 			descripcion = new TextArea<String>("descripcion");
 			descripcion.setRequired(true);
+			descripcion.add(new StringValidator(0,2000));
 			descripcion.setOutputMarkupId(true);
 			
 			final FeedbackPanel feedBackPanel = new FeedbackPanel("feedBackPanel");

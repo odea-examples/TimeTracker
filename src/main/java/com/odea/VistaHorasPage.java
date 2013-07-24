@@ -1,5 +1,6 @@
 package com.odea;
 
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Array;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -98,7 +99,6 @@ public class VistaHorasPage extends BasePage{
 
 			@Override
 			protected List<UsuarioListaHoras> load() {
-//				List<UsuarioListaHoras> devolver = daoService.obtenerHorasUsuarios(desde, hasta,VistaHorasPage.this.sectorGlobal);
 				List<UsuarioListaHoras> devolver = VistaHorasPage.this.lstUsuariosModel.getObject();
 				List<UsuarioListaHoras> itemsToRemove = new ArrayList<UsuarioListaHoras>();
 				for (UsuarioListaHoras usuarioHoras : devolver) {
@@ -124,9 +124,6 @@ public class VistaHorasPage extends BasePage{
 		this.listViewContainer = new WebMarkupContainer("listViewContainer");
 		this.listViewContainer.setOutputMarkupId(true);
 		totales = new double [31];
-//		for (int i = 0; i < 32; i++) {
-//			totales[i]= new Double(0);
-//		}
 	    final PageableListView<UsuarioListaHoras> usuariosHorasListView = new PageableListView<UsuarioListaHoras>("tabla", this.lstUsuariosModel, 1000) {
 
 			private static final long serialVersionUID = 1L;
@@ -135,13 +132,17 @@ public class VistaHorasPage extends BasePage{
 			@Override
 	        protected void populateItem(ListItem<UsuarioListaHoras> item) {
 	           	final UsuarioListaHoras usuarioHoras = item.getModel().getObject();   
-//	           	
-//	           	if((item.getIndex() % 2) == 0){
-//	           		item.add(new AttributeModifier("class","odd"));
-//	           	}
-            	String nombreCorregido= daoService.getNombreApellido(usuarioHoras.getUsuario()).replaceAll("Ã³","ó").replaceAll("Ã©","é").replaceAll("Ã±","ñ").replaceAll("Ã¡","á").replaceAll("Ã­","í");
+	           	String nombreArreglado = usuarioHoras.getUsuario().getNombre();
+	           	byte[] bytes;
+				try {
+					bytes = usuarioHoras.getUsuario().getNombre().getBytes("ISO-8859-1");
+					nombreArreglado= new String(bytes,"UTF-8");
+					System.out.println(nombreArreglado);
+				} catch (UnsupportedEncodingException e) {
+					e.printStackTrace();
+				}
 	           	
-            	Label nombre = new Label("apellidoNombre",nombreCorregido);
+            	Label nombre = new Label("apellidoNombre",nombreArreglado);
             	item.add(nombre);
             	Map<Date, Double> colHoras = new HashMap<Date, Double>();
             	colHoras.putAll(usuarioHoras.getDiaHoras());
@@ -178,8 +179,6 @@ public class VistaHorasPage extends BasePage{
             		item.add(lbHoras);
             		diaActual = diaActual.plusDays(1);
             	}
-//            	System.out.println(totalHoras);
-            	//Model.of(totalHoras)
             	item.add(new Label("totalPersona",Model.of(totalHoras)));
             };
             
@@ -227,7 +226,6 @@ public class VistaHorasPage extends BasePage{
         this.listViewContainer.add(titulos);
         this.listViewContainer.add(totalesHtml);
 		this.listViewContainer.add(usuariosHorasListView);
-//		this.listViewContainer.add(new AjaxPagingNavigator("navigator", usuariosHorasListView));
 		add(listViewContainer);
 		
 		radioContainer = new WebMarkupContainer("radioContainerUsuarios");
