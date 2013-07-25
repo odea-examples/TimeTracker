@@ -74,10 +74,15 @@ initYUI = function() {
     YAHOO.example.calendar.cal1.cfg.setProperty("MDY_DAY_POSITION", 1);
 
     var data = getRemote();
-
+    var fechaText= JSON.stringify(data.fechaSeleccionada, null, 2);
     
+    
+    YAHOO.example.calendar.cal1.cfg.setProperty("selected",data.fechaSeleccionada,false);
     YAHOO.example.calendar.cal1.setMonth(data.fecha[0]-1);
     YAHOO.example.calendar.cal1.setYear(data.fecha[1]);
+//    alert(JSON.stringify(data.fechaSeleccionada, null, 2)); 
+    YAHOO.example.calendar.cal1.addRenderer(data.fechaSeleccionada,customSelectedRenderer);
+    YAHOO.example.calendar.cal1.addRenderer(data.fechaSeleccionada,customSelectedRenderer);
     
     var myCustomRenderer5 = function(workingDate, cell) { 
     	YAHOO.util.Dom.addClass(cell, "highlight5"); 
@@ -88,12 +93,16 @@ initYUI = function() {
     	YAHOO.util.Dom.addClass(cell, "highlight6"); 
     	return true;
     } 
+    var customSelectedRenderer = function(workingDate, cell) { 
+    	YAHOO.util.Dom.addClass(cell, "selected"); 
+    	return true;
+    }
+
 
 
     
     for(var i in data.horasDia){
     	var horasHoy = data.horasDia[i].horasCargadas;
-//    	YAHOO.example.calendar.cal1.addRenderer(data.horasDia[i].dia,myCustomRenderer6);
     	if(data.dedicacion == -1){
     		YAHOO.example.calendar.cal1.addRenderer(data.horasDia[i].dia,myCustomRenderer5);
     	}else{
@@ -121,8 +130,6 @@ initYUI = function() {
     
     YAHOO.example.calendar.cal1.render();
     
-    //YAHOO.example.calendar.cal1.hide();
-    //YAHOO.util.Event.addListener("${selector}", "click", YAHOO.example.calendar.cal1.show, YAHOO.example.calendar.cal1, true); 
     
     YAHOO.util.Event.addListener("update", "click", updateCal);
     YAHOO.util.Event.addListener("dates", "submit", handleSubmit);

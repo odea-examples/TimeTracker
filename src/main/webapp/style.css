@@ -523,8 +523,8 @@
 }
 #footer {
 	position:relative;
-	background-image: url(images/graybg.png);
-	background-repeat: repeat-x;
+/* 	background-image: url(images/graybg.png); */
+/* 	background-repeat: repeat-x; */
 	padding: 10px;
 	margin-top:50px;
 }
@@ -550,9 +550,3 @@
 	color: #666666;
 	text-decoration: none;
 }
-.tablaTitulo {
-	background:#f4f9fe;
-	text-align:center;
-	font:bold 1.0em/2em "Century Gothic","Trebuchet MS",Arial,Helvetica,sans-serif;
-	color:#66a3d3
-	}

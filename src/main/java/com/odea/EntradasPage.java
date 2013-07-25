@@ -504,9 +504,10 @@ public class EntradasPage extends BasePage {
 					DatePickerDTO dto = new DatePickerDTO();
 					dto.setDedicacion(daoService.getDedicacion(usuario));
 					dto.setUsuario(usuario.getNombreLogin());
-					
 					Collection<HorasCargadasPorDia> c = daoService.getHorasDiaras(usuario);
 					dto.setHorasDia(c);
+					
+					dto.setFechaSeleccionada(EntradasPage.this.fechaActual.toDate());
 					
 					List<Feriado> feriados = daoService.getFeriados();
 					dto.setFeriados(feriados);

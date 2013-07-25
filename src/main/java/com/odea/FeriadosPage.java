@@ -75,7 +75,7 @@ public class FeriadosPage extends BasePage {
 					dto.setUsuario("admin");
 					Collection<HorasCargadasPorDia> horas = daoService.getFeriadosData();
 					dto.setHorasDia(horas);
-															
+					dto.setFechaSeleccionada(FeriadosForm.this.fechaActual.toDate());			
 					return dto;				
 				}
 				

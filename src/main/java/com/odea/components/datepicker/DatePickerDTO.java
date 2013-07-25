@@ -1,5 +1,6 @@
 package com.odea.components.datepicker;
 
+import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -15,6 +16,7 @@ public class DatePickerDTO {
     private Collection<HorasCargadasPorDia> horasDia;
     private List<Feriado> feriados;
     private List<Integer> fecha;
+    private String fechaSeleccionada;
     
     public DatePickerDTO() {
     	
@@ -70,6 +72,15 @@ public class DatePickerDTO {
 	public void setFecha(List<Integer> fecha) {
 		this.fecha = fecha;
 	}
+	
+	public String getFechaSeleccionada() {
+		return fechaSeleccionada;
+	}
+
+	public void setFechaSeleccionada(Date fechaSeleccionada) {
+		SimpleDateFormat DATE_FMT = new SimpleDateFormat("dd/MM/yyyy");
+		this.fechaSeleccionada = DATE_FMT.format(fechaSeleccionada);
+	}
 
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
@@ -78,7 +89,7 @@ public class DatePickerDTO {
 	public String toString() {
 		return "DatePickerDTO [usuario=" + usuario + ", dedicacion="
 				+ dedicacion + ", horasDia=" + horasDia + ", feriados="
-				+ feriados + ", fecha=" + fecha + "]";
+				+ feriados + ", fecha=" + fecha + ", fechaSeleccionada="+ fechaSeleccionada +"]";
 	}
 	
 }

@@ -179,7 +179,8 @@ public class VistaHorasPage extends BasePage{
             		item.add(lbHoras);
             		diaActual = diaActual.plusDays(1);
             	}
-            	item.add(new Label("totalPersona",Model.of(totalHoras)));
+            	item.add(new Label("totalPersona",Model.of(decimal.format(totalHoras))));
+            	
             };
             
             	
@@ -211,7 +212,7 @@ public class VistaHorasPage extends BasePage{
 				LocalDate diaActual = new LocalDate(VistaHorasPage.this.desde);
 				for(int i = 1;i<32;i++){
 					
-					respuesta+="<td class='tablaTitulo' scope='col' >"+ decimal.format(VistaHorasPage.this.totales[i-1]) +"</td>";
+					respuesta+="<td class='tablaTitulo' scope='col' align='right' >"+ decimal.format(VistaHorasPage.this.totales[i-1]) +"</td>";
 					diaActual = diaActual.plusDays(1);
 				}
 				respuesta+="<td class='tablaTitulo' scope='col' >  </td>";
