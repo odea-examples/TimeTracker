@@ -188,6 +188,10 @@ public class DAOService {
 		return proyectoDAO.getProyectosHabilitados();
 	}
 	
+	public List<? extends Proyecto> getProyectosHabilitados(Usuario usuario) {
+		return proyectoDAO.getProyectosHabilitados(usuario);
+	}
+	
 	public void actualizarRelaciones(int idProyecto, List<Actividad> borrar, List<Actividad> añadir){
 		proyectoDAO.actualizarRelaciones(idProyecto, borrar, añadir);
 	}
@@ -370,6 +374,8 @@ public class DAOService {
 	public void cambiarGrupo(Usuario usuario, String grupo) {
 		usuarioDAO.cambiarGrupo(usuario, grupo);
 	}
+
+
 
 	
 }

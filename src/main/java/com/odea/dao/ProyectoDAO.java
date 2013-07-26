@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import com.odea.domain.Actividad;
 import com.odea.domain.Proyecto;
+import com.odea.domain.Usuario;
 
 @Repository
 public class ProyectoDAO extends AbstractDAO {
@@ -42,6 +43,18 @@ public class ProyectoDAO extends AbstractDAO {
 		});
 		
 		Collections.sort(proyectos);
+		
+		return proyectos;
+	}
+	
+	public List<? extends Proyecto> getProyectosHabilitados(Usuario usuario) {
+		List<Proyecto> proyectos = jdbcTemplate.query("SELECT p.p_id, p.p_timestamp, p.p_name, p.p_manager_id, p.p_status FROM projects p, user_bind ub WHERE p_status=1 AND ub.ub_id_u=? AND p.p_id=ub.ub_id_p AND ub.ub_checked=1 ORDER BY p.p_name", new RowMapper<Proyecto>() {
+			@Override
+			public Proyecto mapRow(ResultSet rs, int rowNum) throws SQLException {
+				boolean habilitado = rs.getInt(5) == 1;
+				return new Proyecto(rs.getInt(1), rs.getString(3),habilitado);
+			}
+		}, usuario.getIdUsuario());
 		
 		return proyectos;
 	}
@@ -200,6 +213,7 @@ public class ProyectoDAO extends AbstractDAO {
 			jdbcTemplate.update("INSERT INTO activity_bind(ab_id_a,ab_id_p) VALUES (?,?)",i,proyecto.getIdProyecto());
 		}
 	}
+
 
 	
 	

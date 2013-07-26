@@ -387,7 +387,7 @@ public class EntradasPage extends BasePage {
 			//this.delegateSubmit(this.findSubmittingButton());
 			
 			this.comboProyecto = new DropDownChoice<Proyecto>("proyecto",
-					daoService.getProyectosHabilitados(), new IChoiceRenderer<Proyecto>() {
+					daoService.getProyectosHabilitados(EntradasPage.this.usuario), new IChoiceRenderer<Proyecto>() {
 						@Override
 						public Object getDisplayValue(Proyecto object) {
 							return object.getNombre();

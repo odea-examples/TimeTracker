@@ -72,6 +72,7 @@ public class AnnotationsShiroAuthorizationStrategy implements IAuthorizationStra
 		ArrayList<String> paginasNoAceptadas = new ArrayList<String>();
 		paginasNoAceptadas.add("class com.odea.FeriadosPage");
 		paginasNoAceptadas.add("class com.odea.UsuariosPage");
+		paginasNoAceptadas.add("class com.odea.VistaHorasPage");
 
 		
 		ArrayList<String> componentesNoAceptados = new ArrayList<String>();
