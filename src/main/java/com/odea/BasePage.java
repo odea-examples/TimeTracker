@@ -1,20 +1,38 @@
 package com.odea;
 
+import java.awt.Component;
+
 import org.apache.shiro.SecurityUtils;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
+import org.apache.wicket.markup.ComponentTag;
+import org.apache.wicket.markup.MarkupStream;
+import org.apache.wicket.markup.html.WebComponent;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.request.Response;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.joda.time.LocalDate;
 
 import com.odea.domain.Entrada;
 
 public class BasePage extends WebPage {
 	
-	public AjaxButton botonLogout;
-	public AjaxButton botonLogin;
+	private AjaxButton botonLogout;
+	private AjaxButton botonLogin;
+	private WebMarkupContainer formulario;
+	private WebMarkupContainer actividades;
+	private WebMarkupContainer proyectos;
+	private WebMarkupContainer usuarios;
+	private WebMarkupContainer miCuenta;
+	private WebMarkupContainer feriados;
+	private WebMarkupContainer reportHoras;
+	private WebComponent wb;
+	private String page;
 	
 	public BasePage(){
 		super();
@@ -65,12 +83,35 @@ public class BasePage extends WebPage {
 				}
 				
 			};
+			page = this.getRequest().getUrl().toString();
 			
-	
+			formulario= armarWmc("formulario");
+			actividades= armarWmc("actividades");
+			proyectos= armarWmc("proyectos");
+			miCuenta = armarWmc("miCuenta");
+			reportHoras = armarWmc("reportHoras");
+			feriados = armarWmc("feriados");
+			usuarios = armarWmc("usuarios");
+			
+			add(formulario);
+			add(actividades);
+			add(proyectos);
+			add(miCuenta);
+			add(reportHoras);
+			add(feriados);
+			add(usuarios);
 			
 			add(botonLogin);
 			add(botonLogout);	
 			
+		}
+
+		private WebMarkupContainer armarWmc(String string) {
+			WebMarkupContainer WebMc= new WebMarkupContainer(string);
+			if(page.equals(string)&&SecurityUtils.getSubject().isAuthenticated()){
+				WebMc.add(new AttributeModifier("class","current"));
+			}
+			return WebMc;
 		}
 
 		protected abstract void onSubmit(AjaxRequestTarget target, BaseForm form);

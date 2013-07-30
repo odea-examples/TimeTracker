@@ -62,6 +62,14 @@ public abstract class SlickGrid extends WebMarkupContainer{
                 	SlickGrid.this.onInfoSend(target,"borrar",data);
                     //(target, getRequest().getRequestParameters().getParameterValue("selectedDate").toString());
                 }
+                if (getRequest().getRequestParameters().getParameterNames().contains("editar")) {
+                	Gson gson = new Gson();
+                	String respuestaGson = getRequest().getRequestParameters().getParameterValue("editar").toString();
+                	System.out.println(respuestaGson);
+                	Data data = new Data(gson.fromJson(respuestaGson, String.class),null,null,null,null,null,null,null,null);
+                	SlickGrid.this.onInfoSend(target,"editar",data);
+                    //(target, getRequest().getRequestParameters().getParameterValue("selectedDate").toString());
+                }
 				
 			}
 		}; 

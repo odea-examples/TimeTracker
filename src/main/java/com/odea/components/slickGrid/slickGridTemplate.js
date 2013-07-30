@@ -154,10 +154,16 @@ function init(dataSecundaria) {
   grid.onClick.subscribe(function(e, args) {
 	  objeto = dataView.getItem(args.row);
 	  if (grid.getColumns()[args.cell].id=='delCol' && objeto!=undefined && confirm(' \u00BFEst\xE1 seguro de que desea borrar la entrada? ')){
-	    objeto = dataView.getItem(args.row);
-        dataView.deleteItem(objeto.id);
-	    Wicket.Ajax.ajax({"u":"${url}","c":"${gridId}","ep":{'borrar':JSON.stringify(objeto.id, null, 2)}});
-	    grid.invalidate();
+		    objeto = dataView.getItem(args.row);
+	        dataView.deleteItem(objeto.id);
+		    Wicket.Ajax.ajax({"u":"${url}","c":"${gridId}","ep":{'borrar':JSON.stringify(objeto.id, null, 2)}});
+		    grid.invalidate();
+	  }
+	  if (grid.getColumns()[args.cell].id=='editCol' && objeto!=undefined && confirm(' \u00BFEst\xE1 seguro de que desea editar la entrada? ')){
+		    objeto = dataView.getItem(args.row);
+	        dataView.deleteItem(objeto.id);
+		    Wicket.Ajax.ajax({"u":"${url}","c":"${gridId}","ep":{'editar':JSON.stringify(objeto.id, null, 2)}});
+		    grid.invalidate();
 	  }
 	});
 

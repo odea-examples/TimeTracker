@@ -15,7 +15,8 @@
         "YesNo": YesNoFormatter,
         "Checkmark": CheckmarkFormatter,
 	"Deletemark": DeletemarkFormatter,
-	"DeleteButton": ButtonFormatter
+	"DeleteButton": ButtonFormatter,
+	"EditButton": ButtonFormatterEdit,
       }
     }
   });
@@ -65,6 +66,12 @@
   }
   function ButtonFormatter(row,cell,value,columnDef,dataContext){  
       var button = "<input type='image' src='images/delete.png' id='"+ dataContext.id +"' onClick='alert('hola');' />";
+      //the id is so that you can identify the row when the particular button is clicked
+      return button;
+      //Now the row will display your button
+  }
+  function ButtonFormatterEdit(row,cell,value,columnDef,dataContext){  
+      var button = "<input type='image' src='images/modificarIcon.gif' id='"+ dataContext.id +"' onClick='alert('hola');' />";
       //the id is so that you can identify the row when the particular button is clicked
       return button;
       //Now the row will display your button

@@ -25,11 +25,14 @@ import org.apache.wicket.markup.html.form.RadioChoice;
 import org.apache.wicket.markup.html.form.RadioGroup;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.markup.html.link.PopupSettings;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.StringValidator;
 import org.joda.time.LocalDate;
@@ -165,9 +168,17 @@ public class EntradasPage extends BasePage {
 
 			@Override
 			protected void onInfoSend(AjaxRequestTarget target, String realizar, Data data) {
+				
 				try {
-					
-					if (realizar == "borrar") {
+					if(realizar == "editar"){
+						SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+						Date parsedDate = dateFormat.parse(data.getId());
+						Timestamp timestamp = new Timestamp(parsedDate.getTime());
+						PageParameters pp= new PageParameters();
+						pp.add("id",timestamp.getTime());
+						setResponsePage(EditarEntradasPage.class,pp);
+					}
+					else if (realizar == "borrar") {
 						SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
 						Date parsedDate = dateFormat.parse(data.getId());
 						Timestamp timestamp = new Timestamp(parsedDate.getTime());
@@ -352,9 +363,6 @@ public class EntradasPage extends BasePage {
 		
 		this.selectorUsuarioContainer.add(selectorUsuario);
 		this.selectorUsuarioContainer.setMarkupId("selectorUsuario");
-		
-		
-		
 		
 		add(selectorUsuarioContainer);
 		add(radioContainer);
@@ -690,6 +698,7 @@ public class EntradasPage extends BasePage {
 		String sistemasExternos = listaSistemaExterno.subSequence(1, listaSistemaExterno.length() - 1).toString();
 		// columna:id,nombre,widht,minwidht,maxwidth,cssclass,field,formater,editor,validator,options
 		Columna columna = new Columna("delCol", " ", 20, 20, 60, null, "del", "Slick.Formatters.DeleteButton", null, null, null);
+		Columna columna10 = new Columna("editCol", " ", 20, 20, 60, null, "edit", "Slick.Formatters.EditButton", null, null, null);
 		Columna columna2 = new Columna("duration", "Duración", 60, 60, 60, "cell-title", "duration", "Slick.Formatters.Number", "Slick.Editors.Number", "requiredDurationValidator", null);
 		Columna columna3 = new Columna("actividad", "Actividad", 150, 100, 300, "cell-title", "actividad", null, null, "requiredFieldValidator",	actividades);
 		Columna columna4 = new Columna("proyecto", "Proyecto", 150, 100, 300, "cell-title", "proyecto", null, null,	"requiredFieldValidator", proyectos);
@@ -708,6 +717,7 @@ public class EntradasPage extends BasePage {
 		columnas.add(columna6);
 		columnas.add(columna8);
 		columnas.add(columna7);
+		columnas.add(columna10);
 		columnas.add(columna);
 		
 		String texto = "[";
