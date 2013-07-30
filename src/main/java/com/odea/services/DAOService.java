@@ -192,8 +192,8 @@ public class DAOService {
 		return proyectoDAO.getProyectosHabilitados(usuario);
 	}
 	
-	public void actualizarRelaciones(int idProyecto, List<Actividad> borrar, List<Actividad> añadir){
-		proyectoDAO.actualizarRelaciones(idProyecto, borrar, añadir);
+	public void actualizarRelaciones(int idProyecto, List<Actividad> borrar, List<Actividad> agregar){
+		proyectoDAO.actualizarRelaciones(idProyecto, borrar, agregar);
 	}
 	
 	public void borrarProyecto(Proyecto proyecto)
