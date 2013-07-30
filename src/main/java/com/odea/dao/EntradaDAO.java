@@ -213,10 +213,17 @@ public class EntradaDAO extends AbstractDAO {
 		for (Entrada entrada : listaEntradas) {			
 			Calendar calendar = Calendar.getInstance();
 			calendar.setTime(entrada.getIdEntrada());
+			//parseador de tiempo para el formato HH:mm
 			String stringTiempo="";
 			String[] tiempos = entrada.getDuracion().split(",");
 			stringTiempo+=tiempos[0]+":"+(Integer.parseInt(tiempos[1])*60/100);
-			
+			tiempos= stringTiempo.split(":");
+			if(Integer.parseInt(tiempos[1])<10&&Integer.parseInt(tiempos[1])>0){
+				stringTiempo= tiempos[0]+":0"+tiempos[1];
+			}
+			else if(Integer.parseInt(tiempos[1])==0){
+				stringTiempo+="0";
+			}
 			//System.out.println(entrada.getDuracion());
 			calendar.setTime(entrada.getFecha());
 			String stringFecha ="";
