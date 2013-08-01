@@ -4,6 +4,30 @@ Code licensed under the BSD License:
 http://developer.yahoo.com/yui/license.html
 version: 2.9.0
 */
+
+.yui-skin-sam .yui-calendar td.calcell.highlight6 {
+	background-color: blue;
+}
+
+.yui-skin-sam .yui-calendar td.calcell.highlight1{
+	background-color: #d1d1d1;
+}
+
+.yui-skin-sam .yui-calendar td.calcell.highlight2 {
+	background-color: #9cf
+}
+
+.yui-skin-sam .yui-calendar td.calcell.highlight3 {
+	background-color: #eeff6e
+}
+
+.yui-skin-sam .yui-calendar td.calcell.highlight4 {
+	background-color: #b3f794
+}
+
+.yui-skin-sam .yui-calendar td.calcell.highlight5 a{
+	color: red !important;
+}
 .yui-calcontainer {
 	position: relative;
 	float: left;
@@ -49,6 +73,10 @@ version: 2.9.0
 
 .yui-calendar {
 	position: relative
+}
+
+.yui-calendar a.selector{
+	color: red;
 }
 
 .yui-calendar .calnavleft {
@@ -321,29 +349,7 @@ p#clear {
 .yui-skin-sam .yui-calendar td.calcell.restricted {
 	text-decoration: line-through
 }
-.yui-skin-sam .yui-calendar td.calcell.highlight6 {
-	background-color: blue;
-}
 
-.yui-skin-sam .yui-calendar td.calcell.highlight1 {
-	background-color: #d1d1d1
-}
-
-.yui-skin-sam .yui-calendar td.calcell.highlight2 {
-	background-color: #9cf
-}
-
-.yui-skin-sam .yui-calendar td.calcell.highlight3 {
-	background-color: #eeff6e
-}
-
-.yui-skin-sam .yui-calendar td.calcell.highlight4 {
-	background-color: #b3f794
-}
-
-.yui-skin-sam .yui-calendar td.calcell.highlight5 {
-	background-color: pink;
-}
 
 
 
@@ -458,3 +464,4 @@ p#clear {
 	{
 	color: #fff
 }
+

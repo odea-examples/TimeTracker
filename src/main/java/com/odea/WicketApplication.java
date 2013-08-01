@@ -29,6 +29,7 @@ public class WicketApplication extends WebApplication
 				
         mountPage("login",LoginPage.class);
         mountPage("formulario", EntradasPage.class);
+        mountPage("editFormulario",EditarEntradasPage.class);
         mountPage("actividades", ActividadesPage.class);
         mountPage("proyectos", ProyectosPage.class);
         mountPage("editProyectos", EditarProyectosPage.class);

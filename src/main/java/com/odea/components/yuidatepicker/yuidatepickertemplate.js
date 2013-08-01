@@ -119,7 +119,7 @@ initYUI = function() {
     }
     
     for(var j in data.feriados) {
-    	YAHOO.example.calendar.cal1.addRenderer(data.feriados[j].fechaFormateada, YAHOO.example.calendar.cal1.renderCellStyleHighlight1);
+    	YAHOO.example.calendar.cal1.addRenderer(data.feriados[j].fechaFormateada,myCustomRenderer5);
 	}
 
     //Sabados y domingos

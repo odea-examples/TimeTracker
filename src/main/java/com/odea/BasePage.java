@@ -108,7 +108,7 @@ public class BasePage extends WebPage {
 
 		private WebMarkupContainer armarWmc(String string) {
 			WebMarkupContainer WebMc= new WebMarkupContainer(string);
-			if(page.equals(string)&&SecurityUtils.getSubject().isAuthenticated()){
+			if((page.toLowerCase().contains(string.toLowerCase()))&&SecurityUtils.getSubject().isAuthenticated()){
 				WebMc.add(new AttributeModifier("class","current"));
 			}
 			return WebMc;

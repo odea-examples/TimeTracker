@@ -42,6 +42,7 @@ public class FeriadosPage extends BasePage {
 		public LocalDate fechaActual = new LocalDate();
 		public TextArea<String> descripcion;
 		public YuiDatePicker datePicker;
+		public FeedbackPanel feedBackPanel;
 		
 		
 		public FeriadosForm(String id) {
@@ -64,7 +65,8 @@ public class FeriadosPage extends BasePage {
 					FeriadosForm.this.setModelObject(daoService.getFeriadoHoy(FeriadosForm.this.fechaActual));
 					
 					
-					target.add(FeriadosForm.this.descripcion);						
+					target.add(FeriadosForm.this.descripcion);	
+					target.add(FeriadosForm.this.feedBackPanel);
 					
 				}
 				
@@ -89,7 +91,7 @@ public class FeriadosPage extends BasePage {
 			descripcion.add(new StringValidator(0,2000));
 			descripcion.setOutputMarkupId(true);
 			
-			final FeedbackPanel feedBackPanel = new FeedbackPanel("feedBackPanel");
+			feedBackPanel = new FeedbackPanel("feedBackPanel");
 			feedBackPanel.setOutputMarkupId(true);
 			feedBackPanel.setMarkupId("feedBackPanel");
 			
