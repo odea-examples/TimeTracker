@@ -115,9 +115,9 @@ public class ProyectoDAO extends AbstractDAO {
 	
 	
 	
-	public void actualizarRelaciones(int idProyecto, List<Actividad> borrar, List<Actividad> añadir){
+	public void actualizarRelaciones(int idProyecto, List<Actividad> borrar, List<Actividad> agregar){
 		
-		for (Actividad actividad : añadir) {
+		for (Actividad actividad : agregar) {
 			
 			int max=jdbcTemplate.queryForInt("SELECT max(ab_id) FROM activity_bind")+1;
 			
