@@ -79,6 +79,7 @@ function ticketExternoValidator(value) {
 function descripcionValidator(value) {
 	var regexVal = (/(^(.{0,5000})$)/);
   if (!value.match(regexVal)) {
+	  alert("No se puede ingresar una nota mayor a 5000 caracteres.");
     return {valid: false, msg: "Invalid value"};
   }
   else {

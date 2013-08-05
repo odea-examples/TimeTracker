@@ -102,7 +102,7 @@ public class FeriadosPage extends BasePage {
 					daoService.insertarFeriado(FeriadosForm.this.getModelObject());
 					target.add(FeriadosForm.this.datePicker);
 					target.add(FeriadosForm.this.descripcion);
-					target.add(feedBackPanel);
+					target.add(FeriadosForm.this.feedBackPanel);
 
 				}
 				
@@ -110,7 +110,7 @@ public class FeriadosPage extends BasePage {
 				protected void onError(AjaxRequestTarget target, Form<?> form) {
 					target.add(FeriadosForm.this.datePicker);
 					target.add(FeriadosForm.this.descripcion);
-					target.add(feedBackPanel);
+					target.add(FeriadosForm.this.feedBackPanel);
 				}
 			};
 			
@@ -119,18 +119,18 @@ public class FeriadosPage extends BasePage {
 			AjaxButton borrar = new AjaxButton("borrar", this) {
 				@Override
 				protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+					target.add(FeriadosForm.this.feedBackPanel);
 					daoService.borrarFeriado(FeriadosForm.this.getModelObject());
 					FeriadosForm.this.setModelObject(new Feriado());
 					target.add(FeriadosForm.this.datePicker);
 					target.add(FeriadosForm.this.descripcion);
-					target.add(feedBackPanel);
 				}
 				
 				
 			};
 			
 			borrar.setOutputMarkupId(true);
-			
+			borrar.setDefaultFormProcessing(false);
 
 			add(feedBackPanel);
 			add(datePicker);
