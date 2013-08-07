@@ -12,7 +12,6 @@
 
     <a wicket:id="link" class="nav"><h3><span>Volver a entradas</span></h3></a>
     
-    <div wicket:id="feedback" class="feedback">feedback</div>
     
 
 
@@ -43,8 +42,7 @@
 			</div>
 
 			<div>
-				<b><label for="fecha">Fecha *</label> 
-				</b><input type="text" wicket:id="fecha" name="fecha"/>
+				<b><label for="fecha">Fecha *</label> </b><div wicket:id="fecha" name="fecha"></div>
 			</div>
 
 			<div>
@@ -64,7 +62,7 @@
 			
 			<div>
 				<b><label for="nota">Nota</label></b> <br> 
-				<b><textarea wicket:id="nota" name="nota" rows="10" cols="40" scrolling="yes"/></b>
+				<b><textarea maxlength="5000" wicket:id="nota" name="nota" rows="10" cols="40" scrolling="yes"/></b>
 			</div>
 
 			<br/>
@@ -77,6 +75,7 @@
 		<br>
 		<br>
 	</form>
+    <div wicket:id="feedback" class="feedback">feedback</div>
 	
 	<br/>
 	<br/>

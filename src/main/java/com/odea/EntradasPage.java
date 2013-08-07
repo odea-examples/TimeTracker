@@ -234,7 +234,6 @@ public class EntradasPage extends BasePage {
 					
 					target.add(listViewContainer);
 					target.add(labelContainer);
-					
 					EntradasPage.this.form.setModelObject(new Entrada());
 					target.add(form);
 					
@@ -542,7 +541,11 @@ public class EntradasPage extends BasePage {
 				protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 					
 					EntradaForm.this.onSubmit(target, (EntradaForm) form);
-					EntradaForm.this.setModelObject(new Entrada());
+					Entrada entrada = new Entrada();
+					Entrada entrada2= (Entrada) form.getModelObject();
+					entrada.setActividad(entrada2.getActividad());
+					entrada.setProyecto(entrada2.getProyecto());
+					EntradaForm.this.setModelObject(entrada);
 					
 					EntradasPage.this.lstDataModel.detach();
 					target.add(feedBackPanel);

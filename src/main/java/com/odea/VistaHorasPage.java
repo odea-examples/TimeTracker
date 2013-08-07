@@ -137,7 +137,6 @@ public class VistaHorasPage extends BasePage{
 				try {
 					bytes = usuarioHoras.getUsuario().getNombre().getBytes("ISO-8859-1");
 					nombreArreglado= new String(bytes,"UTF-8");
-					System.out.println(nombreArreglado);
 				} catch (UnsupportedEncodingException e) {
 					e.printStackTrace();
 				}

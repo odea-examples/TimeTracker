@@ -13,11 +13,11 @@ public class OnRelatedFieldsNullValidator extends AbstractFormValidator {
 	
 	public OnRelatedFieldsNullValidator(FormComponent<?> formComponent1,
 			FormComponent<?> formComponent2, String Error) {
-		if (formComponent1 == null) {
+		if (formComponent1 == null || formComponent1.equals("")) {
 			throw new IllegalArgumentException(
 					"argument formComponent1 cannot be null");
 		}
-		if (formComponent2 == null) {
+		if (formComponent2 == null || formComponent2.equals("")) {
 			throw new IllegalArgumentException(
 					"argument formComponent2 cannot be null");
 		}
@@ -37,7 +37,7 @@ public class OnRelatedFieldsNullValidator extends AbstractFormValidator {
 	public void validate(Form<?> form) {
 		final FormComponent<?> formComponent1 = components[0];
 		final FormComponent<?> formComponent2 = components[1];
-		if (formComponent1.getInput() == "" && formComponent2.getInput() != ""){
+		if ((formComponent1.getInput() == "" || formComponent1.getInput().equals("Ninguno")) && (formComponent2.getInput() != "" || formComponent2.getInput().equals("Ninguno"))){
 			error(formComponent2,"a key", mensaje);
 		}
 	}

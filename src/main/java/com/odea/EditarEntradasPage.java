@@ -1,9 +1,12 @@
 package com.odea;
 
+import java.io.IOException;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
+import java.util.Properties;
 
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -24,14 +27,15 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.PatternValidator;
 
+import com.odea.FeriadosPage.FeriadosForm;
 import com.odea.behavior.noInput.NoInputBehavior;
 import com.odea.behavior.numberComma.NumberCommaBehavior;
 import com.odea.behavior.onlyNumber.OnlyNumberBehavior;
 import com.odea.components.datepicker.DatePicker;
 import com.odea.components.datepicker.DatePickerDTO;
 import com.odea.components.datepicker.HorasCargadasPorDia;
-import com.odea.components.slickGrid.Data;
-import com.odea.components.slickGrid.SlickGrid;
+import com.odea.components.yuidatepicker.YuiDatePicker;
+import com.odea.dao.EntradaDAO;
 import com.odea.domain.Actividad;
 import com.odea.domain.Entrada;
 import com.odea.domain.Proyecto;
@@ -56,6 +60,16 @@ public class EditarEntradasPage extends BasePage{
                 Long tiempo = new Long(entrada.getDuracion());
                 Time duration= new Time(tiempo);
                 entrada.setDuracion(duration.toString().substring(0,5));
+                Properties prop = new Properties();
+                try {
+					prop.load(EntradaDAO.class.getClassLoader().getResourceAsStream("sistemasExternos.properties"));
+					if(entrada.getSistemaExterno()!=null){
+						entrada.setSistemaExterno(prop.getProperty(entrada.getSistemaExterno()));						
+					}
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+                
                 
                 return entrada;
             }
@@ -100,12 +114,6 @@ public class EditarEntradasPage extends BasePage{
 			super(id);
 			this.setDefaultModel(EditarEntradasPage.this.entradaModel);
 			
-
-			ArrayList<String> sistExt = new ArrayList<String>();
-			sistExt.add("SIY");
-			sistExt.add("SGY");
-			sistExt.add("Ninguno");
-			
 			
 			this.comboProyecto = new DropDownChoice<Proyecto>("proyecto",  daoService.getProyectos(),new IChoiceRenderer<Proyecto>() {
 				@Override
@@ -149,17 +157,15 @@ public class EditarEntradasPage extends BasePage{
 			this.comboActividad.setLabel(Model.of("Actividad"));
 			this.comboActividad.setChoices(daoService.getActividades(this.getModelObject().getProyecto()));
 			
+			List<String> sistemasExternos = daoService.getSistemasExternos();
+			if(entradaModel.getObject().getSistemaExterno()==null){
+				sistemasExternos.remove("Ninguno");				
+			}
 			
-			sistemaExterno = new DropDownChoice<String>("sistemaExterno", sistExt, new IChoiceRenderer<String>() {
+			sistemaExterno = new DropDownChoice<String>("sistemaExterno", sistemasExternos, new IChoiceRenderer<String>() {
+				
 				@Override
 				public Object getDisplayValue(String object) {
-					if (object.equals("SGY")) {
-						object = "Sistema Geminis de YPF";
-					}
-					if (object.equals("SIY")) {
-						object = "Sistema de incidencias de YPF";
-					}
-					
 					return object;
 				}
 
@@ -205,21 +211,29 @@ public class EditarEntradasPage extends BasePage{
 						
 			
 			
-			final DatePicker fecha = new DatePicker("fecha") {
-                @Override
-                public DatePickerDTO getDatePickerData() {
-                    //TODO que esto venga de la base
-                    DatePickerDTO dto = new DatePickerDTO();
-                    dto.setDedicacion(8);
-                    dto.setUsuario("pbergonzi");
-                    HorasCargadasPorDia h = new HorasCargadasPorDia(new Date(),8);
-                    Collection<HorasCargadasPorDia> c = new ArrayList<HorasCargadasPorDia>();
-                    c.add(h);
-                    dto.setHorasDia(c);
-			
-                    return dto;
-                }
-            };
+//			final DatePicker fecha = new DatePicker("fecha") {
+//                @Override
+//                public DatePickerDTO getDatePickerData() {
+//                    return null;
+//                }
+//            };
+			final YuiDatePicker fecha = new YuiDatePicker("fecha") {
+				
+				@Override
+				protected void onDateSelect(AjaxRequestTarget target, String selectedDate) {
+				}
+				
+				@Override
+				public DatePickerDTO getDatePickerData() {
+					DatePickerDTO dto = new DatePickerDTO();
+					dto.setDedicacion(-1);
+					dto.setUsuario("admin");
+					Collection<HorasCargadasPorDia> horas = daoService.getFeriadosData();
+					dto.setHorasDia(horas);
+					dto.setFechaSeleccionada(entradaModel.getObject().getFecha());			
+					return dto;
+				}
+			};
 			
 			
             fecha.setRequired(true);
@@ -281,7 +295,7 @@ public class EditarEntradasPage extends BasePage{
 						fecha.add(new AttributeModifier("style", new Model("border-color:none")));
 					}	
 					
-//					target.add(feedBackPanel);
+					target.add(feedBackPanel);
 					target.add(fecha);
 					target.add(duracion);
 					target.add(ticketExt);

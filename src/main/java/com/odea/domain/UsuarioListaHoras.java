@@ -3,6 +3,7 @@ package com.odea.domain;
 import java.util.Date;
 import java.util.Map;
 
+import org.joda.time.DateTimeConstants;
 import org.joda.time.LocalDate;
 
 public class UsuarioListaHoras {
@@ -66,7 +67,6 @@ public class UsuarioListaHoras {
 		this.diaHoras.put(key, value);
 	}
 	public boolean tieneDiaMenorDedicacion(Date desde){
-		int contador=0;
 		Boolean devuelve= false;
 		LocalDate diaTomado = new LocalDate(desde);
 		for (int i = 1; i < 32; i++) {
@@ -74,8 +74,8 @@ public class UsuarioListaHoras {
 				if(diaHoras.get(diaTomado.toDate())<dedicacion){
 					devuelve=true;
 				}
-			}else{
-				contador=contador+1;
+			}else if (!(diaTomado.getDayOfWeek()==DateTimeConstants.SATURDAY) && !(diaTomado.getDayOfWeek()==DateTimeConstants.SUNDAY)){
+				devuelve=true;
 			}
 			diaTomado=diaTomado.plusDays(1);			
 		}

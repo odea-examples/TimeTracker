@@ -1,6 +1,9 @@
 package com.odea.dao;
 
 import java.io.ByteArrayInputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringWriter;
@@ -21,14 +24,18 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
+import org.apache.log4j.PropertyConfigurator;
 import org.joda.time.DateTimeConstants;
 import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.PropertyValue;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import com.itextpdf.text.pdf.hyphenation.TernaryTree.Iterator;
 import com.odea.components.datepicker.DatePickerDTO;
 import com.odea.components.datepicker.HorasCargadasPorDia;
 import com.odea.components.slickGrid.Data;
@@ -156,16 +163,17 @@ public class EntradaDAO extends AbstractDAO {
 //	
 	
 	public String parsearSistemaExternoParaGrid(String iniciales) {
-		String resultado = "Ninguno";
-		if (iniciales != null && iniciales!="") {			
-			if (iniciales.equals("SIY")) {
-				resultado = "Sistema de Incidencias de YPF";
-			} else if (iniciales.equals("SGY") || iniciales.equals("GEM")) {
-				resultado = "Sistema Geminis de YPF";
-			}
+		String propertyValue = "Ninguno";
+		
+		//TODO
+		Properties prop = new Properties();
+		try {
+			prop.load(EntradaDAO.class.getClassLoader().getResourceAsStream("sistemasExternos.properties"));
+		        propertyValue = prop.getProperty(iniciales);
+		} catch (Exception e) {
 		}
 		
-		return resultado;
+		return propertyValue;
 	}
 	
 	
@@ -335,17 +343,24 @@ public class EntradaDAO extends AbstractDAO {
 	
 	private String parsearSistemaExterno(String sistemaExterno) {
 		String resultado = sistemaExterno;
-		
-		if (sistemaExterno != null) {
-			if (sistemaExterno.equals("Sistema de Incidencias de YPF")) {
-				resultado = "SIY";
-			}
-			if (sistemaExterno.equals("Sistema Geminis de YPF")) {
-				resultado = "SGY";
-			}
-			if (sistemaExterno.equals("Ninguno")) {
-				resultado = null;
-			}
+		Properties prop = new Properties();
+		//TODO
+		try {
+			prop.load(EntradaDAO.class.getClassLoader().getResourceAsStream("sistemasExternos.properties"));
+			java.util.Iterator<Object> it = prop.keySet().iterator();
+			while (it.hasNext()) {          
+				 
+		        //propertyName = (String) it.next();
+		        String propertyName = (String) it.next();
+		        String propertyValue = prop.getProperty(propertyName);
+		        if(propertyValue.equals(sistemaExterno)){
+		        	resultado = propertyName;
+		        }
+		}
+		} catch (Exception e) {
+		}
+		if (sistemaExterno.equals("Ninguno")) {
+			resultado = null;
 		}
 		
 		return resultado;
@@ -433,10 +448,24 @@ public class EntradaDAO extends AbstractDAO {
 		
 		
 		public List<String> getSistemasExternos() {
+			Properties prop = new Properties();
+			
 			ArrayList<String> sistemasExternos = new ArrayList<String>();
-			sistemasExternos.add("Sistema de Incidencias de YPF");
-			sistemasExternos.add("Sistema Geminis de YPF");
-			sistemasExternos.add("Ninguno");
+			try {
+				prop.load(EntradaDAO.class.getClassLoader().getResourceAsStream("sistemasExternos.properties"));
+				java.util.Iterator<Object> it = prop.keySet().iterator();
+				while (it.hasNext()) {          
+					 
+			        //propertyName = (String) it.next();
+			        String propertyName = (String) it.next();
+			        String propertyValue = prop.getProperty(propertyName);
+			        if(!sistemasExternos.contains(propertyValue)){
+			        	sistemasExternos.add(propertyValue);			        	
+			        }
+			}
+			} catch (Exception e) {
+				sistemasExternos.add("Ninguno");
+			}
 			
 			return sistemasExternos;
 		}
